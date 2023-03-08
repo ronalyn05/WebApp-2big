@@ -213,11 +213,15 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using FireSharp;
+using System.Web.Optimization;
 
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
+using Firebase.Storage;
 using Newtonsoft.Json;
+using WRS2big_Web.Model;
+using System.IO;
 
 namespace WRS2big_Web.Admin
 {
@@ -230,8 +234,12 @@ namespace WRS2big_Web.Admin
 
         };
         IFirebaseClient twoBigDB;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            //connection to database 
+            twoBigDB = new FireSharp.FirebaseClient(config);
+
             if (Session["idno"] == null)
             {
                 // User not found
@@ -251,8 +259,7 @@ namespace WRS2big_Web.Admin
                 //LblSubEnd.Text = SubsEnd;
             }
 
-            //connection to database 
-            twoBigDB = new FireSharp.FirebaseClient(config);
+            //Session["profile_image"] = ImageButton_new;  
 
             Lbl_Idno.Text = (string)Session["idno"];
             txtfname.Text = (string)Session["fname"];
@@ -269,14 +276,31 @@ namespace WRS2big_Web.Admin
             LblDateStarted.Text = Session["subsDate"].ToString();
             LblSubEnd.Text = Session["subEnd"].ToString();
 
+            // Make sure that the object in the Session is a byte array representing the image
+            byte[] imageData = Session["profile_image"] as byte[];
+            if (imageData != null)
+            {
+                // Convert the byte array to a base64-encoded string
+                string base64String = Convert.ToBase64String(imageData);
+                // Set the ImageUrl property of the ImageButton to the base64-encoded string
+                ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
+            }
+            //ImageButton_new = Session["profile_image"]; 
+
             FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/");
-            Model.AdminAccount obj = response.ResultAs<Model.AdminAccount>();
+            response = twoBigDB.Get("OPERATINGTIME/" + Lbl_Idno.Text);
+            OperatingTime obj = response.ResultAs<OperatingTime>();
 
             //LblSubPlan.Text = obj.SubType.ToString();
             //LblDateStarted.Text = obj.SubsDate.ToString();
             //LblSubEnd.Text = obj.SubEnd.ToString();
+            Session["operatingHrs"] = obj.operatingHrs;
+            Session["status"] = obj.status;
+            Session["businessdays"] = obj.businessDays;
 
+            txtOperatngHrs.Text = (string)Session["operatingHrs"];
+            txtBssnessDay.Text = Session["status"].ToString();
+            txt_Status.Text = Session["businessdays"].ToString();
 
         }
 
@@ -331,13 +355,8 @@ namespace WRS2big_Web.Admin
         //}
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (FileUpload1.HasFile)
-            {
-                int length = FileUpload1.PostedFile.ContentLength;
-                byte[] pic = new byte[length];
-                FileUpload1.PostedFile.InputStream.Read(pic, 0, length);
-
-                Model.AdminAccount data = new Model.AdminAccount()
+           
+                AdminAccount data = new AdminAccount()
                 {
                     idno = int.Parse(Lbl_Idno.Text),
                     fname = txtfname.Text,
@@ -348,13 +367,14 @@ namespace WRS2big_Web.Admin
                     email = txtemail.Text,
                     address = txtaddress.Text,
                     WRS_Name = lblStationName.Text,
-                    profilePic = pic
+                    profile_image = null
 
                 };
+
                 twoBigDB.Update("ADMIN/" + Lbl_Idno.Text, data);//Update Product Data
                                                                 //lbResult.Text = "Record successfully updated!";
                 var result = twoBigDB.Get("ADMIN/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
-                Model.AdminAccount obj = result.ResultAs<Model.AdminAccount>();//Database Result
+                AdminAccount obj = result.ResultAs<AdminAccount>();//Database Result
 
                 Lbl_Idno.Text = obj.idno.ToString();
                 txtfname.Text = obj.fname.ToString();
@@ -365,57 +385,58 @@ namespace WRS2big_Web.Admin
                 txtaddress.Text = obj.address.ToString();
                 txtdob.Text = obj.bdate.ToString();
                 lblStationName.Text = obj.WRS_Name.ToString();
-
-                //image();
-            }
-            
-
         }
 
-        //protected void btnUpdatePic_Click(object sender, EventArgs e)
-        //{
-        //    int idno = Convert.ToInt32(Session["idno"]);
-        //    if (FileUpload1.HasFile)
-        //    {
-        //        int length = FileUpload1.PostedFile.ContentLength;
-        //        byte[] pic = new byte[length];
-        //        FileUpload1.PostedFile.InputStream.Read(pic, 0, length);
+        protected async void profileBtn_Click(object sender, EventArgs e)
+        {
+            if (imgProfile.HasFile)
+            {
+                // Get the file name and extension
+                string fileName = Path.GetFileName(imgProfile.PostedFile.FileName);
+                string fileExtension = Path.GetExtension(fileName);
 
-        //        Model.AdminAccount data = new Model.AdminAccount()
-        //        {
-        //            profilePic = pic
-        //        };
-        //        FirebaseResponse response;
-        //        response = twoBigDB.Update("ADMIN/" + idno, data);
-        //        Model.AdminAccount result = response.ResultAs<Model.AdminAccount>();
+                // Generate a unique file name
+                string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
 
-        //        byte[] bytes = Convert.FromBase64String(result.profilePic.ToString());
-        //        ImageButton_new.ImageUrl = "data:image/png;base64," + ImageButton_new;
-        //        //image();
-                
-        //    }
-        //}
+                // Upload the file to Firebase Storage
+                var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                var task = await storage.Child("profile-images").Child(uniqueFileName).PutAsync(imgProfile.PostedFile.InputStream);
 
-        //public void image()
-        //{
-        //    int idno = Convert.ToInt32(Session["idno"]);
+                // Get the download URL of the uploaded file
+                string imageUrl = await storage.Child("profile-images").Child(uniqueFileName).GetDownloadUrlAsync();
 
-        //    FirebaseResponse response;
-        //    response = twoBigDB.Get("ADMIN/" + idno);
-        //    Model.AdminAccount result = response.ResultAs<Model.AdminAccount>();
-        //    byte[] bytes = Convert.FromBase64String(result.profilePic.ToString());
-        //    ImageButton_new.ImageUrl = "data:image/png;base64," + ImageButton_new;
+                // Insert the download URL into the Admin table
+                var data = new
+                {
+                    idno = int.Parse(Lbl_Idno.Text),
+                    profile_image = imageUrl
+                };
+                var response = await twoBigDB.UpdateAsync("ADMIN/" + Lbl_Idno.Text, data);
 
-        //}
-        //protected void btnLogout_Click(object sender, EventArgs e)
-        //{
-        //    Session.Abandon();
-        //    Session.RemoveAll();
-        //    Session["idno"] = null;
-        //    Session["password"] = null;
-        //    Session.Clear();
-        //    Response.Redirect("/LandingPage/Index.aspx");
+                // Display the image on the profile page
+                ImageButton_new.ImageUrl = imageUrl;
+            }
 
-        //}
+        }
+        protected void btnManageStation_Click(object sender, EventArgs e)
+        {
+            var data = new OperatingTime
+            {
+                operatingHrs = txtOperatingHrs.Text,
+                status = operatingHrsStatus.Text,
+                businessDays = txtBusinessDays.Text,
+                DateAdded = DateTime.UtcNow
+            };
+
+            twoBigDB.Set("OPERATINGTIME/", data);//Update Product Data
+            twoBigDB.Update("OPERATINGTIME/" + Lbl_Idno.Text, data);
+            var result = twoBigDB.Get("OPERATINGTIME/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
+            OperatingTime obj = result.ResultAs<OperatingTime>();//Database Result
+
+            txtOperatngHrs.Text = obj.operatingHrs;
+            txtBssnessDay.Text = obj.businessDays.ToString();
+            txt_Status.Text = obj.status.ToString();
+           
+        }
     }
 }

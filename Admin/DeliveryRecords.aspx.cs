@@ -195,6 +195,6 @@ namespace WRS2big_Web.Admin
 
             //    GridView1.DataSource = list.Values;
             //    GridView1.DataBind();
-            //}
         }
+    }
 }

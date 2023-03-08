@@ -4,17 +4,17 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using WRS2big_Web.Admin;
 
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
+using Firebase.Storage;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.IO;
+using WRS2big_Web.Model;
 using System.Text;
-using Firebase.Storage;
 
 namespace WRS2big_Web.LandingPage
 {
@@ -35,18 +35,18 @@ namespace WRS2big_Web.LandingPage
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
+
         }
 
         //Function to store user data 
-        public void btnSignup_Click(object sender, EventArgs e)
+        protected async void btnSignup_Click(object sender, EventArgs e)
         {
             try
             {
-                // INSERT
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
-                var data = new Model.AdminAccount
+                var data = new AdminAccount
                 {
                     idno = idnum,
                     lname = txtlname.Text,
@@ -59,13 +59,38 @@ namespace WRS2big_Web.LandingPage
                     email = txtEmail.Text,
                     WRS_Name = txtStationName.Text,
                     pass = id_passwordreg.Text,
-                   // profilePic = ""
+                    validityProof = null
                 };
+
+                byte[] fileBytes = null;
+                if (txtproof.HasFile)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        txtproof.PostedFile.InputStream.CopyTo(memoryStream);
+                        fileBytes = memoryStream.ToArray();
+                    }
+                }
+
+                if (fileBytes != null)
+                {
+                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                    var fileExtension = Path.GetExtension(txtproof.FileName);
+                    var filePath = $"admin/{data.idno}{fileExtension}";
+                  //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
+                    using (var stream = new MemoryStream(fileBytes))
+                    {
+                        var storageTask = storage.Child(filePath).PutAsync(stream);
+                        var downloadUrl = await storageTask;
+                        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
+                        data.validityProof = Encoding.ASCII.GetBytes(downloadUrl);
+                    }
+                }
 
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
                 response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
-                Model.AdminAccount result = response.ResultAs<Model.AdminAccount>();//Database Result
+                AdminAccount result = response.ResultAs<AdminAccount>();//Database Result
                 Response.Write("<script>alert ('Account " + result.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
             catch
@@ -74,82 +99,8 @@ namespace WRS2big_Web.LandingPage
             }
         }
 
-        //public void UploadFile(object sender, EventArgs e)
-        //{
-        //    if (txtproof.HasFile)
-        //    {
-        //        // Get the file that was uploaded
-        //        HttpPostedFile postedFile = txtproof.PostedFile;
-
-        //        // Get the file name and content type
-        //        string fileName = Path.GetFileName(postedFile.FileName);
-        //        string contentType = postedFile.ContentType;
-
-        //        // Get the file content as a byte array
-        //        byte[] fileData = new byte[postedFile.ContentLength];
-        //        postedFile.InputStream.Read(fileData, 0, postedFile.ContentLength);
-
-        //        // Save the file to the Firebase database
-        //        //string databaseUrl = "https://big-system-64b55-default-rtdb.firebaseio.com/";
-        //        //string storageBucket = "gs://big-system-64b55.appspot.com";
-        //        //FirebaseStorage storage = FirebaseStorage.(storageBucket);
-        //        //StorageReference storageRef = storage.RootReference;
-        //        //StorageReference fileRef = storageRef.Child(fileName);
-        //        //fileRef.PutAsync(new MemoryStream(fileData), new Model.AdminAccount()
-        //        //{
-        //        //    Proof = contentType
-        //        //}).Wait();
-
-        //        // Get the file data from Firebase
-        //        //var fileData = twoBigDB.Get("ADMIN/" + fileName).ResultAs<byte[]>();
-
-        //        // Convert the file data to a string
-        //        string fileString = Encoding.UTF8.GetString(fileData);
-
-        //    }
-        //}
-
-        ////Function to store user data
-        //public void btnSignup_Click(object sender, EventArgs e)
-        //{
-        //    //txtbirthdate.Attributes["min"] = DateTime.Now.ToString("yyyy-MM-dd");
-
-        //    try
-        //    {
-        //        // INSERT
-        //        Random rnd = new Random();
-        //        int idnum = rnd.Next(1, 10000);
-
-        //        var data = new Model.AdminAccount
-        //        {
-        //            Idno = idnum,
-        //            Lname = txtlname.Text,
-        //            Fname = txtfname.Text,
-        //            Mname = txtmname.Text,
-        //            Bdate = txtbirthdate.Text,
-        //            Address = txtaddress.Text,
-        //            Phone = txtphoneNum.Text,
-        //            Username = txtusername.Text,
-        //            Email = txtEmail.Text,
-        //            WRS_Name = txtStationName.Text,
-        //            Pass = id_passwordreg.Text,
-        //            Proof = txt_proof.Text
-        //        };
-
-        //        SetResponse response;
-        //        //USER = tablename, Idno = key(PK ? )
-        //        response = twoBigDB.Set("ADMIN/" + data.Idno, data);//Storing data to the database
-        //        Model.AdminAccount result = response.ResultAs<Model.AdminAccount>();//Database Result
-        //        Response.Write("<script>alert ('Account " + result.Idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>" + ex.Message);
-        //    }
-        //}
-
-        protected void btnLogin_Click(object sender, EventArgs e)
-        {
+            protected void btnLogin_Click(object sender, EventArgs e)
+            {
 
             //Get the email and password entered by the user
             //string username = txt_username.Text;
@@ -215,7 +166,8 @@ namespace WRS2big_Web.LandingPage
 
             FirebaseResponse response;
             response = twoBigDB.Get("ADMIN/" + idno);
-            Model.AdminAccount user = response.ResultAs<Model.AdminAccount>();
+            AdminAccount user = response.ResultAs<AdminAccount>();
+           
             //if (user.Idno == int.Parse(idno) && user.Pass == password)
             //{
             //    Session["idno"] = idno;
@@ -231,34 +183,38 @@ namespace WRS2big_Web.LandingPage
             //    Response.Write("<script>alert('Invalid username or password');</script>");
             //}
 
-            //Check if the id number and password are valid
-             if (user != null)
-            {
-                if (user.pass == password)
+                //Check if the id number and password are valid
+                if (user != null)
                 {
-                    Session["idno"] = idno;
-                    Session["password"] = password;
-                    Session["WRSname"] = user.WRS_Name;
-                    Session["fname"] = user.fname;
-                    Session["mname"] = user.mname;
-                    Session["lname"] = user.lname;
-                    Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
-                    Session["dob"] = user.bdate;
-                    Session["contactNumber"] = user.phone;
-                    Session["email"] = user.email;
-                    Session["address"] = user.address;
-                    Session["subType"] = user.subType;
-                    Session["subsDate"] = user.subsDate;
-                    Session["subEnd"] = user.subEnd;
+                    if (user.pass == password)
+                    {
+                        Session["idno"] = idno;
+                        Session["password"] = password;
+                        Session["WRSname"] = user.WRS_Name;
+                        Session["fname"] = user.fname;
+                        Session["mname"] = user.mname;
+                        Session["lname"] = user.lname;
+                        Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
+                        Session["dob"] = user.bdate;
+                        Session["contactNumber"] = user.phone;
+                        Session["email"] = user.email;
+                        Session["address"] = user.address;
+                        Session["subType"] = user.subType;
+                        Session["subsDate"] = user.subsDate;
+                        Session["subEnd"] = user.subEnd;
+                        Session["profile_image"] = user.profile_image;
+                       
+
                     // Login successful, redirect to admin homepage
                     Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-                    //Response.Redirect("/Admin/WaitingPage.aspx");
-                }
-                else
-                {
-                    // Login failed, display error message
-                    //lblError.Text = "Invalid email or password!";
-                    Response.Write("<script>alert('Invalid username or password');</script>");
+                        //Response.Redirect("/Admin/WaitingPage.aspx");
+                    }
+                    else
+                    {
+                        // Login failed, display error message
+                        //lblError.Text = "Invalid email or password!";
+                        Response.Write("<script>alert('Invalid username or password');</script>");
+                    }
                 }
             }
             //else
@@ -267,7 +223,7 @@ namespace WRS2big_Web.LandingPage
             //    //lblError.Text = " User not found";
             //    Response.Write("<script>alert('User not found');</script>");
             //}             
-        }
+        
     }
 }
 

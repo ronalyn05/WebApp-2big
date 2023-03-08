@@ -19,7 +19,8 @@ namespace WRS2big_Web.Model
         public string email { get; set; }
         public string WRS_Name { get; set; }
         public string pass { get; set; }
-        public byte[] profilePic { get; set; }
+        public byte[] validityProof { get; set; }
+        public string profile_image { get; set; }
         public DateTimeOffset subsDate { get; set; }
         public string subType { get; set; }
         public DateTimeOffset subEnd { get; set; }

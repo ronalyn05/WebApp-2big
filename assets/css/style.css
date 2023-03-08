@@ -202,7 +202,12 @@ b, strong {
       display: inline-block;
       margin-right: 10px;
       line-height: 1.4;
-      position: relative; }
+      position: relative;
+    top: -8px;
+    left: 0px;
+    height: 26px;
+    width: 83px;
+}
       .card .card-header h5:after {
         content: "";
         background-color: #448aff;
