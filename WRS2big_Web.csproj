@@ -50,8 +50,7 @@
       <HintPath>packages\AspNet.ScriptManager.jQuery.3.6.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="Firebase.Storage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\Firebase.Storage.dll</HintPath>
+      <HintPath>packages\FirebaseStorage.net.1.0.3\lib\netstandard1.1\Firebase.Storage.dll</HintPath>
     </Reference>
     <Reference Include="FireSharp, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FireSharp.2.0.4\lib\portable-net45+sl5+wp8+win8\FireSharp.dll</HintPath>
@@ -81,7 +80,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=108.0.3.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.108.0.3\lib\netstandard2.0\RestSharp.dll</HintPath>
@@ -105,8 +104,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Diagnostics.DiagnosticSource.7.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Diagnostics.DiagnosticSource.7.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
@@ -230,8 +229,8 @@
     <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=7.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Text.Json.7.0.1\lib\net462\System.Text.Json.dll</HintPath>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
@@ -732,6 +731,7 @@
     <Compile Include="Admin\BasicSubSuccess.aspx.designer.cs">
       <DependentUpon>BasicSubSuccess.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LandingPage\FirebaseStorageClient.cs" />
     <Compile Include="LandingPage\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -766,6 +766,7 @@
     <Compile Include="Model\CUSTOMERNOTIFICATION.cs" />
     <Compile Include="Model\DeliveryDetails.cs" />
     <Compile Include="Model\EmployeeData.cs" />
+    <Compile Include="Model\OperatingTime.cs" />
     <Compile Include="Model\OrderData.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\RefillProduct.cs" />

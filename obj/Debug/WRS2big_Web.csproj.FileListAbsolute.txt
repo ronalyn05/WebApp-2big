@@ -5,6 +5,7 @@ C:\Users\Capstone2-Project\WRS2big_Web\bin\WRS2big_Web.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\WRS2big_Web.pdb
 C:\Users\Capstone2-Project\WRS2big_Web\bin\Antlr3.Runtime.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\Capstone2-Project\WRS2big_Web\bin\Firebase.Storage.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\FireSharp.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\FireSharp.Serialization.JsonNet.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\Microsoft.AspNet.FriendlyUrls.dll

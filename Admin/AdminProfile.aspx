@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AdminProfile.aspx.cs" Inherits="WRS2big_Web.Admin.AdminProfile" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AdminProfile.aspx.cs" Inherits="WRS2big_Web.Admin.AdminProfile" Async="true"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 
@@ -99,6 +99,64 @@
                                          </div>
                                         </div>
                                       </div>
+                                         <%--REFILLING STATION MANAGEMENT --%>
+                                          <div class="modal fade management" tabindex="-1" role="dialog" aria-hidden="true">
+                                       <div class="modal-dialog modal-dialog-centered modal-md">
+                                        <div class="modal-content">
+                                        <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                        <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Refilling Station</h4>
+                                            <%--exit button--%>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                        </div>
+                                        <div class="modal-body">
+                                        <div class="col-md-12 col-sm-12 ">
+                                        <div class="x_content">
+                                             <h6>Refilling Station details</h6>
+                                            <hr>                        
+                                           <%-- basic plan--%>
+                                        <h4 style="color:black;font-family:Bahnschrift"> Operating hours:</h4>
+                                             <center>
+                                                <asp:TextBox ID="txtOperatingHrs" placeholder="Set operating hours" runat="server"></asp:TextBox>
+                                               </center>
+                                        </div>
+                                         <div class="col-md-12 col-sm-12">
+                                             <%--<%--date subscribed--%>
+                                        <h4 style="color:black;font-family:bahnschrift">Status:</h4>
+                                              <center>
+                                                 <%-- <asp:Label ID="Label2" runat="server" class="active btn waves-effect text-center" style="background-color:#bae1ff;font-size:20px;color:black;font-family:Bahnschrift">
+                                                 Status:
+                                                  </asp:Label>--%>
+                                                   <asp:DropDownList ID="operatingHrsStatus" runat="server" >
+                                                   <asp:ListItem Text="Open" Value="open" Selected="True"></asp:ListItem>
+                                                   <asp:ListItem Text="Close" Value="close" ></asp:ListItem>
+                                               </asp:DropDownList>
+                                                 <%--<p class="active btn waves-effect text-center" style="background-color:#bae1ff;font-size:20px;color:black;font-family:Bahnschrift"><i class=" ti-credit-card "></i> December 10, 2022</p> --%>
+                                              </center> 
+                                          </div>
+                                         <div class="col-md-12 col-sm-12">
+                                             <%--subscription end--%>
+                                          <h4 style="color:black;font-family:Bahnschrift">Business Days:</h4>
+                                                                 <center>
+                                                             <%--        <asp:Label ID="Label3" runat="server" class="active btn waves-effect text-center" style="background-color:#bae1ff;font-size:20px;color:black;font-family:Bahnschrift">
+                                                      Business Days:
+                                                 </asp:Label>--%>
+                                                                     <asp:TextBox ID="txtBusinessDays" placeholder="Set business days" runat="server"></asp:TextBox>
+                                                                          <%-- <p class="active btn waves-effect text-center" style="background-color:#bae1ff;font-size:20px;color:black;font-family:Bahnschrift"><i class=" ti-credit-card "></i> March 10, 2022</p> --%>
+                                                                 </center>
+                                          </div>
+                                        </div>
+                                         <%-- </div>--%>
+                                        </div>
+                                        <div class="modal-footer">
+                                           <%-- manage station button--%>
+                                           <asp:Button ID="btnManageStation" class="active btn waves-effect text-right" style="background-color:#ffffe3;font-size:20px;color:black;font-family:Bahnschrift" runat="server" Text="Submit" ValidationGroup="a" OnClick="btnManageStation_Click"/>
+                                           
+                                        </div>
+                                           <%--</form>--%>
+                                         </div>
+                                        </div>
+                                      </div>
                                     <!-- Page-body start -->
                                             <div class="row">
                                                 <div class="col-xl-4 col-md-12 " >
@@ -121,18 +179,14 @@
                                                      <asp:ImageButton ID="ImageButton_new" class="img-100 img-radius" style="width:200px" runat="server" /> <%--src="/images/rhea.png"--%>
                                                           <br />
                                                           <asp:Label ID="Lbl_user" runat="server" style="color:black;font-size:16px"></asp:Label>
-                                                          
-                                                          <%--<h6 style="color:black;font-size:16px"> TRINIDAD, RHEA MAE A.</h6> <h8>Admin</h8>--%>
                                                           <br />
                                                            <br />
                                                       </center>
-                                                          
                                                           <center> 
                                                               <%--file upload--%>
-                                                              <asp:FileUpload ID="FileUpload1" runat="server" /> <br />
-                                                               <h7 style="background-color:transparent;color:black">Change Admin Picture</h7> 
-                                                              <%--btn update profile--%>
-                                                             <%-- <asp:Button ID="btnUpdatePic" runat="server" Text="Update Profile" OnClick="btnUpdatePic_Click"/>--%>
+                                                              <asp:FileUpload ID="imgProfile" runat="server" Font-Size="Medium" Height="38px" Width="301px"  />
+                                                               <br />
+                                                              <asp:Button ID="profileBtn" runat="server" Text="Update Profile" style="background-color:paleturquoise; color:black" OnClick="profileBtn_Click" />
                                                           </center>
                                                   </div>
                                                     <hr />
@@ -143,6 +197,9 @@
                                                             <%--<button type="button" class="active btn waves-effect text-left" data-toggle="modal" data-target=".edit" style="background-color:transparent;font-size:20px;"><i class="fa fa-edit"></i> Update Profile</button>--%>
                                                                  <%-- Subscritption button--%>
                                                             <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".subscription" style="background-color:transparent;font-size:20px;"><i class=" ti-settings"></i>Subscription</button> 
+                                                                <br />
+                                                               <%-- REFILLING STATION MANAGEMENT --%>
+                                                                 <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".management" style="background-color:transparent;font-size:20px;"><i class="ti-marker"></i>Manage Refilling Station</button> 
                                                                 <%--logout button--%>
                                                            <%-- <i class="fa fa-undo">
                                                            <asp:Button ID="btnLogout" class="active btn waves-effect text-right" style="background-color:transparent;font-size:20px;" runat="server" Text="Logout" OnClick="btnLogout_Click"/>
@@ -151,6 +208,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                                
                                                 <%--PROFILE MANAGEMENT--%>
                                             <div class="col-xl-8 col-md-12">
                                                 <div class="card" style="background-color:#f2e2ff">
@@ -215,10 +273,28 @@
                                                                            <asp:TextBox ID="txtaddress" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
                                                                              </asp:TextBox> 
+                                                                            <br />
+                                                                            <hr />
+                                                                               <h5>STATION DETAILS:  </h5>
                                                                             <br /> 
                                                                             <h5>Station Name: </h5>
                                                                             <asp:Label ID="lblStationName" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server"></asp:Label>
+                                                                            <br />
+                                                                            <h5>Operating Hours: </h5>
+                                                                            <asp:TextBox ID="txtOperatngHrs" class=" btn btn-round waves-effect text-center" 
+                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
+                                                                             </asp:TextBox> 
+                                                                            <br />
+                                                                            <h5>Business Days: </h5>
+                                                                            <asp:TextBox ID="txtBssnessDay" class=" btn btn-round waves-effect text-center" 
+                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
+                                                                             </asp:TextBox> 
+                                                                            <br />
+                                                                            <h5>Status: </h5>
+                                                                            <asp:TextBox ID="txt_Status" class=" btn btn-round waves-effect text-center" 
+                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
+                                                                             </asp:TextBox>
                                                                             <br />
                                                                             <br />
                                                                             <hr />

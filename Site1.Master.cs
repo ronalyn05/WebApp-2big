@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
+using Firebase.Storage;
 using FireSharp.Response;
 
 namespace WRS2big_Web
@@ -44,6 +45,7 @@ namespace WRS2big_Web
                 string WRSname = (string)Session["WRSname"];
                 lblWRSname.Text = WRSname;
             }
+           
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {

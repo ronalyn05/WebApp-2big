@@ -51,6 +51,42 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSubscription;
 
         /// <summary>
+        /// txtOperatingHrs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOperatingHrs;
+
+        /// <summary>
+        /// operatingHrsStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList operatingHrsStatus;
+
+        /// <summary>
+        /// txtBusinessDays control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessDays;
+
+        /// <summary>
+        /// btnManageStation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnManageStation;
+
+        /// <summary>
         /// ImageButton_new control.
         /// </summary>
         /// <remarks>
@@ -69,13 +105,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Lbl_user;
 
         /// <summary>
-        /// FileUpload1 control.
+        /// imgProfile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        protected global::System.Web.UI.WebControls.FileUpload imgProfile;
+
+        /// <summary>
+        /// profileBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button profileBtn;
 
         /// <summary>
         /// Lbl_Idno control.
@@ -157,6 +202,33 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblStationName;
+
+        /// <summary>
+        /// txtOperatngHrs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOperatngHrs;
+
+        /// <summary>
+        /// txtBssnessDay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBssnessDay;
+
+        /// <summary>
+        /// txt_Status control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_Status;
 
         /// <summary>
         /// btnEdit control.

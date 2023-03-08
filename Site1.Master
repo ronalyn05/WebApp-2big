@@ -1,4 +1,4 @@
-﻿ <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="WRS2big_Web.Site1" %>
+﻿ <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="WRS2big_Web.Site1"%>
 
 <!DOCTYPE html>
 
@@ -96,11 +96,11 @@
                         <!-- NOTIFICATIONS -->
                         <ul class="nav-right">
                             <li class="header-notification">
-                                <a href="#!" class="waves-effect waves-light">
+                              <%--  <a href="#!" class="waves-effect waves-light">
                                     <i class="ti-bell"></i>
                                     <span class="badge bg-c-red"></span>
-                                </a>
-                                <ul class="show-notification">
+                                </a>--%>
+                               <%-- <ul class="show-notification">
                                     <li>
                                         <h6>Notifications</h6>
                                         <label class="label label-danger">New</label>
@@ -135,14 +135,15 @@
                                             </div>
                                         </div>
                                     </li>
-                                </ul>
+                                </ul>--%>
                             </li>
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
                                 <a href="#!" class="waves-effect waves-light">
                                     <%--ADMIN PROFILE IMAGE--%>
                                     <%--<asp:Image ID="Image1" runat="server" />--%>
-                                    <img src="/images/rhea.png" class="img-radius" alt="User-Profile-Image">
+                                    <%--<asp:ImageButton ID="ImageButton" class="img-100 img-radius" style="width:200px" runat="server" />--%>
+                                    <%--<img src="/images/rhea.png" class="img-radius" alt="User-Profile-Image">--%>
                                     <%--LABEL NAME--%>
                                     <asp:Label ID="lblWRSname" runat="server"></asp:Label>
                                    <%-- <span>ADMIN 1</span>--%>
