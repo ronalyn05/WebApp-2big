@@ -409,6 +409,15 @@
     <Content Include="assets\js\script.min.js" />
     <Content Include="assets\js\SmoothScroll.js" />
     <Content Include="assets\js\vertical-layout.min.js" />
+    <Content Include="assets\leaflet\images\layers-2x.png" />
+    <Content Include="assets\leaflet\images\layers.png" />
+    <Content Include="assets\leaflet\images\marker-icon-2x.png" />
+    <Content Include="assets\leaflet\images\marker-icon.png" />
+    <Content Include="assets\leaflet\images\marker-shadow.png" />
+    <Content Include="assets\leaflet\leaflet-src.esm.js" />
+    <Content Include="assets\leaflet\leaflet-src.js" />
+    <Content Include="assets\leaflet\leaflet.css" />
+    <Content Include="assets\leaflet\leaflet.js" />
     <Content Include="assets\pages\accordion\accordion.js" />
     <Content Include="assets\pages\accordion\accordion.min.js" />
     <Content Include="assets\pages\dashboard\amchart\css\amchart.css" />
@@ -545,6 +554,9 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="assets\leaflet\leaflet-src.esm.js.map" />
+    <Content Include="assets\leaflet\leaflet-src.js.map" />
+    <Content Include="assets\leaflet\leaflet.js.map" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />

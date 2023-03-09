@@ -36,11 +36,16 @@ namespace WRS2big_Web.LandingPage
             twoBigDB = new FireSharp.FirebaseClient(config);
 
 
+
         }
 
         //Function to store user data 
         protected async void btnSignup_Click(object sender, EventArgs e)
         {
+            string address = Request.Form["address"];
+            string latitude = Request.Form["lat"];
+            string longitude = Request.Form["long"];
+
             try
             {
                 Random rnd = new Random();
@@ -53,11 +58,13 @@ namespace WRS2big_Web.LandingPage
                     fname = txtfname.Text,
                     mname = txtmname.Text,
                     bdate = txtbirthdate.Text,
-                    address = txtaddress.Text,
                     phone = txtphoneNum.Text,
                     username = txtusername.Text,
                     email = txtEmail.Text,
+                    addLongitude = longitude,
+                    addLattitude = latitude,
                     WRS_Name = txtStationName.Text,
+                    WRS_Address = address,
                     pass = id_passwordreg.Text,
                     validityProof = null
                 };
@@ -77,7 +84,7 @@ namespace WRS2big_Web.LandingPage
                     var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                     var fileExtension = Path.GetExtension(txtproof.FileName);
                     var filePath = $"admin/{data.idno}{fileExtension}";
-                  //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
+                    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         var storageTask = storage.Child(filePath).PutAsync(stream);
@@ -86,12 +93,12 @@ namespace WRS2big_Web.LandingPage
                         data.validityProof = Encoding.ASCII.GetBytes(downloadUrl);
                     }
                 }
-
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
                 response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
                 AdminAccount result = response.ResultAs<AdminAccount>();//Database Result
                 Response.Write("<script>alert ('Account " + result.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+
             }
             catch
             {
@@ -99,8 +106,8 @@ namespace WRS2big_Web.LandingPage
             }
         }
 
-            protected void btnLogin_Click(object sender, EventArgs e)
-            {
+        protected void btnLogin_Click(object sender, EventArgs e)
+        {
 
             //Get the email and password entered by the user
             //string username = txt_username.Text;
@@ -167,7 +174,7 @@ namespace WRS2big_Web.LandingPage
             FirebaseResponse response;
             response = twoBigDB.Get("ADMIN/" + idno);
             AdminAccount user = response.ResultAs<AdminAccount>();
-           
+
             //if (user.Idno == int.Parse(idno) && user.Pass == password)
             //{
             //    Session["idno"] = idno;
@@ -183,47 +190,46 @@ namespace WRS2big_Web.LandingPage
             //    Response.Write("<script>alert('Invalid username or password');</script>");
             //}
 
-                //Check if the id number and password are valid
-                if (user != null)
+            //Check if the id number and password are valid
+            if (user != null)
+            {
+                if (user.pass == password)
                 {
-                    if (user.pass == password)
-                    {
-                        Session["idno"] = idno;
-                        Session["password"] = password;
-                        Session["WRSname"] = user.WRS_Name;
-                        Session["fname"] = user.fname;
-                        Session["mname"] = user.mname;
-                        Session["lname"] = user.lname;
-                        Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
-                        Session["dob"] = user.bdate;
-                        Session["contactNumber"] = user.phone;
-                        Session["email"] = user.email;
-                        Session["address"] = user.address;
-                        Session["subType"] = user.subType;
-                        Session["subsDate"] = user.subsDate;
-                        Session["subEnd"] = user.subEnd;
-                        Session["profile_image"] = user.profile_image;
-                       
+                    Session["idno"] = idno;
+                    Session["password"] = password;
+                    Session["WRSname"] = user.WRS_Name;
+                    Session["fname"] = user.fname;
+                    Session["mname"] = user.mname;
+                    Session["lname"] = user.lname;
+                    Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
+                    Session["dob"] = user.bdate;
+                    Session["contactNumber"] = user.phone;
+                    Session["email"] = user.email;
+                    Session["subType"] = user.subType;
+                    Session["subsDate"] = user.subsDate;
+                    Session["subEnd"] = user.subEnd;
+                    Session["profile_image"] = user.profile_image;
+
 
                     // Login successful, redirect to admin homepage
                     Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-                        //Response.Redirect("/Admin/WaitingPage.aspx");
-                    }
-                    else
-                    {
-                        // Login failed, display error message
-                        //lblError.Text = "Invalid email or password!";
-                        Response.Write("<script>alert('Invalid username or password');</script>");
-                    }
+                    //Response.Redirect("/Admin/WaitingPage.aspx");
+                }
+                else
+                {
+                    // Login failed, display error message
+                    //lblError.Text = "Invalid email or password!";
+                    Response.Write("<script>alert('Invalid username or password');</script>");
                 }
             }
-            //else
-            //{
-            //    // User not found
-            //    //lblError.Text = " User not found";
-            //    Response.Write("<script>alert('User not found');</script>");
-            //}             
-        
+        }
+        //else
+        //{
+        //    // User not found
+        //    //lblError.Text = " User not found";
+        //    Response.Write("<script>alert('User not found');</script>");
+        //}             
+
     }
 }
 

@@ -13,23 +13,25 @@ namespace WRS2big_Web.Model
         public string fname { get; set; }
         public string mname { get; set; }
         public string bdate { get; set; }
-        public string address { get; set; }
         public string phone { get; set; }
         public string username { get; set; }
         public string email { get; set; }
         public string WRS_Name { get; set; }
+        public string WRS_Address { get; set; }
         public string pass { get; set; }
         public byte[] validityProof { get; set; }
         public string profile_image { get; set; }
         public DateTimeOffset subsDate { get; set; }
         public string subType { get; set; }
         public DateTimeOffset subEnd { get; set; }
+        public string addLattitude { get; set; }
+        public string addLongitude { get; set; }
 
         //public StorageReference RootReference { get; internal set; }
 
     }
 }
 
-    
 
-   
+
+
