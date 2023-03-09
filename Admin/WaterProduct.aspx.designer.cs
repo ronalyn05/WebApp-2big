@@ -24,13 +24,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// DrdproductType control.
+        /// txtproductName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DrdproductType;
+        protected global::System.Web.UI.WebControls.TextBox txtproductName;
+
+        /// <summary>
+        /// Label6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label6;
+
+        /// <summary>
+        /// imgProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload imgProduct;
 
         /// <summary>
         /// Label2 control.
@@ -42,13 +60,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// DrdproductSize control.
+        /// txtproductSize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DrdproductSize;
+        protected global::System.Web.UI.WebControls.TextBox txtproductSize;
 
         /// <summary>
         /// Label3 control.
@@ -69,6 +87,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox productPrice;
 
         /// <summary>
+        /// Label7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label7;
+
+        /// <summary>
+        /// productDiscounts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox productDiscounts;
+
+        /// <summary>
         /// Label4 control.
         /// </summary>
         /// <remarks>
@@ -85,6 +121,24 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox productAvailable;
+
+        /// <summary>
+        /// Label5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label5;
+
+        /// <summary>
+        /// txtWaterAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWaterAmount;
 
         /// <summary>
         /// btnAdd control.
@@ -123,22 +177,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label LabelID;
 
         /// <summary>
-        /// DrdprodType control.
+        /// prodName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DrdprodType;
+        protected global::System.Web.UI.WebControls.TextBox prodName;
 
         /// <summary>
-        /// DrdprodSize control.
+        /// prodSize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DrdprodSize;
+        protected global::System.Web.UI.WebControls.TextBox prodSize;
 
         /// <summary>
         /// prodPrice control.
@@ -150,6 +204,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox prodPrice;
 
         /// <summary>
+        /// prodDiscount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox prodDiscount;
+
+        /// <summary>
         /// prodAvailable control.
         /// </summary>
         /// <remarks>
@@ -157,6 +220,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox prodAvailable;
+
+        /// <summary>
+        /// waterSupAvailable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox waterSupAvailable;
 
         /// <summary>
         /// LblDate control.

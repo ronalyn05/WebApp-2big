@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Firebase.Storage;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
@@ -39,13 +42,15 @@ namespace WRS2big_Web.Admin
             response = twoBigDB.Get("PRODUCT/" + slected);
             Model.Product obj = response.ResultAs<Model.Product>();
             LabelID.Text = obj.productId.ToString();
-            DrdprodType.Text = obj.productType.ToString();
-            DrdprodSize.Text = obj.productSize.ToString();
+            prodName.Text = obj.productName.ToString();
+            prodSize.Text = obj.productSize.ToString();
             prodPrice.Text = obj.productPrice.ToString();
+            prodDiscount.Text = obj.productDiscount.ToString();
             prodAvailable.Text = obj.productAvailable.ToString();
+            waterSupAvailable.Text = obj.waterRefillSupply.ToString();
             LblDate.Text = obj.DateAdded.ToString();
         }
-        public void btnAdd_Click(object sender, EventArgs e)
+        protected async void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
@@ -56,15 +61,42 @@ namespace WRS2big_Web.Admin
                 var data = new Model.Product
                 {
                     productId = idnum,
-                    productType = DrdproductType.Text,
-                    productSize = DrdproductSize.Text,
+                    productName = txtproductName.Text,
+                    productSize = txtproductSize.Text,
                     productPrice = productPrice.Text,
+                    productDiscount = productDiscounts.Text,
                     productAvailable = productAvailable.Text,
+                    waterRefillSupply = txtWaterAmount.Text,
+                    productImage = null,
                     DateAdded = DateTime.UtcNow
                 };
+                byte[] fileBytes = null;
+                if (imgProduct.HasFile)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        imgProduct.PostedFile.InputStream.CopyTo(memoryStream);
+                        fileBytes = memoryStream.ToArray();
+                    }
+                }
+
+                if (fileBytes != null)
+                {
+                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                    var fileExtension = Path.GetExtension(imgProduct.FileName);
+                    var filePath = $"productimages/{data.productName}{fileExtension}";
+                    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
+                    using (var stream = new MemoryStream(fileBytes))
+                    {
+                        var storageTask = storage.Child(filePath).PutAsync(stream);
+                        var downloadUrl = await storageTask;
+                        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
+                        data.productImage = Encoding.ASCII.GetBytes(downloadUrl);
+                    }
+                }
                 //if(data.productType != 0 && data.productSize != 0)
                 //{
-                    SetResponse response;
+                SetResponse response;
                     //USER = tablename, Idno = key(PK ? )
                     response = twoBigDB.Set("PRODUCT/" + data.productId, data);
                     Model.Product result = response.ResultAs<Model.Product>();
@@ -101,10 +133,12 @@ namespace WRS2big_Web.Admin
             var data = new Model.Product();
 
             data.productId = int.Parse(LabelID.Text);
-            data.productType = DrdprodType.Text;
-            data.productSize = DrdprodSize.Text;
+            data.productName = prodName.Text;
+            data.productSize = prodSize.Text;
             data.productPrice = prodPrice.Text;
+            data.productDiscount = prodDiscount.Text;
             data.productAvailable = prodAvailable.Text;
+            data.waterRefillSupply = waterSupAvailable.Text;
             data.DateAdded = DateTime.UtcNow;
 
             //if (data.productType != 0 && data.productSize != 0)
@@ -116,10 +150,12 @@ namespace WRS2big_Web.Admin
             Model.Product obj = response.ResultAs<Model.Product>();//Database Result
 
             LabelID.Text = obj.productId.ToString();
-            DrdprodType.Text = obj.productType.ToString();
-            DrdprodSize.Text = obj.productSize.ToString();
+            prodName.Text = obj.productName.ToString();
+            prodSize.Text = obj.productSize.ToString();
             prodPrice.Text = obj.productPrice.ToString();
+            prodDiscount.Text = obj.productDiscount.ToString();
             prodAvailable.Text = obj.productAvailable.ToString();
+            waterSupAvailable.Text = obj.waterRefillSupply.ToString();
             LblDate.Text = obj.DateAdded.ToString();
 
             Response.Write("<script>alert ('Product ID : " + deleteStr + " successfully updated!');</script>");
