@@ -270,7 +270,7 @@
                                                             <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
                                                         </asp:GridView>--%>
 
-                                                        <table cellpadding="4" cellspacing="0" style="color:#333333;border-collapse:collapse;width:16px;">
+                                                       <%-- <table cellpadding="4" cellspacing="0" style="color:#333333;border-collapse:collapse;width:16px;">
                         <thead>
                             <tr style="background-color:#5D7B9D;color:white;">
                                 <th style="font-weight:bold;">Delivery Type</th>
@@ -281,16 +281,16 @@
                         </thead>
                         <tbody style="background-color:#F7F6F3;">
        
-                                 <% foreach (var deliveryDetail in deliveryDetails) { %>
-                              <tr>
-                                <td><%= deliveryDetail.DeliveryType %></td>
+                                 foreach (var deliveryDetail in deliveryDetails) 
+                              <tr>--%>
+                             <%--   <td><%= deliveryDetail.DeliveryType %></td>
                                 <td><%= deliveryDetail.DeliveryFee %></td>
                                 <td><%= deliveryDetail.EstimatedTime %></td>
                                 <td><%= deliveryDetail.Status %></td>
                               </tr>
-                            <% } %>
+                             }
                         </tbody>
-                    </table>
+                    </table>--%>
 
 
 

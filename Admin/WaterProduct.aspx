@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WaterProduct.aspx.cs" Inherits="WRS2big_Web.Admin.WaterProduct" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WaterProduct.aspx.cs" Inherits="WRS2big_Web.Admin.WaterProduct" Async="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -63,22 +63,31 @@
                                                  <div class="x_content">
                                                   <div class="item form-group">
                                                     <div class="col-md-12 col-sm-12 ">
-                                                        <asp:Label ID="Label1" runat="server" Text="Product Type: "></asp:Label><br />
-                                               <asp:DropDownList ID="DrdproductType" runat="server" >
+                                                        <asp:Label ID="Label1" runat="server" Text="Product Name: "></asp:Label><br />
+                                               <%--<asp:DropDownList ID="DrdproductType" runat="server" >
                                                    <asp:ListItem Text="Alkaline" Value="Alkaline" Selected="True"></asp:ListItem>
                                                    <asp:ListItem Text="Mineral" Value="Mineral" ></asp:ListItem>
                                                    <asp:ListItem Text="Sparkling Water" Value="Sparkling" ></asp:ListItem>
                                                    <asp:ListItem Text="Distilled Drinking Water" Value="Distilled" ></asp:ListItem>
                                                    <asp:ListItem Text="Purified Drinking Water" Value="Purified" ></asp:ListItem>
-                                               </asp:DropDownList>
-                                                        <%--<asp:TextBox ID="productType" runat="server"></asp:TextBox>--%>
+                                               </asp:DropDownList>--%>
+                                                        <asp:TextBox ID="txtproductName" runat="server"></asp:TextBox>
+                                                     </div>
+                                                     </div>
+                                                     <div class="item form-group">
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                        <asp:Label ID="Label6" runat="server" Text="Product Image: "></asp:Label><br />
+                                                        <%--file upload--%>
+                                                        <asp:FileUpload ID="imgProduct" runat="server" Font-Size="Medium" Height="38px" Width="301px"  />
+                                                            
+                                                        
                                                      </div>
                                                      </div>
                                                      <div class="item form-group">
                                                       <div class="col-md-12 col-sm-12 ">
                                                           <asp:Label ID="Label2" runat="server" Text="Volume/Size Category:"></asp:Label> <br />
-                                                        <%--<asp:TextBox ID="productSize" runat="server"></asp:TextBox>--%>
-                                                           <asp:DropDownList ID="DrdproductSize" runat="server" Width="180px">
+                                                        <asp:TextBox ID="txtproductSize" runat="server"></asp:TextBox>
+                                                           <%--<asp:DropDownList ID="DrdproductSize" runat="server" Width="180px">
                                                                <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
                                                                <asp:ListItem Text="1 gallon" Value="1 gallon"></asp:ListItem>
                                                                <asp:ListItem Text="10 liters" Value="10 liters" ></asp:ListItem>
@@ -88,7 +97,7 @@
                                                                <asp:ListItem Text="500 ml" Value="500 ml" ></asp:ListItem>
                                                                <asp:ListItem Text="350 ml" Value="350 ml" ></asp:ListItem>
                                                                <asp:ListItem Text="330 ml" Value="330 ml" ></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                            </asp:DropDownList>--%>
                                                           </div>
                                                         </div>
                                                      <div class="item form-group">
@@ -96,13 +105,27 @@
                                                         <asp:Label ID="Label3" runat="server" Text="Product Price: "></asp:Label><br />
                                                         <asp:TextBox ID="productPrice" TextMode="Number" runat="server"></asp:TextBox>
                                                      </div>
+                                                         <div class="item form-group">
+                                                      <div class="col-md-12 col-sm-12 ">
+                                                          <asp:Label ID="Label7" runat="server" Text="Product Discount:"></asp:Label>
+                                                        <asp:TextBox ID="productDiscounts" TextMode="Number" runat="server"></asp:TextBox>
+                                                          </div>
+                                                        </div>
                                                      <div class="item form-group">
                                                       <div class="col-md-12 col-sm-12 ">
                                                           <asp:Label ID="Label4" runat="server" Text="Product Available:"></asp:Label>
                                                         <asp:TextBox ID="productAvailable" TextMode="Number" runat="server"></asp:TextBox>
                                                           </div>
                                                         </div>
-                                                       </div>
+                                                         </div>
+                                                         <hr />
+                                                         <h4 style="color:black;font-family:Bahnschrift"> Water Refill Supply</h4>
+                                                        <div class="item form-group">
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                        <asp:Label ID="Label5" runat="server" Text="Set daily amount of water for refill"></asp:Label><br />
+                                                        <asp:TextBox ID="txtWaterAmount" runat="server"></asp:TextBox>
+                                                     </div>
+                                                         </div>
                                                      </div>
                                                     </div>
                                                     </div>
@@ -168,19 +191,19 @@
                                                                            <h5>Product ID:</h5> 
                                                                             <asp:Label ID="LabelID" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
                                                                             <br>
-                                                                            <h5>Product Type: </h5>
-                                                                            <%--<asp:TextBox  ID="prodType" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>--%>
-                                                                          <asp:DropDownList ID="DrdprodType" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
+                                                                            <h5>Product Name: </h5>
+                                                                            <asp:TextBox  ID="prodName" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                          <%--<asp:DropDownList ID="DrdprodType" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
                                                                            <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
                                                                            <asp:ListItem Text="Alkaline" Value="Alkaline"></asp:ListItem>
                                                                            <asp:ListItem Text="Mineral" Value="Mineral" ></asp:ListItem>
                                                                            <asp:ListItem Text="Sparkling Water" Value="Sparkling" ></asp:ListItem>
                                                                            <asp:ListItem Text="Distilled Drinking Water" Value="Distilled" ></asp:ListItem>
                                                                            <asp:ListItem Text="Purified Drinking Water" Value="Purified" ></asp:ListItem>
-                                                                       </asp:DropDownList>
+                                                                       </asp:DropDownList>--%>
                                                                             <h5>Volume/Size Category: </h5>
-                                                                              <%--<asp:TextBox  ID="prodSize" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>--%>
-                                                                            <asp:DropDownList ID="DrdprodSize" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
+                                                                              <asp:TextBox  ID="prodSize" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                            <%--<asp:DropDownList ID="DrdprodSize" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
                                                                                    <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
                                                                                    <asp:ListItem Text="1 gallon" Value="1 gallon"></asp:ListItem>
                                                                                    <asp:ListItem Text="10 liters" Value="10 liters" ></asp:ListItem>
@@ -190,12 +213,17 @@
                                                                                    <asp:ListItem Text="500 ml" Value="500 ml" ></asp:ListItem>
                                                                                    <asp:ListItem Text="350 ml" Value="350 ml" ></asp:ListItem>
                                                                                    <asp:ListItem Text="330 ml" Value="330 ml" ></asp:ListItem>
-                                                                           </asp:DropDownList>
+                                                                           </asp:DropDownList>--%>
                                                                             <h5>Product Price: </h5>
                                                                               <asp:TextBox  ID="prodPrice" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                            <h5>Product Discount: </h5>
+                                                                              <asp:TextBox  ID="prodDiscount" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
 
-                                                                            <h5>Stock Available: </h5>
+                                                                            <h5>Stock of other products Available: </h5>
                                                                               <asp:TextBox  ID="prodAvailable" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+
+                                                                            <h5>Water supply for refill available: </h5>
+                                                                              <asp:TextBox  ID="waterSupAvailable" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
 
                                                                              <h5>Date Added:  </h5>
                                                                             <asp:Label ID="LblDate" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
