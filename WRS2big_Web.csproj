@@ -624,7 +624,6 @@
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.designer.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
@@ -652,7 +651,6 @@
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.designer.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
@@ -715,7 +713,6 @@
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.designer.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
@@ -773,19 +770,10 @@
       <DependentUpon>PremiumSubSuccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="Model\AdminAccount.cs" />
-    <Compile Include="Model\AdminNotification.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\CUSTOMERNOTIFICATION.cs" />
-    <Compile Include="Model\DeliveryDetails.cs" />
-    <Compile Include="Model\EmployeeData.cs" />
-    <Compile Include="Model\OperatingTime.cs" />
     <Compile Include="Model\OrderData.cs" />
-    <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\RefillProduct.cs" />
-    <Compile Include="Model\StorageReference.cs" />
     <Compile Include="Model\Subscription.cs" />
-    <Compile Include="Model\WalkInOrders.cs" />
-    <Compile Include="Model\WaterGallon.cs" />
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

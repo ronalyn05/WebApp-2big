@@ -288,8 +288,8 @@ namespace WRS2big_Web.Admin
             //ImageButton_new = Session["profile_image"]; 
 
             FirebaseResponse response;
-            response = twoBigDB.Get("OPERATINGTIME/" + Lbl_Idno.Text);
-            OperatingTime obj = response.ResultAs<OperatingTime>();
+            response = twoBigDB.Get("ADMIN/REFILLINGSTATION/" + Lbl_Idno.Text);
+            RefillingStation obj = response.ResultAs<RefillingStation>();
 
             //LblSubPlan.Text = obj.SubType.ToString();
             //LblDateStarted.Text = obj.SubsDate.ToString();
@@ -418,7 +418,7 @@ namespace WRS2big_Web.Admin
         }
         protected void btnManageStation_Click(object sender, EventArgs e)
         {
-            var data = new OperatingTime
+            var data = new RefillingStation
             {
                 operatingHrs = txtOperatingHrs.Text,
                 status = operatingHrsStatus.Text,
@@ -429,7 +429,7 @@ namespace WRS2big_Web.Admin
             twoBigDB.Set("OPERATINGTIME/", data);//Update Product Data
             twoBigDB.Update("OPERATINGTIME/" + Lbl_Idno.Text, data);
             var result = twoBigDB.Get("OPERATINGTIME/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
-            OperatingTime obj = result.ResultAs<OperatingTime>();//Database Result
+            RefillingStation obj = result.ResultAs<RefillingStation>();//Database Result
 
             txtOperatngHrs.Text = obj.operatingHrs;
             txtBssnessDay.Text = obj.businessDays.ToString();

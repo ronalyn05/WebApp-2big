@@ -34,9 +34,6 @@ namespace WRS2big_Web.LandingPage
         {
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
-
-
-
         }
 
         //Function to store user data 
@@ -47,6 +44,10 @@ namespace WRS2big_Web.LandingPage
             {
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
+
+                string address = Request.Form["address"];
+                string latitude = Request.Form["lat"];
+                string longitude = Request.Form["long"];
 
                 var data = new AdminAccount
                 {
@@ -60,27 +61,7 @@ namespace WRS2big_Web.LandingPage
                     pass = id_passwordreg.Text,
                     
                 };
-                SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
-                AdminAccount result = response.ResultAs<AdminAccount>();//Database Result
-                Response.Write("<script>alert ('Account " + result.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
-
-            }
-            catch
-            {
-                Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>");
-            }
-
-
-            try
-            {
-                string address = Request.Form["address"];
-                string latitude = Request.Form["lat"];
-                string longitude = Request.Form["long"];
-                //Session["idno"] = AdminAccount.idno;
-
-                var data = new RefillingStation
+                var list = new RefillingStation
                 {
 
                     addLongitude = longitude,
@@ -104,35 +85,30 @@ namespace WRS2big_Web.LandingPage
                 {
                     var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                     var fileExtension = Path.GetExtension(txtproof.FileName);
-                    var filePath = $"station/{data.stationName}{fileExtension}";
+                    var filePath = $"station/{list.stationName}{fileExtension}";
                     //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         var storageTask = storage.Child(filePath).PutAsync(stream);
                         var downloadUrl = await storageTask;
                         // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.proof = Encoding.ASCII.GetBytes(downloadUrl);
+                        list.proof = Encoding.ASCII.GetBytes(downloadUrl);
                     }
                 }
                 SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("ADMIN/`${idno}`/RefillingStation/" + data.stationName, data);//Storing data to the database
+                //Storing the admin info
+                response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
+                AdminAccount res = response.ResultAs<AdminAccount>();//Database Result
+
+                //Storing the refilling station info
+                response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/" + list.stationName, list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
-                Response.Write("<script>alert ('Account " + result.stationName + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                Response.Write("<script>alert ('Account " + res.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
             }
             catch
             {
-
-            }
-
-            try
-            {
-
-            }
-            catch 
-            { 
-
+                Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>");
             }
         }
 

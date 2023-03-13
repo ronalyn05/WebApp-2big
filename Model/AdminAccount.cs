@@ -15,14 +15,8 @@ namespace WRS2big_Web.Model
         public string bdate { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
-
         public string pass { get; set; }
-
         public string profile_image { get; set; }
-
-
-
-        //public StorageReference RootReference { get; internal set; }
 
     }
 
@@ -34,7 +28,6 @@ namespace WRS2big_Web.Model
         public string addLattitude { get; set; }
         public string addLongitude { get; set; }
         public byte[] proof { get; set; }
-
         public string operatingHrs { get; set; }
         public string status { get; set; }
         public string businessDays { get; set; }
@@ -47,7 +40,6 @@ namespace WRS2big_Web.Model
         public string subPlan { get; set; }
         public string subDescription { get; set; }
         public int price { get; set; }
-
         public DateTimeOffset subEnd { get; set; }
 
     }
