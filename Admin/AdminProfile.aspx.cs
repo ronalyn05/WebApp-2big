@@ -365,7 +365,7 @@ namespace WRS2big_Web.Admin
                     bdate = txtdob.Text,
                     phone = txtcontact.Text,
                     email = txtemail.Text,
-                    WRS_Name = lblStationName.Text,
+                    //WRS_Name = lblStationName.Text,
                     profile_image = null
 
                 };
@@ -382,7 +382,7 @@ namespace WRS2big_Web.Admin
                 txtcontact.Text = obj.phone.ToString();
                 txtemail.Text = obj.email.ToString();
                 txtdob.Text = obj.bdate.ToString();
-                lblStationName.Text = obj.WRS_Name.ToString();
+                //lblStationName.Text = obj.WRS_Name.ToString();
         }
 
         protected async void profileBtn_Click(object sender, EventArgs e)

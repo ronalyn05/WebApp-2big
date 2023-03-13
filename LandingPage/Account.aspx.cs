@@ -42,9 +42,6 @@ namespace WRS2big_Web.LandingPage
         //Function to store user data 
         protected async void btnSignup_Click(object sender, EventArgs e)
         {
-            string address = Request.Form["address"];
-            string latitude = Request.Form["lat"];
-            string longitude = Request.Form["long"];
 
             try
             {
@@ -59,14 +56,38 @@ namespace WRS2big_Web.LandingPage
                     mname = txtmname.Text,
                     bdate = txtbirthdate.Text,
                     phone = txtphoneNum.Text,
-                    username = txtusername.Text,
                     email = txtEmail.Text,
+                    pass = id_passwordreg.Text,
+                    
+                };
+                SetResponse response;
+                //USER = tablename, Idno = key(PK ? )
+                response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
+                AdminAccount result = response.ResultAs<AdminAccount>();//Database Result
+                Response.Write("<script>alert ('Account " + result.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+
+            }
+            catch
+            {
+                Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>");
+            }
+
+
+            try
+            {
+                string address = Request.Form["address"];
+                string latitude = Request.Form["lat"];
+                string longitude = Request.Form["long"];
+                //Session["idno"] = AdminAccount.idno;
+
+                var data = new RefillingStation
+                {
+
                     addLongitude = longitude,
                     addLattitude = latitude,
-                    WRS_Name = txtStationName.Text,
-                    WRS_Address = address,
-                    pass = id_passwordreg.Text,
-                    validityProof = null
+                    stationName = txtStationName.Text,
+                    stationAddress = address,
+                    proof = null
                 };
 
                 byte[] fileBytes = null;
@@ -83,26 +104,35 @@ namespace WRS2big_Web.LandingPage
                 {
                     var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                     var fileExtension = Path.GetExtension(txtproof.FileName);
-                    var filePath = $"admin/{data.idno}{fileExtension}";
+                    var filePath = $"station/{data.stationName}{fileExtension}";
                     //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         var storageTask = storage.Child(filePath).PutAsync(stream);
                         var downloadUrl = await storageTask;
                         // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.validityProof = Encoding.ASCII.GetBytes(downloadUrl);
+                        data.proof = Encoding.ASCII.GetBytes(downloadUrl);
                     }
                 }
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
-                AdminAccount result = response.ResultAs<AdminAccount>();//Database Result
-                Response.Write("<script>alert ('Account " + result.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                response = twoBigDB.Set("ADMIN/`${idno}`/RefillingStation/" + data.stationName, data);//Storing data to the database
+                RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
+                Response.Write("<script>alert ('Account " + result.stationName + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
             }
             catch
             {
-                Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>");
+
+            }
+
+            try
+            {
+
+            }
+            catch 
+            { 
+
             }
         }
 
@@ -197,7 +227,7 @@ namespace WRS2big_Web.LandingPage
                 {
                     Session["idno"] = idno;
                     Session["password"] = password;
-                    Session["WRSname"] = user.WRS_Name;
+                    //Session["WRSname"] = user.WRS_Name;
                     Session["fname"] = user.fname;
                     Session["mname"] = user.mname;
                     Session["lname"] = user.lname;
@@ -205,9 +235,9 @@ namespace WRS2big_Web.LandingPage
                     Session["dob"] = user.bdate;
                     Session["contactNumber"] = user.phone;
                     Session["email"] = user.email;
-                    Session["subType"] = user.subType;
-                    Session["subsDate"] = user.subsDate;
-                    Session["subEnd"] = user.subEnd;
+                    //Session["subType"] = user.subType;
+                    //Session["subsDate"] = user.subsDate;
+                    //Session["subEnd"] = user.subEnd;
                     Session["profile_image"] = user.profile_image;
 
 
