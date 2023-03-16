@@ -52,7 +52,7 @@ namespace WRS2big_Web.Admin
                     prodPrice.Text = obj.productPrice.ToString();
                     prodDiscount.Text = obj.productDiscount.ToString();
                     prodAvailable.Text = obj.productAvailable.ToString();
-                    waterSupAvailable.Text = obj.waterRefillSupply.ToString();
+                    waterSupAvailable.Text = obj.waterRefillSupply.ToString(); 
                     LblDate.Text = obj.dateAdded.ToString();
                 }
                 else

@@ -295,15 +295,11 @@
     <Content Include="Admin\WalkIns.aspx" />
     <Content Include="Admin\OnlineOrders.aspx" />
     <Content Include="Admin\Reports.aspx" />
-    <Content Include="Admin\Reservations.aspx" />
     <Content Include="Admin\Reviews.aspx" />
     <Content Include="Admin\Rewards.aspx" />
-    <Content Include="Admin\Station.aspx" />
     <Content Include="Admin\SubscriptionPlans.aspx" />
-    <Content Include="Admin\CustomersRecords.aspx" />
     <Content Include="Admin\WaterOrders.aspx" />
     <Content Include="Admin\WaterProduct.aspx" />
-    <Content Include="Admin\WaterRefill.aspx" />
     <Content Include="assets\css\animate.css\css\animate.css" />
     <Content Include="assets\css\bootstrap\css\bootstrap.min.css" />
     <Content Include="assets\css\chartist\chartist.css" />
@@ -662,13 +658,6 @@
     <Compile Include="Admin\Reports.aspx.designer.cs">
       <DependentUpon>Reports.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Reservations.aspx.cs">
-      <DependentUpon>Reservations.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Reservations.aspx.designer.cs">
-      <DependentUpon>Reservations.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Reviews.aspx.cs">
       <DependentUpon>Reviews.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -683,26 +672,12 @@
     <Compile Include="Admin\Rewards.aspx.designer.cs">
       <DependentUpon>Rewards.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Station.aspx.cs">
-      <DependentUpon>Station.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Station.aspx.designer.cs">
-      <DependentUpon>Station.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\SubscriptionPlans.aspx.cs">
       <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\SubscriptionPlans.aspx.designer.cs">
       <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CustomersRecords.aspx.cs">
-      <DependentUpon>CustomersRecords.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CustomersRecords.aspx.designer.cs">
-      <DependentUpon>CustomersRecords.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\WaterOrders.aspx.cs">
       <DependentUpon>WaterOrders.aspx</DependentUpon>
@@ -716,13 +691,6 @@
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.designer.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\WaterRefill.aspx.cs">
-      <DependentUpon>WaterRefill.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\WaterRefill.aspx.designer.cs">
-      <DependentUpon>WaterRefill.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
