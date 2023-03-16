@@ -42,8 +42,8 @@ namespace WRS2big_Web
             }
             else
             {
-                string WRSname = (string)Session["WRSname"];
-                lblWRSname.Text = WRSname;
+                string stationName = (string)Session["stationName"];
+                lblWRSname.Text = stationName;
             }
            
         }
@@ -58,7 +58,7 @@ namespace WRS2big_Web
 
             Session.Abandon();
             Session.RemoveAll();
-            Session["username"] = null;
+            Session["idno"] = null;
             Session["password"] = null;
             Session.Clear();
             Response.Redirect("/LandingPage/Index.aspx");

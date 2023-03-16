@@ -10,8 +10,6 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using Firebase.Storage;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 using System.IO;
 using WRS2big_Web.Model;
 using System.Text;
@@ -58,17 +56,17 @@ namespace WRS2big_Web.LandingPage
                     bdate = txtbirthdate.Text,
                     phone = txtphoneNum.Text,
                     email = txtEmail.Text,
-                    pass = id_passwordreg.Text,
+                    pass = id_passwordreg.Text
                     
                 };
                 var list = new RefillingStation
                 {
-
                     addLongitude = longitude,
                     addLattitude = latitude,
                     stationName = txtStationName.Text,
                     stationAddress = address,
-                    proof = null
+                    proof = null,
+                    dateAdded = DateTime.UtcNow
                 };
 
                 byte[] fileBytes = null;
@@ -95,106 +93,54 @@ namespace WRS2big_Web.LandingPage
                         list.proof = Encoding.ASCII.GetBytes(downloadUrl);
                     }
                 }
+                
                 SetResponse response;
                 //Storing the admin info
                 response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
                 AdminAccount res = response.ResultAs<AdminAccount>();//Database Result
 
                 //Storing the refilling station info
-                response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/" + list.stationName, list);//Storing data to the database
+                response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
-                Response.Write("<script>alert ('Account " + res.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
+              //  ValidateTerms();
+                Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                //Response.Write("<script>alert ('Your account has suucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
             catch
             {
-                Response.Write("<script>alert('ID No. already exist'); window.location.href = 'Account.aspx'; </script>");
+                Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
             }
+        }
+       // To validate the terms and condition
+        protected void ValidateTerms()
+        {
+            bool terms = chkTerms.Checked;
+            if (!terms)
+            {
+                lblTerms.Text = "You must agree to our terms and conditions!";
+            }
+
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
 
             //Get the email and password entered by the user
-            //string username = txt_username.Text;
-            //string password = txt_password.Text;
-            string idno = txt_idno.Text;
-            string password = txt_password.Text;
+            //string email = txt_email.Text.Trim();
+            //string password = txt_password.Text.Trim();
+            //Get the id number and password entered by the user
+            string idno = txt_idno.Text.Trim();
+            string password = txt_password.Text.Trim();
 
-            // //Check if the email and password are valid
-            //FirebaseResponse response;
-            //response = twoBigDB.Get("ADMIN" + username);
-            ////response = twoBigDB.Get("ADMIN" );
-            //Model.AdminAccount user = response.ResultAs<Model.AdminAccount>();
-            ////if (user == null)
-            ////    user = new Model.AdminAccount();
-
-            //if (user.Username == username && user.Pass == password)
-            //{
-            //    Session["username"] = username;
-            //    Session["password"] = password;
-            //    Session["WRSname"] = user.WRS_Name;
-            //    // Login successful, redirect to admin homepage
-            //    Response.Redirect("/Admin/AdminIndex.aspx");
-
-            //}
-            //else
-            //{
-            //    // Login failed, display error message
-            //    //lblError.Text = "Invalid email or password!";
-            //    Response.Write("<script>alert('Invalid username or password');</script>");
-            //}
-
-            //string email = txtEmail.Text;
-            //string password = txtPassword.Text;
-
-            //FirebaseResponse response = await twoBigDB.GetAsync("ADMIN/" + txt_username.Text);
-            //var result = twoBigDB.Get("ADMIN/" + username);
-            //Model.AdminAccount user = result.ResultAs<Model.AdminAccount>();
-            ////lblError.Text = result;
-
-            //Response.Write("<script>alert('Response: ' " + result + ");</script>");
-            //if (user.Username != null)
-            //{
-            //    Response.Write("<script>alert('Password: ' "+ user.Pass + ");</script>");
-
-            //    if (user.Pass == password)
-            //    {
-            //        // Login successful
-            //        Session["user"] = user;
-            //        Session["WRSname"] = user.WRS_Name;
-            //        Response.Redirect("/Admin/Account.aspx");
-            //    }
-            //    else
-            //    {
-            //        // Incorrect password
-            //        lblError.Text = "Incorrect username or password";
-            //    }
-            //}
-            //else
-            //{
-            //    // User not found
-            //    lblError.Text = " User not found";
-            //}
-
+           
             FirebaseResponse response;
             response = twoBigDB.Get("ADMIN/" + idno);
+            //var query = QueryBuilder.New().OrderBy("email").Equals(email).LimitToFirst(1);
+            //response = twoBigDB.Get("ADMIN", query);
             AdminAccount user = response.ResultAs<AdminAccount>();
-
-            //if (user.Idno == int.Parse(idno) && user.Pass == password)
-            //{
-            //    Session["idno"] = idno;
-            //    Session["password"] = password;
-            //    Session["WRSname"] = user.WRS_Name;
-            //    // Login successful, redirect to admin homepage
-            //    Response.Redirect("/Admin/AdminIndex.aspx");
-            //}
-            //else
-            //{
-            //    // Login failed, display error message
-            //    //lblError.Text = "Invalid email or password!";
-            //    Response.Write("<script>alert('Invalid username or password');</script>");
-            //}
+            //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+            //RefillingStation obj = response.ResultAs<RefillingStation>();
 
             //Check if the id number and password are valid
             if (user != null)
@@ -203,7 +149,6 @@ namespace WRS2big_Web.LandingPage
                 {
                     Session["idno"] = idno;
                     Session["password"] = password;
-                    //Session["WRSname"] = user.WRS_Name;
                     Session["fname"] = user.fname;
                     Session["mname"] = user.mname;
                     Session["lname"] = user.lname;
@@ -211,31 +156,35 @@ namespace WRS2big_Web.LandingPage
                     Session["dob"] = user.bdate;
                     Session["contactNumber"] = user.phone;
                     Session["email"] = user.email;
+                    Session["profile_image"] = user.profile_image;
                     //Session["subType"] = user.subType;
                     //Session["subsDate"] = user.subsDate;
                     //Session["subEnd"] = user.subEnd;
-                    Session["profile_image"] = user.profile_image;
+
+
+                    // Retrieve all RefillingStation objects for the current admin
+                    response = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
+                    RefillingStation stations = response.ResultAs<RefillingStation>();
+                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+                    Session["stationName"] = stations.stationName;
+                    Session["address"] = stations.stationAddress;
+                    Session["operatingHrs"] = stations.operatingHrs;
+                    Session["status"] = stations.status;
+                    Session["businessdays"] = stations.businessDays;
 
 
                     // Login successful, redirect to admin homepage
                     Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-                    //Response.Redirect("/Admin/WaitingPage.aspx");
+                    //Response.Redirect("/Admin/AdminIndex.aspx");
                 }
                 else
                 {
                     // Login failed, display error message
                     //lblError.Text = "Invalid email or password!";
-                    Response.Write("<script>alert('Invalid username or password');</script>");
+                    Response.Write("<script>alert('Invalid email or password');</script>");
                 }
             }
         }
-        //else
-        //{
-        //    // User not found
-        //    //lblError.Text = " User not found";
-        //    Response.Write("<script>alert('User not found');</script>");
-        //}             
-
     }
 }
 

@@ -33,6 +33,7 @@ namespace WRS2big_Web.Admin
         }
         protected void btnPayment_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
             try
             {
                 // INSERT DATA TO TABLE = WALKINORDERS
@@ -40,29 +41,54 @@ namespace WRS2big_Web.Admin
                 int idnum = rnd.Next(1, 10000);
 
                 // Convert input values to numerical format
-                int qty = Convert.ToInt32(txtQty.Text);
-                decimal price = Convert.ToDecimal(txtprice.Text);
-                decimal discount = Convert.ToDecimal(txtDiscount.Text);
+                int qty;
+                decimal price, discount;
+                decimal totalAmount;
+                if (!int.TryParse(txtQty.Text, out qty))
+                {
+                    throw new ArgumentException("Invalid quantity value");
+                }
+                if (!decimal.TryParse(txtprice.Text, out price))
+                {
+                    throw new ArgumentException("Invalid price value");
+                }
+                if (!decimal.TryParse(txtDiscount.Text, out discount))
+                {
+                    // If the discount value is not a valid decimal, assume it is zero
+                    discount = 0;
+                }
+
+                // Calculate total amount only if a valid discount value is entered
+                if (decimal.TryParse(txtprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
+                {
+                    totalAmount = (qty * price) - discount;
+                    txtTotalAmount.Text = totalAmount.ToString();
+                }
+                else
+                {
+                    Response.Write("<script>alert ('Invalid price or quantity value. Please enter valid decimal numbers.'); </script>");
+                    return;
+                }
 
                 // Calculate total amount
-                decimal totalAmount = (qty * price) - discount;
+                //decimal totalAmount = (qty * price) - discount;
 
                 var data = new WalkInOrders
                 {
                     orderNo = idnum,
                     productName = txtprodName.Text,
                     productSize = txtprodSize.Text,
-                    productPrice = txtprice.Text,
-                    productDiscount = txtDiscount.Text,
-                    productQty = txtQty.Text,
-                    totalAmount = totalAmount.ToString(), // Store calculated total amount as string
+                    productPrice = price,
+                    productDiscount = discount,
+                    productQty = qty,
+                    totalAmount = totalAmount, // Store calculated total amount as decimal
                     orderType = drdOrderType.Text,
                     dateAdded = DateTime.UtcNow
                 };
 
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("WALKINORDERS/" + data.orderNo, data);
+                response = twoBigDB.Set("ADMIN/" + idno + "/WalkInOrders/" + data.orderNo, data);
                 WalkInOrders result = response.ResultAs<WalkInOrders>();
 
                 // Set the text of the txtTotalAmount textbox to the calculated total amount

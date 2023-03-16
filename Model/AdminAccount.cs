@@ -22,7 +22,7 @@ namespace WRS2big_Web.Model
 
     public class RefillingStation
     {
-        public int stationID { get; set; }
+       // public int stationID { get; set; }
         public string stationName { get; set; }
         public string stationAddress { get; set; }
         public string addLattitude { get; set; }
@@ -31,7 +31,7 @@ namespace WRS2big_Web.Model
         public string operatingHrs { get; set; }
         public string status { get; set; }
         public string businessDays { get; set; }
-        public DateTimeOffset DateAdded { get; set; }
+        public DateTimeOffset dateAdded { get; set; }
     }
 
     public class SubscribedPlan
@@ -71,7 +71,7 @@ namespace WRS2big_Web.Model
         public string productDiscount { get; set; }
         public string waterRefillSupply { get; set; }
         public byte[] productImage { get; set; }
-        public DateTimeOffset DateAdded { get; set; }
+        public DateTimeOffset dateAdded { get; set; }
     }
     public class DeliveryDetails
     {
@@ -88,17 +88,17 @@ namespace WRS2big_Web.Model
     {
         public int adminnotificationID { get; set; }
         public int orderID { get; set; }
-        public string OrderStatus { get; set; }
+        public string orderStatus { get; set; }
     }
     public class WalkInOrders
     {
         public int orderNo { get; set; }
         public string productName { get; set; }
         public string productSize { get; set; }
-        public string productQty { get; set; }
-        public string productPrice { get; set; }
-        public string productDiscount { get; set; }
-        public string totalAmount { get; set; }
+        public int productQty { get; set; }
+        public decimal productPrice { get; set; }
+        public decimal productDiscount { get; set; }
+        public decimal totalAmount { get; set; }
         public string orderType { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }

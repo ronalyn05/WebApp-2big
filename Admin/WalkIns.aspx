@@ -79,16 +79,16 @@
                                                                            
                                                                             <br />
                                                                             <h5>Product Price: </h5>
-                                                                              <asp:TextBox  ID="txtprice" runat="server" TextMode="Number" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                              <asp:TextBox  ID="txtprice" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
                                                                            <br />
                                                                             <h5>Product Discount: </h5>
-                                                                              <asp:TextBox  ID="txtDiscount" TextMode="Number" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                              <asp:TextBox  ID="txtDiscount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
                                                                             <br />
                                                                             <h5>Product Quantity: </h5>
                                                                               <asp:TextBox  ID="txtQty" TextMode="Number" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
                                                                             <br />
                                                                             <h5>Total Amount: </h5>
-                                                                              <asp:TextBox  ID="txtTotalAmount" TextMode="Number" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff; font-size:16px; color:darkred; font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                              <asp:TextBox  ID="txtTotalAmount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff; font-size:16px; color:darkred; font-family:Bahnschrift;width:700px"></asp:TextBox>
 
                                                                             </div>
                                                                       </div>

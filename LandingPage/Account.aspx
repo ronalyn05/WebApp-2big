@@ -191,25 +191,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                         <%-- @*email*@--%>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Email</label> 
-                                            <div class="input-group-sm">
-                                            <asp:TextBox runat="server" TextMode="Email" placeholder="example@gmail.com" class="form-control" ID="txtEmail"></asp:TextBox> <asp:RegularExpressionValidator ID="regexEmailValid" runat="server" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="txtEmail"  ErrorMessage="Invalid Email Format"></asp:RegularExpressionValidator>
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <div class="row">
-
                                        <%-- @*username*@--%>
-                                        <div class="col">
+                                        <%--<div class="col">
                                         <div class="form-group">
                                             <label>Username</label> 
                                             <div class="input-group-sm">
                                             <asp:TextBox runat="server" placeholder="enter username" class="form-control" ID="txtusername">
                                             </asp:TextBox> <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txtusername" ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>
+                                            </div>
+                                        </div>
+                                    </div>--%>
+                                             <%-- @*email*@--%>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Email</label> 
+                                            <div class="input-group-sm">
+                                            <asp:TextBox runat="server" TextMode="Email" placeholder="example@gmail.com" class="form-control" ID="txtEmail"></asp:TextBox> <asp:RegularExpressionValidator ID="regexEmailValid" runat="server" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="txtEmail"  ErrorMessage="Invalid Email Format"></asp:RegularExpressionValidator>
                                             </div>
                                         </div>
                                     </div>
@@ -413,16 +412,15 @@
                                 <!-- Show Password -->
                                 <div class="row m-t-25 text-left">
                                     <div class="col-md-12">
-                                        <div class="checkbox-fade fade-in-primary">
+                                       <div>
+                                            <asp:Label ID="lblTerms" runat="server"></asp:Label>
+                                            <asp:CheckBox ID="chkTerms" runat="server" />
                                             <label>
-                                                <input type="checkbox" value="">
-                                                <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                               <%-- <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>--%>
                                                 <span class="text-inverse">
                                                     I agree to 2BiG's <a href="/LandingPage/Terms"> Terms and Conditions </a>
                                                 </span>
-
                                             </label>
-
                                         </div>
                                     </div>
                                 </div>
@@ -449,10 +447,10 @@
 <%--                                            @*username*@--%>
                                             <div class="col">
                                                 <div class="">
-                                                    <%--<label>Username:</label>--%>
+                                                    <%--<label>Email:</label>--%>
                                                     <label>ID Number:</label>
                                                     <div class="input-group">
-                                            <%--<asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_username" ValidationGroup="a"></asp:TextBox>--%> 
+                                           <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
                                                         <asp:TextBox runat="server" type="idno" TextMode="Number" class="form-control" ID="txt_idno" ValidationGroup="a" > </asp:TextBox>
                                                         <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
                                                     </div>

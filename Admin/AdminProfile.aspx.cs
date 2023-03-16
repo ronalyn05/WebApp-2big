@@ -247,60 +247,56 @@ namespace WRS2big_Web.Admin
                 //Response.Write("<script>alert('User not found');</script>");
                 //Response.Redirect("/LandingPage/Account.aspx");
             }
-            else
-            {
-                //string SubPlan = (string)Session["SubType"];
-                //LblSubPlan.Text = SubPlan;
-
-                //string SubDate = (string)Session["SubsDate"];
-                //LblDateStarted.Text = SubDate;
-
-                //string SubsEnd = (string)Session["SubEnd"];
-                //LblSubEnd.Text = SubsEnd;
-            }
-
-            //Session["profile_image"] = ImageButton_new;  
-
+           
+           //  string idno = (string)Session["idno"];
             Lbl_Idno.Text = (string)Session["idno"];
             txtfname.Text = (string)Session["fname"];
             txtmname.Text = (string)Session["mname"];
             txtlname.Text = (string)Session["lname"];
             txtcontact.Text = (string)Session["contactNumber"];
             txtemail.Text = (string)Session["email"];
-            txtaddress.Text = (string)Session["address"];
             txtdob.Text = (string)Session["dob"];
-            lblStationName.Text = (string)Session["WRSname"];
             Lbl_user.Text = (string)Session["fullName"];
 
-            LblSubPlan.Text = (string)Session["subType"];
-            LblDateStarted.Text = Session["subsDate"].ToString();
-            LblSubEnd.Text = Session["subEnd"].ToString();
+            //retrieve the data of station details
+            lblStationName.Text = (string)Session["stationName"];
+            lblAddress.Text = (string)Session["address"];
+            txtOperatngHours.Text = (string)Session["operatingHrs"];
+            txtBssnessDay.Text = (string)Session["businessDays"];
+            txt_Status.Text = (string)Session["status"];
 
-            // Make sure that the object in the Session is a byte array representing the image
-            byte[] imageData = Session["profile_image"] as byte[];
-            if (imageData != null)
+            //LblSubPlan.Text = (string)Session["subType"];
+            //LblDateStarted.Text = Session["subsDate"].ToString();
+            //LblSubEnd.Text = Session["subEnd"].ToString();
+
+           // Make sure that the object in the Session is a byte array representing the image
+            byte[] profileImage = Session["profile_image"] as byte[];
+            if (profileImage != null)
             {
                 // Convert the byte array to a base64-encoded string
-                string base64String = Convert.ToBase64String(imageData);
+                string base64String = Convert.ToBase64String(profileImage, 0, profileImage.Length);
                 // Set the ImageUrl property of the ImageButton to the base64-encoded string
                 ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
+                //string base64String = Convert.ToBase64String(imageData);
+                
+                //ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
             }
-            //ImageButton_new = Session["profile_image"]; 
+           
 
-            FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/REFILLINGSTATION/" + Lbl_Idno.Text);
-            RefillingStation obj = response.ResultAs<RefillingStation>();
+            //FirebaseResponse response;
+            //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+            //RefillingStation obj = response.ResultAs<RefillingStation>();
 
             //LblSubPlan.Text = obj.SubType.ToString();
             //LblDateStarted.Text = obj.SubsDate.ToString();
             //LblSubEnd.Text = obj.SubEnd.ToString();
-            Session["operatingHrs"] = obj.operatingHrs;
-            Session["status"] = obj.status;
-            Session["businessdays"] = obj.businessDays;
+            //Session["operatingHrs"] = obj.operatingHrs;
+            //Session["status"] = obj.status;
+            //Session["businessdays"] = obj.businessDays;
 
-            txtOperatngHrs.Text = (string)Session["operatingHrs"];
-            txtBssnessDay.Text = Session["status"].ToString();
-            txt_Status.Text = Session["businessdays"].ToString();
+            
+
+
 
         }
 
@@ -355,7 +351,46 @@ namespace WRS2big_Web.Admin
         //}
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-           
+            // string idno = (string)Session["idno"];
+            // firstname.Text = (string)Session["fname"];
+            // middleName.Text = (string)Session["mname"];
+            // txtlname.Text = (string)Session["lname"];
+            // txtcontact.Text = (string)Session["contactNumber"];
+            // txtemail.Text = (string)Session["email"];
+            // txtdob.Text = (string)Session["dob"];
+
+            // Retrieve the existing object from the database
+            // var adminRef = twoBigDB.Get("ADMIN/" + idno);
+            // AdminAccount adminAccount = adminRef.ResultAs<AdminAccount>();
+
+            // Update the specific fields that you want to change
+            // adminAccount.fname = firstname.Text;
+            // adminAccount.mname = middleName.Text;
+            // adminAccount.lname = lastname.Text;
+            // adminAccount.bdate = birthdate.Text;
+            // adminAccount.phone = contactNum.Text;
+            // adminAccount.email = email.Text;
+
+            // Pass the updated object to the Update method
+            // twoBigDB.Update("ADMIN/" + idno, adminAccount);
+
+            // Retrieve the updated data from the database
+
+            //adminRef = twoBigDB.Get("ADMIN/" + idno);
+            // adminAccount = adminRef.ResultAs<AdminAccount>();
+
+            // Display the updated data in the UI
+            // Lbl_Idno.Text = adminAccount.idno.ToString();
+            // txtfname.Text = adminAccount.fname;
+            // txtmname.Text = adminAccount.mname;
+            // txtlname.Text = adminAccount.lname;
+            // txtcontact.Text = adminAccount.phone;
+            // txtemail.Text = adminAccount.email;
+            // txtdob.Text = adminAccount.bdate;
+
+            try
+            {
+                //Update the admin account info
                 AdminAccount data = new AdminAccount()
                 {
                     idno = int.Parse(Lbl_Idno.Text),
@@ -365,16 +400,13 @@ namespace WRS2big_Web.Admin
                     bdate = txtdob.Text,
                     phone = txtcontact.Text,
                     email = txtemail.Text,
-                    //WRS_Name = lblStationName.Text,
                     profile_image = null
-
                 };
 
                 twoBigDB.Update("ADMIN/" + Lbl_Idno.Text, data);//Update Product Data
-                                                                //lbResult.Text = "Record successfully updated!";
-                var result = twoBigDB.Get("ADMIN/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
-                AdminAccount obj = result.ResultAs<AdminAccount>();//Database Result
 
+                var result = twoBigDB.Get("ADMIN/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
+                AdminAccount obj = result.ResultAs<AdminAccount>();//Database Result 
                 Lbl_Idno.Text = obj.idno.ToString();
                 txtfname.Text = obj.fname.ToString();
                 txtmname.Text = obj.mname.ToString();
@@ -382,7 +414,12 @@ namespace WRS2big_Web.Admin
                 txtcontact.Text = obj.phone.ToString();
                 txtemail.Text = obj.email.ToString();
                 txtdob.Text = obj.bdate.ToString();
-                //lblStationName.Text = obj.WRS_Name.ToString();
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception and log the error message
+                string errorMessage = "An error occurred while updating the data: " + ex.Message;
+            }
         }
 
         protected async void profileBtn_Click(object sender, EventArgs e)
@@ -418,23 +455,29 @@ namespace WRS2big_Web.Admin
         }
         protected void btnManageStation_Click(object sender, EventArgs e)
         {
-            var data = new RefillingStation
-            {
-                operatingHrs = txtOperatingHrs.Text,
-                status = operatingHrsStatus.Text,
-                businessDays = txtBusinessDays.Text,
-                DateAdded = DateTime.UtcNow
-            };
+            string idno = (string)Session["idno"];
+            // Retrieve the existing object from the database
+            var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+            RefillingStation obj = result.ResultAs<RefillingStation>();
 
-            twoBigDB.Set("OPERATINGTIME/", data);//Update Product Data
-            twoBigDB.Update("OPERATINGTIME/" + Lbl_Idno.Text, data);
-            var result = twoBigDB.Get("OPERATINGTIME/" + Lbl_Idno.Text);//Retrieve Updated Data From ADMIN TBL
-            RefillingStation obj = result.ResultAs<RefillingStation>();//Database Result
+            // Update the specific fields that you want to change
+            obj.operatingHrs = txtOperatingHrs.Text;
+            obj.status = operatingHrsStatus.Text;
+            obj.businessDays = txtBusinessDays.Text;
 
-            txtOperatngHrs.Text = obj.operatingHrs;
-            txtBssnessDay.Text = obj.businessDays.ToString();
-            txt_Status.Text = obj.status.ToString();
-           
+            // Pass the updated object to the Update method
+            twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", obj);
+
+            // Retrieve the updated data from the database
+            var res = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+            RefillingStation list = res.ResultAs<RefillingStation>();//Database Result
+
+            // Display the updated data in the UI
+            txtOperatngHours.Text = list.operatingHrs;
+            txtBssnessDay.Text = list.businessDays.ToString();
+            txt_Status.Text = list.status.ToString();
+
+
         }
     }
 }
