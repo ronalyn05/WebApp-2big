@@ -219,7 +219,7 @@
                                                                             <h5>Product Discount: </h5>
                                                                               <asp:TextBox  ID="prodDiscount" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
 
-                                                                            <h5>Stock of other products Available: </h5>
+                                                                            <h5>Product Available: </h5>
                                                                               <asp:TextBox  ID="prodAvailable" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
 
                                                                             <h5>Water supply for refill available: </h5>

@@ -104,6 +104,7 @@
                                                                <div class="col-xl-9 col-md-12">
                                                                 <div class="card" style="background-color: #f2e2ff">
                                                                     <div class="card-header">
+                                                                        <asp:Label ID="Label2" runat="server" Text="*****DI PA NI MAO ANG UI******" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                         <h5>WATER ORDER LIST</h5>
                                                                         <div class="card-header-right">
                                                                             <ul class="list-unstyled card-option">

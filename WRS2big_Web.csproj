@@ -295,15 +295,11 @@
     <Content Include="Admin\WalkIns.aspx" />
     <Content Include="Admin\OnlineOrders.aspx" />
     <Content Include="Admin\Reports.aspx" />
-    <Content Include="Admin\Reservations.aspx" />
     <Content Include="Admin\Reviews.aspx" />
     <Content Include="Admin\Rewards.aspx" />
-    <Content Include="Admin\Station.aspx" />
     <Content Include="Admin\SubscriptionPlans.aspx" />
-    <Content Include="Admin\CustomersRecords.aspx" />
     <Content Include="Admin\WaterOrders.aspx" />
     <Content Include="Admin\WaterProduct.aspx" />
-    <Content Include="Admin\WaterRefill.aspx" />
     <Content Include="assets\css\animate.css\css\animate.css" />
     <Content Include="assets\css\bootstrap\css\bootstrap.min.css" />
     <Content Include="assets\css\chartist\chartist.css" />
@@ -409,6 +405,15 @@
     <Content Include="assets\js\script.min.js" />
     <Content Include="assets\js\SmoothScroll.js" />
     <Content Include="assets\js\vertical-layout.min.js" />
+    <Content Include="assets\leaflet\images\layers-2x.png" />
+    <Content Include="assets\leaflet\images\layers.png" />
+    <Content Include="assets\leaflet\images\marker-icon-2x.png" />
+    <Content Include="assets\leaflet\images\marker-icon.png" />
+    <Content Include="assets\leaflet\images\marker-shadow.png" />
+    <Content Include="assets\leaflet\leaflet-src.esm.js" />
+    <Content Include="assets\leaflet\leaflet-src.js" />
+    <Content Include="assets\leaflet\leaflet.css" />
+    <Content Include="assets\leaflet\leaflet.js" />
     <Content Include="assets\pages\accordion\accordion.js" />
     <Content Include="assets\pages\accordion\accordion.min.js" />
     <Content Include="assets\pages\dashboard\amchart\css\amchart.css" />
@@ -545,6 +550,9 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="assets\leaflet\leaflet-src.esm.js.map" />
+    <Content Include="assets\leaflet\leaflet-src.js.map" />
+    <Content Include="assets\leaflet\leaflet.js.map" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -612,7 +620,6 @@
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.designer.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
@@ -640,7 +647,6 @@
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.designer.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
@@ -651,13 +657,6 @@
     </Compile>
     <Compile Include="Admin\Reports.aspx.designer.cs">
       <DependentUpon>Reports.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\Reservations.aspx.cs">
-      <DependentUpon>Reservations.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Reservations.aspx.designer.cs">
-      <DependentUpon>Reservations.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Reviews.aspx.cs">
       <DependentUpon>Reviews.aspx</DependentUpon>
@@ -673,26 +672,12 @@
     <Compile Include="Admin\Rewards.aspx.designer.cs">
       <DependentUpon>Rewards.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Station.aspx.cs">
-      <DependentUpon>Station.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Station.aspx.designer.cs">
-      <DependentUpon>Station.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\SubscriptionPlans.aspx.cs">
       <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\SubscriptionPlans.aspx.designer.cs">
       <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\CustomersRecords.aspx.cs">
-      <DependentUpon>CustomersRecords.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\CustomersRecords.aspx.designer.cs">
-      <DependentUpon>CustomersRecords.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\WaterOrders.aspx.cs">
       <DependentUpon>WaterOrders.aspx</DependentUpon>
@@ -703,17 +688,9 @@
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.designer.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\WaterRefill.aspx.cs">
-      <DependentUpon>WaterRefill.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\WaterRefill.aspx.designer.cs">
-      <DependentUpon>WaterRefill.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -761,19 +738,10 @@
       <DependentUpon>PremiumSubSuccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="Model\AdminAccount.cs" />
-    <Compile Include="Model\AdminNotification.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\CUSTOMERNOTIFICATION.cs" />
-    <Compile Include="Model\DeliveryDetails.cs" />
-    <Compile Include="Model\EmployeeData.cs" />
-    <Compile Include="Model\OperatingTime.cs" />
     <Compile Include="Model\OrderData.cs" />
-    <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\RefillProduct.cs" />
-    <Compile Include="Model\StorageReference.cs" />
     <Compile Include="Model\Subscription.cs" />
-    <Compile Include="Model\WalkInOrders.cs" />
-    <Compile Include="Model\WaterGallon.cs" />
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

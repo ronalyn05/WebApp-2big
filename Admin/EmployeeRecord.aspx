@@ -1,5 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="EmployeeRecord.aspx.cs" Inherits="WRS2big_Web.Admin.Employees" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style type="text/css">
+        .auto-style1 {
+            margin-left: 29px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <%--  <form id="form1" runat="server">--%>
@@ -48,145 +53,167 @@
                                           <%--<asp:Button ID="ViewID" runat="server"  style="font-size:14px;" class="btn btn-success btn-sm " Text="View List of Employee IDs" Height="41px" />--%>
                                        <%-- MODAL FOR ADD EMPLOYEE--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
-                                       <div class="modal-dialog modal-dialog-centered modal-md">
-                                        <div class="modal-content">
-                                        <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                        <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel">Add Employee Records</h4>
-                                            <%--exit button--%>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                        </div>
-                                        <div class="modal-body">
-                                        <div class="col-md-12 col-sm-12 ">
-                                        <div class="x_content">
-                                       <%-- <div class="item form-group">--%>
-                                        <div class="col-md-12 col-sm-12 ">
-                                           <%-- input lastname--%>
-                                        <strong>Lastname:</strong>
-                                        <asp:TextBox ID="txtlastname" runat="server" class="form-control" placeholder="Employees' Lastname"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                        </div>
-                                        <%--</div>--%>
-                                        <%--<div class="item form-group">--%>
-                                         <div class="col-md-12 col-sm-12">
-                                             <%--firstname--%>
-                                         <strong>Firstname:</strong>
-                                          <asp:TextBox ID="txtfirstname" runat="server" class="form-control" placeholder="Employees' Firstname"></asp:TextBox>
-                                             <asp:RequiredFieldValidator ID="reqfname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                          </div>
-                                          <%--</div>--%>
-                                            <%--<div class="item form-group">--%>
-                                         <div class="col-md-12 col-sm-12">
-                                             <%--middlename--%>
-                                         <strong>Middlename (Optional):</strong>
-                                          <asp:TextBox ID="txtmidname" runat="server" class="form-control" placeholder="Employees' Middlename"></asp:TextBox>   
-                                          </div>
-                                          <%--</div>--%>
-                                          <%--<div class="item form-group">--%>
-                                          <div class="col-md-12 col-sm-12">
-                                              <%--date of birth--%>
-                                          <strong>Date of Birth:</strong>
-                                            <asp:TextBox ID="BirthDate" runat="server" class="form-control" TextMode="Date" onchange="validateBirthDate()"> </asp:TextBox>
-                                              <%--<asp:RangeValidator ID="RangeValidator1" runat="server"  ErrorMessage="Age must be 18 years and above!" ControlToValidate="txtbirthdate" MaximumValue="01/01/2004"  Display="Dynamic" ForeColor="Red" ValidationGroup="a"></asp:RangeValidator>--%>
-                                              <asp:RequiredFieldValidator ID="reqdob" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="BirthDate" ValidationGroup="a"></asp:RequiredFieldValidator>    
-                                                                                                  
-                                           </div>
-                                           <%--</div>--%>
-                                          <%-- <div class="item form-group">--%>
-                                           <div class="col-md-12 col-sm-12">
-                                               <%--gender--%>
-                                           <strong>Gender:</strong>
-                                               <asp:DropDownList ID="drdgender" runat="server" Height="40px" Width="364px">
-                                                   <%--<asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>--%>
-                                                   <asp:ListItem Text="Male" Value="Male"></asp:ListItem>
-                                                   <asp:ListItem Text="Female" Value="Female" ></asp:ListItem>
-                                               </asp:DropDownList>
-                                               <%--<script> 
-                                                   $(function () {
-                                                       $("#drdgender option:first").prop("disabled", true);
-                                                       //alert("Invalid gender selection!");
-                                                   });
-                                               </script>--%>
-
-                                           <%--</div>--%>
-                                           </div>
-                                          <%-- <div class="item form-group">--%> 
-                                           <div class="col-md-12 col-sm-12">
-                                               <%--address--%>
-                                           <strong>Address:</strong>
-                                               <asp:TextBox ID="txtaddress" runat="server" class="form-control" placeholder="Employees' Address"></asp:TextBox>
-                                               <asp:RequiredFieldValidator ID="reqaddress" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtaddress" ValidationGroup="a"></asp:RequiredFieldValidator> 
-                                          <%-- </div>--%>
-                                           </div>
-                                         <%-- <div class="item form-group">--%>
-                                           <div class="col-md-12 col-sm-12">
-                                               <%--contact number--%>
-                                           <strong>Contact Number:</strong>
-                                                <asp:TextBox ID="txtcontactnum" runat="server" class="form-control" placeholder="Employees' Contact number" TextMode="Phone" Value=""></asp:TextBox>
-                                               <asp:RequiredFieldValidator ID="reqcontact" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtcontactnum" ValidationGroup="a"></asp:RequiredFieldValidator> 
-                                           <%--</div>--%>
-                                           </div>
-                                           <%--<div class="item form-group">--%>
-                                           <div class="col-md-12 col-sm-12">
-                                              <%-- email--%>
-                                           <strong>Email Address:</strong>
-                                               <asp:TextBox ID="txtemail"  runat="server" class="form-control" placeholder="Employees' email@example.com"></asp:TextBox>
-                                               <asp:RequiredFieldValidator ID="reqemail" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemail" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                          <%-- </div>--%>
-                                           </div>
-                                           <%--<div class="item form-group">--%>
-                                           <div class="col-md-12 col-sm-12">
-                                              <%-- date hired--%>
-                                           <strong>Date Hired:</strong>
-                                               <asp:TextBox ID="txtdateHired" TextMode="Date" runat="server" class="form-control" placeholder="Employees' Date Hired"></asp:TextBox>
-                                               <asp:RequiredFieldValidator ID="reqdoh" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdateHired" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                         <%--   </div>--%>
+                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                            <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Add Employee Records</h4>
+                                                <%--exit button--%>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
-                                           <%--<div class="item form-group">--%>
-                                           <div class="col-md-12 col-sm-12">
-                                               <%--emergency contact--%>
-                                           <strong>In case of emergency, Contact:</strong>
-                                               <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
-                                               <asp:RequiredFieldValidator ID="reqemercontact" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                           <%-- </div>--%>
-                                            </div>
+                                            <div class="modal-body">
+                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="x_content">
                                            <%-- <div class="item form-group">--%>
-                                            <div class="col-md-12 col-sm-12">
-                                                <%--role--%>
-                                                <strong>Position:</strong>
-                                               <asp:DropDownList ID="drdrole" runat="server" Height="40px" Width="364px">
-                                                   <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                   <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
-                                                   <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
-                                                   <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
-                                                   <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
-                                               </asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                            <%--  </div>--%>
-                                                <strong>Status:</strong>
-                                               <asp:DropDownList ID="Drd_status" runat="server" Height="40px" Width="364px">
-                                                     <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
-                                                     <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                     <%--<asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>--%>
-                                                     </asp:DropDownList>
-                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <div class="col-md-12 col-sm-12 ">
+                                               <%-- input lastname--%>
+                                            <strong>Lastname:</strong>
+                                            <asp:TextBox ID="txtlastname" runat="server" class="form-control" placeholder="Employees' Lastname"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                            <%--</div>--%>
+                                            <%--<div class="item form-group">--%>
+                                             <div class="col-md-12 col-sm-12">
+                                                 <%--firstname--%>
+                                             <strong>Firstname:</strong>
+                                              <asp:TextBox ID="txtfirstname" runat="server" class="form-control" placeholder="Employees' Firstname"></asp:TextBox>
+                                                 <asp:RequiredFieldValidator ID="reqfname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                              </div>
+                                              <%--</div>--%>
+                                                <%--<div class="item form-group">--%>
+                                             <div class="col-md-12 col-sm-12">
+                                                 <%--middlename--%>
+                                             <strong>Middlename (Optional):</strong>
+                                              <asp:TextBox ID="txtmidname" runat="server" class="form-control" placeholder="Employees' Middlename"></asp:TextBox>   
+                                              </div>
+                                              <%--</div>--%>
+                                              <%--<div class="item form-group">--%>
+                                              <div class="col-md-12 col-sm-12">
+                                                  <%--date of birth--%>
+                                              <strong>Date of Birth:</strong>
+                                                <asp:TextBox ID="BirthDate" runat="server" class="form-control" TextMode="Date" onchange="validateBirthDate()"> </asp:TextBox>
+                                                  <%--<asp:RangeValidator ID="RangeValidator1" runat="server"  ErrorMessage="Age must be 18 years and above!" ControlToValidate="txtbirthdate" MaximumValue="01/01/2004"  Display="Dynamic" ForeColor="Red" ValidationGroup="a"></asp:RangeValidator>--%>
+                                                  <asp:RequiredFieldValidator ID="reqdob" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="BirthDate" ValidationGroup="a"></asp:RequiredFieldValidator>    
+                                                                                                  
+                                               </div>
+                                               <%--</div>--%>
+                                              <%-- <div class="item form-group">--%>
+                                               <div class="col-md-12 col-sm-12">
+                                                   <%--gender--%>
+                                               <strong>Gender:</strong>
+                                                   <asp:DropDownList ID="drdgender" runat="server" Height="40px" Width="364px">
+                                                       <%--<asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>--%>
+                                                       <asp:ListItem Text="Male" Value="Male"></asp:ListItem>
+                                                       <asp:ListItem Text="Female" Value="Female" ></asp:ListItem>
+                                                   </asp:DropDownList>
+                                                   <%--<script> 
+                                                       $(function () {
+                                                           $("#drdgender option:first").prop("disabled", true);
+                                                           //alert("Invalid gender selection!");
+                                                       });
+                                                   </script>--%>
+
+                                               <%--</div>--%>
+                                               </div>
+                                              <%-- <div class="item form-group">--%> 
+                                               <div class="col-md-12 col-sm-12">
+                                                   <%--address--%>
+                                               <strong>Address:</strong>
+                                                   <asp:TextBox ID="txtaddress" runat="server" class="form-control" placeholder="Employees' Address"></asp:TextBox>
+                                                   <asp:RequiredFieldValidator ID="reqaddress" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtaddress" ValidationGroup="a"></asp:RequiredFieldValidator> 
+                                              <%-- </div>--%>
+                                               </div>
+                                             <%-- <div class="item form-group">--%>
+                                               <div class="col-md-12 col-sm-12">
+                                                   <%--contact number--%>
+                                               <strong>Contact Number:</strong>
+                                                    <asp:TextBox ID="txtcontactnum" runat="server" class="form-control" placeholder="Employees' Contact number" TextMode="Phone" Value=""></asp:TextBox>
+                                                   <asp:RequiredFieldValidator ID="reqcontact" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtcontactnum" ValidationGroup="a"></asp:RequiredFieldValidator> 
+                                               <%--</div>--%>
+                                               </div>
+                                               <%--<div class="item form-group">--%>
+                                               <div class="col-md-12 col-sm-12">
+                                                  <%-- email--%>
+                                               <strong>Email Address:</strong>
+                                                   <asp:TextBox ID="txtemail"  runat="server" class="form-control" placeholder="Employees' email@example.com"></asp:TextBox>
+                                                   <asp:RequiredFieldValidator ID="reqemail" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemail" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                              <%-- </div>--%>
+                                               </div>
+                                               <%--<div class="item form-group">--%>
+                                               <div class="col-md-12 col-sm-12">
+                                                  <%-- date hired--%>
+                                               <strong>Date Hired:</strong>
+                                                   <asp:TextBox ID="txtdateHired" TextMode="Date" runat="server" class="form-control" placeholder="Employees' Date Hired"></asp:TextBox>
+                                                   <asp:RequiredFieldValidator ID="reqdoh" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdateHired" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                             <%--   </div>--%>
+                                                </div>
+                                               <%--<div class="item form-group">--%>
+                                               <div class="col-md-12 col-sm-12">
+                                                   <%--emergency contact--%>
+                                               <strong>In case of emergency, Contact:</strong>
+                                                   <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
+                                                   <asp:RequiredFieldValidator ID="reqemercontact" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                               <%-- </div>--%>
+                                                </div>
+                                               <%-- <div class="item form-group">--%>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <%--role--%>
+                                                    <strong>Position:</strong>
+                                                   <asp:DropDownList ID="drdrole" runat="server" Height="40px" Width="364px">
+                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                       <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                                       <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
+                                                       <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
+                                                       <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
+                                                   </asp:DropDownList>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                                <%--  </div>--%>
+                                                    <strong>Status:</strong>
+                                                   <asp:DropDownList ID="Drd_status" runat="server" Height="40px" Width="364px">
+                                                         <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
+                                                         <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
+                                                         <%--<asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>--%>
+                                                         </asp:DropDownList>
+                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                           <%-- add data button--%>
-                                           <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add Data" ValidationGroup="a" OnClick="btnAdd_Click"/>
-                                            <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
-                                            --%></div>
-                                           </form>
-                                         </div>
-                                        </div>
+                                            <div class="modal-footer">
+                                               <%-- add data button--%>
+                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add Data" ValidationGroup="a" OnClick="btnAdd_Click"/>
+                                                <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
+                                                --%></div>
+                                               </form>
+                                             </div>
+                                            </div>
                                       </div>
                                         <%-- end add employee--%>
                                            <br />
                                          <br />
-                                         <%--PAGE CONTENTS FOR LISTBOX--%> 
+
+                                            <!--PAGE CONTENTS-->
+                                      <div style="overflow: auto; height: 160px; text-align:center;" class="texts" >
+                                                <asp:GridView runat="server" ID="GridView1" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" >
+                                                 <Columns>
+                                                     <asp:TemplateField>
+                                                         <ItemTemplate>
+                                                             <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" data-target=".updateModal" Text="Update" CommandName="Update"/>
+                                                         </ItemTemplate>
+                                                     </asp:TemplateField>
+                                                 </Columns>
+                                                    <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
+                                                    <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
+                                                    <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
+                                                    <RowStyle Width="200px" BackColor="#FFF7E7" ForeColor="#8C4510" />
+                                                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+                                                    <SortedAscendingCellStyle BackColor="#FFF1D4" />
+                                                    <SortedAscendingHeaderStyle BackColor="#B95C30" />
+                                                    <SortedDescendingCellStyle BackColor="#F1E5CE" />
+                                                    <SortedDescendingHeaderStyle BackColor="#93451F" />
+                                                </asp:GridView>
+                                                 </div>
+                                       
                                                <div class="row">
                                                   <%-- ACTIVE EMPLOYEE PAGE --%>
                                                    <div class="col-xl-3 col-md-12">
@@ -209,7 +236,6 @@
                                                             <asp:Button ID="btnDisplay" onclick="btnDisplay_Click" type="button" style="font-size:14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
                                                         </div>
                                                     <div class="card-footer">
-                                                        <%--<button onclick="btnDisplay_Click" type="button" id="displaybtn" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".display"><i class="ti-notepad"></i>View Complete Details</button>  <br /> <br />--%>
                                                         
                                                     </div>
                                                     </div>
@@ -235,8 +261,7 @@
                                                             <asp:Button ID="Button1" onclick="btnInActiveEmp_Click" type="button" style="font-size:14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
                                                         </div>
                                                     <div class="card-footer">
-                                                        <%--<button onclick="btnDisplay_Click" type="button" id="displaybtn" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".display"><i class="ti-notepad"></i>View Complete Details</button>  <br /> <br />--%>
-                                                        
+                                                         
                                                     </div>
                                                     </div>
                                                   </div>
@@ -293,7 +318,7 @@
                                                                        </asp:DropDownList>
                                                                             <h5>Status: </h5>
                                                                             <asp:DropDownList ID="drdStatus" runat="server" CssClass="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"> 
-                                                                           <%--<asp:ListItem Text="Select Employee Status" Value="Cashier"></asp:ListItem>--%>
+                                                                      
                                                                            <asp:ListItem Text="Active" Value="Active" Selected="True" ></asp:ListItem>
                                                                            <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
                                                                        </asp:DropDownList>
@@ -306,11 +331,10 @@
                                                     </div>
                                                     <div class="card-footer">
                                                                      <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
-                                                                       <%--<asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Records" OnClick="DeleteBtn_Click" />--%> 
+                                                                      
                                                     </div>
                                                 </div>
-
-                                               </div> 
+                                             </div> 
                                     </div>
                                  </div>
                                </div>
@@ -324,3 +348,4 @@
                               </div>
                              </div>                             
 </asp:Content>
+

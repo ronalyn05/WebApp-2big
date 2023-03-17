@@ -43,6 +43,7 @@
                                     <!-- page content -->
                                     <div class="right_col" role="main">
                                         <div class="">
+                                            <asp:Label ID="Label2" runat="server" Text="DI PA NI MAO ANG UI" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
                                              <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
                                             <div class="clearfix">
                                                 <button type="button" class="btn btn-success btn-sm"  style="font-size:14px;" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add new Gallon</button>

@@ -34,33 +34,38 @@ namespace WRS2big_Web.Admin
         }
         private void DisplayDelivery()
         {
+            string idno = (string)Session["idno"];
             FirebaseResponse response;
-            response = twoBigDB.Get("DELIVERY/");
-            Model.DeliveryDetails obj = response.ResultAs<Model.DeliveryDetails>();
+            response = twoBigDB.Get("ADMIN/" + idno + "/DeliveryDetails/");
+            DeliveryDetails obj = response.ResultAs<DeliveryDetails>();
             var json = response.Body;
-            Dictionary<string, Model.DeliveryDetails> list = JsonConvert.DeserializeObject<Dictionary<string, Model.DeliveryDetails>>(json);
+            Dictionary<string, DeliveryDetails> list = JsonConvert.DeserializeObject<Dictionary<string, DeliveryDetails>>(json);
 
-            foreach (KeyValuePair<string, Model.DeliveryDetails> entry in list)
+            if (list != null && list.Count > 0)
             {
-                //ListBox1.Items.Add(entry.Value.deliveryId.ToString());
-                if (entry.Value.status == "Available")
+                foreach (KeyValuePair<string, DeliveryDetails> entry in list)
                 {
-                    ListBox1.Items.Add(entry.Value.deliveryId.ToString());
-                }
-                else if (entry.Value.status == "Unavailable")
-                {
-                    ListBox2.Items.Add(entry.Value.deliveryId.ToString());
+                    //ListBox1.Items.Add(entry.Value.deliveryId.ToString());
+                    if (entry.Value.status == "Available")
+                    {
+                        ListBox1.Items.Add(entry.Value.deliveryId.ToString());
+                    }
+                    else if (entry.Value.status == "Unavailable")
+                    {
+                        ListBox2.Items.Add(entry.Value.deliveryId.ToString());
+                    }
                 }
             }
         }
-        //DISPLAY AVAILABLE DELIVERY DETAILS
+            //DISPLAY AVAILABLE DELIVERY DETAILS
         protected void btnDisplayDelivery_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
             String slected;
             slected = ListBox1.SelectedValue;
             FirebaseResponse response;
-            response = twoBigDB.Get("DELIVERY/" + slected);
-            Model.DeliveryDetails res = response.ResultAs<Model.DeliveryDetails>();
+            response = twoBigDB.Get("ADMIN/" + idno + "/DeliveryDetails/" + slected);
+            DeliveryDetails res = response.ResultAs<DeliveryDetails>();
 
             LblID.Text = res.deliveryId.ToString();
             txtdeliveryType.Text = res.deliveryType.ToString();
@@ -71,11 +76,12 @@ namespace WRS2big_Web.Admin
         //DISPLAY UNAVAILABLE DELIVERY DETAILS
         protected void btnDisplayDelivery2_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
             String slected;
             slected = ListBox2.SelectedValue;
             FirebaseResponse response;
-            response = twoBigDB.Get("DELIVERY/" + slected);
-            Model.DeliveryDetails res = response.ResultAs<Model.DeliveryDetails>();
+            response = twoBigDB.Get("ADMIN/" + idno + "/DeliveryDetails/" + slected);
+            DeliveryDetails res = response.ResultAs<DeliveryDetails>();
 
             LblID.Text = res.deliveryId.ToString();
             txtdeliveryType.Text = res.deliveryType.ToString();
@@ -101,6 +107,7 @@ namespace WRS2big_Web.Admin
         //ADD DELIVERY DETAILS
         public void btnAdd_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
             try
             {
                 // INSERT DATA TO TABLE = DELIVERY
@@ -117,8 +124,8 @@ namespace WRS2big_Web.Admin
                 };
 
                 SetResponse response;
-                response = twoBigDB.Set("DELIVERY/" + data.deliveryId, data);//Store data to DELIVERY table
-                Model.DeliveryDetails res = response.ResultAs<Model.DeliveryDetails>();//Database Result
+                response = twoBigDB.Set("ADMIN/" + idno + "/DeliveryDetails/" + data.deliveryId, data);//Store data to DELIVERY table
+                DeliveryDetails res = response.ResultAs<DeliveryDetails>();//Database Result
 
                 Response.Write("<script>alert ('Delivery details with Id number: " + data.deliveryId + " is successfully added!'); location.reload(); window.location.href = '/Admin/DeliveryRecords.aspx'; </script>");
 
@@ -131,10 +138,11 @@ namespace WRS2big_Web.Admin
         //UPDATE DELIVERY DETAILS
         protected void btnEditDeliveryType_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
             String updateStr;
             updateStr = ListBox1.SelectedValue;
 
-            var data = new Model.DeliveryDetails();
+            var data = new DeliveryDetails();
 
             data.deliveryId = int.Parse(LblID.Text);
             data.deliveryType = txtdeliveryType.Text;
@@ -146,10 +154,10 @@ namespace WRS2big_Web.Admin
             //if (data.productType != 0 && data.productSize != 0)
             //{
             FirebaseResponse response;
-            response = twoBigDB.Update("DELIVERY/" + updateStr, data);//Update Delivery Data 
+            response = twoBigDB.Update("ADMIN/" + idno + "/DeliveryDetails/" + updateStr, data);//Update Delivery Data 
 
-            var result = twoBigDB.Get("DELIVERY/" + updateStr);//Retrieve Updated Data From DELIVERY/ TBL
-            Model.DeliveryDetails obj = response.ResultAs<Model.DeliveryDetails>();//Database Result
+            var result = twoBigDB.Get("ADMIN/" + idno + "/DeliveryDetails/" + updateStr);//Retrieve Updated Data From DELIVERY/ TBL
+            DeliveryDetails obj = response.ResultAs<DeliveryDetails>();//Database Result
 
             LblID.Text = obj.deliveryId.ToString();
             txtdeliveryType.Text = obj.deliveryType.ToString();
@@ -167,7 +175,8 @@ namespace WRS2big_Web.Admin
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FirebaseResponse response = twoBigDB.Get("DELIVERY");
+            string idno = (string)Session["idno"];
+            FirebaseResponse response = twoBigDB.Get("ADMIN/" + idno + "/DeliveryDetails/");
             Dictionary<string, DeliveryDetails> list = JsonConvert.DeserializeObject<Dictionary<string, DeliveryDetails>>(response.Body);
             List<DeliveryDetails> deliveryDetails = list.Values.ToList();
             // assuming the above code fetches the data correctly

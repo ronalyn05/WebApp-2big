@@ -7,7 +7,7 @@ namespace WRS2big_Web.Model
 {
     public class Customer
     {
-        public int customerID { get; set; }
+        public int cusId { get; set; }
         public string firstName { get; set; }
         public string middleName { get; set; }
         public string lastName { get; set; }

@@ -44,9 +44,12 @@ namespace WRS2big_Web.Admin
             var json = response.Body;
             Dictionary<string, Model.AdminNotification> list = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminNotification>>(json);
 
-            foreach (KeyValuePair<string, Model.AdminNotification> entry in list)
-            {                
-                lblStatus.Text += entry.Value.OrderStatus;
+            if (list != null && list.Count > 0)
+            {
+                foreach (KeyValuePair<string, Model.AdminNotification> entry in list)
+                {
+                    lblStatus.Text += entry.Value.orderStatus;
+                }
             }
         }
 

@@ -99,6 +99,8 @@
                                          </div>
                                         </div>
                                       </div>
+                                          
+                                        
                                          <%--REFILLING STATION MANAGEMENT --%>
                                           <div class="modal fade management" tabindex="-1" role="dialog" aria-hidden="true">
                                        <div class="modal-dialog modal-dialog-centered modal-md">
@@ -200,6 +202,10 @@
                                                                 <br />
                                                                <%-- REFILLING STATION MANAGEMENT --%>
                                                                  <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".management" style="background-color:transparent;font-size:20px;"><i class="ti-marker"></i>Manage Refilling Station</button> 
+                                                               
+                                                                <br />
+                                                                <%-- REFILLING STATION MANAGEMENT --%>
+                                                                <%-- <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".editInfo" style="background-color:transparent;font-size:20px;"><i class="ti-marker"></i>Edit Personal Info</button> --%>
                                                                 <%--logout button--%>
                                                            <%-- <i class="fa fa-undo">
                                                            <asp:Button ID="btnLogout" class="active btn waves-effect text-right" style="background-color:transparent;font-size:20px;" runat="server" Text="Logout" OnClick="btnLogout_Click"/>
@@ -255,25 +261,23 @@
                                                                              </asp:TextBox> 
                                                                             <br />
                                                                             <h5>Birthdate: </h5>
-                                                                            <asp:TextBox ID="txtdob" class=" btn btn-round waves-effect text-center" 
+                                                                            <asp:TextBox ID="txtdob" TextMode="Date" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
                                                                              </asp:TextBox> 
                                                                             <br />
                                                                              <h5>Contact number:  </h5>
-                                                                            <asp:TextBox ID="txtcontact" class=" btn btn-round waves-effect text-center" 
+                                                                            <asp:TextBox ID="txtcontact" TextMode="Phone" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
                                                                              </asp:TextBox> 
                                                                             <br />
                                                                               <h5>Email Address: </h5>
-                                                                            <asp:TextBox ID="txtemail" class=" btn btn-round waves-effect text-center" 
+                                                                            <asp:TextBox ID="txtemail" TextMode="Email" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
                                                                              </asp:TextBox> 
                                                                             <br />
-                                                                               <h5>Address:  </h5>
-                                                                           <asp:TextBox ID="txtaddress" class=" btn btn-round waves-effect text-center" 
-                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
-                                                                             </asp:TextBox> 
-                                                                            <br />
+                                                                            <hr />
+                                                                            <asp:Button ID="btnEdit" class="btn btn-primary" style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift" runat="server" Text="Update Information" OnClick="btnUpdate_Click"/>
+                                           
                                                                             <hr />
                                                                                <h5>STATION DETAILS:  </h5>
                                                                             <br /> 
@@ -281,8 +285,16 @@
                                                                             <asp:Label ID="lblStationName" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server"></asp:Label>
                                                                             <br />
+                                                                               <h5>Address:  </h5>
+                                                                            <asp:Label ID="lblAddress" class=" btn btn-round waves-effect text-center" 
+                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server"></asp:Label>
+                                                                            <br />
+                                                                          <%-- <asp:TextBox ID="txtaddress" class=" btn btn-round waves-effect text-center" 
+                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
+                                                                             </asp:TextBox> 
+                                                                            <br />--%>
                                                                             <h5>Operating Hours: </h5>
-                                                                            <asp:TextBox ID="txtOperatngHrs" class=" btn btn-round waves-effect text-center" 
+                                                                            <asp:TextBox ID="txtOperatngHours" class=" btn btn-round waves-effect text-center" 
                                                                                          style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
                                                                              </asp:TextBox> 
                                                                             <br />
@@ -298,8 +310,6 @@
                                                                             <br />
                                                                             <br />
                                                                             <hr />
-                                                                            <asp:Button ID="btnEdit" class="btn btn-primary" style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift" runat="server" Text="Update Information" OnClick="btnUpdate_Click"/>
-                                           
                                                                           </div>
                                                                       </div>
                                                                 </form>
