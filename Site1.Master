@@ -250,7 +250,7 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
-                                            <li class=" ">
+                                           <%-- <li class=" ">
                                                 <a href="/Admin/DeliveryRecords" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
                                                          <i class="ti-truck"></i>
@@ -260,7 +260,7 @@
                                                     </span>
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
-                                            </li>
+                                            </li>--%>
                                             <%--<li>
                                                 <a href="/Admin/Reservations" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>

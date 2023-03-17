@@ -34,6 +34,9 @@ namespace WRS2big_Web.Admin
             {
                 DisplayID();
             }
+           // string idno = (string)Session["idno"];
+
+           //Session["productImage"] as byte[];
         }
         protected void btnDisplay_Click(object sender, EventArgs e)
         {
@@ -184,6 +187,10 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             String deleteStr = ListBox1.SelectedValue;
 
+            // Retrieve the existing product data from the database
+            var result = await twoBigDB.GetAsync("ADMIN/" + idno + "/Product/" + deleteStr);
+            Products obj = result.ResultAs<Products>();
+
             var data = new Products();
             data.productId = int.Parse(LabelID.Text);
             data.productName = prodName.Text;
@@ -193,12 +200,29 @@ namespace WRS2big_Web.Admin
             data.productAvailable = prodAvailable.Text;
             data.waterRefillSupply = waterSupAvailable.Text;
             data.dateAdded = DateTime.UtcNow;
+            // Keep the existing productImage
+            data.productImage = obj.productImage;
+
+            // Check if there is a new image uploaded by the user
+            //HttpPostedFile uploadedFile = imgProduct.PostedFile;
+            //if (uploadedFile != null && uploadedFile.ContentLength > 0)
+            //{
+            //    using (BinaryReader reader = new BinaryReader(uploadedFile.InputStream))
+            //    {
+            //        data.productImage = reader.ReadBytes(uploadedFile.ContentLength);
+            //    }
+            //}
+            //else
+            //{
+
+            //}
 
             FirebaseResponse response;
             response = await twoBigDB.UpdateAsync("ADMIN/" + idno + "/Product/" + deleteStr, data);//Update Product Data 
 
-            var result = await twoBigDB.GetAsync("ADMIN/" + idno + "/Product/" + deleteStr);//Retrieve Updated Data From WATERPRODUCT TBL
-            Products obj = result.ResultAs<Products>();//Database Result
+            // Retrieve the updated product data from the database
+            result = await twoBigDB.GetAsync("ADMIN/" + idno + "/Product/" + deleteStr);
+            obj = result.ResultAs<Products>();
 
             LabelID.Text = obj.productId.ToString();
             prodName.Text = obj.productName.ToString();
@@ -209,8 +233,10 @@ namespace WRS2big_Web.Admin
             waterSupAvailable.Text = obj.waterRefillSupply.ToString();
             LblDate.Text = obj.dateAdded.ToString();
 
+
             Response.Write("<script>alert ('Product ID : " + deleteStr + " successfully updated!');</script>");
         }
+
 
         //protected void btnEdit_Click(object sender, EventArgs e)
         //{

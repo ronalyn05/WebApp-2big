@@ -47,7 +47,7 @@ namespace WRS2big_Web.Admin
                 //ListBox1.Items.Add(entry.Value.CusID.ToString()) ;
                 //datatable1.Items.Add(entry.Value.CusID.ToString());
 
-                lblCustomerID.Text += entry.Value.customerID.ToString() + "<br>" + "<br>";
+                lblCustomerID.Text += entry.Value.cusId.ToString() + "<br>" + "<br>";
                 lblCustomerName.Text += entry.Value.firstName.ToString() + ' ' + entry.Value.middleName.ToString() + ' ' + entry.Value.lastName.ToString() + "<br>" + "<br>";
                 lblCustomerBdate.Text += entry.Value.birthdate.ToString() + "<br>" + "<br>";
                 lblCustomerAddress.Text += entry.Value.address + "<br>" + "<br>";
