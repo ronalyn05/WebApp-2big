@@ -27,27 +27,27 @@ namespace WRS2big_Web.Admin
 
             if (!IsPostBack)
             {
-                DisplayOrders();
+                //DisplayOrders();
             }
 
         }
          
         //SEARCH ORDER DETAILS
-        private void DisplayOrders()
-        {
-            FirebaseResponse response;
-            response = twoBigDB.Get("ORDER/");
-            Model.OrderData obj = response.ResultAs<Model.OrderData>();
+        //private void DisplayOrders()
+        //{
+        //    FirebaseResponse response;
+        //    response = twoBigDB.Get("ORDER/");
+        //    Model.OrderData obj = response.ResultAs<Model.OrderData>();
 
-            var json = response.Body;
-            Dictionary<string, Model.OrderData> list = JsonConvert.DeserializeObject<Dictionary<string, Model.OrderData>>(json);
+        //    var json = response.Body;
+        //    Dictionary<string, Model.OrderData> list = JsonConvert.DeserializeObject<Dictionary<string, Model.OrderData>>(json);
 
-            foreach (KeyValuePair<string, Model.OrderData> entry in list)
-            {
-               ListBox1.Items.Add(entry.Value.orderID.ToString());
-                //ListBox1.Items.Add(json);
-            }
-        }
+        //    foreach (KeyValuePair<string, Model.OrderData> entry in list)
+        //    {
+        //       ListBox1.Items.Add(entry.Value.orderID.ToString());
+        //        //ListBox1.Items.Add(json);
+        //    }
+        //}
 
         //DISPLAY ORDER DETAILS
         protected void btnDisplay_Click(object sender, EventArgs e)

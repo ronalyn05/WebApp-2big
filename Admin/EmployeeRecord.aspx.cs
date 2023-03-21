@@ -41,7 +41,6 @@ namespace WRS2big_Web.Admin
 
         }
 
-
         //private void DisplayID()
         //{
         //    string employee_id = (string)Session["idno"];
@@ -73,40 +72,49 @@ namespace WRS2big_Web.Admin
         //WORKING BUT NEED TO BE MODIFIED
         private void DisplayTable()
         {
-            string employee_id = (string)Session["idno"];
-            int emp_id = int.Parse(employee_id);
+           string idno = (string)Session["idno"];
+                // int adminId = int.Parse(idno);
 
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("EMPLOYEES/");
+                Employee emp = response.ResultAs<Employee>();
+                var data = response.Body;
+                //Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
+                Dictionary<string, Employee> employeeList = response.ResultAs<Dictionary<string, Employee>>();
 
-            FirebaseResponse response = twoBigDB.Get("ADMIN/" + emp_id + "/Employees");
-            Employee plan = response.ResultAs<Employee>();
-            var data = response.Body;
-            Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
+                // Create the DataTable to hold the orders
+                //sa pag create sa table
+                DataTable employeesTable = new DataTable();
+                employeesTable.Columns.Add("STATUS");
+                employeesTable.Columns.Add("EMPLOYEE ID");
+                employeesTable.Columns.Add("EMPLOYEE NAME");
+                employeesTable.Columns.Add("POSITION");
+                employeesTable.Columns.Add("CONTACT NUMBER");
+                employeesTable.Columns.Add("DATE HIRED");
+                employeesTable.Columns.Add("ADDRESS");
 
-            //sa pag create sa table
-            DataTable employeesTable = new DataTable();
-            employeesTable.Columns.Add("Status ");
-            employeesTable.Columns.Add("Employee ID ");
-            employeesTable.Columns.Add("Employee Name ");
-            employeesTable.Columns.Add("Position");
-            employeesTable.Columns.Add("Contact Number ");
-            employeesTable.Columns.Add("Date Hired ");
-            employeesTable.Columns.Add("Address ");
-
-
-            if (response != null && response.ResultAs<Employee>() != null)
-            {
-                foreach (KeyValuePair<string, Employee> entry in employeeList)
+                if (response != null && response.ResultAs<Employee>() != null)
                 {
+                    // Loop through the orders and add them to the DataTable
+                    foreach (KeyValuePair<string, Employee> entry in employeeList)
+                    {
 
-                    employeesTable.Rows.Add(entry.Value.emp_status, entry.Value.emp_id, entry.Value.emp_firstname + " " + entry.Value.emp_lastname, entry.Value.emp_role, entry.Value.emp_contactnum, entry.Value.emp_dateHired, entry.Value.emp_address);
+                       employeesTable.Rows.Add(entry.Value.emp_status, entry.Value.emp_id,
+                                            entry.Value.emp_firstname + " " + entry.Value.emp_lastname, entry.Value.emp_role,
+                                            entry.Value.emp_contactnum, entry.Value.emp_dateHired, entry.Value.emp_address);
+                    }
                 }
-                // Bind DataTable to GridView control
-
-                GridView1.DataSource = employeesTable;
-                GridView1.DataBind();
+            else
+            {
+                // Handle null response or invalid selected value
+                employeesTable.Rows.Add("No data found", "", "", "", "", "", "");
             }
-           
+
+            // Bind the DataTable to the GridView
+            GridView1.DataSource = employeesTable;
+            GridView1.DataBind();
         }
+            
 
         // STORE/ADD DATA
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -116,11 +124,12 @@ namespace WRS2big_Web.Admin
             {
                 Random rnd = new Random();
                 int employee_id = rnd.Next(1, 10000);
-              //  string employee_id = (string)Session["idno"];
+                //  string employee_id = (string)Session["idno"];
 
                 //insert data
                 var data = new Employee
                 {
+                    adminId = int.Parse(idno),
                     emp_id = employee_id,
                     emp_lastname = txtlastname.Text,
                     emp_firstname = txtfirstname.Text,
@@ -138,7 +147,10 @@ namespace WRS2big_Web.Admin
 
                 SetResponse response;
                 // Employee Records = tablename, emp_id = key ( PK? )
-                response = twoBigDB.Set("ADMIN/" + idno + "/Employees/" + data.emp_firstname + " " + data.emp_lastname, data);//Store Data to database   
+                // response = twoBigDB.Set("Employees/" + data.emp_id, data);
+                //  response = twoBigDB.Set("EMPLOYEES/" + data.emp_firstname + " " + data.emp_lastname, data);//Store Data to database 
+                response = twoBigDB.Set("EMPLOYEES/" + data.emp_id, data);
+
                 Employee obj = response.ResultAs<Employee>();//Database Result
 
                 Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); </script>");
@@ -149,174 +161,5 @@ namespace WRS2big_Web.Admin
 
             }
         }
-
-
-        //protected void clientGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-        //{
-        //    if (e.CommandName == "Update")
-        //    {
-        //        int rowIndex = Convert.ToInt32(e.CommandArgument);
-        //        // perform update function using the id value
-
-        //        GridViewRow row = GridView1.Rows[rowIndex];
-
-        //        // Retrieve data from the selected row
-        //        string status = ((Label)row.FindControl("StatusLabel")).Text;
-        //        //string empId = ((Label)row.FindControl("EmpIdLabel")).Text;
-        //        string empName = ((Label)row.FindControl("EmpNameLabel")).Text;
-        //        string position = ((Label)row.FindControl("PositionLabel")).Text;
-        //        string contactNumber = ((Label)row.FindControl("ContactNumberLabel")).Text;
-        //        string dateHired = ((Label)row.FindControl("DateHiredLabel")).Text;
-        //        string address = ((Label)row.FindControl("AddressLabel")).Text;
-
-        //        LblID.Text = empID;
-        //        updateLname.Text = empName;
-        //        updatePosition.Text = position;
-        //        updateHired.Text = dateHired;
-        //        updateAddress.Text = address;
-        //        updateContact.Text = contactNumber;
-
-        //        //updateModal.Show();
-        //    }
-
-        //}
-        protected void btnDisplay_Click(object sender, EventArgs e)
-        {
-            //String slected;
-            string employee_id = (string)Session["idno"];
-            //slected = ListBoxEmployeeRecord.SelectedValue;
-
-            FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/" + employee_id + "/Employees/");
-            Employee obj = response.ResultAs<Employee>();
-
-            LblID.Text = obj.emp_id.ToString();
-            firstname.Text = obj.emp_firstname.ToString();
-            midname.Text = obj.emp_midname.ToString();
-            lastname.Text = obj.emp_lastname.ToString();
-            LblDOB.Text = obj.emp_birthdate.ToString();
-            LblGender.Text = obj.emp_gender.ToString();
-            address.Text = obj.emp_address.ToString();
-            contactnum.Text = obj.emp_contactnum.ToString();
-            email.Text = obj.emp_email.ToString();
-            LbldateHired.Text = obj.emp_dateHired.ToString();
-            emergencycontact.Text = obj.emp_emergencycontact.ToString();
-            drdPosition.Text = obj.emp_role.ToString();
-            drdStatus.Text = obj.emp_status.ToString();
-        }
-
-        protected void btnInActiveEmp_Click(object sender, EventArgs e)
-        {
-            String slected;
-            slected = ListBox1.SelectedValue;
-
-            FirebaseResponse response;
-            response = twoBigDB.Get("EMPLOYEERECORD/" + slected);
-            Employee obj = response.ResultAs<Employee>();
-
-            LblID.Text = obj.emp_id.ToString();
-            firstname.Text = obj.emp_firstname.ToString();
-            midname.Text = obj.emp_midname.ToString();
-            lastname.Text = obj.emp_lastname.ToString();
-            LblDOB.Text = obj.emp_birthdate.ToString();
-            LblGender.Text = obj.emp_gender.ToString();
-            address.Text = obj.emp_address.ToString();
-            contactnum.Text = obj.emp_contactnum.ToString();
-            email.Text = obj.emp_email.ToString();
-            LbldateHired.Text = obj.emp_dateHired.ToString();
-            emergencycontact.Text = obj.emp_emergencycontact.ToString();
-            drdPosition.Text = obj.emp_role.ToString();
-            drdStatus.Text = obj.emp_status.ToString();
-
-            if (obj.emp_status.ToString() == "Inactive")
-            {
-                firstname.ReadOnly = true;
-                midname.ReadOnly = true;
-                lastname.ReadOnly = true;
-                address.ReadOnly = true;
-                contactnum.ReadOnly = true;
-                email.ReadOnly = true;
-                emergencycontact.ReadOnly = true;
-                drdPosition.Enabled = false;
-                drdStatus.Enabled = false;
-            }
-            else if (obj.emp_status.ToString() == "Active")
-            {
-                firstname.ReadOnly = false;
-                midname.ReadOnly = false;
-                lastname.ReadOnly = false;
-                address.ReadOnly = false;
-                contactnum.ReadOnly = false;
-                email.ReadOnly = false;
-                emergencycontact.ReadOnly = false;
-                drdPosition.Enabled = true;
-                drdStatus.Enabled = true;
-            }
-        }
-
-
-        ////UPDATE DATA
-        protected void btnEdit_Click(object sender, EventArgs e)
-        {
-            String EditStr;
-            EditStr = ListBoxEmployeeRecord.SelectedValue;
-
-            var data = new Employee();
-
-            data.emp_id = int.Parse(LblID.Text);
-            data.emp_firstname = firstname.Text;
-            data.emp_midname = midname.Text;
-            data.emp_lastname = lastname.Text;
-            data.emp_birthdate = LblDOB.Text;
-            data.emp_gender = LblGender.Text;
-            data.emp_address = address.Text;
-            data.emp_contactnum = contactnum.Text;
-            data.emp_email = email.Text;
-            data.emp_dateHired = LbldateHired.Text;
-            data.emp_emergencycontact = emergencycontact.Text;
-            data.emp_role = drdPosition.Text;
-            data.emp_status = drdStatus.Text;
-
-            FirebaseResponse response;
-            response = twoBigDB.Update("EMPLOYEERECORD/" + EditStr, data);//Update Employee Data 
-
-            var result = twoBigDB.Get("EMPLOYEERECORD/" + EditStr);//Retrieve Updated Data From EMPLOYEERECORD TBL
-            Employee obj = response.ResultAs<Employee>();//Database Result
-
-            LblID.Text = obj.emp_id.ToString();
-            firstname.Text = obj.emp_firstname.ToString();
-            midname.Text = obj.emp_midname.ToString();
-            lastname.Text = obj.emp_lastname.ToString();
-            LblDOB.Text = obj.emp_birthdate.ToString();
-            LblGender.Text = obj.emp_gender.ToString();
-            address.Text = obj.emp_address.ToString();
-            contactnum.Text = obj.emp_contactnum.ToString();
-            email.Text = obj.emp_email.ToString();
-            LbldateHired.Text = obj.emp_dateHired.ToString();
-            emergencycontact.Text = obj.emp_emergencycontact.ToString();
-            drdPosition.Text = obj.emp_role.ToString();
-            drdStatus.Text = obj.emp_status.ToString();
-
-            Response.Write("<script>alert ('Employee ID : " + EditStr + " successfully updated!');</script>");
-        }
-
-        //DELETE DATA
-        //protected void DeleteBtn_Click(object sender, EventArgs e)
-        //{
-        //    String deleteStr;
-        //    deleteStr = ListBoxEmployeeRecord.SelectedValue;
-        //    FirebaseResponse response = twoBigDB.Delete("EMPLOYEERECORD/" + deleteStr);
-
-        //    //TO DELETE THE ID IN THE LISTBOX AFTER DELETED
-        //    int selected = ListBoxEmployeeRecord.SelectedIndex;
-        //    if (selected != 1)
-        //    {
-        //        ListBoxEmployeeRecord.Items.RemoveAt(selected);
-        //    }
-
-        //    Response.Write("<script>alert ('Employee ID : " + deleteStr + " successfully deleted ! '); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
-
-        //}
-
     }
 }

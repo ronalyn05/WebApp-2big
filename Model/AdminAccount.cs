@@ -25,8 +25,8 @@ namespace WRS2big_Web.Model
        // public int stationID { get; set; }
         public string stationName { get; set; }
         public string stationAddress { get; set; }
-        public string addLattitude { get; set; }
-        public string addLongitude { get; set; }
+        public double addLattitude { get; set; }
+        public double addLongitude { get; set; }
         public byte[] proof { get; set; }
         public string operatingHrs { get; set; }
         public string status { get; set; }
@@ -46,6 +46,7 @@ namespace WRS2big_Web.Model
 
     public class Employee
     {
+        public int adminId { get; set; }
         public int emp_id { get; set; }
         public string emp_lastname { get; set; }
         public string emp_firstname { get; set; }
@@ -60,30 +61,54 @@ namespace WRS2big_Web.Model
         public string emp_role { get; set; }
         public string emp_status { get; set; }
     }
-
-    public class Products
+    public class TankSupply
     {
-        public int productId { get; set; }
-        public string productName { get; set; }
-        public string productSize { get; set; }
-        public string productPrice { get; set; }
-        public string productAvailable { get; set; }
-        public string productDiscount { get; set; }
-        public string waterRefillSupply { get; set; }
-        public byte[] productImage { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public int tankId { get; set; }
+        public int adminId { get; set; }
+        public string tankUnit { get; set; }
+        public string tankVolume { get; set; }
+        public DateTime dateAdded { get; set; }
+    }
+
+
+    public class otherProducts
+    {
+        public int adminId { get; set; }
+        public int other_productId { get; set; }
+        public string other_productName { get; set; }
+        public string other_productUnit { get; set; }
+        public string other_productSize { get; set; }
+        public string other_productPrice { get; set; }
+        public string other_productStock { get; set; }
+        public string other_productDiscount { get; set; }
+        public string other_productImage { get; set; }
+        public DateTime dateAdded { get; set; }
     }
     public class DeliveryDetails
     {
         public int deliveryId { get; set; }
+        public int adminId { get; set; }
         public string deliveryType { get; set; }
         public string deliveryFee { get; set; }
-        public string estimatedTime { get; set; }
-        public string status { get; set; }
-
-        // public DateTimeOffset DateAdded { get; set; }
+        public string deliveryDistance { get; set; }
+        public string expressEstimatedTime { get; set; }
+        public string orderType { get; set; }
+        public string orderMethod { get; set; }
+       // public string status { get; set; }
+        public DateTime dateAdded { get; set; }
     }
-
+    public class ProductRefill
+    {
+        public int pro_refillId { get; set; }
+        public int adminId { get; set; }
+        public string pro_refillWaterType { get; set; }
+        public string pro_Image { get; set; }
+        public string pro_refillUnit { get; set; }
+        public string pro_refillSize { get; set; }
+        public string pro_refillPrice { get; set; }
+        public DateTime dateAdded { get; set; }
+    }
+   
     public class AdminNotification
     {
         public int adminnotificationID { get; set; }

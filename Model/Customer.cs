@@ -21,4 +21,20 @@ namespace WRS2big_Web.Model
 
 
     }
+    public class Order
+    {
+        public int orderID { get; set; }
+        public int adminID { get; set; }
+        public int cusId { get; set; }
+        public string order_DeliveryTypeValue { get; set; }
+        public decimal order_InitialAmount { get; set; }
+        public string order_OrderStatus { get; set; }
+        public string order_OrderTypeValue { get; set; }
+        public string order_ProductName { get; set; }
+        public int order_Quantity { get; set; }
+        public string order_ReservationDate { get; set; }
+        public string order_StoreName { get; set; }
+        public string order_SwapGallonTypeValue { get; set; }
+        public decimal order_WaterPrice { get; set; }
+    }
 }

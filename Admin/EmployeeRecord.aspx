@@ -193,29 +193,61 @@
                                          <br />
 
                                             <!--PAGE CONTENTS-->
-                                      <div style="overflow: auto; height: 160px; text-align:center;" class="texts" >
-                                                <asp:GridView runat="server" ID="GridView1" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="4" CellSpacing="2" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" >
-                                                 <Columns>
-                                                     <asp:TemplateField>
-                                                         <ItemTemplate>
-                                                             <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" data-target=".updateModal" Text="Update" CommandName="Update"/>
-                                                         </ItemTemplate>
-                                                     </asp:TemplateField>
-                                                 </Columns>
-                                                    <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
-                                                    <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
-                                                    <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
-                                                    <RowStyle Width="200px" BackColor="#FFF7E7" ForeColor="#8C4510" />
-                                                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
-                                                    <SortedAscendingCellStyle BackColor="#FFF1D4" />
-                                                    <SortedAscendingHeaderStyle BackColor="#B95C30" />
-                                                    <SortedDescendingCellStyle BackColor="#F1E5CE" />
-                                                    <SortedDescendingHeaderStyle BackColor="#93451F" />
-                                                </asp:GridView>
-                                                 </div>
-                                       
-                                               <div class="row">
-                                                  <%-- ACTIVE EMPLOYEE PAGE --%>
+                                         <div class="col-xl-12 col-xl-12 h-100">
+                                             <div class="card">
+                                                <%--<div class="card" style="background-color:#f2e2ff">--%>
+                                                    <div class="card-header">
+                                                         <asp:Label ID="Label1" runat="server" Text="LIST OF EMPLOYEE RECORDS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                <li><i class="fa fa-trash close-card"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                    </div>
+                                                    <div class="card-footer">
+                                                                    <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
+                                                                     --%> 
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                <%--the gridview starts here--%>
+                                                              <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >
+                                                <asp:GridView runat="server" ID="GridView1" CellPadding="4" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" ForeColor="#333333" GridLines="None" >
+                                                      <AlternatingRowStyle BackColor="White" />
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                            <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <EditRowStyle BackColor="#7C6F57" />
+                                                      <FooterStyle BackColor="#1C5E55" ForeColor="White" Font-Bold="True" />
+                                                      <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="White" HorizontalAlign="Center" BackColor="#666666" />
+                                                      <RowStyle Width="200px" BackColor="#E3EAEB" />
+                                                      <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+                                                      <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                                                      <SortedAscendingHeaderStyle BackColor="#246B61" />
+                                                      <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                                                      <SortedDescendingHeaderStyle BackColor="#15524A" />
+                                                    </asp:GridView>
+
+                                                 </div> <%--Gridview ends here--%>
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                            <%--TAB end --%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div> 
+                                        <%--       <div class="row">
                                                    <div class="col-xl-3 col-md-12">
                                                     <div class="card ">
                                                         <div class="card-header">
@@ -240,7 +272,7 @@
                                                     </div>
                                                     </div>
                                                   </div>
-                                                     <%-- INACTIVE EMPLOYEE PAGE --%>
+                                                     
                                                    <div class="col-xl-3 col-md-12">
                                                     <div class="card ">
                                                         <div class="card-header">
@@ -265,11 +297,10 @@
                                                     </div>
                                                     </div>
                                                   </div>
-                                         <%--TAB FOR DISPLAY, UPDATE DATA --%>
                                                <div class="col-xl-9 col-md-12">
                                                 <div class="card" style="background-color:#f2e2ff">
                                                     <div class="card-header">
-                                                        <h5>EMPLOYEE INFORMATION</h5>
+                                                        <asp:Label ID="Label2" runat="server" Text="EMPLOYEE INFORMATION" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -284,6 +315,7 @@
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
+
                                                                       <div class="form-group">                
                                                                         <div class="col-xs-12" style="font-size:16px">
                                                                            <h5>Employee ID:</h5> 
@@ -324,9 +356,7 @@
                                                                        </asp:DropDownList>
                                                                           </div>
                                                                       </div>
-                                                              </div><!--/tab-pane-->
-                                                          </div><!--/tab-content-->
-                                                            <%--TAB end --%>
+                                                              </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-footer">
@@ -335,7 +365,7 @@
                                                     </div>
                                                 </div>
                                              </div> 
-                                    </div>
+                                    </div>--%>
                                  </div>
                                </div>
                             </div>

@@ -13,6 +13,7 @@ using Firebase.Storage;
 using System.IO;
 using WRS2big_Web.Model;
 using System.Text;
+using System.Diagnostics;
 
 namespace WRS2big_Web.LandingPage
 {
@@ -44,8 +45,8 @@ namespace WRS2big_Web.LandingPage
                 int idnum = rnd.Next(1, 10000);
 
                 string address = Request.Form["address"];
-                string latitude = Request.Form["lat"];
-                string longitude = Request.Form["long"];
+                double latitude = double.Parse(Request.Form["lat"]);
+                double longitude = double.Parse(Request.Form["long"]);
 
                 var data = new AdminAccount
                 {
@@ -136,9 +137,7 @@ namespace WRS2big_Web.LandingPage
            
             FirebaseResponse response;
             response = twoBigDB.Get("ADMIN/" + idno);
-            //var query = QueryBuilder.New().OrderBy("email").Equals(email).LimitToFirst(1);
-            //response = twoBigDB.Get("ADMIN", query);
-            AdminAccount user = response.ResultAs<AdminAccount>();
+            AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
             //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
             //RefillingStation obj = response.ResultAs<RefillingStation>();
 
@@ -172,7 +171,22 @@ namespace WRS2big_Web.LandingPage
                     Session["status"] = stations.status;
                     Session["businessdays"] = stations.businessDays;
 
+                    // Retrieve tank supply data
+                    response = twoBigDB.Get("TANKSUPPLY/" + idno);
+                    TankSupply tankSupply = response.ResultAs<TankSupply>();
+                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+                    
+                    if(tankSupply != null)
+                    { 
+                        // Debug code: check if the expected values are present
+                        Debug.WriteLine("tankUnit = " + tankSupply.tankUnit);
+                        Debug.WriteLine("tankVolume = " + tankSupply.tankVolume);
 
+                  
+                        Session["tankUnit"] = tankSupply.tankUnit;
+                        Session["tankVolume"] = tankSupply.tankVolume;
+
+                    }
                     // Login successful, redirect to admin homepage
                     Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
                     //Response.Redirect("/Admin/AdminIndex.aspx");
