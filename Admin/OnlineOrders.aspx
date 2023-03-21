@@ -41,169 +41,62 @@
                                 <div class="page-wrapper">
                                     <!-- Page-body start -->
                                     <!-- page content -->
-                                    <div class="right_col" role="main">
-                                        <div class="">
-                                            <asp:Label ID="Label2" runat="server" Text="DI PA NI MAO ANG UI" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
-                                             <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
-                                            <div class="clearfix">
-                                                <button type="button" class="btn btn-success btn-sm"  style="font-size:14px;" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add new Gallon</button>
-                                           <%-- <asp:Button ID="ViewID" runat="server" OnClick="ViewID_Click" style="font-size:14px;" class="btn btn-success btn-sm " Text="View List of Product IDs" />--%> </div> 
-                                             <br />
-                                            </div>
-
-                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog modal-md">
-                                                    <div class="modal-content">
-                                                        <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title" id="myModalLabel2">Add Gallon Product</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">X</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-md-12 col-sm-12 ">
-                                                                    <div class="x_content">
-                                                                        <div class="item form-group">
-                                                                            <div class="col-md-12 col-sm-12 ">
-                                                                                 <asp:TextBox ID="galType" runat="server" class="form-control"  placeholder="Gallon Name" ></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item form-group">
-                                                                            <div class="col-md-21 col-sm-12 ">
-                                                                                <asp:TextBox ID="txtQty" runat="server" class="form-control" TextMode="Number" placeholder="Quantity" ></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item form-group">
-                                                                            <div class="col-md-12 col-sm-12 ">
-                                                                                <asp:TextBox ID="txtDeliveryPrice" runat="server" class="form-control" TextMode="Number" placeholder="Delivery Price"></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item form-group">
-                                                                            <div class="col-md-12 col-sm-12 ">
-                                                                                <asp:TextBox ID="txtPickUp_Price" TextMode="Number" runat="server" class="form-control" type="text" placeholder="Pick-up Price"></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item form-group">
-                                                                            <div class="col-md-12  col-sm-12 ">
-                                                                                    <label class="small mb-1" ID="Label1" for="imgUpload" runat="server">Product Image</label>
-                                                                                     <asp:FileUpload ID="ImgUpload" runat="server"/> <br/> 
-                                                                                     <asp:Button ID="btnUpload" runat="server" class="form-control btn btn-dark btn-sm" Text="Upload File"/>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <%--BUTTON NI DIRI SA PAG STORE SA DATA NI GALLON--%>
-                                                                <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add" ValidationGroup="a" OnClick="btnSave_Click"/>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 ">
-                                                    <div class="x_panel">
-                                                        <div class="x_title">
-                                                        <div class="x_content">
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <div class="card-box table-responsive">
-
-                                                                          <!--PAGE CONTENTS-->
-                                                                           <div class="row">
-                                                                               <div class="col-xl-3 col-md-12">
-                                                                                <div class="card ">
-                                                                                    <div class="card-header">
-                                                                                        <div class="card-header-right">
-                                                                                            <ul class="list-unstyled card-option">
-                                                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                        <h5>Gallon Product ID:</h5>
-                                                                                    </div>
-                                                                                    <div class="card-block">        
-                                                                                       <asp:ListBox ID="ListBox1" runat="server" style="border:transparent; font-size:20px;padding:4px 7px 2px 4px;" Width="241px" Height="179px">
-                                                                                       </asp:ListBox> 
-                                                                                        <asp:Button ID="Button2" onclick="btnDisplay_Click" type="button" style="font-size:14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
-                                                                                    </div>
-                                                                                <div class="card-footer">
-                                                       
-                                                        
-                                                                                </div>
-                                                                                </div>
-                                                                              </div>
-                                                   
-                                                                            <div class="col-xl-9 col-md-12">
-                                                                                <div class="card" style="background-color:#f2e2ff">
-                                                                                    <div class="card-header">
-                                                                                        <h5>GALLON PRODUCT INFORMATION</h5>
-                                                                                        <div class="card-header-right">
-                                                                                            <ul class="list-unstyled card-option">
-                                                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="card-block">
-                                                                                        <div class="table-responsive">
-                                                                                            <div class="tab-content">
-                                                                                            <div class="tab-pane active">
-                                                                                                      <div class="form-group">                
-                                                                                                        <div class="col-xs-12" style="font-size:16px">
-                                                                                                           <h5>Product ID:</h5> 
-                                                                                                            <asp:Label ID="LabelID" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                                            <br>
-                                                                                                            <h5>Gallon Name: </h5>
-                                                                                                            <asp:TextBox  ID="galName" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                          
-                                                                                                            <h5>Quantity: </h5>
-                                                                                                              <asp:TextBox  ID="galQuantity" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                                                                
-                                                                                                            <h5>Pick-up Price: </h5>
-                                                                                                              <asp:TextBox  ID="PckupPrice" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                                                             
-                                                                                                            <h5>Delivery Price:  </h5>
-                                                                                                            <asp:TextBox ID="DeliveryPrice" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:TextBox>
-
-                                                                                                            <h5>Date Added:</h5> 
-                                                                                                            <asp:Label ID="DateAdded" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                                        </div>
-                                                                                                      </div>
-                                                                                              </div><!--/tab-pane-->
-                                                                                          </div><!--/tab-content-->
-                                                           
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="card-footer">
-                                                                                                     <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
-                                                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> 
-                                                                                    </div>
-                                                                                </div>
-                                                                               </div> 
-                                                                             </div>
-                                                                      <!--PAGE CONTENTS END-->
-
-                                              
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                      <div class="col-xl-12 col-xl-12 h-100">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                         <asp:Label ID="Label2" runat="server" Text="ORDERS FROM CUSTOMER" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                <li><i class="fa fa-trash close-card"></i></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                      <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >
+                                               <asp:GridView runat="server" ID="GridView1" CellPadding="4" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" ForeColor="#333333" GridLines="None" >
+                                                      <AlternatingRowStyle BackColor="White" />
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                              <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
+                                                              <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Accept" CommandName="Accept" OnClick="btnAccept_Click"/>
+                                                              <asp:LinkButton ID="LinkButton1" runat="server" data-toggle="modal" CssClass="fa-eraser" data-target=".deleteModal" Text="Decline" CommandName="Decline" OnClick="btnDecline_Click"/>--%>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <EditRowStyle BackColor="#7C6F57" />
+                                                      <FooterStyle BackColor="#1C5E55" ForeColor="White" Font-Bold="True" />
+                                                      <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="White" HorizontalAlign="Center" BackColor="#666666" />
+                                                      <RowStyle Width="200px" BackColor="#E3EAEB" />
+                                                      <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+                                                      <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                                                      <SortedAscendingHeaderStyle BackColor="#246B61" />
+                                                      <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                                                      <SortedDescendingHeaderStyle BackColor="#15524A" />
+                                                    </asp:GridView>
+                                                 </div>
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                            <%--TAB end --%>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                                    <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
+                                                                     --%> 
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
+                                             </div> 
+                                   
+                                    
                                     <!-- page content -->
                                     <!-- Page-body end -->
 

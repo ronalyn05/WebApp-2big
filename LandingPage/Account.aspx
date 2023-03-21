@@ -109,7 +109,7 @@
                         <div class="text-center">
                             <img src="/images/2ndLogo.png" style="width:500px" alt="logo.png">
                         </div>
-                        <div class="col-xl-6 col-md-12" style="align-content:center;margin-left:480px">
+                        <div class="col-xl-6 col-md-12" style="align-content:center;margin-left:480px; top: 113px; left: 171px;">
                         <div class="card">
                             <div class="card-block">
                                 <div class="button-box">
@@ -483,9 +483,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        
-
                                     <%-- @*Show Password script*@--%>
                                        <script>
                                            const togglePassword = document.querySelector('#togglePassword');

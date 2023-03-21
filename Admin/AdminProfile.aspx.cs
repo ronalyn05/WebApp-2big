@@ -70,8 +70,6 @@ namespace WRS2big_Web.Admin
                 // Set the ImageUrl property of the ImageButton to the base64-encoded string
                 ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
                 //string base64String = Convert.ToBase64String(imageData);
-                
-                //ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
             }
            
 
@@ -143,43 +141,13 @@ namespace WRS2big_Web.Admin
         //}
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            // string idno = (string)Session["idno"];
-            // firstname.Text = (string)Session["fname"];
-            // middleName.Text = (string)Session["mname"];
-            // txtlname.Text = (string)Session["lname"];
-            // txtcontact.Text = (string)Session["contactNumber"];
-            // txtemail.Text = (string)Session["email"];
-            // txtdob.Text = (string)Session["dob"];
-
-            // Retrieve the existing object from the database
-            // var adminRef = twoBigDB.Get("ADMIN/" + idno);
-            // AdminAccount adminAccount = adminRef.ResultAs<AdminAccount>();
-
-            // Update the specific fields that you want to change
-            // adminAccount.fname = firstname.Text;
-            // adminAccount.mname = middleName.Text;
-            // adminAccount.lname = lastname.Text;
-            // adminAccount.bdate = birthdate.Text;
-            // adminAccount.phone = contactNum.Text;
-            // adminAccount.email = email.Text;
-
-            // Pass the updated object to the Update method
-            // twoBigDB.Update("ADMIN/" + idno, adminAccount);
-
-            // Retrieve the updated data from the database
-
-            //adminRef = twoBigDB.Get("ADMIN/" + idno);
-            // adminAccount = adminRef.ResultAs<AdminAccount>();
-
-            // Display the updated data in the UI
-            // Lbl_Idno.Text = adminAccount.idno.ToString();
-            // txtfname.Text = adminAccount.fname;
-            // txtmname.Text = adminAccount.mname;
-            // txtlname.Text = adminAccount.lname;
-            // txtcontact.Text = adminAccount.phone;
-            // txtemail.Text = adminAccount.email;
-            // txtdob.Text = adminAccount.bdate;
-
+            string firstname = (string)Session["fname"];
+            string midname = (string)Session["mname"];
+            string lastname = (string)Session["lname"];
+            string birthdate = (string)Session["dob"];
+            string contactNum = (string)Session["contactNumber"];
+            string email = (string)Session["email"];
+            string profileimage = (string)Session["profile_image"];
             try
             {
                 //Update the admin account info
