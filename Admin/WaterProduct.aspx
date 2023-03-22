@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WaterProduct.aspx.cs" Inherits="WRS2big_Web.Admin.WaterProduct" Async="true" %>
+ <%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WaterProduct.aspx.cs" Inherits="WRS2big_Web.Admin.WaterProduct" Async="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -108,7 +108,7 @@
                                                       <div class="col-md-12 col-sm-12 ">
                                                           <strong>Product Stock:</strong>
                                                          <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
-                                                        <asp:TextBox ID="productStock" TextMode="Number" Text="Enter the available stock based on the unit above" Product="Enter the available stock of the product above" runat="server" Width="364px"></asp:TextBox>
+                                                        <asp:TextBox ID="productStock" Placeholder="Enter the available stock based on the unit above" Product="Enter the available stock of the product above" runat="server" Width="364px"></asp:TextBox>
                                                           </div>
                                                              <br />
                                                          </div>
@@ -316,7 +316,7 @@
                                                             <h5>Tank Supply for the day:</h5>--%>
                                                             <hr />
                                                              <div class="col-md-12 col-sm-12">
-                                                    <strong>Tank Supply for the day:</strong>
+                                                    <strong>Tank Supply of the day:</strong>
                                                         <asp:Label ID="lbltankSupply" runat="server" Width="364px"></asp:Label>
                                                    <br />
                                                    <strong>Remaining Supply:</strong>

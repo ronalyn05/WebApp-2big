@@ -41,7 +41,7 @@ namespace WRS2big_Web.Admin
            // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("ORDERS/");
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + idno);
             Order obj = response.ResultAs<Order>();
             var json = response.Body;
           //  Dictionary<string, Order> orders = JsonConvert.DeserializeObject<Dictionary<string, Order>>(json);
@@ -53,6 +53,8 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("CUSTOMER ID");
             ordersTable.Columns.Add("STORE NAME");
             ordersTable.Columns.Add("PRODUCT NAME");
+            ordersTable.Columns.Add("PRODUCT UNIT");
+            ordersTable.Columns.Add("PRODUCT SIZE");
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
             ordersTable.Columns.Add("GALLON TYPE");
@@ -72,11 +74,10 @@ namespace WRS2big_Web.Admin
                     //{
                         ordersTable.Rows.Add(entry.Value.orderID, entry.Value.cusId,
                                               entry.Value.order_StoreName, entry.Value.order_ProductName,
-                                              entry.Value.order_DeliveryTypeValue, entry.Value.order_OrderTypeValue,
-                                              entry.Value.order_SwapGallonTypeValue, entry.Value.order_WaterPrice,
+                                              entry.Value.order_DeliveryTypeValue, entry.Value.order_OrderTypeValue, entry.Value.order_WaterPrice,
                                               entry.Value.order_Quantity, entry.Value.order_InitialAmount,
                                               entry.Value.order_ReservationDate, entry.Value.order_OrderStatus);
-                    //}
+                    //  entry.Value.order_SwapGallonTypeValue,
                 }
             }
             else

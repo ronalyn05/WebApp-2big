@@ -34,7 +34,7 @@ namespace WRS2big_Web.Model
         public int order_Quantity { get; set; }
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
-        public string order_SwapGallonTypeValue { get; set; }
+        public string order_OrderMethod { get; set; }
         public decimal order_WaterPrice { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace WRS2big_Web.Admin
             lblAddress.Text = (string)Session["address"];
             txtOperatngHours.Text = (string)Session["operatingHrs"];
             txtBssnessDay.Text = (string)Session["businessDays"];
-            txt_Status.Text = (string)Session["status"];
+            txt_Status.Text = (string)Session["status"]; 
 
             //LblSubPlan.Text = (string)Session["subType"];
             //LblDateStarted.Text = Session["subsDate"].ToString();
