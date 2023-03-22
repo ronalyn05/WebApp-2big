@@ -67,6 +67,7 @@ namespace WRS2big_Web.Model
         public int adminId { get; set; }
         public string tankUnit { get; set; }
         public string tankVolume { get; set; }
+        public string tankBalance { get; set; }
         public DateTime dateAdded { get; set; }
     }
 

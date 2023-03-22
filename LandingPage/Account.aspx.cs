@@ -171,22 +171,7 @@ namespace WRS2big_Web.LandingPage
                     Session["status"] = stations.status;
                     Session["businessdays"] = stations.businessDays;
 
-                    // Retrieve tank supply data
-                    response = twoBigDB.Get("TANKSUPPLY/" + idno);
-                    TankSupply tankSupply = response.ResultAs<TankSupply>();
-                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
-                    
-                    if(tankSupply != null)
-                    { 
-                        // Debug code: check if the expected values are present
-                        Debug.WriteLine("tankUnit = " + tankSupply.tankUnit);
-                        Debug.WriteLine("tankVolume = " + tankSupply.tankVolume);
-
-                  
-                        Session["tankUnit"] = tankSupply.tankUnit;
-                        Session["tankVolume"] = tankSupply.tankVolume;
-
-                    }
+                   
                     // Login successful, redirect to admin homepage
                     Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
                     //Response.Redirect("/Admin/AdminIndex.aspx");
