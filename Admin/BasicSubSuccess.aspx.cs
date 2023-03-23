@@ -31,52 +31,80 @@ namespace WRS2big_Web.Admin
         {
             try
             {
-                DateTime now = DateTime.Now;
-                DateTime SubBasic = now.AddMonths(6);
-                var idnum = Session["idno"].ToString();
-                var firstname = Session["Fname"].ToString();
-                DateTime startDate = now;
-                string type = "BASIC";
+                FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS");
+                Dictionary<string, Model.SubscriptionPlans> plans = response.ResultAs<Dictionary<string, Model.SubscriptionPlans>>();
 
-                //var data = new Model.AdminAccount
-                //{
-                //    Idno = int.Parse(idnum),
-                //    Fname = firstname,
-                //    SubType = type,
-                //    SubsDate = now,
-                //    SubEnd = SubBasic,
+                foreach (var basicplan in plans)
+                {
+                    var planID = basicplan.Value.idno;
 
-                //};
-                var data = new Model.Subscription();
+                    //to check if ang plan is niexist ba sa database
+                    if (planID == 4862)
+                    {
+                        var idno = planID;
 
-                data.Idno = idnum;
-                data.SubType = type;
-                data.SubsDate = now;
-                data.SubEnd = SubBasic;
-                FirebaseResponse response;
-                response = twoBigDB.Update("ADMIN/" + idnum, data);//Update Product Data 
+                        FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + idno);
+                        Model.SubscriptionPlans obj = res.ResultAs<Model.SubscriptionPlans>();
 
-                //Model.AdminAccount data = new Model.AdminAccount()
-                //{
-                //    Idno = int.Parse(idnum),
-                //    SubType = type,
-                //    SubsDate = now,
-                //    SubEnd = SubBasic,
+                        //retrieval the data sa kana nga plan
+                        string plan = obj.planName;
+                        int basic = int.Parse(obj.planDuration);
+                        int amount = int.Parse(obj.planPrice);
 
-                //};
-                //twoBigDB.Update("ADMIN/" + idnum, data);
+                        //declaration of the attributes
+                        DateTime now = DateTime.Now;
+                        DateTime SubBasic = now.AddMonths(basic);
+                        var idnum = Session["idno"].ToString();
+                        var firstname = Session["Fname"].ToString();
+                        DateTime startDate = now;
 
-                //FirebaseResponse response;
-                //response = twoBigDB.Update("ADMIN/" + data.Idno, data);
-                //Model.AdminAccount result = response.ResultAs<Model.AdminAccount>();
+                        var data = new Model.SubscribedPlan();
 
-                Response.Write("<script>alert ('Thankyou for Subscribing ! You successfully subscribed to: " + data.SubType + " PLAN '); location.reload(); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
-                //Response.Write("<script> alert ('New Gallon added successfully'); location.reload(); window.location.href = 'ProductGallon.aspx' </script>");
+                        data.adminID = int.Parse(idnum);
+                        data.subPlan = plan;
+                        data.subStart = now;
+                        data.subEnd = SubBasic;
+                        data.price = amount;
+
+                        //SAVE THE SUBSCRIPTION PLAN DETAILS SA ADMIN NGA TABLE
+                        twoBigDB.Update("ADMIN/" + idnum + "/SubscribedPlan/", data);
+
+
+                        //to generate random ID
+                        Random rnd = new Random();
+                        int clientNo = rnd.Next(1, 10000);
+
+                        //ISAVE SA SUPERADMIN NGA DATABASE ANG AMGA CLIENTS NGA NISUBSCRIBE 
+                        var fullname = Session["fullName"];
+                        var contact = Session["contactNumber"];
+                        var email = Session["email"];
+
+                        var clients = new Model.superAdminClients
+                        {
+                            idno = clientNo,
+                            clientID = int.Parse(idnum),
+                            fullname = fullname.ToString(),
+                            email = email.ToString(),
+                            phone = contact.ToString(),
+                            plan = plan
+                        };
+
+                        SetResponse clientres;
+                        //Storing the info of the admin nga ni subscribe to superadmin
+                        clientres = twoBigDB.Set("SUBSCRIBING_CLIENTS/" + clients.idno, clients);//Storing data to the database
+                        Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
+
+
+                        Response.Write("<script>alert ('Thankyou for Subscribing ! You successfully subscribed to: " + data.subPlan + " '); location.reload(); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                    }
+
+                }
+
 
             }
             catch
             {
-
+                Response.Write("<script>alert ('Subscription Unsuccessfull'); location.reload(); window.location.href = '/Admin/BasicPlanSub.aspx'; </script>");
             }
 
         }

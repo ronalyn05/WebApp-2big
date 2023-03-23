@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SubscriptionPlans.aspx.cs" Inherits="WRS2big_Web.Admin.SubscriptionPlans" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,43 +115,76 @@
                             <br>
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-sm-3" style="background-color: white;">
+                                    <div class="col-sm-3" style="background-color: transparent;">
                                     </div>
 
-                                    <div class="col-sm-3" style="background-color: pink;">
+                                    <div class="col-sm-3" style="background-color: transparent;">
                                         <div class="">
                                             <div class="text-center">
                                                 <img src="/images/BasicPlan.PNG" style="width:100%">
                                             </div>
-                                            <p class="h3 text-center">BASIC PLAN</p>
-                                            <h2 class="texts text-center " style="font-size:20px;"> Grow your Water Refilling Business for only ₱3000 good for 6 Months ! Enjoy a hassle-free business process and attract new and loyal customers</h2> <br>
+                                            <p class="h3 text-center">
+                                                <asp:Label runat="server" ID="basinplanLabel">
+
+                                                </asp:Label>
+                                              </p>
+                                            <p class="h3 text-center">
+                                                <asp:Label runat="server" ID="basicPriceLabel">
+
+                                                </asp:Label> /
+                                                <asp:Label runat="server" ID="basicDurationLabel">
+                                                    
+                                                </asp:Label> 
+                                              </p>
+                                            <h2 class="texts text-center " style="font-size:20px;" > 
+                                               <%-- Grow your Water Refilling Business for only ₱3000 good for 6 Months ! Enjoy a hassle-free business process and attract new and loyal customers--%>
+                                                <asp:Label ID="descriptionBasic" runat="server"> 
+
+                                                </asp:Label>
+                                            </h2> <br>
                                             <div cell small-24 class="text-center">
                                                 <a href="BasicPlanSub.aspx" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
                                                     SUBSCRIBE
                                                 </a>
                                             </div> <br>
+
                                         </div>
                                     </div>
 
 
-                                    <div class="col-sm-3" style="background-color: lightskyblue;">
+
+                                    <div class="col-sm-3" style="background-color: transparent;">
                                         <div class="service-item second-service">
                                             <div class="text-center">
                                                 <img src="/images/PremiumPlan.PNG" style="width:100%">
                                             </div>
-                                            <p class="h3 text-center">PREMIUM PLAN</p>
+                                            <p class="h3 text-center">
+                                                <asp:Label runat="server" ID="premiumplanLabel">
+
+                                                </asp:Label>
+                                            </p>
+                                            <p class="h3 text-center">
+                                                <asp:Label runat="server" ID="premiumPriceLabel">
+
+                                                </asp:Label> /
+                                                <asp:Label runat="server" ID="premiumDurationLabel">
+                                                    
+                                                </asp:Label> 
+                                              </p>
                                             <h2 class="texts text-center" style="font-size:20px;">
-                                               Grow your Water Refilling Business for only ₱5500 good for 1 year ! Enjoy a hassle-free business process and attract new and loyal customers
+                                                <asp:Label ID="descriptionPremium" runat="server"> 
+
+                                                </asp:Label>
                                             </h2> <br>
                                             <div cell small-24 class="text-center">
-                                                <a href="PremiumPlanSub" class="button" style="color:darkblue;font-size: 18px;background-color: pink;padding: 10px;">
+                                                <a href="PremiumPlanSub" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
                                                     SUBSCRIBE
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3" style="background-color: white;">
+                                    <div class="col-sm-3" style="background-color: transparent;">
                                         <div class="service-item second-service">
                                         </div>
                                     </div>
@@ -166,6 +200,8 @@
     </div>
 <!-- end of container-fluid -->
     </section>
+
+
 
     <!-- Required Jquery -->
     <script type="text/javascript" src="/assets/js/jquery/jquery.min.js"></script>
@@ -189,4 +225,5 @@
 </form>
 </body>
 </html>
+
 
