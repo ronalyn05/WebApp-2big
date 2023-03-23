@@ -36,6 +36,7 @@ namespace WRS2big_Web.Model
 
     public class SubscribedPlan
     {
+        public int adminID { get; set; }
         public DateTimeOffset subStart { get; set; }
         public string subPlan { get; set; }
         public string subDescription { get; set; }
