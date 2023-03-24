@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SubscriptionPlans.aspx.cs" Inherits="WRS2big_Web.Admin.SubscriptionPlans" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Account.aspx.cs" Inherits="WRS2big_Web.superAdmin.Account" %>
 
 
 <!DOCTYPE html>
@@ -35,6 +35,14 @@
     <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+        <!-- Include the Leaflet CSS file -->
+    <link rel="stylesheet" href="/assets/leaflet/leaflet.css"/>
+
+    <!-- Include the Leaflet JavaScript file -->
+    <script src="/assets/leaflet/leaflet.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body themebg-pattern="theme1">
@@ -94,115 +102,93 @@
     </div>
     <!-- Pre-loader end -->
     <section class="login-block">
-               <div class="text-center">
-                     <img src="/images/2ndLogo.png" style="width:500px" alt="logo.png">
-                </div>
         <!-- Container-fluid starts -->
-        <div class="container-fluid ">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <form class="md-float-material form-material">
-                        <!-- SUBSCRIPTION-->
-                        <section class="cell medium-8 padding-vertical-4">
-                            <a name="subscription"> </a>
-                            <div>
-                                <h1 class="h3 text-center">
-                                    <br> SUBSCRIPTION PLANS <br>
-                                </h1>
-                                <h2 class="texts text-center " style="font-size:20px;">Pick the best plan and start growing your business NOW !</h2><br />
+                        <div class="text-center">
+                            <img src="/images/2ndLogo.png" style="width:500px" alt="logo.png">
+                        </div>
+                        <div class="col-xl-6 col-md-8" style="align-content:center;margin-left:480px">
+                        <div class="card">
+                            <div class="card-block"> <br />
+                                <br><br>
 
-                            </div>
-                            <br>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm-3" style="background-color: transparent;">
-                                    </div>
+                                <%--LOG IN FIELD--%>
+                                    <div id="login">
+                                        <div class="row">
+<%--                                            @*username*@--%>
+                                            <div class="col">
+                                                <div class="">
+                                                    <%--<label>Email:</label>--%>
+                                                    <label>Email:</label>
+                                                    <div class="input-group">
+                                           <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
+                                                        <asp:TextBox runat="server" type="idno" class="form-control" ID="txt_idno" ValidationGroup="a" > </asp:TextBox>
+                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
+                                                    </div>
+                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"  ForeColor="Red" ControlToValidate="txt_idno" ValidationGroup="a"></asp:RegularExpressionValidator>--%>
 
-                                    <div class="col-sm-3" style="background-color: transparent;">
-                                        <div class="">
-                                            <div class="text-center">
-                                                <img src="/images/BasicPlan.PNG" style="width:100%">
-                                            </div>
-                                            <p class="h3 text-center">
-                                                <asp:Label runat="server" ID="basinplanLabel">
-
-                                                </asp:Label>
-                                              </p>
-                                            <p class="h3 text-center">
-                                                <asp:Label runat="server" ID="basicPriceLabel">
-
-                                                </asp:Label> /
-                                                <asp:Label runat="server" ID="basicDurationLabel">
-                                                    
-                                                </asp:Label> 
-                                              </p>
-                                            <h2 class="texts text-center " style="font-size:20px;" > 
-                                               <%-- Grow your Water Refilling Business for only ₱3000 good for 6 Months ! Enjoy a hassle-free business process and attract new and loyal customers--%>
-                                                <asp:Label ID="descriptionBasic" runat="server"> 
-
-                                                </asp:Label>
-                                            </h2> <br>
-                                            <div cell small-24 class="text-center">
-                                                <a href="BasicPlanSub.aspx" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
-                                                    SUBSCRIBE
-                                                </a>
-                                            </div> <br>
-
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-sm-3" style="background-color: transparent;">
-                                        <div class="service-item second-service">
-                                            <div class="text-center">
-                                                <img src="/images/PremiumPlan.PNG" style="width:100%">
-                                            </div>
-                                            <p class="h3 text-center">
-                                                <asp:Label runat="server" ID="premiumplanLabel">
-
-                                                </asp:Label>
-                                            </p>
-                                            <p class="h3 text-center">
-                                                <asp:Label runat="server" ID="premiumPriceLabel">
-
-                                                </asp:Label> /
-                                                <asp:Label runat="server" ID="premiumDurationLabel">
-                                                    
-                                                </asp:Label> 
-                                              </p>
-                                            <h2 class="texts text-center" style="font-size:20px;">
-                                                <asp:Label ID="descriptionPremium" runat="server"> 
-
-                                                </asp:Label>
-                                            </h2> <br>
-                                            <div cell small-24 class="text-center">
-                                                <a href="PremiumPlanSub" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
-                                                    SUBSCRIBE
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="row">
+<%--                                            @*password*@--%>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Password:</label>
+                                                    <div class="input-group">
+                                            <asp:TextBox runat="server" type="password" class="form-control" TextMode="Password" id="txt_password" ValidationGroup="a"></asp:TextBox> 
 
-                                    <div class="col-sm-3" style="background-color: transparent;">
-                                        <div class="service-item second-service">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+<%--                                        @*Show Password checkbox*@--%>
+                                        <div class="row m-t-25 text-left">
+                                            <div class="col-md-12">
+                                                <div class="checkbox-fade fade-in-primary">
+                                                    <label>
+                                                        <input type="checkbox" value="" id="togglePassword">
+                                                        <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                                        <span class="text-inverse">Show Password</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        
+
+                                    <%-- @*Show Password script*@--%>
+                                       <script>
+                                           const togglePassword = document.querySelector('#togglePassword');
+                                           const password = document.querySelector('#txt_password');
+
+                                           togglePassword.addEventListener('click', function (e) {
+                                               // toggle the type attribute
+                                               const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                               password.setAttribute('type', type);
+                                               // toggle the eye slash icon
+                                               this.classList.toggle('fa-eye-slash');
+                                           });
+                                       </script>
+                                    <div class="d-flex justify-content-center">
+                                        <%--LOGIN BUTTON--%>
+                                        <asp:Button ID="Login" runat="server" Text="Login"  class="btn" style="background: linear-gradient(to right, #5bc0de, #9dd9eb);"  OnClick="Login_Click" /> 
+                                    </div>
+                                  </div>
+                                 </div>
                                 </div>
                             </div>
-                        </section>
-                  </form>
-              </div>
-     <!-- end of col-sm-12 -->
-            </div>
-   <!-- end of row -->
-    </div>
-<!-- end of container-fluid -->
-    </section>
-
-
-
+                       </form>
+                      </div>
+                     <!-- end of col-sm-12 -->
+                    </div>
+                   <!-- end of row -->
+                  </div>
+                <!-- end of container-fluid -->
+                    </section>
     <!-- Required Jquery -->
     <script type="text/javascript" src="/assets/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/js/jquery-ui/jquery-ui.min.js "></script>
@@ -225,5 +211,6 @@
 </form>
 </body>
 </html>
+
 
 

@@ -139,6 +139,7 @@ namespace WRS2big_Web.Admin
                     emp_address = txtaddress.Text,
                     emp_contactnum = txtcontactnum.Text,
                     emp_email = txtemail.Text,
+                    emp_pass = txtpass.Text,
                     emp_dateHired = txtdateHired.Text,
                     emp_emergencycontact = txtemergencycontact.Text,
                     emp_role = drdrole.Text,

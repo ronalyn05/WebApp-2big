@@ -582,6 +582,14 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="superAdmin\Account.aspx" />
+    <Content Include="superAdmin\ClientReports.aspx" />
+    <Content Include="superAdmin\CustomerReports.aspx" />
+    <Content Include="superAdmin\ManageCustomers.aspx" />
+    <Content Include="superAdmin\ManageSubscription.aspx" />
+    <Content Include="superAdmin\ManageWRSClients.aspx" />
+    <Content Include="superAdmin\SAdminIndex.aspx" />
+    <Content Include="superAdmin\SubscriptionReports.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -620,6 +628,7 @@
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.designer.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
@@ -647,6 +656,7 @@
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\OnlineOrders.aspx.designer.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
@@ -688,6 +698,7 @@
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\WaterProduct.aspx.designer.cs">
       <DependentUpon>WaterProduct.aspx</DependentUpon>
@@ -742,6 +753,7 @@
     <Compile Include="Model\CUSTOMERNOTIFICATION.cs" />
     <Compile Include="Model\OrderData.cs" />
     <Compile Include="Model\Subscription.cs" />
+    <Compile Include="Model\superAdminClients.cs" />
     <Compile Include="Site1.Master.cs">
       <DependentUpon>Site1.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -773,6 +785,61 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\Account.aspx.cs">
+      <DependentUpon>Account.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\Account.aspx.designer.cs">
+      <DependentUpon>Account.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\ClientReports.aspx.cs">
+      <DependentUpon>ClientReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\ClientReports.aspx.designer.cs">
+      <DependentUpon>ClientReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\CustomerReports.aspx.cs">
+      <DependentUpon>CustomerReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\CustomerReports.aspx.designer.cs">
+      <DependentUpon>CustomerReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\ManageCustomers.aspx.cs">
+      <DependentUpon>ManageCustomers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\ManageCustomers.aspx.designer.cs">
+      <DependentUpon>ManageCustomers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\ManageSubscription.aspx.cs">
+      <DependentUpon>ManageSubscription.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\ManageSubscription.aspx.designer.cs">
+      <DependentUpon>ManageSubscription.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\ManageWRSClients.aspx.cs">
+      <DependentUpon>ManageWRSClients.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\ManageWRSClients.aspx.designer.cs">
+      <DependentUpon>ManageWRSClients.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\SAdminIndex.aspx.cs">
+      <DependentUpon>SAdminIndex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\SAdminIndex.aspx.designer.cs">
+      <DependentUpon>SAdminIndex.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\SubscriptionReports.aspx.cs">
+      <DependentUpon>SubscriptionReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\SubscriptionReports.aspx.designer.cs">
+      <DependentUpon>SubscriptionReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

@@ -46,7 +46,7 @@ namespace WRS2big_Web.Admin
             response = twoBigDB.Get("TANKSUPPLY/" + idno);
             TankSupply obj = response.ResultAs<TankSupply>();
 
-            if(obj != null)
+            if (obj != null && obj.tankVolume != null && obj.tankUnit != null)
             {
                 Session["tankVolume"] = obj.tankVolume;
                 Session["tankUnit"] = obj.tankUnit;
@@ -56,38 +56,83 @@ namespace WRS2big_Web.Admin
             //THIS RETRIEVE THE DATA FROM THE ORDERS TBL
             var result = twoBigDB.Get("ORDERS/");
             Order order = result.ResultAs<Order>();
-            //state the variable for orders
-            //Session["size"] = order.order_size;
-            //Session["unit"] = order.order_unit;
-            //Session["quantity"] = order.order_Quantity;
-
+            // state the variable for orders
+            if (order != null && order.order_size != null && order.order_unit != null)
+            {
+                //state the variable for orders
+                Session["size"] = order.order_size;
+                Session["unit"] = order.order_unit;
+                Session["quantity"] = order.order_Quantity;
+           
             //state the variable for tank supply
             string tankVolume = (string)Session["tankVolume"];
             string tankUnit = (string)Session["tankUnit"];
 
-            //int orderSize = (int)Session["size"];
-            //string orderUnit = (string)Session["unit"];
-            //int qty = (int)Session["quantity"];
+            int orderSize = (int)Session["size"];
+            string orderUnit = (string)Session["unit"];
+            int qty = (int)Session["quantity"];
 
+            double tankCapacity = double.Parse(tankVolume + tankUnit);
+            double orderedVolume = double.Parse(orderSize + orderUnit);
+            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
 
+            //quantity of the customers ordered
+            double orders = qty * orderedVolume;
 
-            if (tankUnit != null && tankVolume != null)
+            // convert ordered volume to gallons or milliliters based on order unit
+            double orderedGallons = 0;
+            if (orderUnit == "L" || orderUnit == "liter/s")
             {
-                lbltankSupply.Text = "Your tank supply added for today is: " + (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
+                orderedGallons = orders * gallonsPerLiter;
+            }
+            else if (orderUnit == "mL" || orderUnit == "ML" || orderUnit == "milliliters")
+            {
+                orderedGallons = orders / gallonsPerML;
+            }
 
-               // int orders = orderSize * qty;
+            // calculate remaining supply in gallons
+            double remainingSupply = tankCapacity - orderedGallons;
 
-                //lblremainingSupply.Text = orderVolume - orders.ToString();
-               
+            // check if remaining supply is less than 0
+            if (remainingSupply <= 0)
+            {
+                //Console.WriteLine("Sorry, we don't have enough alkaline water in stock to fulfill your order.");
+               // The customer will be notified. Apply a firebase clound messaging here
             }
             else
-                {
-                    lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
-                }
-
+            {
+                // display the remaining supply and the variable for tank supply
+                string tankSupply = $"{tankVolume} {tankUnit}";
+                lbltankSupply.Text = ($"Remaining supply of alkaline water in the owner's tank ({tankSupply})");
+                lblremainingSupply.Text = ($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
+               // Console.WriteLine($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
             }
 
-      
+            } 
+            else
+            {
+                lbltankSupply.Text = "No data available for today! You first need to add your water tank supply..";
+            }
+
+            //if (tankUnit != null && tankVolume != null)
+            //{
+            //    lbltankSupply.Text = "Your tank supply added for today is: " + (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
+
+            //    string orders = order.order_size + order.order_unit 
+            //   // int orders = orderSize * qty;
+
+            //    //lblremainingSupply.Text = orderVolume - orders.ToString();
+
+            //}
+            //else
+            //    {
+            //        lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
+            //    }
+
+        }
+
+
         protected void btnDisplay_Click(object sender, EventArgs e)
         {
             //try
