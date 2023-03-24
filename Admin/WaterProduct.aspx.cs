@@ -37,115 +37,101 @@ namespace WRS2big_Web.Admin
                 //  DisplayID();
                 //GetTankSupplyForToday();
             }
+
             string idno = (string)Session["idno"];
-            string tankId = (string)Session["tankId"];
+            
 
-//            Retrieve tank supply data
             FirebaseResponse response;
+            //THIS RETRIEVE THE DATA FORM THE TANKSUPPLY TBL
             response = twoBigDB.Get("TANKSUPPLY/" + idno);
-            TankSupply tankSupply = response.ResultAs<TankSupply>();
+            TankSupply obj = response.ResultAs<TankSupply>();
 
-            //    response = twoBigDB.Get("ORDERS/" + idno);
-            //    Order orders = response.ResultAs<Order>();
-
-
-
-
-            //    if (tankSupply != null)
-            //    {
-            //        // Debug code: check if the expected values are present
-            //        Debug.WriteLine("tankUnit = " + tankSupply.tankUnit);
-            //        Debug.WriteLine("tankVolume = " + tankSupply.tankVolume);
-
-
-            //        Session["tankUnit"] = tankSupply.tankUnit;
-            //        Session["tankVolume"] = tankSupply.tankVolume;
-
-            //    }
-            string tankUnit = (string)Session["tankUnit"];
-            string tankVolume = (string)Session["tankVolume"];
-            //    double tankBalance = (double)Session["tankBalance"];
-
-
-            if (tankUnit != null && tankVolume != null)
+            if (obj != null && obj.tankVolume != null && obj.tankUnit != null)
             {
-                lbltankSupply.Text = "Your tank supply added for today is: " + tankSupply.tankUnit.ToString() + " " + tankSupply.tankVolume.ToString();
+                Session["tankVolume"] = obj.tankVolume;
+                Session["tankUnit"] = obj.tankUnit;
+            }
+           
 
-                //       // lblremainingSupply.Text = ""
-                //        //// Assume you have a method GetTankSupplyForToday() that retrieves the tank supply data for the current day from the database
-                //        //string tankSupplyForToday = GetTankSupplyForToday(); 
-                //        //if (tankSupplyForToday != null)
-                //        //{
-                //        //lbltankSupply.Text = tankUnit + " " + tankVolume + " added today: " + tankSupplyForToday;
-                //        //}
-                //        //else
-                //        //{
-                //        //lbltankSupply.Text = "No data available for today";
-                //        //}
-                    }
-                else
-                {
-                    lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
-                }
+            //THIS RETRIEVE THE DATA FROM THE ORDERS TBL
+            var result = twoBigDB.Get("ORDERS/");
+            Order order = result.ResultAs<Order>();
+            // state the variable for orders
+            if (order != null && order.order_size != null && order.order_unit != null)
+            {
+                //state the variable for orders
+                Session["size"] = order.order_size;
+                Session["unit"] = order.order_unit;
+                Session["quantity"] = order.order_Quantity;
+           
+            //state the variable for tank supply
+            string tankVolume = (string)Session["tankVolume"];
+            string tankUnit = (string)Session["tankUnit"];
 
+            int orderSize = (int)Session["size"];
+            string orderUnit = (string)Session["unit"];
+            int qty = (int)Session["quantity"];
+
+            double tankCapacity = double.Parse(tankVolume + tankUnit);
+            double orderedVolume = double.Parse(orderSize + orderUnit);
+            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+
+            //quantity of the customers ordered
+            double orders = qty * orderedVolume;
+
+            // convert ordered volume to gallons or milliliters based on order unit
+            double orderedGallons = 0;
+            if (orderUnit == "L" || orderUnit == "liter/s")
+            {
+                orderedGallons = orders * gallonsPerLiter;
+            }
+            else if (orderUnit == "mL" || orderUnit == "ML" || orderUnit == "milliliters")
+            {
+                orderedGallons = orders / gallonsPerML;
             }
 
-        //keeps track of whether the supply data has been added
-        //private bool supplyDataAdded = false;
+            // calculate remaining supply in gallons
+            double remainingSupply = tankCapacity - orderedGallons;
 
-        //STORING DATA TO TANKSUPPLY
-        //protected void btnAddSupply_Click(object sender, EventArgs e)
-        //{
-        //    if (supplyDataAdded)
-        //    {
-        //        Response.Write("<script>alert('Supply data has already been added!'); </script>");
-        //        return;
-        //    }
+            // check if remaining supply is less than 0
+            if (remainingSupply <= 0)
+            {
+                //Console.WriteLine("Sorry, we don't have enough alkaline water in stock to fulfill your order.");
+               // The customer will be notified. Apply a firebase clound messaging here
+            }
+            else
+            {
+                // display the remaining supply and the variable for tank supply
+                string tankSupply = $"{tankVolume} {tankUnit}";
+                lbltankSupply.Text = ($"Remaining supply of alkaline water in the owner's tank ({tankSupply})");
+                lblremainingSupply.Text = ($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
+               // Console.WriteLine($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
+            }
 
-        //    string idno = (string)Session["idno"];
-        //    int adminId = int.Parse(idno);
+            } 
+            else
+            {
+                lbltankSupply.Text = "No data available for today! You first need to add your water tank supply..";
+            }
 
-        //    try
-        //    {
-        //        // INSERT DATA TO TABLE = otherPRODUCT
-        //        Random rnd = new Random();
-        //        int idnum = rnd.Next(1, 10000);
+            //if (tankUnit != null && tankVolume != null)
+            //{
+            //    lbltankSupply.Text = "Your tank supply added for today is: " + (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
 
-        //        var data = new TankSupply
-        //        {
-        //            adminId = adminId,
-        //            tankId = idnum,
-        //            tankUnit = drdTankUnit.SelectedValue,
-        //            tankVolume = tankSize.Text,
-        //            dateAdded = DateTime.UtcNow
-        //        };
+            //    string orders = order.order_size + order.order_unit 
+            //   // int orders = orderSize * qty;
 
-        //        SetResponse response;
-        //        //USER = tablename, Idno = key(PK ? )
-        //        // response = twoBigDB.Set("ADMIN/" + idno + "/TANKSUPPLY/" + data.productId, data);
-        //        response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
+            //    //lblremainingSupply.Text = orderVolume - orders.ToString();
 
-        //        // Set supplyDataAdded to true to prevent further additions
-        //        supplyDataAdded = true;
+            //}
+            //else
+            //    {
+            //        lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
+            //    }
 
-        //        // Disable the button to prevent further additions
-        //        AddTanksupply.Enabled = false;
-        //        AddTanksupply.Text = "Supply data added";
+        }
 
-        //        var supplyDataResponse = twoBigDB.Get("TANKSUPPLY/" + data.tankId);
-        //        TankSupply supplyData = supplyDataResponse.ResultAs<TankSupply>();
-
-        //        //display the tank supply result here
-        //        lbltankSupply.Text = supplyData.tankVolume.ToString() + ' ' + supplyData.tankUnit.ToString();
-        //      //  lblremainingSupply.Text = 
-
-        //        Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
-        //    }
-        //}
 
         protected void btnDisplay_Click(object sender, EventArgs e)
         {
@@ -231,18 +217,18 @@ namespace WRS2big_Web.Admin
                 };
 
                 SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
+                //TANKSUPPLY = tablename, Idno = key(PK ? )
                 // response = twoBigDB.Set("ADMIN/" + idno + "/TANKSUPPLY/" + data.productId, data);
                 response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
                 TankSupply result = response.ResultAs<TankSupply>();
 
-                //Get the data in the database
-                var res = twoBigDB.Get("TANKSUPPLY/" + idno);
-                TankSupply obj = res.ResultAs<TankSupply>();
+                ////Get the data in the database
+                //var res = twoBigDB.Get("TANKSUPPLY/" + idno);
+                //TankSupply obj = res.ResultAs<TankSupply>();
 
               
-                    //display the tank supply result here
-                    lbltankSupply.Text = obj.tankVolume.ToString() + ' ' + obj.tankUnit.ToString();
+                //    //display the tank supply result here
+                //    lbltankSupply.Text = obj.tankVolume.ToString() + ' ' + obj.tankUnit.ToString();
 
                 Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 

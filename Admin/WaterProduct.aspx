@@ -191,7 +191,7 @@
                                              <%-- </form>--%>
                                              </div>
                                             </div>
-                                        <%-- end set refill supply--%>
+                                        <%-- end set product refill --%>
                                        <%-- MODAL FOR Delivery details--%>
                                        <div class="modal fade manage" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
@@ -211,21 +211,36 @@
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
                                                   <strong>Delivery Type:</strong>
-                                                        <asp:CheckBoxList ID="chkdevType" runat="server">
-                                                            <asp:ListItem Text="Standard" Value="Standard"></asp:ListItem>
-                                                            <asp:ListItem Text="Reservation" Value="Reservation"></asp:ListItem>
-                                                            <asp:ListItem Text="Express" Value="Express"></asp:ListItem>
-                                                        </asp:CheckBoxList>  
-                                                        <strong>Estimated time for Express:</strong>
+                                             <%--   <asp:DropDownList ID="drdDeliveryType" runat="server">--%>
+                                                        <asp:CheckBoxList ID="chkdevType"  runat="server" >
+                                                            <asp:ListItem Text="Standard" Value="Standard" data-target="#standard"></asp:ListItem>
+                                                            <asp:ListItem Text="Reservation" Value="Reservation" data-target="#reservation"></asp:ListItem>
+                                                            <asp:ListItem Text="Express" Value="Express" data-target="#express"></asp:ListItem>
+                                                 <%--   </asp:DropDownList> --%>
+                                                        </asp:CheckBoxList> 
+                                                </div>
+                                               <%-- MODAL FOR EXPRESS--%>
+                                                <!-- Modal 1 -->
+                                                <div class="modal fade" id="express" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
+                                                  <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header">
+                                                        <h5 class="modal-title" id="modal1Label">Express Delivery</h5>
+                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                      </div>
+                                                      <div class="modal-body">
+                                                        <%--ESTIMATED TIME --%>
+                                                           <div class="col-md-12 col-sm-12 ">
+                                                        <strong>Estimated time for express:</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="estimatedTime" Placeholder="Enter estimated time" runat="server"></asp:TextBox>
-                                                     
-                                               </div>
+                                                        <asp:TextBox ID="estimatedTime" Placeholder="Enter estimated time of express delivery" runat="server"></asp:TextBox>
+                                                     </div>
+                                               
                                               <%--  Distance--%>
                                                 <div class="col-md-12 col-sm-12 ">
                                                         <strong>Free Delivery Distance:</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="distanceDelivery" Width="364px" Placeholder="Enter the specific distance offered for free delivery" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="distanceDelivery" Width="364px" Placeholder="Enter the specific distance in km offered for free delivery" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                  <%--  delivery fee--%>
@@ -235,6 +250,11 @@
                                                         <asp:TextBox ID="deliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                        
                                                 <%--  estimated time--%>
                                                 <%--<div class="col-md-12 col-sm-12 ">
                                                         <strong>Estimated time:</strong>
@@ -318,7 +338,9 @@
                                                              <div class="col-md-12 col-sm-12">
                                                     <strong>Tank Supply of the day:</strong>
                                                         <asp:Label ID="lbltankSupply" runat="server" Width="364px"></asp:Label>
+                                                                 </div>
                                                    <br />
+                                                                  <div class="col-md-12 col-sm-12">
                                                    <strong>Remaining Supply:</strong>
                                                         <asp:Label ID="lblremainingSupply" runat="server" Width="364px"></asp:Label><br />
                                                </div>

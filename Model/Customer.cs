@@ -35,6 +35,8 @@ namespace WRS2big_Web.Model
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
         public string order_OrderMethod { get; set; }
-        public decimal order_WaterPrice { get; set; }
+        public string order_WaterPrice { get; set; }
+        public string order_unit { get; set; }
+        public string order_size { get; set; }
     }
 }
