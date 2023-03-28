@@ -91,7 +91,7 @@ namespace WRS2big_Web.LandingPage
                         var storageTask = storage.Child(filePath).PutAsync(stream);
                         var downloadUrl = await storageTask;
                         // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        list.proof = Encoding.ASCII.GetBytes(downloadUrl);
+                        list.proof = downloadUrl;
                     }
                 }
                 
@@ -104,7 +104,7 @@ namespace WRS2big_Web.LandingPage
                 response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
 
-              //  ValidateTerms();
+               ValidateTerms();
                 Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has suucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
@@ -124,64 +124,88 @@ namespace WRS2big_Web.LandingPage
 
         }
 
+        //LOGGING IN 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-
-            //Get the email and password entered by the user
-            //string email = txt_email.Text.Trim();
-            //string password = txt_password.Text.Trim();
-            //Get the id number and password entered by the user
-            string idno = txt_idno.Text.Trim();
-            string password = txt_password.Text.Trim();
-
-           
-            FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/" + idno);
-            AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
-            //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-            //RefillingStation obj = response.ResultAs<RefillingStation>();
-
-            //Check if the id number and password are valid
-            if (user != null)
+            try
             {
-                if (user.pass == password)
+                //Get the email and password entered by the user
+                //string email = txt_email.Text.Trim();
+                //string password = txt_password.Text.Trim();
+                //Get the id number and password entered by the user
+                string idno = txt_idno.Text.Trim();
+                string password = txt_password.Text.Trim();
+
+
+                FirebaseResponse response;
+                response = twoBigDB.Get("ADMIN/" + idno);
+                AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
+                //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+                //RefillingStation obj = response.ResultAs<RefillingStation>();
+
+                //Check if the id number and password are valid
+                if (user != null)
                 {
-                    Session["idno"] = idno;
-                    Session["password"] = password;
-                    Session["fname"] = user.fname;
-                    Session["mname"] = user.mname;
-                    Session["lname"] = user.lname;
-                    Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
-                    Session["dob"] = user.bdate;
-                    Session["contactNumber"] = user.phone;
-                    Session["email"] = user.email;
-                    Session["profile_image"] = user.profile_image;
-                    //Session["subType"] = user.subType;
-                    //Session["subsDate"] = user.subsDate;
-                    //Session["subEnd"] = user.subEnd;
+                    if (user.pass == password)
+                    {
+                        Session["idno"] = idno;
+                        Session["password"] = password;
+                        Session["fname"] = user.fname;
+                        Session["mname"] = user.mname;
+                        Session["lname"] = user.lname;
+                        Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
+                        Session["dob"] = user.bdate;
+                        Session["contactNumber"] = user.phone;
+                        Session["email"] = user.email;
+                        Session["profile_image"] = user.profile_image;
+                        //Session["subType"] = user.subType;
+                        //Session["subsDate"] = user.subsDate;
+                        //Session["subEnd"] = user.subEnd;
 
 
-                    // Retrieve all RefillingStation objects for the current admin
-                    response = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
-                    RefillingStation stations = response.ResultAs<RefillingStation>();
-                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
-                    Session["stationName"] = stations.stationName;
-                    Session["address"] = stations.stationAddress;
-                    Session["operatingHrs"] = stations.operatingHrs;
-                    Session["status"] = stations.status;
-                    Session["businessdays"] = stations.businessDays;
+                        // Retrieve all RefillingStation objects for the current admin
+                        response = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
+                        RefillingStation stations = response.ResultAs<RefillingStation>();
+                        //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+                        Session["stationName"] = stations.stationName;
+                        Session["address"] = stations.stationAddress;
+                        Session["operatingHrs"] = stations.operatingHrs;
+                        Session["status"] = stations.status;
+                        Session["businessdays"] = stations.businessDays;
 
-                   
-                    // Login successful, redirect to admin homepage
-                    Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-                    //Response.Redirect("/Admin/AdminIndex.aspx");
+                        // Retrieve all TankSupply objects for the current admin
+                        response = twoBigDB.Get("TANKSUPPLY/");
+                        TankSupply obj = response.ResultAs<TankSupply>();
+
+                        if (obj != null)
+                        { 
+                            Session["tankId"] = obj.tankId;
+                            Session["tankVolume"] = obj.tankVolume;
+                            Session["tankUnit"] = obj.tankUnit;
+                            Session["dateAdded"] = obj.dateAdded;
+                        }
+
+                        // Login successful, redirect to admin homepage
+                        Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+                        //Response.Redirect("/Admin/AdminIndex.aspx");
+                    }
+                    else
+                    {
+                        // Login failed, display error message
+                        //lblError.Text = "Invalid email or password!";
+                        Response.Write("<script>alert('Invalid email or password');</script>");
+                    }
                 }
                 else
                 {
-                    // Login failed, display error message
-                    //lblError.Text = "Invalid email or password!";
-                    Response.Write("<script>alert('Invalid email or password');</script>");
+                    Response.Write("<script>alert('User not found!');</script>");
                 }
+              
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception and log the error message
+                string errorMessage = "An error occurred while trying to login: " + ex.Message;
             }
         }
     }

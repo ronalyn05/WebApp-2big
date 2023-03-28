@@ -24,7 +24,7 @@ namespace WRS2big_Web.Model
     public class Order
     {
         public int orderID { get; set; }
-        public int adminID { get; set; }
+        public int admin_ID { get; set; }
         public int cusId { get; set; }
         public string order_DeliveryTypeValue { get; set; }
         public decimal order_InitialAmount { get; set; }

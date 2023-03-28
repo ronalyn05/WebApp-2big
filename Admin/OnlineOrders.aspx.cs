@@ -38,14 +38,17 @@ namespace WRS2big_Web.Admin
         private void DisplayTable()
         {
             string idno = (string)Session["idno"];
-           // int adminId = int.Parse(idno);
+            // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("ORDERS/");
-            Order obj = response.ResultAs<Order>();
-            var json = response.Body;
-          //  Dictionary<string, Order> orders = JsonConvert.DeserializeObject<Dictionary<string, Order>>(json);
-            Dictionary<string, Order> orders = response.ResultAs<Dictionary<string, Order>>();
+            FirebaseResponse response = twoBigDB.Get("ORDERS");
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
+            //  FirebaseResponse response = twoBigDB.Get("ORDERS/");
+            //  Order obj = response.ResultAs<Order>();
+            //  var json = response.Body;
+            ////  Dictionary<string, Order> orders = JsonConvert.DeserializeObject<Dictionary<string, Order>>(json);
+            //  Dictionary<string, Order> orders = response.ResultAs<Dictionary<string, Order>>();
 
             // Create the DataTable to hold the orders
             DataTable ordersTable = new DataTable();
@@ -67,18 +70,18 @@ namespace WRS2big_Web.Admin
             if (response != null && response.ResultAs<Order>() != null)
             {
                 // Loop through the orders and add them to the DataTable
-                foreach (KeyValuePair<string, Order> entry in orders)
+                foreach (var entry in filteredList)
                 {
                     // Only add orders that belong to the specified admin
                     //if (entry.Value.adminID != null && entry.Value.adminID == adminId)
                     //{
-                        ordersTable.Rows.Add(entry.Value.orderID, entry.Value.cusId,
-                                              entry.Value.order_StoreName, entry.Value.order_ProductName,
-                                              entry.Value.order_unit, entry.Value.order_size, 
-                                              entry.Value.order_DeliveryTypeValue, entry.Value.order_OrderTypeValue, 
-                                              entry.Value.order_WaterPrice,
-                                              entry.Value.order_Quantity, entry.Value.order_InitialAmount,
-                                              entry.Value.order_ReservationDate, entry.Value.order_OrderStatus);
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId,
+                                              entry.order_StoreName, entry.order_ProductName,
+                                              entry.order_unit, entry.order_size, 
+                                              entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, 
+                                              entry.order_WaterPrice,
+                                              entry.order_Quantity, entry.order_InitialAmount,
+                                              entry.order_ReservationDate, entry.order_OrderStatus);
                     //  entry.Value.order_SwapGallonTypeValue,
                 }
             }

@@ -119,13 +119,73 @@
                                              <br />
                                              <br />
                                         </div>
+                                        <button type="button" id="btnlogin" class="togglebtn btn btn-primary waves-effect text-center active" onclick="login()">Login</button>            
                                         <button type="button" id="btnregister" class="togglebtn btn btn-primary waves-effect text-center active" onclick="register()">Sign Up</button>
-                                        <button type="button" id="btnlogin" class="togglebtn btn btn-primary waves-effect text-center active" onclick="login()">Login</button>                                   
                                         </center>
                                 </div> <br />
                                 <br><br>
+                                 <%--LOG IN FIELD--%>
+                                    <div id="login">
+                                        <div class="row">
+<%--                                            @*username*@--%>
+                                            <div class="col">
+                                                <div class="">
+                                                    <%--<label>Email:</label>--%>
+                                                    <label>ID Number:</label>
+                                                    <div class="input-group">
+                                           <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
+                                                        <asp:TextBox runat="server" type="idno" TextMode="Number" class="form-control" ID="txt_idno" ValidationGroup="a" > </asp:TextBox>
+                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
+                                                    </div>
+                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"  ForeColor="Red" ControlToValidate="txt_idno" ValidationGroup="a"></asp:RegularExpressionValidator>--%>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+<%--                                            @*password*@--%>
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label>Password:</label>
+                                                    <div class="input-group">
+                                            <asp:TextBox runat="server" type="password" class="form-control" TextMode="Password" id="txt_password" ValidationGroup="a"></asp:TextBox> 
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+<%--                                        @*Show Password checkbox*@--%>
+                                        <div class="row m-t-25 text-left">
+                                            <div class="col-md-12">
+                                                <div class="checkbox-fade fade-in-primary">
+                                                    <label>
+                                                        <input type="checkbox" value="" id="togglePassword">
+                                                        <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
+                                                        <span class="text-inverse">Show Password</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <%-- @*Show Password script*@--%>
+                                       <script>
+                                           const togglePassword = document.querySelector('#togglePassword');
+                                           const password = document.querySelector('#txt_password');
+
+                                           togglePassword.addEventListener('click', function (e) {
+                                               // toggle the type attribute
+                                               const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                               password.setAttribute('type', type);
+                                               // toggle the eye slash icon
+                                               this.classList.toggle('fa-eye-slash');
+                                           });
+                                       </script>
+                                    <div class="d-flex justify-content-center">
+                                        <%--LOGIN BUTTON--%>
+                                        <asp:Button ID="Login" runat="server" Text="Login"  class="btn" style="background: linear-gradient(to right, #5bc0de, #9dd9eb);"  OnClick="btnLogin_Click" ValidationGroup="a"/> 
+                                    </div>
+                                  </div> <%--end of login here--%>
 <%--                                @*      SIGN UP     *@--%>
-                            <div class="active" id="register">
+                            <div class="active" id="register" style="display:none;">
                               <div style="background-color:wheat" class="card card-block">
 	                               <h5 >PERSONAL INFORMATION</h5>
                                </div>
@@ -187,7 +247,7 @@
                                         <div class="form-group">
                                             <label>Phone Number</label> 
                                             <div class="input-group-sm">
-                                            <asp:TextBox runat="server" TextMode="Phone" class="form-control" Placeholder ="+63" ID="txtphoneNum"></asp:TextBox>  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>
+                                            <asp:TextBox runat="server" TextMode="Phone" class="form-control" Placeholder ="ex: 90909090909" ID="txtphoneNum"></asp:TextBox>  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>
                                                 </div>
                                             </div>
                                         </div>
@@ -222,7 +282,6 @@
                                             </asp:RequiredFieldValidator>
                                             <div class="input-group-sm">
                                             <asp:TextBox runat="server" class="form-control" TextMode="Password" ID="id_passwordreg" ></asp:TextBox> 
-
                                             </div>
                                         </div>
                                     </div>
@@ -440,67 +499,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                                <%--LOG IN FIELD--%>
-                                    <div id="login" style="display:none;">
-                                        <div class="row">
-<%--                                            @*username*@--%>
-                                            <div class="col">
-                                                <div class="">
-                                                    <%--<label>Email:</label>--%>
-                                                    <label>ID Number:</label>
-                                                    <div class="input-group">
-                                           <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
-                                                        <asp:TextBox runat="server" type="idno" TextMode="Number" class="form-control" ID="txt_idno" ValidationGroup="a" > </asp:TextBox>
-                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
-                                                    </div>
-                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"  ForeColor="Red" ControlToValidate="txt_idno" ValidationGroup="a"></asp:RegularExpressionValidator>--%>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-<%--                                            @*password*@--%>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label>Password:</label>
-                                                    <div class="input-group">
-                                            <asp:TextBox runat="server" type="password" class="form-control" TextMode="Password" id="txt_password" ValidationGroup="a"></asp:TextBox> 
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-<%--                                        @*Show Password checkbox*@--%>
-                                        <div class="row m-t-25 text-left">
-                                            <div class="col-md-12">
-                                                <div class="checkbox-fade fade-in-primary">
-                                                    <label>
-                                                        <input type="checkbox" value="" id="togglePassword">
-                                                        <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                        <span class="text-inverse">Show Password</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <%-- @*Show Password script*@--%>
-                                       <script>
-                                           const togglePassword = document.querySelector('#togglePassword');
-                                           const password = document.querySelector('#txt_password');
-
-                                           togglePassword.addEventListener('click', function (e) {
-                                               // toggle the type attribute
-                                               const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                                               password.setAttribute('type', type);
-                                               // toggle the eye slash icon
-                                               this.classList.toggle('fa-eye-slash');
-                                           });
-                                       </script>
-                                    <div class="d-flex justify-content-center">
-                                        <%--LOGIN BUTTON--%>
-                                        <asp:Button ID="Login" runat="server" Text="Login"  class="btn" style="background: linear-gradient(to right, #5bc0de, #9dd9eb);"  OnClick="btnLogin_Click" ValidationGroup="a"/> 
-                                    </div>
-                                  </div>
+                            </div> 
+                                <%--End ofsignup here--%> 
                                  </div>
                                 </div>
                             </div>

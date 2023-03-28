@@ -60,8 +60,7 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                       <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >
-                                               <asp:GridView runat="server" ID="GridView1" CellPadding="4" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" ForeColor="#333333" GridLines="None" >
-                                                      <AlternatingRowStyle BackColor="White" />
+                                               <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -72,16 +71,15 @@
                                                           </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                      <EditRowStyle BackColor="#7C6F57" />
-                                                      <FooterStyle BackColor="#1C5E55" ForeColor="White" Font-Bold="True" />
-                                                      <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
-                                                      <PagerStyle ForeColor="White" HorizontalAlign="Center" BackColor="#666666" />
-                                                      <RowStyle Width="200px" BackColor="#E3EAEB" />
-                                                      <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
-                                                      <SortedAscendingCellStyle BackColor="#F8FAFA" />
-                                                      <SortedAscendingHeaderStyle BackColor="#246B61" />
-                                                      <SortedDescendingCellStyle BackColor="#D4DFE1" />
-                                                      <SortedDescendingHeaderStyle BackColor="#15524A" />
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
                                                     </asp:GridView>
                                                  </div>
                                                               </div><!--/tab-pane-->
