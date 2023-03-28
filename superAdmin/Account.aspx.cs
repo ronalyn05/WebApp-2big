@@ -53,7 +53,7 @@ namespace WRS2big_Web.superAdmin
             }
             else
             {
-                Response.Write("<script>alert ('Login Unsuccessful!  Try again.'); location.reload(); window.location.href = '/superAdmin/Account.aspx'; </script>");
+                Response.Write("<script>alert ('Login Unsuccessful! Invalid credentials. Please Try again.'); location.reload(); window.location.href = '/superAdmin/Account.aspx'; </script>");
             }
         }
     }

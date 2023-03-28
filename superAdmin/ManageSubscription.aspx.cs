@@ -29,120 +29,57 @@ namespace WRS2big_Web.superAdmin
        
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["email"] == null && Session["password"] == null)
-            {
-                Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
-            }
+            //if (Session["email"] == null && Session["password"] == null)
+            //{
+            //    Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
+            //}
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
             if (!IsPostBack)
             {
                 //DisplayPlans();
-                DisplayTable();
+                //DisplayTable();
                 
              
             }
-            //Table();
+           
         }
 
-        //private async void Table()
-        //{
-
-        //   var plans = await twoBigDB.GetAsync("SUPERADMIN/SUPSCRIPTION_PLANS");
-        //    var data = JsonConvert.DeserializeObject<Dictionary<string, Model.SubscriptionPlans>>(plans.Body);
-
-        //    foreach (var item in data)
-        //    {
-        //        plansTable.Rows.Add(new HtmlTableRow
-        //        {
-        //            Cells = 
-        //            {
-        //                 new HtmlTableCell { InnerText = item.Value.planName },
-        //                 new HtmlTableCell { InnerText = item.Value.planDes },
-        //                 new HtmlTableCell { InnerText = item.Value.planDuration }
-        //            }
-        //        });
-        //    }
-
-        //}
         private void DisplayTable()
         {
-
-
+            // Retrieve all subscription plans from Firebase
             FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS");
-            Model.SubscriptionPlans plan = response.ResultAs<Model.SubscriptionPlans>();
-            var data = response.Body;
-            Dictionary<string, Model.SubscriptionPlans> subplans = JsonConvert.DeserializeObject<Dictionary<string, Model.SubscriptionPlans>>(data);
+            Dictionary<string, Model.SubscriptionPlans> subplans =
+                JsonConvert.DeserializeObject<Dictionary<string, Model.SubscriptionPlans>>(response.Body);
 
-
+            // Create a DataTable to store the subscription plans
             DataTable plansTable = new DataTable();
             plansTable.Columns.Add("PLAN ID");
             plansTable.Columns.Add("PLAN NAME");
-            plansTable.Columns.Add(" DESCRIPTION");
-            plansTable.Columns.Add(" DURATION(months)");
-            plansTable.Columns.Add(" PRICE");
+            plansTable.Columns.Add("DESCRIPTION");
+            plansTable.Columns.Add("DURATION(months)");
+            plansTable.Columns.Add("PRICE");
             plansTable.Columns.Add("FEATURES");
+           
 
-
+            // Populate the DataTable with the subscription plans
             foreach (KeyValuePair<string, Model.SubscriptionPlans> entry in subplans)
             {
-                string features = string.Join("," , entry.Value.features); // concatenate features into a single line
-                plansTable.Rows.Add(entry.Value.idno ,entry.Value.planName, entry.Value.planDes, entry.Value.planDuration, entry.Value.planPrice, features);
-            
+                string features = string.Join(",", entry.Value.features);
+
+                plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
+                    entry.Value.planDuration, entry.Value.planPrice, features);
+
             }
 
-
-            // Bind DataTable to GridView control
+            // Bind the DataTable to the GridView control
             GridView1.DataSource = plansTable;
             GridView1.DataBind();
         }
 
 
-        protected void clientGridView_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Update")
-            {
-                int id = Convert.ToInt32(e.CommandArgument);
-                // perform update function using the id value
 
-
-                var data = new Model.SubscriptionPlans();
-
-                data.planName = TextBox1.Text;
-                data.planDes = TextBox2.Text;
-                data.planDuration = TextBox3.Text;
-                data.planPrice = TextBox4.Text;
-
-
-                FirebaseResponse response;
-                response = twoBigDB.Update("SUPERADMIN/SUBSCRIPTION_PLANS/" + id, data);//Update Product Data 
-            }
-
-        }
-        //protected void btnUpdate_Click (object sender, EventArgs e)
-        //{
-        //    string selected;
-        //    selected = 
-        //}
-
-
-        //private void DisplayPlans()
-        //{
-        //    //TO LOAD THE SUBSCRIPTION PLANS
-
-        //    FirebaseResponse response;
-        //    response = twoBigDB.Get("SUBSCRIPTION_PLANS");
-        //    Model.SubscriptionPlans plan = response.ResultAs<Model.SubscriptionPlans>();
-        //    var item = response.Body;
-        //    Dictionary<string, Model.SubscriptionPlans> subplans = JsonConvert.DeserializeObject<Dictionary<string, Model.SubscriptionPlans>>(item);
-
-        //    foreach (KeyValuePair<string, Model.SubscriptionPlans> entry in subplans)
-        //    {
-        //        PlansListbox.Items.Add(new ListItem(entry.Value.planName,entry.Key));
-        //    }
-
-        //}
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
@@ -166,7 +103,7 @@ namespace WRS2big_Web.superAdmin
                     planDuration = duration.Text,
                     planPrice = txtamount.Text,
                     features = features
-
+                        
 
                  };
 
@@ -188,84 +125,59 @@ namespace WRS2big_Web.superAdmin
 
         }
 
-        //protected void PlanDetails_Click(object sender, EventArgs e)
-        //{
-        //    String selected;
-        //    selected = PlansListbox.SelectedValue;
-
-        //    FirebaseResponse response;
-        //    response = twoBigDB.Get("SUBSCRIPTION_PLANS/" + selected);
-        //    Model.SubscriptionPlans obj = response.ResultAs<Model.SubscriptionPlans>();
-
-        //    planID.Text = obj.idno.ToString();
-        //    planName.Text = obj.planName.ToString();
-        //    planDes.Text = obj.planDes.ToString();
-        //    planDue.Text = obj.planDuration.ToString();
-        //    planPrice.Text = obj.planPrice.ToString();
-        //    // Clear the existing items in the ListBox
-        //    planFeatures.Items.Clear();
-
-        //    // Add the features from the database to the ListBox
-        //    foreach (var feature in obj.features)
-        //    {
-        //        planFeatures.Items.Add(feature);
-        //    }
+        protected void updateButton_Click1(object sender, EventArgs e)
+        {
+            LinkButton button = (LinkButton)sender;
+            GridViewRow row = (GridViewRow)button.NamingContainer;
 
 
-        //}
+            int id = int.Parse(row.Cells[1].Text);
+            string name = row.Cells[2].Text;
+            string description = row.Cells[3].Text;
+            string duration = row.Cells[4].Text;
+            string price = row.Cells[5].Text;
+            string features = row.Cells[6].Text;
 
-        //    protected void updateBtn_Click(object sender, EventArgs e)
-        //    {
-        //        String deleteStr;
-        //        deleteStr = PlansListbox.SelectedValue;
-
-        //var data = new Model.SubscriptionPlans();
-
-        //data.idno = int.Parse(planID.Text);
-        //data.planName = planName.Text;
-        //    data.planDes = planDes.Text;
-        //    data.planDuration = planDue.Text;
-        //    data.planPrice = planPrice.Text;
+            planID.Text = id.ToString();
+            planName.Text = name;
+            planDes.Text = description;
+            planDuration.Text = duration;
+            planAmount.Text = price;
 
 
-        //    FirebaseResponse response;
-        //response = twoBigDB.Update("SUBSCRIPTION_PLANS/" + deleteStr, data);//Update Product Data 
-
-           
-
-    //        //var result = twoBigDB.Get("SUBSCRIPTION_PLANS/" + deleteStr);//Retrieve Updated Data
-    //        //Model.SubscriptionPlans obj = response.ResultAs<Model.SubscriptionPlans>();//Database Result
-
-
-    //        //planID.Text = obj.idno.ToString();
-    //        //planName.Text = obj.planName;
-    //        //planDes.Text = obj.planDes;
-    //        //planFeatures.Text = obj.planFeatures;
-    //        //PlanDue.Text = obj.planDuration.ToString();
-    //        //PlanPrice.Text = obj.planPrice.ToString();
-
-    //        Response.Write("<script>alert ('" + data.planName + " successfully updated!');</script>");
-    //        DisplayUpdated();
+            string[] featuresArray = features.Split('\n');
+            string featuresList = string.Join(Environment.NewLine, featuresArray);
+            planFeatures.Text = featuresList;
+            //updatePlan.Text = name;
+            //updateDesc.Text = description;
+            //updateDuration.Text = duration;
+            //updateAmount.Text = price;
 
 
-    //    }
-    //    private void DisplayUpdated()
-    //    {
-    //        String selected;
-    //        selected = PlansListbox.SelectedValue;
+        }
 
-    //        FirebaseResponse response;
-    //        response = twoBigDB.Get("SUBSCRIPTION_PLANS/" + selected);
-    //        Model.SubscriptionPlans obj = response.ResultAs<Model.SubscriptionPlans>();
+        protected void updateBtn_Click(object sender, EventArgs e)
+        {
+            var plans = new Model.SubscriptionPlans();
 
-    //        planID.Text = obj.idno.ToString();
-    //        planName.Text = obj.planName.ToString();
-    //        planDes.Text = obj.planDes.ToString();
-    //        planDue.Text = obj.planDuration.ToString();
-    //        planPrice.Text = obj.planPrice.ToString();
+            plans.idno = int.Parse(planID.Text); // get the ID from the GridView
+            plans.planName = planName.Text;
+            plans.planDes = planDes.Text;
+            plans.planDuration = planDuration.Text;
 
+            FirebaseResponse response;
+            response = twoBigDB.Update("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno, plans);
+            Response.Write("<script>alert ('PLAN ID : " + plans.idno +" successfully updated!');</script>");
 
+            var result = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno);
+            Model.SubscriptionPlans obj = response.ResultAs<Model.SubscriptionPlans>();
 
-    //    }
+            planID.Text = obj.idno.ToString();
+            planName.Text = obj.planName.ToString();
+            planDes.Text = obj.planDes.ToString();
+            planDuration.Text = obj.planDuration.ToString();
+            planAmount.Text = obj.planPrice.ToString();
+
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace WRS2big_Web.Model
 
     public class RefillingStation
     {
-       // public int stationID { get; set; }
+        public int stationID { get; set; }
         public string stationName { get; set; }
         public string stationAddress { get; set; }
         public double addLattitude { get; set; }
