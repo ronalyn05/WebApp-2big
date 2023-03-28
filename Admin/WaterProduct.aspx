@@ -42,12 +42,62 @@
                                 <div class="">
                                   <div class="clearfix">
                                        <%-- add product button--%>
-                                         <button type="button" style="font-size:14px;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Other Product Offers</button>
-                                       <button type="button" style="font-size:14px;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
-                                       <button type="button" style="font-size:14px;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>
+                                         <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Other Product Offers</button>
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i> Add Tank Supply</button>
+                                       <asp:Label ID="TankSupply" runat="server"></asp:Label>
+                                       <asp:Label ID="date" runat="server"></asp:Label>
 
                                          <%--VIEW BUTTON --%>
                                           &nbsp;
+                                       <%-- MODAL FOR TANK SUPPLY --%>
+                                       <div class="modal fade addtank" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                            <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel3">Add Tank Supply</h4>
+                                                <%--exit button--%>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="x_content">
+                                           <%-- <div class="item form-group">--%>
+                                                <h4 style="color:black;font-family:Bahnschrift"> Set daily amount of tank supply here:</h4>
+
+                                                 <div class="col-md-12 col-sm-12 ">
+                                                  <%--tank unit --%>
+                                                  <strong>Tank Unit:</strong>
+                                                        <asp:DropDownList ID="drdTankUnit" runat="server" Height="40px" Width="300px">
+                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                       <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
+                                                       <asp:ListItem Text="Liters" Value="liter/s" ></asp:ListItem>
+                                                     <asp:ListItem Text="Mililiters" Value="mililiter/s" ></asp:ListItem>
+                                                   </asp:DropDownList>
+                                               </div>
+                                                            <br />
+                                              <%--  Tank Size--%>
+                                                <div class="col-md-12 col-sm-12 ">
+                                                     <strong>Tank Size:</strong>
+                                                        <asp:TextBox ID="tankSize" Placeholder="Enter the size of tank water supply" runat="server" Width="300px"></asp:TextBox>
+                                                     </div>
+                                                         <br />
+                                                         
+                                                           <%-- <asp:Button ID="AddTanksupply" runat="server" class="btn btn-primary btn-sm" Text="Add Supply" OnClick="btnAddSupply_Click" Width="131px"/>--%>
+                                            
+                                                  </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <%--  BUTTON TANK SUPPLY HERE--%>
+                                               <asp:Button ID="btnAddSupply" runat="server" Text="Add Supply" class="btn btn-primary btn-sm" OnClick="btnAddSupply_Click" AutoPostBack="true"/>
+                                            </div>
+                                              </div>
+                                            </div>
+                                             <%--  </form>--%>
+                                             </div>
+                                           </div>
                                        <%-- MODAL FOR ADD PRODUCT--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
@@ -116,7 +166,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" runat="server" Text="Add other Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click"/>
+                                               <asp:Button ID="btnAdd" runat="server" Text="Add other Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="true"/>
                                                 <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
                                                 --%></div>
                                               </div>
@@ -184,7 +234,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- set data button--%>
-                                               <asp:Button ID="btnSet" runat="server" Text="Add Product Refill" class="btn btn-primary btn-sm" OnClick="btnSet_Click"/>
+                                               <asp:Button ID="btnSet" runat="server" Text="Add Product Refill" class="btn btn-primary btn-sm" OnClick="btnSet_Click" AutoPostBack="true"/>
                                                 </div>
                                               </div>
                                             </div>
@@ -193,6 +243,7 @@
                                             </div>
                                         <%-- end set product refill --%>
                                        <%-- MODAL FOR Delivery details--%>
+                                    <%-- MODAL FOR Delivery details--%>
                                        <div class="modal fade manage" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
                                             <div class="modal-content">
@@ -211,81 +262,179 @@
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
                                                   <strong>Delivery Type:</strong>
-                                             <%--   <asp:DropDownList ID="drdDeliveryType" runat="server">--%>
-                                                        <asp:CheckBoxList ID="chkdevType"  runat="server" >
-                                                            <asp:ListItem Text="Standard" Value="Standard" data-target="#standard"></asp:ListItem>
-                                                            <asp:ListItem Text="Reservation" Value="Reservation" data-target="#reservation"></asp:ListItem>
-                                                            <asp:ListItem Text="Express" Value="Express" data-target="#express"></asp:ListItem>
-                                                 <%--   </asp:DropDownList> --%>
-                                                        </asp:CheckBoxList> 
-                                                </div>
-                                               <%-- MODAL FOR EXPRESS--%>
-                                                <!-- Modal 1 -->
-                                                <div class="modal fade" id="express" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <h5 class="modal-title" id="modal1Label">Express Delivery</h5>
-                                                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                      </div>
-                                                      <div class="modal-body">
-                                                        <%--ESTIMATED TIME --%>
-                                                           <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Estimated time for express:</strong>
-                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="estimatedTime" Placeholder="Enter estimated time of express delivery" runat="server"></asp:TextBox>
-                                                     </div>
+                                                        <asp:CheckBoxList ID="chkdevType" OnSelectedIndexChanged="chkdevType_SelectedIndexChanged" runat="server" AutoPostBack="true">
+                                                            <asp:ListItem Text="Standard" Value="Standard" ID="standardChcked"></asp:ListItem>
+                                                            <asp:ListItem Text="Reservation" Value="Reservation" ID="reserveChcked"></asp:ListItem>
+                                                            <asp:ListItem Text="Express" Value="Express" ID="expressChcked"></asp:ListItem>
+                                                        </asp:CheckBoxList>  
                                                
-                                              <%--  Distance--%>
-                                                <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Free Delivery Distance:</strong>
-                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="distanceDelivery" Width="364px" Placeholder="Enter the specific distance in km offered for free delivery" runat="server"></asp:TextBox>
-                                                     </div>
-                                                <br />
-                                                 <%--  delivery fee--%>
-                                                <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Delivery fee:</strong>
-                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="deliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                     </div>
-                                                <br />
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
+                                                <%--<asp:DropDownList ID="drdDevType" runat="server" Height="40px" Width="364px" OnSelectedIndexChanged="drdDevType_SelectedIndexChanged" AutoPostBack="True">
+                                                    <asp:ListItem Text="Standard" Value="Standard" Selected="True"></asp:ListItem>
+                                                    <asp:ListItem Text="Reservation" Value="Reservation" ></asp:ListItem>
+                                                    <asp:ListItem Text="Express" Value="Express" ></asp:ListItem>
+                                                    onclick="displayStandardOptions()"
+                                                    onclick="displayReserveOptions()"
+                                                     onclick="displayExpressOptions()"
+                                                </asp:DropDownList>--%>
+
+                                            </div>
+                                                <!--OPTIONS FOR STANDARD WHEN CLICKED--> 
+                                                <div ID="standardCheckedDIV" style="display:none"> <hr />
+                                                    <strong>Standard Options</strong>
+                                                        <div  class="col-md-12 col-sm-12 ">
+                                                                <strong>Time Schedule for Delivery:</strong> <br />
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="standardSchedDel" Placeholder="Set the time schedule for your standard delivery" runat="server"></asp:TextBox>
+                                                     
+                                                        </div>
                                                         
-                                                <%--  estimated time--%>
-                                                <%--<div class="col-md-12 col-sm-12 ">
-                                                        <strong>Estimated time:</strong>
-                                                        <asp:TextBox ID="estimatedTime" runat="server"></asp:TextBox>
-                                                     </div>
-                                                <br />--%>
+                                                         <%--  delivery fee--%>
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                                <strong>Distance for FREE Delivery:</strong>
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="standardFreeDel" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                         </div>
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                                <strong>Delivery FEE:</strong>
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="standardDelFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                         </div>
+                                                </div>
+                                                <!--SCRIPT FOR STANDARD WHEN CLICKED-->
+                                                <script>
+                                                    function displayStandardOptions() {
+                                                        var standard = document.getElementById("standardChcked");
+                                                        var stanfields = document.getElementById("standardCheckedDIV");
+
+                                                        if (standard.checked) {
+                                                            stanfields.style.display = "none";
+                                                            // Disable other options
+                                                            //document.getElementById("reserveChcked").disabled = true;
+                                                            //document.getElementById("expressChcked").disabled = true;
+
+                                                        } else {
+
+                                                            stanfields.style.display = "block";
+                                                            // Enable other options
+                                                            //document.getElementById("reserveChcked").disabled = false;
+                                                            //document.getElementById("expressChcked").disabled = false;
+                                                        }
+                                                    }
+                                                </script>
+
+                                                <!--OPTIONS FOR RESERVATION WHEN CLICKED--> 
+                                                <div ID="reserveCheckedDIV" style="display:none"><hr /> 
+                                                    <strong>Reservation Options</strong>
+                                                        <div  class="col-md-12 col-sm-12 ">
+                                                                <strong>Distance in km for FREE Delivery:</strong> <br />
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="resFreeDel" Placeholder="Set the maximum distance for your FREE delivery" Width="364px" runat="server"></asp:TextBox>
+                                                     
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                                <strong>Delivery FEE:</strong>
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="resDelFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                         </div>
+                                                </div>
+                                                <!--SCRIPT FOR RESERVATION WHEN CLICKED-->
+                                                <script> 
+                                                    function displayReserveOptions() {
+                                                        var reserve = document.getElementById("reserveChcked");
+                                                        var reservefields = document.getElementById("reserveCheckedDIV");
+
+                                                        if (reserve.checked) {
+                                                            reservefields.style.display = "none";
+                                                            // Disable other options
+                                                            //document.getElementById("standardChcked").disabled = true;
+                                                            //document.getElementById("expressChcked").disabled = true;
+
+                                                        } else {
+
+                                                            reservefields.style.display = "block";
+                                                            // Enable other options
+                                                            //document.getElementById("standardChcked").disabled = false;
+                                                            //document.getElementById("expressChcked").disabled = false;
+                                                        }
+                                                    }
+                                                </script>
+                                               
+
+                                                <!--OPTIONS FOR EXPRESS WHEN CLICKED--> 
+                                                <div ID="expressCheckedDIV" style="display:none"> <hr />
+                                                     <strong>Express Options</strong>
+                                                        <div  class="col-md-12 col-sm-12 ">
+                                                                <strong>Estimated time for Express Delivery:</strong> <br />
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="estimatedTime" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
+                                                     
+                                                        </div>
+                                                        
+                                                         <%--  delivery fee--%>
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                                <strong>Express Delivery fee:</strong>
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="deliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
+                                                         </div>
+                                                </div>
+                                                 <!--SCRIPT FOR EXPRESS WHEN CLICKED-->
+                                                    <script>
+                                                        function displayExpressOptions() {
+
+                                                            var express = document.getElementById("expressChcked");
+                                                            var standard = document.getElementById("standardChcked");
+                                                            var reserve = document.getElementById("reserveChcked");
+                                                            var fields = document.getElementById("expressCheckedDIV");
+
+                                                            standard.disabled = false;
+                                                            reserve.disabled = false;
+
+                                                            if (express.checked) {
+                                                                fields.style.display = "none";
+                                                                // Disable other options
+                                                                //document.getElementById("standardChcked").setAttribute("disabled", "disabled");
+                                                                //document.getElementById("reserveChcked").setAttribute("disabled", "disabled");
+                                                                //document.getElementById("reserveChcked").disabled = true;
+                                                                //document.getElementById("standardChcked").disabled = true;
+
+                                                            } else {
+
+                                                                fields.style.display = "block";
+                                                                // Enable other options
+                                                                //document.getElementById("reserveChcked").disabled = false;
+                                                                //document.getElementById("standardChcked").disabled = false;
+                                                            }
+
+                                                        }
+                                                    </script>
+                                                <hr />
                                                <div class="col-md-12 col-sm-12">
-                                                   <%--Delivery Method--%>
+                                                  
                                                    <strong>Choose types of ordered offered to customers:</strong>
                                                         <asp:CheckBoxList ID="chkOrderMethod" runat="server">
                                                             <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
                                                             <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                              <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                         </asp:CheckBoxList>
-                                               </div> 
+                                               </div>  <hr />
                                                <div class="col-md-12 col-sm-12">
-                                                   <%--Order Type--%>
+                                                
                                                    <strong>Choose the type of service offered to the customers:</strong>
-                                              <%--<asp:Label ID="Label9" runat="server" Text="Order Type:"></asp:Label><br />--%>
                                                         <asp:CheckBoxList ID="chkOrderType" runat="server">
-                                                            <asp:ListItem Text="PickUp" Value="PickUp"></asp:ListItem>
+                                                            <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
                                                             <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                         </asp:CheckBoxList>
-                                              <%-- </div>--%>
                                                </div>
+
+                                                <br />
+  
+
                                                 <br />
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- set data button--%>
-                                               <asp:Button ID="btnDeliverydetails" runat="server" Text="Add details" class="btn btn-primary btn-sm" OnClick="btnDeliverydetails_Click"/>
+                                               <asp:Button ID="btnDeliverydetails" runat="server" Text="Add details" class="btn btn-primary btn-sm" OnClick="btnDeliverydetails_Click" AutoPostBack="true" />
                                                 </div>
                                               </div>
                                             </div>
@@ -308,33 +457,38 @@
                                                                     <li><i class="fa fa-trash close-card"></i></li>
                                                                 </ul>
                                                             </div>
-                                                            <%--<h5>Add Tank Supply:</h5>--%>
-                                                            <asp:Label ID="Label1" runat="server" Text="Add Tank Supply" Font-Bold="true" Font-Size="Medium" Width="364px"></asp:Label>
+                                                            <%--<h5> Tank Supply:</h5>--%>
+                                                            <asp:Label ID="Label1" runat="server" Text="Tank Supply" Font-Bold="true" Font-Size="Medium" Width="364px"></asp:Label>
                                                             <%--<button type="button" style="font-size:14px; width: 154px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addSupply"><i class="fa fa-plus"></i> Add Tank Supply</button>--%>
 
                                                         </div>
                                                         <div class="card-block">   
                                                              <div class="col-md-12 col-sm-12 ">
                                                   <%--tank unit --%>
-                                                  <strong>Tank Unit:</strong>
-                                                        <asp:DropDownList ID="drdTankUnit" runat="server" Height="40px" Width="300px">
+                                                <%--  <strong>Tank Unit:</strong>
+                                                        <asp:DropDownList ID="drdTankUnit" runat="server" Height="40px" Width="300px">--%>
                                                        <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                       <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
+                                                      <%-- <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
                                                        <asp:ListItem Text="Liters" Value="liter/s" ></asp:ListItem>
                                                      <asp:ListItem Text="Mililiters" Value="mililiter/s" ></asp:ListItem>
                                                    </asp:DropDownList>
                                                </div>
+                                                            <br />--%>
                                               <%--  Tank Size--%>
-                                                <div class="col-md-12 col-sm-12 ">
+                                               <%-- <div class="col-md-12 col-sm-12 ">
                                                      <strong>Tank Size:</strong>
                                                         <asp:TextBox ID="tankSize" Placeholder="Enter the size of tank water supply" runat="server" Width="300px"></asp:TextBox>
                                                      </div>
-                                                         <br />
+                                                         <br />--%>
                                                           <%--  BUTTON TANK SUPPLY HERE--%>
-                                                            <asp:Button ID="AddTanksupply" runat="server" class="btn btn-primary btn-sm" Text="Add Supply" OnClick="btnAddSupply_Click" Width="131px"/>
+                                                          <%--  <asp:Button ID="AddTanksupply" runat="server" class="btn btn-primary btn-sm" Text="Add Supply" OnClick="btnAddSupply_Click" Width="131px"/>--%>
                                                           <%--  <hr />
                                                             <h5>Tank Supply for the day:</h5>--%>
-                                                            <hr />
+                                                          <%--  <hr />--%>
+                                                             <div class="col-md-12 col-sm-12">
+                                                    <strong>Date:</strong>
+                                                        <asp:Label ID="lbl_Date" runat="server" Width="364px"></asp:Label>
+                                                                 </div>
                                                              <div class="col-md-12 col-sm-12">
                                                     <strong>Tank Supply of the day:</strong>
                                                         <asp:Label ID="lbltankSupply" runat="server" Width="364px"></asp:Label>
@@ -350,17 +504,15 @@
                                                             <asp:Button ID="Button1" onclick="btnDisplay_Click" type="button" style="font-size:14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
                                                         --%>
                                                         </div>
-                                                    <div class="card-footer">
-                                                       
-                                                        
-                                                    </div>
+                                                    
                                                     </div>
                                                   </div>
-                                                    
+                                                    </div>
                                             <div class="col-xl-9 col-md-12">
-                                                <div class="card" style="background-color:#f2e2ff">
+                                                <div class="card">
                                                     <div class="card-header">
-                                                        <h5>WATER PRODUCT INFORMATION</h5>
+                                                        
+                                                        <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="PRODUCTS DATA"></asp:Label>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -372,60 +524,108 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
+                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server">
+                                                           <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="otherProduct" Value="2"></asp:ListItem>
+                                                           <asp:ListItem Text="deliveryDetails" Value="3"></asp:ListItem>
+                                                        </asp:DropDownList>
+
+                                                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
-                                                                      <div class="form-group">                
-                                                                        <div class="col-xs-12" style="font-size:16px">
-                                                                           <h5>Product ID:</h5> 
-                                                                            <asp:Label ID="LabelID" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                            <br>
-                                                                            <h5>Product Name: </h5>
-                                                                            <asp:TextBox  ID="prodName" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                          <%--<asp:DropDownList ID="DrdprodType" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
-                                                                           <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
-                                                                           <asp:ListItem Text="Alkaline" Value="Alkaline"></asp:ListItem>
-                                                                           <asp:ListItem Text="Mineral" Value="Mineral" ></asp:ListItem>
-                                                                           <asp:ListItem Text="Sparkling Water" Value="Sparkling" ></asp:ListItem>
-                                                                           <asp:ListItem Text="Distilled Drinking Water" Value="Distilled" ></asp:ListItem>
-                                                                           <asp:ListItem Text="Purified Drinking Water" Value="Purified" ></asp:ListItem>
-                                                                       </asp:DropDownList>--%>
-                                                                            <h5>Volume/Size Category: </h5>
-                                                                              <asp:TextBox  ID="prodSize" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                            <%--<asp:DropDownList ID="DrdprodSize" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
-                                                                                   <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
-                                                                                   <asp:ListItem Text="1 gallon" Value="1 gallon"></asp:ListItem>
-                                                                                   <asp:ListItem Text="10 liters" Value="10 liters" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="6.6 liters" Value="6.6 liters" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="1 liter" Value="1 liter" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="1000 ml" Value="1000 ml" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="500 ml" Value="500 ml" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="350 ml" Value="350 ml" ></asp:ListItem>
-                                                                                   <asp:ListItem Text="330 ml" Value="330 ml" ></asp:ListItem>
-                                                                           </asp:DropDownList>--%>
-                                                                            <h5>Product Price: </h5>
-                                                                              <asp:TextBox  ID="prodPrice" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                            <h5>Product Discount: </h5>
-                                                                              <asp:TextBox  ID="prodDiscount" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                <hr />
+                                                               <%-- PRODUCTS REFILL NI DIRI--%>
+                                                               <%-- <h5> Products Refill</h5>--%>
+                                                                <asp:Label ID="lblProductRefill" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                 <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                 <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                             <br />
+                                                                       <%--the gridview starts here--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridProductRefill" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
 
-                                                                            <h5>Product Available: </h5>
-                                                                              <asp:TextBox  ID="prodAvailable" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                 <%--</div>--%> <%--Gridview ends here--%>
+                                                              <%--  <hr />--%>
+                                                                 <%-- OTHER PRODUCTS NI DIRI--%>
+                                                               <%-- <h5> Other Products</h5>--%>
+                                                                <%-- <br />--%>
+                                                                       <%--the gridview starts here--%>
+                                                            <%--  <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridotherProduct" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+                                                                <%--Gridview ends here--%>
+                                                <%-- </div>
+                                                                <hr />--%> 
+                                                                <%-- DELIVERY DETAILS NI DIRI--%>
+                                                               <%-- <h5> Delivery Details</h5>
+                                                                <br />--%>
+                                                                       <%--the gridview starts here--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridDeliveryDetails" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
 
-                                                                            <h5>Water supply for refill available: </h5>
-                                                                              <asp:TextBox  ID="waterSupAvailable" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-
-                                                                             <h5>Date Added:  </h5>
-                                                                            <asp:Label ID="LblDate" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                          </div>
-                                                                      </div>
+                                                <%-- </div>--%> <%--Gridview ends here--%>
                                                               </div><!--/tab-pane-->
                                                           </div><!--/tab-content-->
                                                            
                                                         </div>
                                                     </div>
                                                     <div class="card-footer">
-                                                                     <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
-                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> 
+                                                                    <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
+                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
                                                     </div>
                                                 </div>
                                                </div> 

@@ -15,6 +15,51 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
+        /// TankSupply control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label TankSupply;
+
+        /// <summary>
+        /// date control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label date;
+
+        /// <summary>
+        /// drdTankUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdTankUnit;
+
+        /// <summary>
+        /// tankSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tankSize;
+
+        /// <summary>
+        /// btnAddSupply control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddSupply;
+
+        /// <summary>
         /// productName control.
         /// </summary>
         /// <remarks>
@@ -159,6 +204,78 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList chkdevType;
 
         /// <summary>
+        /// standardChcked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem standardChcked;
+
+        /// <summary>
+        /// reserveChcked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem reserveChcked;
+
+        /// <summary>
+        /// expressChcked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem expressChcked;
+
+        /// <summary>
+        /// standardSchedDel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox standardSchedDel;
+
+        /// <summary>
+        /// standardFreeDel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox standardFreeDel;
+
+        /// <summary>
+        /// standardDelFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox standardDelFee;
+
+        /// <summary>
+        /// resFreeDel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox resFreeDel;
+
+        /// <summary>
+        /// resDelFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox resDelFee;
+
+        /// <summary>
         /// estimatedTime control.
         /// </summary>
         /// <remarks>
@@ -166,15 +283,6 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox estimatedTime;
-
-        /// <summary>
-        /// distanceDelivery control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox distanceDelivery;
 
         /// <summary>
         /// deliveryFee control.
@@ -222,31 +330,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// drdTankUnit control.
+        /// lbl_Date control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdTankUnit;
-
-        /// <summary>
-        /// tankSize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tankSize;
-
-        /// <summary>
-        /// AddTanksupply control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddTanksupply;
+        protected global::System.Web.UI.WebControls.Label lbl_Date;
 
         /// <summary>
         /// lbltankSupply control.
@@ -267,93 +357,84 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblremainingSupply;
 
         /// <summary>
-        /// LabelID control.
+        /// Label7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelID;
+        protected global::System.Web.UI.WebControls.Label Label7;
 
         /// <summary>
-        /// prodName control.
+        /// ddlSearchOptions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox prodName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearchOptions;
 
         /// <summary>
-        /// prodSize control.
+        /// btnSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox prodSize;
+        protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
-        /// prodPrice control.
+        /// lblProductRefill control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox prodPrice;
+        protected global::System.Web.UI.WebControls.Label lblProductRefill;
 
         /// <summary>
-        /// prodDiscount control.
+        /// lblotherProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox prodDiscount;
+        protected global::System.Web.UI.WebControls.Label lblotherProduct;
 
         /// <summary>
-        /// prodAvailable control.
+        /// lbldeliveryDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox prodAvailable;
+        protected global::System.Web.UI.WebControls.Label lbldeliveryDetails;
 
         /// <summary>
-        /// waterSupAvailable control.
+        /// gridProductRefill control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox waterSupAvailable;
+        protected global::System.Web.UI.WebControls.GridView gridProductRefill;
 
         /// <summary>
-        /// LblDate control.
+        /// gridotherProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblDate;
+        protected global::System.Web.UI.WebControls.GridView gridotherProduct;
 
         /// <summary>
-        /// EditBtn control.
+        /// gridDeliveryDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button EditBtn;
-
-        /// <summary>
-        /// DeleteBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteBtn;
+        protected global::System.Web.UI.WebControls.GridView gridDeliveryDetails;
     }
 }

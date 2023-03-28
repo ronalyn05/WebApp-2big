@@ -73,18 +73,21 @@ namespace WRS2big_Web.Admin
         private void DisplayTable()
         {
            string idno = (string)Session["idno"];
-                // int adminId = int.Parse(idno);
+            // int adminId = int.Parse(idno);
 
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse response = twoBigDB.Get("EMPLOYEES/");
-                Employee emp = response.ResultAs<Employee>();
-                var data = response.Body;
-                //Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
-                Dictionary<string, Employee> employeeList = response.ResultAs<Dictionary<string, Employee>>();
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            Dictionary<string, Employee> employeelist = response.ResultAs<Dictionary<string, Employee>>();
+            var filteredList = employeelist.Values.Where(d => d.adminId.ToString() == idno);
+            //FirebaseResponse response = twoBigDB.Get("EMPLOYEES/");
+            //Employee emp = response.ResultAs<Employee>();
+            //var data = response.Body;
+            ////Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
+            //Dictionary<string, Employee> employeeList = response.ResultAs<Dictionary<string, Employee>>();
 
-                // Create the DataTable to hold the orders
-                //sa pag create sa table
-                DataTable employeesTable = new DataTable();
+            // Create the DataTable to hold the orders
+            //sa pag create sa table
+            DataTable employeesTable = new DataTable();
                 employeesTable.Columns.Add("STATUS");
                 employeesTable.Columns.Add("EMPLOYEE ID");
                 employeesTable.Columns.Add("EMPLOYEE NAME");
@@ -96,12 +99,12 @@ namespace WRS2big_Web.Admin
                 if (response != null && response.ResultAs<Employee>() != null)
                 {
                     // Loop through the orders and add them to the DataTable
-                    foreach (KeyValuePair<string, Employee> entry in employeeList)
+                    foreach (var entry in filteredList)
                     {
 
-                       employeesTable.Rows.Add(entry.Value.emp_status, entry.Value.emp_id,
-                                            entry.Value.emp_firstname + " " + entry.Value.emp_lastname, entry.Value.emp_role,
-                                            entry.Value.emp_contactnum, entry.Value.emp_dateHired, entry.Value.emp_address);
+                       employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
+                                            entry.emp_firstname + " " + entry.emp_lastname, entry.emp_role,
+                                            entry.emp_contactnum, entry.emp_dateHired, entry.emp_address);
                     }
                 }
             else

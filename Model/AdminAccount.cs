@@ -27,21 +27,23 @@ namespace WRS2big_Web.Model
         public string stationAddress { get; set; }
         public double addLattitude { get; set; }
         public double addLongitude { get; set; }
-        public byte[] proof { get; set; }
+        public string proof { get; set; }
         public string operatingHrs { get; set; }
         public string status { get; set; }
         public string businessDays { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
     }
 
     public class SubscribedPlan
     {
         public int adminID { get; set; }
-        public DateTimeOffset subStart { get; set; }
+        public DateTime subStart { get; set; }
         public string subPlan { get; set; }
         public string subDescription { get; set; }
         public int price { get; set; }
-        public DateTimeOffset subEnd { get; set; }
+        public DateTime subEnd { get; set; }
+        
 
     }
 
@@ -62,6 +64,7 @@ namespace WRS2big_Web.Model
         public string emp_emergencycontact { get; set; }
         public string emp_role { get; set; }
         public string emp_status { get; set; }
+        public DateTime dateAdded { get; set; }
     }
     public class TankSupply
     {
@@ -94,7 +97,7 @@ namespace WRS2big_Web.Model
         public string deliveryType { get; set; }
         public string deliveryFee { get; set; }
         public string deliveryDistance { get; set; }
-        public string expressEstimatedTime { get; set; }
+        public string estimatedTime { get; set; }
         public string orderType { get; set; }
         public string orderMethod { get; set; }
        // public string status { get; set; }
@@ -109,6 +112,7 @@ namespace WRS2big_Web.Model
         public string pro_refillUnit { get; set; }
         public string pro_refillSize { get; set; }
         public string pro_refillPrice { get; set; }
+        public string pro_discount { get; set; }
         public DateTime dateAdded { get; set; }
     }
    
@@ -128,7 +132,7 @@ namespace WRS2big_Web.Model
         public decimal productDiscount { get; set; }
         public decimal totalAmount { get; set; }
         public string orderType { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public DateTime dateAdded { get; set; }
     }
 }
 
