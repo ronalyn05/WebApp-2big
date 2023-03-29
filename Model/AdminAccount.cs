@@ -65,6 +65,7 @@ namespace WRS2big_Web.Model
         public string emp_role { get; set; }
         public string emp_status { get; set; }
         public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
     }
     public class TankSupply
     {
@@ -76,6 +77,13 @@ namespace WRS2big_Web.Model
         public DateTime dateAdded { get; set; }
     }
 
+    public class UserLogs
+    {
+        public int logsId { get; set; }
+        public int userIdnum { get; set; }
+        public DateTime dateLogs { get; set; }
+
+    }
 
     public class otherProducts
     {
@@ -95,12 +103,13 @@ namespace WRS2big_Web.Model
         public int deliveryId { get; set; }
         public int adminId { get; set; }
         public string deliveryType { get; set; }
-        public string deliveryFee { get; set; }
-        public string deliveryDistance { get; set; }
-        public string estimatedTime { get; set; }
+        public string deliveryFee { get; set; } //for STANDARD and RESERVATION
+        public string deliveryDistance { get; set; } //for STANDARD and RESERVATION
+        public string estimatedTime { get; set; } //for EXPRESS only
+        public string deliveryTime { get; set; }  //for STANDARD and RESERVATION
         public string orderType { get; set; }
         public string orderMethod { get; set; }
-       // public string status { get; set; }
+        // public string status { get; set; }
         public DateTime dateAdded { get; set; }
     }
     public class ProductRefill
