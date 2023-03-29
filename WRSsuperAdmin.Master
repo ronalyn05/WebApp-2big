@@ -42,6 +42,30 @@
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    
+                                                        <%--                                @*Show Password script*@--%>
+                                                                                        <script>
+                                                                                            const toggleregPassword = document.querySelector('#togglePasswordreg');
+                                                                                            const regpassword = document.querySelector('#id_passwordreg');
+                                                                                            const con_pass = document.querySelector('#conpass');
+                                                                                            // SHOW PASSWORD
+                                                                                            toggleregPassword.addEventListener('click', function (e) {
+                                                                                                // toggle the type attribute
+                                                                                                const type = regpassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                                regpassword.setAttribute('type', type);
+                                                                                                // toggle the eye slash icon
+                                                                                                this.classList.toggle('fa-eye-slash');
+                                                                                            });
+                                                                                            // SHOW CONFIRM PASSWORD
+                                                                                            toggleregPassword.addEventListener('click', function (e) {
+                                                                                                // toggle the type attribute
+                                                                                                const type = con_pass.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                                con_pass.setAttribute('type', type);
+                                                                                                // toggle the eye slash icon
+                                                                                                this.classList.toggle('fa-eye-slash');
+                                                                                            });
+                                                                                        </script>
 </head>
 <body>
 
@@ -140,16 +164,18 @@
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
                                 <a href="#!" class="waves-effect waves-light">
-                                    <img src="/images/rhea.png" class="img-radius" alt="User-Profile-Image">
-                                    <span>SUPERADMIN</span>
+                                 
+                                    <span>
+                                        <asp:Label runat="server" ID="superLbl"> </asp:Label>
+                                    </span>
                                     <i class="ti-angle-down"></i>
                                 </a>
                                 <ul class="show-notification profile-notification">
-                                    <li class="waves-effect waves-light">
+<%--                                    <li class="waves-effect waves-light">
                                         <a href="/superAdmin/SAdminProfile">
                                             <i class="ti-user"></i> Profile
                                         </a>
-                                    </li>
+                                    </li>--%>
                                     <li class="waves-effect waves-light">
                                         <a href="/LandingPage/index">
                                             <i class="ti-layout-sidebar-left"></i> Logout
@@ -196,13 +222,6 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="/superAdmin/Reports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-stats-up"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Reports </span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
                                 </ul>
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
                                 <ul class="pcoded-item pcoded-left-item">
@@ -214,22 +233,46 @@
                                         </a>
                                     </li>--%>
                                     <li>
-                                        <a href="/superAdmin/RefillingStations" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Stations </span>
+                                        <a href="/superAdmin/ManageWRSClients" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-home"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/superAdmin/Customers" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fa fa-book"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers </span>
+                                        <a href="/superAdmin/ManageSubscription" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-notepad"></i><b></b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Plans</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="pcoded-navigation-label" data-i18n="nav.category.forms">REPORTS</div>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <%--                                    <li class="">
+                                        <a href="/Admin/AdminProfile" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="fa fa-user"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Profile </span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>--%>
+                                    <li>
+                                        <a href="/superAdmin/ClientReports" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/superAdmin/Subscriptions" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-map"></i><b>FC</b></span>
+                                        <a href="/superAdmin/CustomerReports" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Registered Customers </span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/superAdmin/SubscriptionReports" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
@@ -272,6 +315,8 @@
     <!-- custom js -->
     <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
     <script type="text/javascript" src="/assets/js/script.js "></script>
+     <script src="/Scripts/MyScript/Index.js"></script>
+
 </body>
 </html>
 

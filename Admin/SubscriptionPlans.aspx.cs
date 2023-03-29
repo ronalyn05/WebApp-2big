@@ -38,13 +38,13 @@ namespace WRS2big_Web.Admin
 
             foreach (var basicplan in plans)
             {
-                var planID = basicplan.Value.idno;
+                var planName = basicplan.Value.planName;
 
-                if (planID == 4862)
+                if (planName == "BASIC")
                 {
-                    var idno = planID;
+                    var baPlan = planName;
 
-                    FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + idno);
+                    FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + baPlan);
                     Model.SubscriptionPlans obj = res.ResultAs<Model.SubscriptionPlans>();
 
                     //retrieval from database
@@ -71,13 +71,14 @@ namespace WRS2big_Web.Admin
 
             foreach (var basicplan in plans)
             {
-                var planID = basicplan.Value.idno;
+                var planName = basicplan.Value.planName;
+                //var planIdno = basicplan.Key;
 
-                if (planID == 3112)
+                if (planName == "PREMIUM PLAN")
                 {
-                    var idno = planID;
+                    var preplan = planName;
 
-                    FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + idno);
+                    FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + preplan);
                     Model.SubscriptionPlans obj = res.ResultAs<Model.SubscriptionPlans>();
 
                     //retrieval from database

@@ -33,6 +33,9 @@ namespace WRS2big_Web.Admin
         {
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
+
+            radDevType.Attributes.Add("onclick", "showHideExpressDiv();");
+
             if (!IsPostBack)
             {
                 //  DisplayID();
@@ -147,6 +150,24 @@ namespace WRS2big_Web.Admin
             //    }
 
         }
+        protected void radDevType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get the selected value
+            string selectedValue = radDevType.SelectedValue;
+
+            // Disable the other radio buttons
+            foreach (ListItem item in radDevType.Items)
+            {
+                if (item.Value != selectedValue)
+                {
+                    item.Enabled = false;
+
+                }
+            }
+        }
+
+
+
         //RETRIEVE PRODUCTREFILL DATA
         private void productRefillDisplay()
         {
@@ -578,18 +599,23 @@ namespace WRS2big_Web.Admin
         //STORING DATA TO DELIVERY_DETAILS
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
-            string idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-
+            
             try
             {
+
+
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+
+
                 // INSERT DATA TO TABLE = DELIVERY_DETAILS
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
-                // Loop through the items in the CheckBoxList to build the deliveryType string
+                
+                // Loop through the items in the radiobutton list to build the deliveryType string
                 string deliveryType = "";
-                foreach (ListItem item in chkdevType.Items)
+                foreach (ListItem item in radDevType.Items)
                 {
                     if (item.Selected)
                     {
@@ -598,91 +624,89 @@ namespace WRS2big_Web.Admin
                 }
                 deliveryType = deliveryType.TrimEnd(' ', ',');
 
-                // Loop through the items in the CheckBoxList to build the orderType string
-                string orderType = "";
-                foreach (ListItem item in chkOrderType.Items)
+                if (deliveryType == "Standard")
                 {
-                    if (item.Selected)
+                    //save adminID and deliveryID data
+                    var adminData = new DeliveryDetails
                     {
-                        orderType += item.Value + ", ";
-                    }
-                }
-                orderType = orderType.TrimEnd(' ', ',');
+                        deliveryId = idnum,
+                        adminId = adminId
+                    };
 
-                // Loop through the items in the CheckBoxList to build the orderMethod string
-                string orderMethod = "";
-                foreach (ListItem item in chkOrderMethod.Items)
-                {
-                    if (item.Selected)
+
+
+                    //SAVE TO DATABASE
+                    SetResponse res;
+                    //save the adminData object in database
+                    res = twoBigDB.Set("DELIVERY_DETAILS/" + adminData.deliveryId, adminData);
+                    DeliveryDetails results = res.ResultAs<DeliveryDetails>();
+
+
+                    // Loop through the items in the CheckBoxList to build the orderType string
+                    string orderType = "";
+                    foreach (ListItem item in DeliveryType.Items)
                     {
-                        orderMethod += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            orderType += item.Value + ", ";
+                        }
                     }
+                    orderType = orderType.TrimEnd(' ', ',');
+
+                    // Loop through the items in the CheckBoxList to build the orderMethod string
+                    string orderMethod = "";
+                    foreach (ListItem item in OrderMethod.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            orderMethod += item.Value + ", ";
+                        }
+                    }
+                    orderMethod = orderMethod.TrimEnd(' ', ',');
+
+                    var result = twoBigDB.Get("DELIVERY_DETAILS/" + adminData.deliveryId);
+                    DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
+
+
+                    obj.deliveryId = idnum;
+                    obj.deliveryType = deliveryType;
+                    obj.deliveryFee = DeliveryFee.Text;
+                    obj.deliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM";//for STANDARD ONLY
+                    obj.deliveryDistance = FreeDelivery.Text; //FREE DELIVERY for STANDARD and RESERVATION
+                    obj.orderType = orderType;
+                    obj.orderMethod = orderMethod;
+                    obj.dateAdded = DateTime.UtcNow;
+
+                    FirebaseResponse response;
+                    //save the data object in database
+                    response = twoBigDB.Update("DELIVERY_DETAILS/" + idnum + "/deliveryType/" + deliveryType, obj);
+                    DeliveryDetails standard = response.ResultAs<DeliveryDetails>();
+                    Response.Write("<script>alert ('You successfully created the " + deliveryType + " Delivery with ID number: " + idnum + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+                    idnum = (int)Session["deliveryID"];
+
                 }
-                orderMethod = orderMethod.TrimEnd(' ', ',');
 
-                var data = new DeliveryDetails
+
+                if (deliveryType == "Reservation")
                 {
-                    deliveryId = idnum,
-                    adminId = adminId,
-                    deliveryType = deliveryType,
-                    estimatedTime = estimatedTime.Text,
-                    deliveryFee = deliveryFee.Text,
-                    orderType = orderType,
-                    orderMethod = orderMethod,
-                   // deliveryDistance = distanceDelivery.Text,
-                    dateAdded = DateTime.UtcNow
-                };
 
-                SetResponse response;
-                response = twoBigDB.Set("DELIVERY_DETAILS/" + data.deliveryId, data);
-                DeliveryDetails result = response.ResultAs<DeliveryDetails>();
-                Response.Write("<script>alert ('Delivery details  with Id number: " + data.deliveryId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                }
+
+
+
             }
             catch (Exception ex)
             {
                 Response.Write(ex.Message);
             }
+        
+
+            
         }
 
-       protected void chkdevType_SelectedIndexChanged(object sender, EventArgs e)
-       {
-            string selectedValue = string.Empty;
-
-            // Find the selected item
-            foreach (ListItem item in chkdevType.Items)
-            {
-                if (item.Selected)
-                {
-                    selectedValue = item.Value;
-                    break;
-                }
-            }
-
-            // Disable other options
-            foreach (ListItem item in chkdevType.Items)
-            {
-                if (item.Value != selectedValue)
-                {
-                    item.Enabled = false;
-                }
-            }
-
-            // Show modal based on the selected item
-            if (selectedValue == "Standard")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "standardCheckedDIV();", true);
-            }
-            else if (selectedValue == "Reservation")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "reserveCheckedDIV();", true);
-            }
-            else if (selectedValue == "Express")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "expressCheckedDIV();", true);
-            }
-       }
-
-        protected void btnSearch_Click(object sender, EventArgs e)
+    
+    protected void btnSearch_Click(object sender, EventArgs e)
         {
             string selectedOption = ddlSearchOptions.SelectedValue;
             
