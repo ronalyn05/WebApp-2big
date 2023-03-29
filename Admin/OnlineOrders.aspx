@@ -59,19 +59,26 @@
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
-                                                                      <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >
+                                                                      <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
                                                               <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
                                                               <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Accept" CommandName="Accept" OnClick="btnAccept_Click"/>
-                                                              <asp:LinkButton ID="LinkButton1" runat="server" data-toggle="modal" CssClass="fa-eraser" data-target=".deleteModal" Text="Decline" CommandName="Decline" OnClick="btnDecline_Click"/>--%>
-                                                          </ItemTemplate>
+                                                         </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                        <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                        <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
+                                                        <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                        <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
+                                                        <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                        <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                        <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                     <%-- <FooterStyle BackColor="White" ForeColor="#000066" />
                                                       <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
                                                       <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
                                                       <RowStyle Width="200px" ForeColor="#000066" />
@@ -79,7 +86,7 @@
                                                       <SortedAscendingCellStyle BackColor="#F1F1F1" />
                                                       <SortedAscendingHeaderStyle BackColor="#007DBB" />
                                                       <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />--%>
                                                     </asp:GridView>
                                                  </div>
                                                               </div><!--/tab-pane-->

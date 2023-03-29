@@ -114,8 +114,6 @@ C:\Users\LAPTOP_THINKPAD_4\Source\Repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj
 C:\Users\LAPTOP_THINKPAD_4\Source\Repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\LAPTOP_THINKPAD_4\Source\Repos\WebApp-2big\obj\Debug\WRS2big_Web.dll
 C:\Users\LAPTOP_THINKPAD_4\Source\Repos\WebApp-2big\obj\Debug\WRS2big_Web.pdb
-C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.App.config
-C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.CoreCompileInputs.cache
 C:\Users\Capstone2-Project\WRS2big_Web\bin\WRS2big_Web.dll.config
 C:\Users\Capstone2-Project\WRS2big_Web\bin\WRS2big_Web.dll
 C:\Users\Capstone2-Project\WRS2big_Web\bin\WRS2big_Web.pdb
@@ -168,7 +166,9 @@ C:\Users\Capstone2-Project\WRS2big_Web\bin\System.ValueTuple.xml
 C:\Users\Capstone2-Project\WRS2big_Web\bin\System.Web.Optimization.xml
 C:\Users\Capstone2-Project\WRS2big_Web\bin\Antlr3.Runtime.pdb
 C:\Users\Capstone2-Project\WRS2big_Web\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.App.config
+C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.AssemblyReference.cache
+C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.CoreCompileInputs.cache
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.dll
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.pdb
-C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.AssemblyReference.cache
