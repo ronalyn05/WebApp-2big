@@ -224,20 +224,23 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                 <%--the gridview starts here--%>
-                                                              <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
-                                                <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                               <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
+                                                                    <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                    SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                              <%--  <asp:GridView runat="server" ID="GridView1" DataKeyNames="EMPLOYEE ID" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                    SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >--%>
                                                       <Columns>
+                                                          <%--<asp:BoundField HeaderText="STATUS" DataField="STATUS" />--%>
                                                         <asp:TemplateField>
-                                                           <%-- <Action>--%>
                                                           <ItemTemplate>
-                                                          
-                                                             <%-- <button type="button" class="btn btn-primary btn-md" data-toggle="modal"  data-target=".update"><i class="fa fa-edit"></i> Edit </button>--%>
+                                                             <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnUpdate_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal" BorderStyle="None" ForeColor="White"/>
+                                                         <%-- <asp:Button ID="btnEdit" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal" runat="server" Text="Edit"/>--%>
+                                                              <%--<button type="button" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal"><i class="fa fa-edit"></i> Edit </button>--%>
                                                              <%-- BUTTON TO TRIGGER THE MODAL--%>
-                                                            <asp:Button ID="btnedit" CssClass="btn btn-primary btn-md" runat="server"
+                                                           <%-- <asp:Button ID="btnedit" CssClass="btn btn-primary btn-md" runat="server"
                                                                   Text="Edit" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
-                                                                  data-toggle="modal" data-target=".update" />
+                                                                  data-toggle="modal" data-target=".update" />--%>
                                                           </ItemTemplate>
-                                                                <%-- </Action>--%>
                                                         </asp:TemplateField>
                                                       </Columns>
                                                         <FooterStyle BackColor="White" ForeColor="#000066" />
@@ -251,7 +254,10 @@
                                                         <SortedDescendingHeaderStyle BackColor="#00547E" />
                                                     </asp:GridView>
                                                        
-                                                 </div> <%--Gridview ends here--%>
+                                                 </div>
+
+                                                               <%--Gridview ends here--%>
+
                                                               </div><!--/tab-pane-->
                                                           </div><!--/tab-content-->
                                                             <%--TAB end --%>
@@ -259,8 +265,9 @@
                                                     </div>
                                                 </div>
                                              </div> 
+
                                            <%-- MODAL FOR UPDATE EMPLOYEE--%>
-                                       <div class="modal fade update" tabindex="-1" role="dialog" aria-hidden="true">
+                                       <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
                                             <div class="modal-content">
                                             <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
@@ -299,8 +306,11 @@
                                               </div>
                                                  <div class="modal-footer">
                                                <%-- update data button--%>
-                                                      <asp:Button ID="btnUpdate" class="btn btn-primary" runat="server" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
-                                                                Text="Update Data" OnClick="btnupdate_Click"/>
+                                                     <%-- <asp:Button ID="btnUpdate" class="btn btn-primary" runat="server" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
+                                                                Text="Update Data" OnClick="btnupdate_Click"/>--%>
+                                                      <asp:Button ID="btnUpdateData" runat="server" Text="Update" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" BorderStyle="None" ForeColor="White"/>
+                                                    <%-- <asp:Button ID="btnUpdateData" class="btn btn-primary" runat="server" Text="Update" CommandArgument='<%# Eval("EMPLOYEE ID") %>' OnClick="btnupdateData_Click" />--%>
+
                                                 </div>
                                             </div>
                                             
