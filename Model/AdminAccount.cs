@@ -94,15 +94,57 @@ namespace WRS2big_Web.Model
     {
         public int deliveryId { get; set; }
         public int adminId { get; set; }
-        public string deliveryType { get; set; }
-        public string deliveryFee { get; set; }
-        public string deliveryDistance { get; set; }
-        public string estimatedTime { get; set; }
-        public string orderType { get; set; }
-        public string orderMethod { get; set; }
-       // public string status { get; set; }
+        //public int standardID { get; set; }
+        //public int reservationID { get; set; }
+        //public int expressID { get; set; }
+        //public string deliveryType { get; set; }
+        //public string deliveryFee { get; set; } //for STANDARD and RESERVATION
+        //public string deliveryDistance { get; set; } //for STANDARD and RESERVATION
+        //public string estimatedTime { get; set; } //for EXPRESS only
+        //public string deliveryTime { get; set; }  //for STANDARD and RESERVATION
+        //public string orderType { get; set; }
+        //public string orderMethod { get; set; }
+        //// public string status { get; set; }
+        //public DateTime dateAdded { get; set; }
+    }
+
+    public class standardDelivery
+    {
+        public int standardID { get; set; }
+        public int standistance { get; set; }
+        public int stanDeliveryFee { get; set; }
+        public string stanDeliverytype { get; set; }
+        public string stanDeliveryTime { get; set; }
+        public string stanOrderMethod { get; set; }
+        public string stanOrderType { get; set; }
         public DateTime dateAdded { get; set; }
     }
+
+    public class expressDelivery
+    {
+        public int expressID { get; set; }
+        public int exDeliveryFee { get; set; }
+        public string exEstimatedDelivery { get; set; }
+        public string exDeliveryType { get; set; }
+        public string exOrderMethod { get;set;}
+        public string exOrderType { get; set; }
+        public DateTime dateAdded { get; set; }
+
+    }
+
+    public class reservationDelivery
+    {
+        public int reservationID { get; set; }
+        public int resDistanceFree { get; set; }
+        public int resDeliveryFee { get; set; }
+        public string resOrderMethod { get; set; }
+        public string resOrderType { get; set; }
+        public string resDeliveryType { get; set; }
+
+        public DateTime dateAdded { get; set; }
+
+    }
+
     public class ProductRefill
     {
         public int pro_refillId { get; set; }
