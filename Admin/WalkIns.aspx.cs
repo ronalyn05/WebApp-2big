@@ -29,7 +29,24 @@ namespace WRS2big_Web.Admin
         {
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
-           
+
+            string idno = (string)Session["idno"];
+
+           /* string idno = Session["idno"]?.ToString();*/ // use null-conditional operator to avoid null reference exception
+            FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
+            Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
+           // var productNames = products.Values.Where(p => p.adminId.ToString() == idno).Select(p => p.pro_refillWaterType);
+
+            int index = 1; // start index from 1
+            drdProdName.Items.Clear(); // clear existing items  
+
+            foreach (var product in products.Values)
+            {
+                // drdProdName.Items.Add(new ListItem(productName));
+                drdProdName.Items.Add(new ListItem(product.pro_refillWaterType, index.ToString()));
+                index++; // increment index for next product
+            }
+            
         }
         protected void btnPayment_Click(object sender, EventArgs e)
         {
@@ -48,21 +65,21 @@ namespace WRS2big_Web.Admin
                 {
                     throw new ArgumentException("Invalid quantity value");
                 }
-                if (!decimal.TryParse(txtprice.Text, out price))
+                if (!decimal.TryParse(lblprice.Text, out price))
                 {
                     throw new ArgumentException("Invalid price value");
                 }
-                if (!decimal.TryParse(txtDiscount.Text, out discount))
+                if (!decimal.TryParse(lblDiscount.Text, out discount))
                 {
                     // If the discount value is not a valid decimal, assume it is zero
                     discount = 0;
                 }
 
                 // Calculate total amount only if a valid discount value is entered
-                if (decimal.TryParse(txtprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
+                if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
                     totalAmount = (qty * price) - discount;
-                    txtTotalAmount.Text = totalAmount.ToString();
+                    lblAmount.Text = totalAmount.ToString();
                 }
                 else
                 {
@@ -76,8 +93,8 @@ namespace WRS2big_Web.Admin
                 var data = new WalkInOrders
                 {
                     orderNo = idnum,
-                    productName = txtprodName.Text,
-                    productSize = txtprodSize.Text,
+                    productName = drdProdName.SelectedValue,
+                    productSize = lblprice.Text,
                     productPrice = price,
                     productDiscount = discount,
                     productQty = qty,
@@ -92,7 +109,7 @@ namespace WRS2big_Web.Admin
                 WalkInOrders result = response.ResultAs<WalkInOrders>();
 
                 // Set the text of the txtTotalAmount textbox to the calculated total amount
-                txtTotalAmount.Text = totalAmount.ToString();
+                lblAmount.Text = totalAmount.ToString();
 
                 Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); </script>");
             }
@@ -101,5 +118,34 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string idno = (string)Session["idno"];
+
+            string selectedOption = drdProdName.SelectedValue;
+
+            FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
+            Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
+            // var productNames = products.Values.Where(p => p.adminId.ToString() == idno).Select(p => p.pro_refillWaterType);
+            // Retrieve the data for the selected product
+            ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedOption);
+
+
+            if (selectedOption == "Purified" || selectedOption == "Alkaline")
+            {
+                // Retrieve the data for the selected product
+               // ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedOption);
+                if (selectedProduct != null)
+                {
+                    // Display the unit for the selected product
+                    lblUnit.Text = selectedProduct.pro_refillUnit;
+                    lblSize.Text = selectedProduct.pro_refillSize;
+                    lblprice.Text = selectedProduct.pro_refillPrice;
+                    lblDiscount.Text = selectedProduct.pro_discount;
+                }
+            }
+
+        }
+
     }
 }

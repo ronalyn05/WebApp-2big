@@ -43,9 +43,10 @@
           <div class="">
 
             <div class="col-xl-9 col-md-12">
-                                                <div class="card" style="background-color:#f2e2ff">
+                                                <div class="card">
                                                     <div class="card-header">
-                                                        <h5>CREATE NEW ORDERS FOR WALK IN</h5>
+                                                        <asp:Label ID="Label2" runat="server" Text="CREATE NEW ORDERS FOR WALK IN" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                       <%-- <h5>CREATE NEW ORDERS FOR WALK IN</h5>--%>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -64,32 +65,45 @@
                                                                         <div class="col-xs-12" style="font-size:16px">
                                                                            
                                                                             <h5>Product Name: </h5>
-                                                                            <asp:TextBox  ID="txtprodName" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                            <asp:DropDownList ID="drdProdName" runat="server" class="text-center" Height="40px" Width="364px" >
+                                                                           <asp:ListItem Selected="True" Text="Select product"></asp:ListItem>
+                                                                           <asp:ListItem Text="" Value="1"></asp:ListItem>
+                                                                           <asp:ListItem Text="" Value="2" ></asp:ListItem>
+                                                                           <asp:ListItem Text="" Value="3" ></asp:ListItem>
+                                                                       </asp:DropDownList>
+                                                                             <asp:Button ID="btnSearch" runat="server" class="btn btn-primary" Text="Search" OnClick="btnSearch_Click" />
+                                                                           <%-- <asp:TextBox  ID="txtprodName" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>--%>
                                                                          <br />
                                                                             <h5>Order Type: </h5>
-                                                                            <asp:DropDownList ID="drdOrderType" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px">
-                                                                           <asp:ListItem Selected="True" Text="Select"></asp:ListItem>
-                                                                           <asp:ListItem Text="Water Refill" Value="Refill"></asp:ListItem>
+                                                                            <asp:DropDownList ID="drdOrderType" runat="server" class="text-center" Height="40px" Width="564px" Font-Size="14px">
+                                                                         <%--  <asp:ListItem Selected="True" Text="Select"></asp:ListItem>--%>
+                                                                           <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
                                                                            <asp:ListItem Text="New Order" Value="New Order" ></asp:ListItem>
-                                                                           <asp:ListItem Text="Other Products" Value="other product" ></asp:ListItem>
+                                                                           <asp:ListItem Text="Other Products" Value="Other Products" ></asp:ListItem>
                                                                        </asp:DropDownList>
                                                                             <br />
                                                                             <h5>Product Volume/Size: </h5>
-                                                                              <asp:TextBox  ID="txtprodSize" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
-                                                                           
+                                                                             <%-- <asp:TextBox  ID="txtprodSize" class="text-center" runat="server" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>--%>
+                                                                           <asp:Label ID="lblSize" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:Label>
+                                                                            <br />
+                                                                            <h5>Product Unit: </h5>
+                                                                             <%-- <asp:TextBox  ID="txtprodSize" class="text-center" runat="server" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>--%>
+                                                                           <asp:Label ID="lblUnit" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:Label>
                                                                             <br />
                                                                             <h5>Product Price: </h5>
-                                                                              <asp:TextBox  ID="txtprice" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                             <%-- <asp:TextBox  ID="txtprice" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>--%>
+                                                                             <asp:Label ID="lblprice" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:Label>
                                                                            <br />
                                                                             <h5>Product Discount: </h5>
-                                                                              <asp:TextBox  ID="txtDiscount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                            <asp:Label ID="lblDiscount" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:Label>
+                                                                              <%--<asp:TextBox  ID="txtDiscount" runat="server" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>--%>
                                                                             <br />
                                                                             <h5>Product Quantity: </h5>
-                                                                              <asp:TextBox  ID="txtQty" TextMode="Number" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px"></asp:TextBox>
+                                                                              <asp:TextBox  ID="txtQty" Placeholder="Enter quantity" TextMode="Number" ForeColor="Black" runat="server" class="text-center" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>
                                                                             <br />
                                                                             <h5>Total Amount: </h5>
-                                                                              <asp:TextBox  ID="txtTotalAmount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  class="btn btn-round waves-effect text-center" style="background-color:#bae1ff; font-size:16px; color:darkred; font-family:Bahnschrift;width:700px"></asp:TextBox>
-
+                                                                            <%--  <asp:TextBox  ID="txtTotalAmount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  Height="40px" Width="364px"></asp:TextBox>--%>
+                                                                              <asp:Label ID="lblAmount" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" ForeColor="Green" Font-Size="18px" Font-Bold="True"></asp:Label>
                                                                             </div>
                                                                       </div>
                                                               </div><!--/tab-pane-->
