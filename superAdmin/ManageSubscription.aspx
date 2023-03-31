@@ -157,12 +157,10 @@
                                                             <div class="modal-body">
                                                                  <div class="col-md-12 col-sm-12 ">
 
-                                                                     <div class="x_content"> <br />
+<%--                                                                     <div class="x_content"> <br />
                                                                           <button type="button" ID="btnLock" style="font-size:14px;margin-left:20px"class="btn btn-success btn-sm"><i class="ti-lock"></i> Features Locking </button>
                                                                            <button type="button" ID="btnReminder" style="font-size:14px;margin-left:20px"class="btn btn-success btn-sm"><i class="ti-pin-alt"></i> Reminders </button>
-
-
-                                                                    </div>
+                                                                    </div>--%>
                                                                </div>
                                                            </div>
                                                              <div class="modal-footer">
@@ -179,11 +177,11 @@
 
                                             <!--PAGE CONTENTS-->
 
-                                              <asp:GridView runat="server" ID="GridView1" class="texts table-responsive" RowStyle-CssClass="grid-row"  style=" text-align:center;overflow-y: auto;max-height: 500px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" HtmlEncode="false">
+                                              <asp:GridView runat="server" ID="GridView1" class="texts table-responsive" RowStyle-CssClass="grid-row"  style=" text-align:center;overflow-y: auto;max-height: 500px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" HtmlEncode="false" Width="1646px">
                                                 <Columns>
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
-                                                                <asp:LinkButton ID="updateButton" runat="server" CssClass="update-button" Text="View" OnClick="updateButton_Click1" CommandArgument='<%# Container.DataItemIndex %>' />
+                                                                <asp:LinkButton ID="updateButton" runat="server" CssClass="update-button" Text="View" OnClick="updateButton_Click1" CommandArgument='<%# Container.DataItemIndex %>'  BorderStyle="None" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

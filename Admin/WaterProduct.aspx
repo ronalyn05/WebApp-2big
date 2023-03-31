@@ -264,17 +264,17 @@
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
                                                 <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
-                                                <h6> Note: Please choose a 'Delivery Type' one at a time</h6>
+                                                <h6> Note: Please check the 'Delivery Type' you offer to your business</h6>
                                                 <hr />
                                            <%-- <div class="item form-group">--%>
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
                                                   <strong>Choose the Delivery Type you provide in your business:</strong>
-                                                    <asp:RadioButtonList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
+                                                    <asp:CheckBoxList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
                                                         <asp:ListItem Text="Standard" Value="Standard" ID="standardRadio" onclick="displayStandardOptions(); disableOtherRadios()"></asp:ListItem>
                                                         <asp:ListItem Text="Reservation" Value="Reservation" ID="reserveRadio" onclick="displayReserveOptions(); disableOtherRadios()"></asp:ListItem>
                                                         <asp:ListItem Text="Express" Value="Express" ID="expressRadio" onclick="displayExpressOptions(); disableOtherRadios()"></asp:ListItem>
-                                                    </asp:RadioButtonList>
+                                                    </asp:CheckBoxList>
 
 
                                             </div>

@@ -17,6 +17,7 @@ namespace WRS2big_Web.Model
         public string email { get; set; }
         public string pass { get; set; }
         public string profile_image { get; set; }
+        public string status { get; set; }
 
     }
 
