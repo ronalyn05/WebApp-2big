@@ -45,26 +45,11 @@ namespace WRS2big_Web.Admin
                 //otherProductsDisplay();
                 //deliveryDetailsDisplay();
                 // tanksupplyDisplay();
+               
 
-                //FOR DELIVERY DETAILS
-                //generate random number for the IDs
-                Random rnd = new Random();
-                int deliveryId = rnd.Next(1, 10000);
 
-                var admin = (string)Session["idno"];
-                int adminId = int.Parse(admin);
 
-                var adminData = new DeliveryDetails
-                {
-                    adminId = adminId,
-                    deliveryId = deliveryId
-                };
 
-                SetResponse delResponse;
-                delResponse = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
-
-                //store the generated deliveryID into session
-                Session["deliveryID"] = deliveryId;
             }
 
             string idno = (string)Session["idno"];
@@ -622,37 +607,254 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
+
         //STORING DATA TO DELIVERY_DETAILS
+        //    protected void btnDeliverydetails_Click(object sender, EventArgs e)
+        //    {
+        //        Random rnd = new Random();
+        //        //int delId = rnd.Next(1, 10000);
+        //        int standardID = rnd.Next(1, 10000);
+        //        int expressID = rnd.Next(1, 10000);
+        //        int reservationDelivery = rnd.Next(1, 10000);
+
+        //        string deliveryType = "";
+        //        foreach (ListItem item in radDevType.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                deliveryType += item.Value + ", ";
+        //            }
+        //        }
+        //        deliveryType = deliveryType.TrimEnd(' ', ',');
+
+
+
+        //        var fetch = twoBigDB.Get("DELIVERY_DETAILS/");
+        //        DeliveryDetails objct = fetch.ResultAs<DeliveryDetails>();
+
+
+        //        if (objct == null)
+        //        {
+        //            var idno = (string)Session["idno"];
+        //            int adminId = int.Parse(idno);
+
+        //            //Random rnd = new Random();
+        //            int delId = rnd.Next(1, 10000);
+
+
+        //            var adminData = new DeliveryDetails
+        //            {
+        //                adminId = adminId,
+        //                deliveryId = delId
+        //            };
+
+
+
+        //            SetResponse response;
+        //            response = twoBigDB.Set("DELIVERY_DETAILS/" + delId, adminData);
+
+        //            //store the generated deliveryID into session
+        //            Session["deliveryID"] = delId;
+
+
+        //            // Retrieve the existing product data from the database
+        //            var result = twoBigDB.Get("DELIVERY_DETAILS/" + delId);
+        //            DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
+
+        //            if (obj.deliveryId == delId)
+        //            {
+        //                // Loop through the items in the radiobutton list to build the deliveryType string
+
+
+        //                //IF STANDARD ANG PILION
+        //                if (deliveryType == "Standard")
+        //                {
+
+
+        //                    // Loop through the items in the CheckBoxList to build the orderType string
+        //                    string orderType = "";
+        //                    foreach (ListItem item in DeliveryType.Items)
+        //                    {
+        //                        if (item.Selected)
+        //                        {
+        //                            orderType += item.Value + ", ";
+        //                        }
+        //                    }
+        //                    orderType = orderType.TrimEnd(' ', ',');
+
+        //                    // Loop through the items in the CheckBoxList to build the orderMethod string
+        //                    string orderMethod = "";
+        //                    foreach (ListItem item in OrderMethod.Items)
+        //                    {
+        //                        if (item.Selected)
+        //                        {
+        //                            orderMethod += item.Value + ", ";
+        //                        }
+        //                    }
+        //                    orderMethod = orderMethod.TrimEnd(' ', ',');
+
+
+        //                    var standard = new standardDelivery
+        //                    {
+        //                        stanDeliverytype = deliveryType,
+        //                        stanDeliveryFee = int.Parse(DeliveryFee.Text), // DELIVERY FEE for STANDARD and RESERVATION
+        //                        stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
+        //                        standistance = int.Parse(FreeDelivery.Text), //FREE DELIVERY for STANDARD and RESERVATION
+        //                        stanOrderType = orderType,
+        //                        stanOrderMethod = orderMethod,
+        //                        standardID = standardID,
+        //                        dateAdded = DateTime.UtcNow
+        //                    };
+
+        //                    SetResponse standardre;
+        //                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delId + "/deliveryTypes/" + standard.standardID, standard);
+        //                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+
+        //                    Response.Write("<script>alert ('You successfully created the " + standard.stanDeliverytype + " Delivery with ID number: " + standard.standardID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+        //                    Session["standardDelID"] = delId;
+        //                }
+
+        //            }
+
+
+        //        } 
+        //        else if (objct != null)
+        //        {
+        //            int delId = (int)Session["deliveryID"];
+
+        //            var result = twoBigDB.Get("DELIVERY_DETAILS/" + delId);
+        //            DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
+
+        //            if (obj.deliveryId == delId && deliveryType == "Reservation")
+        //            {
+        //                // Loop through the items in the CheckBoxList to build the orderType string
+        //                string resOrderType = "";
+        //                foreach (ListItem item in reserveOrderType.Items)
+        //                {
+        //                    if (item.Selected)
+        //                    {
+        //                        resOrderType += item.Value + ", ";
+        //                    }
+        //                }
+        //                resOrderType = resOrderType.TrimEnd(' ', ',');
+
+        //                // Loop through the items in the CheckBoxList to build the orderMethod string
+        //                string resOrderMethod = "";
+        //                foreach (ListItem item in reserveOrderMethod.Items)
+        //                {
+        //                    if (item.Selected)
+        //                    {
+        //                        resOrderMethod += item.Value + ", ";
+        //                    }
+        //                }
+        //                resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+
+        //                var reservation = new reservationDelivery
+        //                {
+        //                    reservationID = reservationDelivery,
+        //                    resDeliveryType = deliveryType,
+        //                    resDeliveryFee = int.Parse(resDelFee.Text),
+        //                    resDistanceFree = int.Parse(resFreeDel.Text),
+        //                    resOrderMethod = resOrderMethod,
+        //                    resOrderType = resOrderType,
+        //                    dateAdded = DateTime.UtcNow
+        //                };
+        //                SetResponse standardre;
+
+        //                standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delId + "/deliveryTypes/" + reservation.reservationID, reservation);
+        //                DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+
+        //                Response.Write("<script>alert ('You successfully created the " + reservation.resDeliveryType + " Delivery with ID number: " + reservation.reservationID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+        //            }
+        //            else if (obj.deliveryId == delId && deliveryType == "Express")
+        //            {
+        //                // Loop through the items in the CheckBoxList to build the orderType string
+        //                string resOrderType = "";
+        //                foreach (ListItem item in expressOrderType.Items)
+        //                {
+        //                    if (item.Selected)
+        //                    {
+        //                        resOrderType += item.Value + ", ";
+        //                    }
+        //                }
+        //                resOrderType = resOrderType.TrimEnd(' ', ',');
+
+        //                // Loop through the items in the CheckBoxList to build the orderMethod string
+        //                string resOrderMethod = "";
+        //                foreach (ListItem item in expressOrderMethod.Items)
+        //                {
+        //                    if (item.Selected)
+        //                    {
+        //                        resOrderMethod += item.Value + ", ";
+        //                    }
+        //                }
+        //                resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+
+
+        //                var express = new expressDelivery
+        //                {
+        //                    expressID = expressID,
+        //                    exDeliveryType = deliveryType,
+        //                    exEstimatedDelivery = estimatedTime.Text,
+        //                    exDeliveryFee = int.Parse(expressdeliveryFee.Text),
+        //                    exOrderMethod = resOrderMethod,
+        //                    exOrderType = resOrderType,
+        //                    dateAdded = DateTime.UtcNow
+        //                };
+        //                SetResponse standardre;
+        //                standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delId + "/deliveryTypes/" + express.expressID, express);
+        //                DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+
+        //                Response.Write("<script>alert ('You successfully created the " + express.exDeliveryType + " Delivery with ID number: " + express.expressID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+        //            }
+        //        }
+
+
+
+
+        //}
+
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
-            var idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-
-            //generate random number for the IDs
             Random rnd = new Random();
-            //int deliveryId = rnd.Next(1, 10000);
             int standardID = rnd.Next(1, 10000);
             int expressID = rnd.Next(1, 10000);
             int reservationDelivery = rnd.Next(1, 10000);
 
 
-            //// Retrieve the existing delivery data from the database
-            //var get = twoBigDB.Get("DELIVERY_DETAILS/");
-            //DeliveryDetails id = get.ResultAs<DeliveryDetails>();
+            //var fetch = twoBigDB.Get("DELIVERY_DETAILS/");
+            //DeliveryDetails objct = fetch.ResultAs<DeliveryDetails>();
 
-            //int IdDelivery = id.adminId;
-
-            //if (adminId != IdDelivery)
+            //if (objct == null)
             //{
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
 
-                
+               
+                int deliveryId = rnd.Next(1, 10000);
+               
+                var adminData = new DeliveryDetails
+                {
+                    adminId = adminId,
+                    deliveryId = deliveryId
+                };
 
-                    
+                SetResponse response;
+                response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
+
+                //store the generated deliveryID into session
+                Session["deliveryID"] = deliveryId;
+
             //}
             //else
             //{
-                
+            //    int idnumber = (int)Session["deliveryID"];
+
             //}
+
+
             // Loop through the items in the radiobutton list to build the deliveryType string
             string deliveryType = "";
             foreach (ListItem item in radDevType.Items)
@@ -690,7 +892,6 @@ namespace WRS2big_Web.Admin
                     }
                 }
                 orderMethod = orderMethod.TrimEnd(' ', ',');
-
 
                 //store the value of session into deliveryID
                 int deliveryID = (int)Session["deliveryID"];
@@ -835,11 +1036,8 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert ('You successfully created the " + express.exDeliveryType + " Delivery with ID number: " + express.expressID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
                 }
             }
-
         }
-
-
-        protected void btnSearch_Click(object sender, EventArgs e)
+            protected void btnSearch_Click(object sender, EventArgs e)
         {
             string selectedOption = ddlSearchOptions.SelectedValue;
             
