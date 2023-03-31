@@ -195,67 +195,94 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSet;
 
         /// <summary>
-        /// chkdevType control.
+        /// radDevType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chkdevType;
+        protected global::System.Web.UI.WebControls.RadioButtonList radDevType;
 
         /// <summary>
-        /// standardChcked control.
+        /// standardRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListItem standardChcked;
+        protected global::System.Web.UI.WebControls.ListItem standardRadio;
 
         /// <summary>
-        /// reserveChcked control.
+        /// reserveRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListItem reserveChcked;
+        protected global::System.Web.UI.WebControls.ListItem reserveRadio;
 
         /// <summary>
-        /// expressChcked control.
+        /// expressRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListItem expressChcked;
+        protected global::System.Web.UI.WebControls.ListItem expressRadio;
 
         /// <summary>
-        /// standardSchedDel control.
+        /// standardSchedFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox standardSchedDel;
+        protected global::System.Web.UI.WebControls.TextBox standardSchedFrom;
 
         /// <summary>
-        /// standardFreeDel control.
+        /// standardSchedTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox standardFreeDel;
+        protected global::System.Web.UI.WebControls.TextBox standardSchedTo;
 
         /// <summary>
-        /// standardDelFee control.
+        /// FreeDelivery control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox standardDelFee;
+        protected global::System.Web.UI.WebControls.TextBox FreeDelivery;
+
+        /// <summary>
+        /// DeliveryFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox DeliveryFee;
+
+        /// <summary>
+        /// OrderMethod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList OrderMethod;
+
+        /// <summary>
+        /// DeliveryType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList DeliveryType;
 
         /// <summary>
         /// resFreeDel control.
@@ -276,6 +303,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox resDelFee;
 
         /// <summary>
+        /// reserveOrderMethod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderMethod;
+
+        /// <summary>
+        /// reserveOrderType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderType;
+
+        /// <summary>
         /// estimatedTime control.
         /// </summary>
         /// <remarks>
@@ -285,31 +330,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox estimatedTime;
 
         /// <summary>
-        /// deliveryFee control.
+        /// expressdeliveryFee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox deliveryFee;
+        protected global::System.Web.UI.WebControls.TextBox expressdeliveryFee;
 
         /// <summary>
-        /// chkOrderMethod control.
+        /// expressOrderMethod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chkOrderMethod;
+        protected global::System.Web.UI.WebControls.CheckBoxList expressOrderMethod;
 
         /// <summary>
-        /// chkOrderType control.
+        /// expressOrderType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chkOrderType;
+        protected global::System.Web.UI.WebControls.CheckBoxList expressOrderType;
 
         /// <summary>
         /// btnDeliverydetails control.

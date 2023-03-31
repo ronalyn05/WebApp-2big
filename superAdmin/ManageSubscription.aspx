@@ -11,6 +11,10 @@
         overflow-y: auto;
          }
     </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <form runat="server">
@@ -54,8 +58,8 @@
                                 <div class="">
                                   <div class="clearfix">
                                         <%--BUTTON to ADD--%>
-                                        <button type="button" style="font-size:14px;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Create New Plan</button>
-                                        <button type="button" style="font-size:14px;margin-left:20px" class="btn btn-success btn-sm" data-toggle="modal" data-target=".settings"><i class="ti-settings"></i>Settings</button>
+                                        <button type="button" style="font-size:14px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Create New Plan</button>
+                                        <button type="button" style="font-size:14px;margin-left:20px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".settings"><i class="ti-settings"></i>Settings</button>
 
                                                 <!--MODAL FOR ADD NEW PLAN-->
                                            <div class="modal fade add texts" tabindex="-1" role="dialog" aria-hidden="true">
@@ -172,27 +176,94 @@
                                                 </div>
                                             <%--//</div>--%>
                                                 <br /><br />
+
                                             <!--PAGE CONTENTS-->
 
-                                              <asp:GridView runat="server" ID="GridView1" class="texts table-responsive"  style=" text-align:center;overflow-y: auto;max-height: 500px;"  BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" HtmlEncode="false">
-                                                 <Columns>
-                                                     <asp:TemplateField>
-                                                        <ItemTemplate>
-                                                           
-                                                              <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" data-target=".updatePlan" Text="Update" CommandName="Update" CommandArgument='<%# Eval("PLAN ID") %>' />
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                 </Columns>
-                                                    <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
-                                                    <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
-                                                    <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
-                                                    <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
-                                                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
-                                                    <SortedAscendingCellStyle BackColor="#FFF1D4" />
-                                                    <SortedAscendingHeaderStyle BackColor="#B95C30" />
-                                                    <SortedDescendingCellStyle BackColor="#F1E5CE" />
-                                                    <SortedDescendingHeaderStyle BackColor="#93451F" />
-                                                </asp:GridView>
+                                              <asp:GridView runat="server" ID="GridView1" class="texts table-responsive" RowStyle-CssClass="grid-row"  style=" text-align:center;overflow-y: auto;max-height: 500px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" HtmlEncode="false">
+                                                <Columns>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:LinkButton ID="updateButton" runat="server" CssClass="update-button" Text="View" OnClick="updateButton_Click1" CommandArgument='<%# Container.DataItemIndex %>' />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+
+                                                    <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                    <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+                                                    <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                    <RowStyle ForeColor="#000066" />
+                                                    <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                    <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                    <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                    <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                    <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                </asp:GridView> <br /> <br /><br />
+                                           <div class="col-md-6" id="fullDetails">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>Plan Full details</h5>
+                                                        <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
+                                                    </div>
+                                                    <div class="card-block" >
+                                                        <div class="form-material">
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan ID:</label>
+                                                                <asp:Label runat="server" style="text-align:center" class="form-control" id="planID"> </asp:Label>
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan Name:</label>
+                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planName"> </asp:TextBox>
+                                                                
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan Description:</label>
+                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planDes"></asp:TextBox>
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan Price:</label>
+                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planAmount"></asp:TextBox>
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan Duration(month):</label>
+                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planDuration"></asp:TextBox>
+                                                            </div>
+                                                            <div class="form-group form-default">
+                                                                <label class="form-control">Plan Features:</label>
+                                                                <%--<asp:ListBox runat="server" id="planFeatures"></asp:ListBox>--%>
+                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planFeatures"></asp:TextBox>
+                                                            </div>
+                                                            <asp:Button id="updateBtn" runat="server" Text="UPDATE" class="btn btn-primary btn-sm texts" OnClick="updateBtn_Click"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+<%--                                      <script>
+                                          $(document).ready(function () {
+                                              $('#GridView1 tr').click(function () {
+                                                  // Get the PLAN ID value for the clicked row
+                                                  var planID = $(this).find('#planIDLabel').text();
+
+                                                  // Retrieve the selected subscription plan from Firebase
+                                                  var ref = firebase.database().ref('SUPERADMIN/SUBSCRIPTION_PLANS/' + planID);
+                                                  ref.once('value', function (snapshot) {
+                                                      var selectedPlan = snapshot.val();
+                                                      if (selectedPlan != null) {
+                                                          // Update the textboxes with the selected plan details
+                                                          $('#updatePlan').val(selectedPlan.planName);
+                                                          $('#updateDesc').val(selectedPlan.planDes);
+                                                          $('#updateDuration').val(selectedPlan.planDuration);
+                                                          $('#updateAmount').val(selectedPlan.planPrice);
+                                                          //$('#PlanFeaturesTextBox').val(selectedPlan.features.join(', ')); // Uncomment this line if you want to display the features in a textbox
+                                                          $('#updatePlanModal').modal();
+                                                      }
+                                                  });
+                                              });
+                                          });
+
+                                      </script>--%>
+
 
                                       <br /><br />
                                                 <!--MODAL FOR UPDATE PLAN-->
@@ -203,7 +274,7 @@
                                                        <%--header ni diri--%>
                                                           <div class="modal-header">
                                                                <%--title ni diri--%>
-                                                                <h4 class="modal-title" id="myModalPlan"> Update Plan</h4>
+                                                                <h4 class="modal-title" id="updatePlanModal"> Update Plan</h4>
                                                               
                                                               <%--button close ni diri--%>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -222,21 +293,21 @@
                                                                           <div class="item form-group">
                                                                               <div class="col-md-12 col-sm-12 ">
                                                                                 <asp:Label ID="Label3" runat="server" Text="Plan Name: "></asp:Label><br />
-                                                                                <asp:TextBox ID="TextBox1" runat="server" Width="281px"></asp:TextBox>
+                                                                                <asp:TextBox id="updatePlan" runat="server" Width="281px"></asp:TextBox>
                                                                               </div>
                                                                              <div class="col-md-12 col-sm-12 ">
                                                                                 <asp:Label ID="Label4" runat="server" Text="Plan Description:"></asp:Label> <br />
-                                                                                 <asp:TextBox ID="TextBox2" runat="server" Width="281px"></asp:TextBox>
+                                                                                 <asp:TextBox id="updateDesc" runat="server" Width="281px"></asp:TextBox>
                                                                             </div>
                                                                      
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <asp:Label ID="Label5" runat="server" Text="Plan Duration(months):"></asp:Label> <br />
-                                                                                 <asp:TextBox ID="TextBox3" runat="server" Width="281px"></asp:TextBox>
+                                                                                 <asp:TextBox id="updateDuration" runat="server" Width="281px"></asp:TextBox>
                                                                             </div>
                                                                      
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <asp:Label ID="Label6" runat="server" Text="Amount/Price:"></asp:Label> <br />
-                                                                                 <asp:TextBox ID="TextBox4" runat="server" Width="281px"></asp:TextBox>
+                                                                                 <asp:TextBox id="updateAmount" runat="server" Width="281px"></asp:TextBox>
                                                                             </div>
                                                                          </div>
                                                                         <div class="card-header" style="background-color:antiquewhite">
@@ -244,7 +315,7 @@
                                                                         </div>
                                                                          <div class="item form-group">
                                                                              <div class="col-md-12 col-sm-12 ">
-                                                                    <asp:CheckBoxList ID="CheckBoxList1" class="scrollable-listbox" runat="server" >
+                                                                    <asp:CheckBoxList ID="updateFeatures" class="scrollable-listbox" runat="server" >
                                                                         <asp:ListItem> Account Management </asp:ListItem>
                                                                         <asp:ListItem> Employee Management </asp:ListItem>
                                                                         <asp:ListItem> Product Management </asp:ListItem>

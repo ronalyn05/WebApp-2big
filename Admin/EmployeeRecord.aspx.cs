@@ -48,16 +48,18 @@ namespace WRS2big_Web.Admin
 
         private void displayLogs()
         {
-            string idno = (string)Session["idno"];
-            //  int empId = (int)Session["emp_id"];
+           // string idno = (string)Session["idno"];
+           // int empId = (int)Session["emp_id"];
 
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse response;
-            response = twoBigDB.Get("USERLOG/" + idno);
-            UserLogs user = response.ResultAs<UserLogs>(); //Database result
+           // Retrieve all orders from the ORDERS table
+           //FirebaseResponse response;
+           // response = twoBigDB.Get("USERLOG/" + idno);
+           // UserLogs user = response.ResultAs<UserLogs>(); //Database result
 
-            Session["userIdnum"] = idno;
-            Session["dateLogs"] = user.dateLogs;
+           // Session["userIdnum"] = idno;
+           // Session["dateLogs"] = user.dateLogs;
+
+
 
 
             //if (idno == empId)
@@ -410,7 +412,7 @@ namespace WRS2big_Web.Admin
                 emp_pass = existingEmp.emp_pass,
                 emp_role = existingEmp.emp_role,
                 emp_status = existingEmp.emp_status,
-                dateUpdated = DateTime.UtcNow
+                //dateUpdated = DateTime.UtcNow
             };
 
             // Update the fields that have changed
