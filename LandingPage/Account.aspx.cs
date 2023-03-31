@@ -153,16 +153,16 @@ namespace WRS2big_Web.LandingPage
                         DateTime loginTime = DateTime.Now;
 
                         //Store the login information in the USERLOG table
-                        var data = new UserLogs
-                        {
-                            logsId = idnum,
-                            userIdnum = int.Parse(idno),
-                            dateLogs = loginTime
-                        };
+                        //var data = new UserLogs
+                        //{
+                        //    logsId = idnum,
+                        //    userIdnum = int.Parse(idno),
+                        //    dateLogs = loginTime
+                        //};
 
-                        //Storing the  info
-                        response = twoBigDB.Set("USERLOG/" + data.userIdnum, data);//Storing data to the database
-                        UserLogs res = response.ResultAs<UserLogs>();//Database Result
+                        ////Storing the  info
+                        //response = twoBigDB.Set("USERLOG/" + data.userIdnum, data);//Storing data to the database
+                        //UserLogs res = response.ResultAs<UserLogs>();//Database Result
 
 
                         //Generate a unique key for the USERLOG table using the Push method

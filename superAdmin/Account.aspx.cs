@@ -44,7 +44,7 @@ namespace WRS2big_Web.superAdmin
             {
                 string superAdmin = "Technique Services";
 
-                Session["email"] = uEmail; 
+                Session["email"] = uEmail;
                 Session["password"] = uPass;
 
                 Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/superAdmin/SAdminIndex.aspx'; </script>");
@@ -53,7 +53,7 @@ namespace WRS2big_Web.superAdmin
             }
             else
             {
-                Response.Write("<script>alert ('Login Unsuccessful!  Try again.'); location.reload(); window.location.href = '/superAdmin/Account.aspx'; </script>");
+                Response.Write("<script>alert ('Login Unsuccessful! Invalid credentials. Please Try again.'); location.reload(); window.location.href = '/superAdmin/Account.aspx'; </script>");
             }
         }
     }

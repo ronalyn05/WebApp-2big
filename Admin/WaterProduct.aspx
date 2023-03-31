@@ -1,5 +1,11 @@
  <%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WaterProduct.aspx.cs" Inherits="WRS2big_Web.Admin.WaterProduct" Async="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <!-- Include jQuery and the Timepicker plugin -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js" integrity="sha512-7QDFvrSg50P7i5/lCZ/IM5ozmavhK26X7l3qy/Z3wsSaLKhjGwDd7QPNdlZmepnJVPl0bzmmPqj3qBwtJ1h9cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -242,7 +248,8 @@
                                              </div>
                                             </div>
                                         <%-- end set product refill --%>
-                                       <%-- MODAL FOR Delivery details--%>
+
+
                                     <%-- MODAL FOR Delivery details--%>
                                        <div class="modal fade manage" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
@@ -256,26 +263,19 @@
                                             <div class="modal-body">
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
-                                                <h4 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customer here:</h4>
+                                                <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
+                                                <h6> Note: Please choose a 'Delivery Type' one at a time</h6>
                                                 <hr />
                                            <%-- <div class="item form-group">--%>
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
-                                                  <strong>Delivery Type:</strong>
-                                                        <asp:CheckBoxList ID="chkdevType" OnSelectedIndexChanged="chkdevType_SelectedIndexChanged" runat="server" AutoPostBack="true">
-                                                            <asp:ListItem Text="Standard" Value="Standard" ID="standardChcked"></asp:ListItem>
-                                                            <asp:ListItem Text="Reservation" Value="Reservation" ID="reserveChcked"></asp:ListItem>
-                                                            <asp:ListItem Text="Express" Value="Express" ID="expressChcked"></asp:ListItem>
-                                                        </asp:CheckBoxList>  
-                                               
-                                                <%--<asp:DropDownList ID="drdDevType" runat="server" Height="40px" Width="364px" OnSelectedIndexChanged="drdDevType_SelectedIndexChanged" AutoPostBack="True">
-                                                    <asp:ListItem Text="Standard" Value="Standard" Selected="True"></asp:ListItem>
-                                                    <asp:ListItem Text="Reservation" Value="Reservation" ></asp:ListItem>
-                                                    <asp:ListItem Text="Express" Value="Express" ></asp:ListItem>
-                                                    onclick="displayStandardOptions()"
-                                                    onclick="displayReserveOptions()"
-                                                     onclick="displayExpressOptions()"
-                                                </asp:DropDownList>--%>
+                                                  <strong>Choose the Delivery Type you provide in your business:</strong>
+                                                    <asp:RadioButtonList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
+                                                        <asp:ListItem Text="Standard" Value="Standard" ID="standardRadio" onclick="displayStandardOptions(); disableOtherRadios()"></asp:ListItem>
+                                                        <asp:ListItem Text="Reservation" Value="Reservation" ID="reserveRadio" onclick="displayReserveOptions(); disableOtherRadios()"></asp:ListItem>
+                                                        <asp:ListItem Text="Express" Value="Express" ID="expressRadio" onclick="displayExpressOptions(); disableOtherRadios()"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+
 
                                             </div>
                                                 <!--OPTIONS FOR STANDARD WHEN CLICKED--> 
@@ -284,26 +284,48 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Time Schedule for Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="standardSchedDel" Placeholder="Set the time schedule for your standard delivery" runat="server"></asp:TextBox>
-                                                     
-                                                        </div>
+                                                                   <h7>Set the time schedule for your standard delivery</h7><br />
+                                                                 <h7>From:</h7>
+                                                                <asp:TextBox ID="standardSchedFrom" textmode="Time" Width="100px" runat="server"></asp:TextBox> 
+                                                                 <h7>To:</h7> 
+                                                            <asp:TextBox ID="standardSchedTo" textmode="Time" Width="100px"  runat="server"></asp:TextBox>   
+                                                        </div><br />
                                                         
                                                          <%--  delivery fee--%>
                                                         <div class="col-md-12 col-sm-12 ">
-                                                                <strong>Distance for FREE Delivery:</strong>
+                                                                <strong>Distance in km for FREE Delivery:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="standardFreeDel" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                          </div>
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="standardDelFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="DeliveryFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                          </div>
+                                                    <br />
+                                                       <div class="col-md-12 col-sm-12">
+                                                  
+                                                           <strong>Choose types of order method you want to offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="OrderMethod" runat="server">
+                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
+                                                                     <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>  <hr />
+                                                       <div class="col-md-12 col-sm-12">
+                                                
+                                                           <strong>Choose types of deliver type you offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="DeliveryType" runat="server">
+                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
+                                                                    <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>
                                                 </div>
+
                                                 <!--SCRIPT FOR STANDARD WHEN CLICKED-->
                                                 <script>
                                                     function displayStandardOptions() {
-                                                        var standard = document.getElementById("standardChcked");
+                                                        var standard = document.getElementById("standardRadio");
                                                         var stanfields = document.getElementById("standardCheckedDIV");
 
                                                         if (standard.checked) {
@@ -328,33 +350,43 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="resFreeDel" Placeholder="Set the maximum distance for your FREE delivery" Width="364px" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="resFreeDel"  Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="resDelFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                         </div>
+                                                         </div> <br />
+                                                       <div class="col-md-12 col-sm-12">
+                                                  
+                                                           <strong>Choose types of orders you want to offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="reserveOrderMethod" runat="server">
+                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
+                                                                     <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>  <hr />
+                                                       <div class="col-md-12 col-sm-12">
+                                                
+                                                           <strong>Choose types of service you offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="reserveOrderType" runat="server">
+                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
+                                                                    <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>
                                                 </div>
                                                 <!--SCRIPT FOR RESERVATION WHEN CLICKED-->
                                                 <script> 
                                                     function displayReserveOptions() {
-                                                        var reserve = document.getElementById("reserveChcked");
+                                                        var reserve = document.getElementById("reserveRadio");
                                                         var reservefields = document.getElementById("reserveCheckedDIV");
 
                                                         if (reserve.checked) {
                                                             reservefields.style.display = "none";
-                                                            // Disable other options
-                                                            //document.getElementById("standardChcked").disabled = true;
-                                                            //document.getElementById("expressChcked").disabled = true;
-
                                                         } else {
-
                                                             reservefields.style.display = "block";
-                                                            // Enable other options
-                                                            //document.getElementById("standardChcked").disabled = false;
-                                                            //document.getElementById("expressChcked").disabled = false;
+
                                                         }
                                                     }
                                                 </script>
@@ -366,7 +398,7 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Estimated time for Express Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="estimatedTime" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="estimatedTime"  Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         
@@ -374,23 +406,35 @@
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Express Delivery fee:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="deliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                         </div>
+                                                                <asp:TextBox ID="expressdeliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
+                                                         </div> <br />
+                                                       <div class="col-md-12 col-sm-12">
+                                                  
+                                                           <strong>Choose types of orders you want to offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="expressOrderMethod" runat="server">
+                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
+                                                                     <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>  <hr />
+                                                       <div class="col-md-12 col-sm-12">
+                                                
+                                                           <strong>Choose types of service you offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="expressOrderType" runat="server">
+                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
+                                                                    <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>
                                                 </div>
                                                  <!--SCRIPT FOR EXPRESS WHEN CLICKED-->
                                                     <script>
                                                         function displayExpressOptions() {
 
-                                                            var express = document.getElementById("expressChcked");
-                                                            var standard = document.getElementById("standardChcked");
-                                                            var reserve = document.getElementById("reserveChcked");
-                                                            var fields = document.getElementById("expressCheckedDIV");
-
-                                                            standard.disabled = false;
-                                                            reserve.disabled = false;
+                                                            var express = document.getElementById("expressRadio");
+                                                            var expressFields = document.getElementById("expressCheckedDIV");
 
                                                             if (express.checked) {
-                                                                fields.style.display = "none";
+                                                                expressFields.style.display = "none";
                                                                 // Disable other options
                                                                 //document.getElementById("standardChcked").setAttribute("disabled", "disabled");
                                                                 //document.getElementById("reserveChcked").setAttribute("disabled", "disabled");
@@ -399,7 +443,7 @@
 
                                                             } else {
 
-                                                                fields.style.display = "block";
+                                                                expressFields.style.display = "block";
                                                                 // Enable other options
                                                                 //document.getElementById("reserveChcked").disabled = false;
                                                                 //document.getElementById("standardChcked").disabled = false;
@@ -407,25 +451,22 @@
 
                                                         }
                                                     </script>
-                                                <hr />
-                                               <div class="col-md-12 col-sm-12">
-                                                  
-                                                   <strong>Choose types of ordered offered to customers:</strong>
-                                                        <asp:CheckBoxList ID="chkOrderMethod" runat="server">
-                                                            <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
-                                                            <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
-                                                             <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
-                                                        </asp:CheckBoxList>
-                                               </div>  <hr />
-                                               <div class="col-md-12 col-sm-12">
-                                                
-                                                   <strong>Choose the type of service offered to the customers:</strong>
-                                                        <asp:CheckBoxList ID="chkOrderType" runat="server">
-                                                            <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
-                                                            <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
-                                                        </asp:CheckBoxList>
-                                               </div>
 
+                                               <%-- SCRIPT TO DISABLE OTHER RADIO BUTTONS--%>
+                                                <script>
+                                                        function disableOtherRadios() {
+                                                          var radios = document.getElementsByName("devType");
+                                                          for (var i = 0; i < radios.length; i++) {
+                                                            if (radios[i].id !== this.id) {
+                                                              radios[i].checked = false;
+                                                            }
+                                                          }
+                                                        }
+
+
+                                                </script>
+
+                                                <hr />
                                                 <br />
   
 

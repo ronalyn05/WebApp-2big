@@ -114,6 +114,69 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
+        /// planID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label planID;
+
+        /// <summary>
+        /// planName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox planName;
+
+        /// <summary>
+        /// planDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox planDes;
+
+        /// <summary>
+        /// planAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox planAmount;
+
+        /// <summary>
+        /// planDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox planDuration;
+
+        /// <summary>
+        /// planFeatures control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox planFeatures;
+
+        /// <summary>
+        /// updateBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button updateBtn;
+
+        /// <summary>
         /// Label3 control.
         /// </summary>
         /// <remarks>
@@ -123,13 +186,13 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// TextBox1 control.
+        /// updatePlan control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox updatePlan;
 
         /// <summary>
         /// Label4 control.
@@ -141,13 +204,13 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
-        /// TextBox2 control.
+        /// updateDesc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox updateDesc;
 
         /// <summary>
         /// Label5 control.
@@ -159,13 +222,13 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label Label5;
 
         /// <summary>
-        /// TextBox3 control.
+        /// updateDuration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox updateDuration;
 
         /// <summary>
         /// Label6 control.
@@ -177,22 +240,22 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label Label6;
 
         /// <summary>
-        /// TextBox4 control.
+        /// updateAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox updateAmount;
 
         /// <summary>
-        /// CheckBoxList1 control.
+        /// updateFeatures control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList1;
+        protected global::System.Web.UI.WebControls.CheckBoxList updateFeatures;
 
         /// <summary>
         /// Button1 control.
