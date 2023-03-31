@@ -157,7 +157,7 @@
 <%--                                        @*Show Password checkbox*@--%>
                                         <div class="row m-t-25 text-left">
                                             <div class="col-md-12">
-                                                <div class="checkbox-fade fade-in-primary">
+                                                <div class="checkbox-fade fade-in-primary"> 
                                                     <label>
                                                         <input type="checkbox" value="" id="togglePassword">
                                                         <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>

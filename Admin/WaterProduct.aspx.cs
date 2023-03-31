@@ -44,7 +44,27 @@ namespace WRS2big_Web.Admin
                 //productRefillDisplay();
                 //otherProductsDisplay();
                 //deliveryDetailsDisplay();
-               // tanksupplyDisplay();
+                // tanksupplyDisplay();
+
+                //FOR DELIVERY DETAILS
+                //generate random number for the IDs
+                Random rnd = new Random();
+                int deliveryId = rnd.Next(1, 10000);
+
+                var admin = (string)Session["idno"];
+                int adminId = int.Parse(admin);
+
+                var adminData = new DeliveryDetails
+                {
+                    adminId = adminId,
+                    deliveryId = deliveryId
+                };
+
+                SetResponse delResponse;
+                delResponse = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
+
+                //store the generated deliveryID into session
+                Session["deliveryID"] = deliveryId;
             }
 
             string idno = (string)Session["idno"];
@@ -149,6 +169,11 @@ namespace WRS2big_Web.Admin
             //    {
             //        lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
             //    }
+
+
+
+
+
 
         }
         protected void radDevType_SelectedIndexChanged(object sender, EventArgs e)
@@ -603,24 +628,31 @@ namespace WRS2big_Web.Admin
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
 
+            //generate random number for the IDs
             Random rnd = new Random();
-            int deliveryId = rnd.Next(1, 10000);
+            //int deliveryId = rnd.Next(1, 10000);
             int standardID = rnd.Next(1, 10000);
             int expressID = rnd.Next(1, 10000);
             int reservationDelivery = rnd.Next(1, 10000);
 
-            var adminData = new DeliveryDetails
-            {
-                adminId = adminId,
-                deliveryId = deliveryId
-            };
 
-            SetResponse response;
-            response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
+            //// Retrieve the existing delivery data from the database
+            //var get = twoBigDB.Get("DELIVERY_DETAILS/");
+            //DeliveryDetails id = get.ResultAs<DeliveryDetails>();
 
-            //store the generated deliveryID into session
-            Session["deliveryID"] = deliveryId;
+            //int IdDelivery = id.adminId;
 
+            //if (adminId != IdDelivery)
+            //{
+
+                
+
+                    
+            //}
+            //else
+            //{
+                
+            //}
             // Loop through the items in the radiobutton list to build the deliveryType string
             string deliveryType = "";
             foreach (ListItem item in radDevType.Items)
@@ -633,9 +665,9 @@ namespace WRS2big_Web.Admin
             deliveryType = deliveryType.TrimEnd(' ', ',');
 
             //IF STANDARD ANG PILION
-           if (deliveryType == "Standard")
+            if (deliveryType == "Standard")
             {
-                
+
 
                 // Loop through the items in the CheckBoxList to build the orderType string
                 string orderType = "";
@@ -659,6 +691,7 @@ namespace WRS2big_Web.Admin
                 }
                 orderMethod = orderMethod.TrimEnd(' ', ',');
 
+
                 //store the value of session into deliveryID
                 int deliveryID = (int)Session["deliveryID"];
 
@@ -668,9 +701,9 @@ namespace WRS2big_Web.Admin
 
                 //delivery ID fetched from database
                 int delID = obj.deliveryId;
-                
+
                 //compare the deliveryID fetched from database and the deliveryID from the session
-                if(delID == deliveryID)
+                if (delID == deliveryID)
                 {
                     var standard = new standardDelivery
                     {
@@ -691,8 +724,8 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert ('You successfully created the " + standard.stanDeliverytype + " Delivery with ID number: " + standard.standardID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
                 }
 
-            }            
-           //IF RESERVATION ANG PILION
+            }
+            //IF RESERVATION ANG PILION
             else if (deliveryType == "Reservation")
             {
                 // Loop through the items in the CheckBoxList to build the orderType string
@@ -802,8 +835,6 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert ('You successfully created the " + express.exDeliveryType + " Delivery with ID number: " + express.expressID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
                 }
             }
-
-
 
         }
 
