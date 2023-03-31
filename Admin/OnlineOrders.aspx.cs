@@ -36,7 +36,36 @@ namespace WRS2big_Web.Admin
                 //DisplayID();
                 DisplayTable();
             }
-            FirebaseResponse response = twoBigDB.Get("ORDERS");
+
+            //FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            //Employee emp = response.ResultAs<Employee>();
+
+            //if (emp.emp_role == "Driver")
+            //{
+            //    Session["emp_id"] = emp.emp_id;
+            //}
+
+            string idno = (string)Session["idno"];  
+
+            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            Dictionary<string, Employee> employees = response.ResultAs<Dictionary<string, Employee>>();
+
+            // Filter the employees to get only those belonging to the logged-in admin and whose position is "driver"
+            Employee driver = employees.Values.FirstOrDefault(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver");
+
+            if (driver != null)
+            {
+                // Store the driver's employee ID in the session
+                Session["emp_id"] = driver.emp_id;
+            }
+
+            //if (driver != null)
+            //{
+            //    Session["emp_id"] = driver.emp_id;
+            //}
+
+
+            response = twoBigDB.Get("ORDERS");
             Order order = response.ResultAs<Order>();
 
             Session["orderID"] = order.orderID; 
@@ -61,6 +90,7 @@ namespace WRS2big_Web.Admin
           //  ordersTable.Columns.Add("ACTION");
             ordersTable.Columns.Add("ORDER ID");
             ordersTable.Columns.Add("CUSTOMER ID");
+            ordersTable.Columns.Add("DRIVER ID");
             ordersTable.Columns.Add("STORE NAME");
             ordersTable.Columns.Add("PRODUCT NAME");
             ordersTable.Columns.Add("PRODUCT UNIT");
@@ -80,14 +110,9 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    // Only add orders that belong to the specified admin
-                    //if (entry.Value.adminID != null && entry.Value.adminID == adminId)
-                    //{
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId,
-                                              entry.order_StoreName, entry.order_ProductName,
-                                              entry.order_unit, entry.order_size, 
-                                              entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, 
-                                              entry.order_WaterPrice,
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
+                                              entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
+                                              entry.order_OrderTypeValue, entry.order_WaterPrice,
                                               entry.order_Quantity, entry.order_InitialAmount,
                                               entry.order_ReservationDate, entry.order_OrderStatus);
                     //  entry.Value.order_SwapGallonTypeValue,
@@ -104,12 +129,59 @@ namespace WRS2big_Web.Admin
             GridView1.DataBind();
         }
 
+        //protected void btnAccept_Click(object sender, EventArgs e)
+        //{
+        //    // Get the admin ID from the session
+        //    string idno = (string)Session["idno"];
+        //    int adminId = int.Parse(idno);
+
+        //    // Get the GridViewRow that contains the clicked button
+        //    Button btn = (Button)sender;
+        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+        //    // Get the order ID from the first cell in the row
+        //    int orderID = int.Parse(row.Cells[1].Text);
+
+        //    // Retrieve the existing order object from the database
+        //    FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+        //    Order existingOrder = response.ResultAs<Order>();
+
+        //    // Get a list of all drivers who are currently available to accept new orders
+        //    List<Employee> availableDrivers = new List<Employee>();
+        //    FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEE");
+        //    Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
+        //    foreach (KeyValuePair<string, Employee> driverEntry in driverData)
+        //    {
+        //        if (driverEntry.Value.emp_role == "Driver" && driverEntry.Value.emp_Available)
+        //        {
+        //            availableDrivers.Add(driverEntry.Value);
+        //        }
+        //    }
+
+        //    // Assign the order to the first available driver
+        //    if (availableDrivers.Count > 0)
+        //    {
+        //        existingOrder.driverId = availableDrivers[0].emp_ID;
+        //        existingOrder.order_OrderStatus = "Accepted";
+        //        response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+        //        DisplayTable();
+        //    }
+        //    else
+        //    {
+        //        // No drivers are currently available, display an error message
+        //        lblError.Text = "There are no available drivers to accept this order.";
+        //    }
+        //}
+
+
         //UPDATING THE STATUS ORDERS IF ACCEPTED
         protected void btnAccept_Click(object sender, EventArgs e)
         {
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            int driverId = Session["emp_id"] != null ? (int)Session["emp_id"] : 0;
+            //int driverId = (int)Session["emp_id"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -122,22 +194,41 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
             Order existingOrder = response.ResultAs<Order>();
 
-            // Update the order status in the existing object
-            existingOrder.order_OrderStatus = "Accepted";
+           //if(position == "Driver")
+           //{ 
+                // Update the order status in the existing object
+                existingOrder.order_OrderStatus = "Accepted";
 
+            // Set the driver ID
+            if (driverId != 0)
+            {
+                existingOrder.driverId = driverId;
+            }
+            else
+            {
+                existingOrder.driverId = 0;
+            }
+
+            // existingOrder.driverId = driverId; // set the delivery ID
+            //}
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
             // Rebind the GridView
-            DisplayTable();
+           DisplayTable();
         }
 
         //UPDATING THE STATUS ORDER ID DECLINE
         protected void btnDecline_Click(object sender, EventArgs e)
         {
+          //  int driverId = Session["emp_id"] != null ? (int)Session["emp_id"] : null;
+            // int? driverId = Session["emp_id"] as int?;
+         //   int driverId = Session["emp_id"] != null ? (int)Session["emp_id"] : 0;
+
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+           // int driverId = (int)Session["emp_id"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -147,11 +238,14 @@ namespace WRS2big_Web.Admin
             int orderID = int.Parse(row.Cells[1].Text);
 
             // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+           FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
             Order existingOrder = response.ResultAs<Order>();
 
             // Update the order status in the existing object
             existingOrder.order_OrderStatus = "Declined";
+            existingOrder.driverId = 0; // clear the driver ID
+
+            //existingOrder.driverId = (int)driverId; // clear the driver ID
 
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
@@ -159,6 +253,8 @@ namespace WRS2big_Web.Admin
             // Rebind the GridView
             DisplayTable();
         }
+
+       
 
     }
 }
