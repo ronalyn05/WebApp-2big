@@ -24,13 +24,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// drdProdName control.
+        /// drdOrderType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdProdName;
+        protected global::System.Web.UI.WebControls.DropDownList drdOrderType;
 
         /// <summary>
         /// btnSearch control.
@@ -42,31 +42,49 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
-        /// drdOrderType control.
+        /// lblDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdOrderType;
+        protected global::System.Web.UI.WebControls.Label lblDescription;
 
         /// <summary>
-        /// lblSize control.
+        /// btnSearchPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSize;
+        protected global::System.Web.UI.WebControls.Button btnSearchPrice;
 
         /// <summary>
-        /// lblUnit control.
+        /// drdProdName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUnit;
+        protected global::System.Web.UI.WebControls.DropDownList drdProdName;
+
+        /// <summary>
+        /// drdUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdUnit;
+
+        /// <summary>
+        /// drdSize control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdSize;
 
         /// <summary>
         /// lblprice control.
@@ -112,5 +130,14 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button PaymentBtn;
+
+        /// <summary>
+        /// btnClear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClear;
     }
 }
