@@ -49,7 +49,8 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-purple">₱30,200</h4>
+                                                                <asp:Label ID="lblTotalSales" runat="server" CssClass="text-c-purple" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                              <%--  <h4 class="text-c-purple">₱30,200</h4>--%>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-bar-chart f-28"></i>
@@ -74,7 +75,8 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-green">290+</h4>
+                                                                 <asp:Label ID="lblDeliveries" runat="server" CssClass="text-c-green" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                              <%--  <h4 class="text-c-green">290+</h4>--%>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-file-text-o f-28"></i>
@@ -98,7 +100,8 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-red">145</h4>
+                                                                <asp:Label ID="lblOrders" runat="server" CssClass="text-c-red" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                              <%--  <h4 class="text-c-red">145</h4>--%>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-shopping-cart f-28"></i>
@@ -122,7 +125,8 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-blue">500</h4>
+                                                                 <asp:Label ID="lblReservations" runat="server" CssClass="text-c-blue" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                              <%--  <h4 class="text-c-blue">500</h4>--%>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-calendar-check-o f-28"></i>

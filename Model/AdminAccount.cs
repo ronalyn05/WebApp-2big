@@ -65,6 +65,7 @@ namespace WRS2big_Web.Model
         public string emp_emergencycontact { get; set; }
         public string emp_role { get; set; }
         public string emp_status { get; set; }
+        public string emp_availability { get; set; }
         public DateTime dateAdded { get; set; }
     }
     public class TankSupply
