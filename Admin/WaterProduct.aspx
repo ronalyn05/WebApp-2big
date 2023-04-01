@@ -295,7 +295,7 @@
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="FreeDelivery" Width="364px" TextMode="Number" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                          </div>
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong>
@@ -350,7 +350,7 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="resFreeDel"  Width="364px" TextMode="Number" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="resFreeDel"  Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 ">
@@ -398,7 +398,7 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Estimated time in minutes for Express Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="estimatedTime" TextMode="Number" Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="estimatedTime" Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         
@@ -421,7 +421,7 @@
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="expressOrderType" runat="server">
-                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
+                                                                    <%--<asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>--%>
                                                                     <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                                 </asp:CheckBoxList>
                                                        </div>
