@@ -264,17 +264,17 @@
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
                                                 <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
-                                                <h6> Note: Please choose a 'Delivery Type' one at a time</h6>
+                                                <h6> Note: Please check the 'Delivery Types' you offer to your business and fill all the informations needed in each delivery type</h6>
                                                 <hr />
                                            <%-- <div class="item form-group">--%>
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
                                                   <strong>Choose the Delivery Type you provide in your business:</strong>
-                                                    <asp:RadioButtonList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
+                                                    <asp:CheckBoxList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
                                                         <asp:ListItem Text="Standard" Value="Standard" ID="standardRadio" onclick="displayStandardOptions(); disableOtherRadios()"></asp:ListItem>
                                                         <asp:ListItem Text="Reservation" Value="Reservation" ID="reserveRadio" onclick="displayReserveOptions(); disableOtherRadios()"></asp:ListItem>
                                                         <asp:ListItem Text="Express" Value="Express" ID="expressRadio" onclick="displayExpressOptions(); disableOtherRadios()"></asp:ListItem>
-                                                    </asp:RadioButtonList>
+                                                    </asp:CheckBoxList>
 
 
                                             </div>
@@ -295,12 +295,12 @@
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="FreeDelivery" Width="364px" TextMode="Number" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                          </div>
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="DeliveryFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="DeliveryFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                          </div>
                                                     <br />
                                                        <div class="col-md-12 col-sm-12">
@@ -350,13 +350,13 @@
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="resFreeDel"  Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="resFreeDel"  Width="364px" TextMode="Number" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="resDelFee" Width="364px" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="resDelFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                          </div> <br />
                                                        <div class="col-md-12 col-sm-12">
                                                   
@@ -396,9 +396,9 @@
                                                 <div ID="expressCheckedDIV" style="display:none"> <hr />
                                                      <strong>Express Options</strong>
                                                         <div  class="col-md-12 col-sm-12 ">
-                                                                <strong>Estimated time for Express Delivery:</strong> <br />
+                                                                <strong>Estimated time in minutes for Express Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="estimatedTime"  Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="estimatedTime" TextMode="Number" Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
                                                      
                                                         </div>
                                                         
@@ -406,7 +406,7 @@
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Express Delivery fee:</strong>
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                <asp:TextBox ID="expressdeliveryFee" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="expressdeliveryFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
                                                          </div> <br />
                                                        <div class="col-md-12 col-sm-12">
                                                   

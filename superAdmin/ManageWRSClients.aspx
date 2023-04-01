@@ -68,18 +68,15 @@
                                                                     <div class="card-box table-responsive">
 
                                                                           <!--PAGE CONTENTS-->
-                                                                          <asp:GridView runat="server" ID="GridView1" class="texts table-responsive"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" HtmlEncode="false" Width="1274px">
+                                                                          <asp:GridView runat="server" ID="GridView1" class="texts table-responsive"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" HtmlEncode="false" Width="1690px" CssClass="m-r-0">
                                                                              <Columns>
                                                                                  <asp:TemplateField>
                                                                                     <ItemTemplate>
-                                                                                          <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>
+                                                                                        <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
+                                                                                          <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
+                                                                                        <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
-                                                                                 <asp:TemplateField>
-                                                                                     <ItemTemplate>
-                                                                                          <asp:LinkButton ID="decline" runat="server" Text="Decline" OnClick="decline_Click"/>
-                                                                                    </ItemTemplate>
-                                                                                 </asp:TemplateField>
                                                                              </Columns>
                                                                                 <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
                                                                                 <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />

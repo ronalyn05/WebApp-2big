@@ -57,7 +57,9 @@ namespace WRS2big_Web.LandingPage
                     bdate = txtbirthdate.Text,
                     phone = txtphoneNum.Text,
                     email = txtEmail.Text,
-                    pass = id_passwordreg.Text
+                    pass = id_passwordreg.Text,
+                    status = "pending"
+                    
                     
                 };
                 var list = new RefillingStation

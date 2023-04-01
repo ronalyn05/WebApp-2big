@@ -45,26 +45,8 @@ namespace WRS2big_Web.Admin
                 //otherProductsDisplay();
                 //deliveryDetailsDisplay();
                 // tanksupplyDisplay();
+               
 
-                //FOR DELIVERY DETAILS
-                //generate random number for the IDs
-                Random rnd = new Random();
-                int deliveryId = rnd.Next(1, 10000);
-
-                var admin = (string)Session["idno"];
-                int adminId = int.Parse(admin);
-
-                var adminData = new DeliveryDetails
-                {
-                    adminId = adminId,
-                    deliveryId = deliveryId
-                };
-
-                SetResponse delResponse;
-                delResponse = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
-
-                //store the generated deliveryID into session
-                Session["deliveryID"] = deliveryId;
             }
 
             string idno = (string)Session["idno"];
@@ -83,7 +65,7 @@ namespace WRS2big_Web.Admin
             //date.Text = (string)Session["dateAdded"];
             //TankSupply.Text = (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
 
-            FirebaseResponse response;
+           //FirebaseResponse response;
             //THIS RETRIEVE THE DATA FORM THE TANKSUPPLY TBL
             //response = twoBigDB.Get("TANKSUPPLY/");
             //TankSupply obj = response.ResultAs<TankSupply>();
@@ -622,53 +604,55 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
-        //STORING DATA TO DELIVERY_DETAILS
+
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
+
+
+
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
 
-            //generate random number for the IDs
             Random rnd = new Random();
-            //int deliveryId = rnd.Next(1, 10000);
+            int deliveryId = rnd.Next(1, 10000);
             int standardID = rnd.Next(1, 10000);
             int expressID = rnd.Next(1, 10000);
             int reservationDelivery = rnd.Next(1, 10000);
 
+            //create the deliveryID and save the adminID
+            var adminData = new DeliveryDetails
+            {
+                adminId = adminId,
+                deliveryId = deliveryId
+            };
 
-            //// Retrieve the existing delivery data from the database
-            //var get = twoBigDB.Get("DELIVERY_DETAILS/");
-            //DeliveryDetails id = get.ResultAs<DeliveryDetails>();
+            SetResponse response;
+            response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
 
-            //int IdDelivery = id.adminId;
 
-            //if (adminId != IdDelivery)
-            //{
+            //FOR THE CHECKBOXES OF DELIVERY TYPES
+            string[] selectedItems = new string[radDevType.Items.Count];
+            int index = 0;
 
-                
-
-                    
-            //}
-            //else
-            //{
-                
-            //}
-            // Loop through the items in the radiobutton list to build the deliveryType string
-            string deliveryType = "";
             foreach (ListItem item in radDevType.Items)
             {
                 if (item.Selected)
                 {
-                    deliveryType += item.Value + ", ";
+                    selectedItems[index] = item.Value;
+                    index++;
                 }
             }
-            deliveryType = deliveryType.TrimEnd(' ', ',');
 
-            //IF STANDARD ANG PILION
-            if (deliveryType == "Standard")
+            //access each selected item separately using the index of the array
+            string standard = selectedItems[0];
+            string reservation = selectedItems[1];
+            string express = selectedItems[2];
+
+            
+
+            //IF GICHECK STANDARD
+            if (!string.IsNullOrEmpty(standard))
             {
-
-
                 // Loop through the items in the CheckBoxList to build the orderType string
                 string orderType = "";
                 foreach (ListItem item in DeliveryType.Items)
@@ -692,25 +676,12 @@ namespace WRS2big_Web.Admin
                 orderMethod = orderMethod.TrimEnd(' ', ',');
 
 
-                //store the value of session into deliveryID
-                int deliveryID = (int)Session["deliveryID"];
-
-                // Retrieve the existing product data from the database
-                var result = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryID);
-                DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
-
-                //delivery ID fetched from database
-                int delID = obj.deliveryId;
-
-                //compare the deliveryID fetched from database and the deliveryID from the session
-                if (delID == deliveryID)
-                {
-                    var standard = new standardDelivery
+                    var standardDeliver = new standardDelivery
                     {
-                        stanDeliverytype = deliveryType,
-                        stanDeliveryFee = int.Parse(DeliveryFee.Text), // DELIVERY FEE for STANDARD and RESERVATION
+                        stanDeliverytype = standard,
+                        stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
                         stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
-                        standistance = int.Parse(FreeDelivery.Text), //FREE DELIVERY for STANDARD and RESERVATION
+                        standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
                         stanOrderType = orderType,
                         stanOrderMethod = orderMethod,
                         standardID = standardID,
@@ -718,15 +689,12 @@ namespace WRS2big_Web.Admin
                     };
 
                     SetResponse standardre;
-                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delID + "/deliveryTypes/" + standard.standardID, standard);
+                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
                     DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
-
-                    Response.Write("<script>alert ('You successfully created the " + standard.stanDeliverytype + " Delivery with ID number: " + standard.standardID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-                }
-
             }
-            //IF RESERVATION ANG PILION
-            else if (deliveryType == "Reservation")
+
+            //IF GICHECK RESERVATION
+             if (!string.IsNullOrEmpty(reservation))
             {
                 // Loop through the items in the CheckBoxList to build the orderType string
                 string resOrderType = "";
@@ -750,38 +718,24 @@ namespace WRS2big_Web.Admin
                 }
                 resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
 
-                //store the value of session into deliveryID
-                int deliveryID = (int)Session["deliveryID"];
 
-                // Retrieve the existing product data from the database
-                var result = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryID);
-                DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
-
-                //delivery ID fetched from database
-                int delID = obj.deliveryId;
-
-                //compare the deliveryID fetched from database and the deliveryID from the session
-                if (delID == deliveryID)
-                {
-                    var reservation = new reservationDelivery
+                    var reservationDeliver = new reservationDelivery
                     {
                         reservationID = reservationDelivery,
-                        resDeliveryType = deliveryType,
-                        resDeliveryFee = int.Parse(resDelFee.Text),
-                        resDistanceFree = int.Parse(resFreeDel.Text),
+                        resDeliveryType = reservation,
+                        resDeliveryFee = resDelFee.Text,
+                        resDistanceFree = resFreeDel.Text,
                         resOrderMethod = resOrderMethod,
                         resOrderType = resOrderType,
                         dateAdded = DateTime.UtcNow
                     };
-                    SetResponse standardre;
-                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delID + "/deliveryTypes/" + reservation.reservationID, reservation);
-                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
-
-                    Response.Write("<script>alert ('You successfully created the " + reservation.resDeliveryType + " Delivery with ID number: " + reservation.reservationID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-                }
+                    SetResponse reservere;
+                    reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
+                    DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
             }
-            //IF EXPRESS ANG PILION
-            else if (deliveryType == "Express")
+
+            //IF GICHECK ANG EXPRESS
+            if (!string.IsNullOrEmpty(express))
             {
                 // Loop through the items in the CheckBoxList to build the orderType string
                 string resOrderType = "";
@@ -805,40 +759,23 @@ namespace WRS2big_Web.Admin
                 }
                 resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
 
-                //store the value of session into deliveryID
-                int deliveryID = (int)Session["deliveryID"];
-
-                // Retrieve the existing product data from the database
-                var result = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryID);
-                DeliveryDetails obj = result.ResultAs<DeliveryDetails>();
-
-                //delivery ID fetched from database
-                int delID = obj.deliveryId;
-
-                //compare the deliveryID fetched from database and the deliveryID from the session
-                if (delID == deliveryID)
-                {
-                    var express = new expressDelivery
+                var expressDeliver = new expressDelivery
                     {
                         expressID = expressID,
-                        exDeliveryType = deliveryType,
+                        exDeliveryType = express,
                         exEstimatedDelivery = estimatedTime.Text,
-                        exDeliveryFee = int.Parse(expressdeliveryFee.Text),
+                        exDeliveryFee = expressdeliveryFee.Text,
                         exOrderMethod = resOrderMethod,
                         exOrderType = resOrderType,
                         dateAdded = DateTime.UtcNow
                     };
-                    SetResponse standardre;
-                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + delID + "/deliveryTypes/" + express.expressID, express);
-                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
-
-                    Response.Write("<script>alert ('You successfully created the " + express.exDeliveryType + " Delivery with ID number: " + express.expressID + "');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-                }
+                    SetResponse expreessres;
+                    expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
+                    DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
             }
+            Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
         }
-
-
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string selectedOption = ddlSearchOptions.SelectedValue;
