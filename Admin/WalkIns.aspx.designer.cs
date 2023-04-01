@@ -15,13 +15,31 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
-        /// txtprodName control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtprodName;
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// drdProdName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdProdName;
+
+        /// <summary>
+        /// btnSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
         /// drdOrderType control.
@@ -33,31 +51,40 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.DropDownList drdOrderType;
 
         /// <summary>
-        /// txtprodSize control.
+        /// lblSize control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtprodSize;
+        protected global::System.Web.UI.WebControls.Label lblSize;
 
         /// <summary>
-        /// txtprice control.
+        /// lblUnit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtprice;
+        protected global::System.Web.UI.WebControls.Label lblUnit;
 
         /// <summary>
-        /// txtDiscount control.
+        /// lblprice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDiscount;
+        protected global::System.Web.UI.WebControls.Label lblprice;
+
+        /// <summary>
+        /// lblDiscount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDiscount;
 
         /// <summary>
         /// txtQty control.
@@ -69,13 +96,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox txtQty;
 
         /// <summary>
-        /// txtTotalAmount control.
+        /// lblAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTotalAmount;
+        protected global::System.Web.UI.WebControls.Label lblAmount;
 
         /// <summary>
         /// PaymentBtn control.
