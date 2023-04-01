@@ -30,24 +30,11 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            string idno = (string)Session["idno"];
-
-           /* string idno = Session["idno"]?.ToString();*/ // use null-conditional operator to avoid null reference exception
-            FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
-            Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
-           // var productNames = products.Values.Where(p => p.adminId.ToString() == idno).Select(p => p.pro_refillWaterType);
-
-            int index = 1; // start index from 1
-            drdProdName.Items.Clear(); // clear existing items  
-
-            foreach (var product in products.Values)
-            {
-                // drdProdName.Items.Add(new ListItem(productName));
-                drdProdName.Items.Add(new ListItem(product.pro_refillWaterType, index.ToString()));
-                index++; // increment index for next product
-            }
             
+            btnSearchPrice.Visible = false;
+
         }
+        //STORE DATA TO WALKINORDER TBL AND CALCULATE ITS TOTAL AMOUNT
         protected void btnPayment_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -59,8 +46,7 @@ namespace WRS2big_Web.Admin
 
                 // Convert input values to numerical format
                 int qty;
-                decimal price, discount;
-                decimal totalAmount;
+                decimal price, discount, totalAmount, freeGallon;
                 if (!int.TryParse(txtQty.Text, out qty))
                 {
                     throw new ArgumentException("Invalid quantity value");
@@ -78,7 +64,17 @@ namespace WRS2big_Web.Admin
                 // Calculate total amount only if a valid discount value is entered
                 if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
-                    totalAmount = (qty * price) - discount;
+                    // Calculate free gallon if applicable
+                    freeGallon = 0;
+                    if (qty >= 5)
+                    {
+                        freeGallon = Math.Floor((decimal)qty / 5);
+                    }
+                    if (discount > 0 && freeGallon > 0)
+                    {
+                        Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
+                    }
+                    totalAmount = (qty * price) - discount + freeGallon * price;
                     lblAmount.Text = totalAmount.ToString();
                 }
                 else
@@ -87,17 +83,15 @@ namespace WRS2big_Web.Admin
                     return;
                 }
 
-                // Calculate total amount
-                //decimal totalAmount = (qty * price) - discount;
-
+                // Update data with the calculated total amount, discount and adjusted quantity
                 var data = new WalkInOrders
                 {
                     orderNo = idnum,
                     productName = drdProdName.SelectedValue,
-                    productSize = lblprice.Text,
+                    productSize = drdSize.SelectedValue,
                     productPrice = price,
-                    productDiscount = discount,
-                    productQty = qty,
+                    productDiscount = discount, // Store the discount value in the database
+                    productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
                     totalAmount = totalAmount, // Store calculated total amount as decimal
                     orderType = drdOrderType.Text,
                     dateAdded = DateTime.UtcNow
@@ -105,7 +99,7 @@ namespace WRS2big_Web.Admin
 
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("ADMIN/" + idno + "/WalkInOrders/" + data.orderNo, data);
+                response = twoBigDB.Set("WalkInOrders/" + data.orderNo, data);
                 WalkInOrders result = response.ResultAs<WalkInOrders>();
 
                 // Set the text of the txtTotalAmount textbox to the calculated total amount
@@ -118,34 +112,178 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
+
+
+        //RETRIEVING THE PRODUCTS USING SEARCH
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
 
-            string selectedOption = drdProdName.SelectedValue;
+            string selectedOption = drdOrderType.SelectedValue;
 
-            FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
-            Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
-            // var productNames = products.Values.Where(p => p.adminId.ToString() == idno).Select(p => p.pro_refillWaterType);
-            // Retrieve the data for the selected product
-            ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedOption);
+            drdProdName.Items.Clear();
+            drdUnit.Items.Clear();
+            drdSize.Items.Clear();
 
-
-            if (selectedOption == "Purified" || selectedOption == "Alkaline")
+            if (selectedOption == "Refill" || selectedOption == "New Gallon")
             {
-                // Retrieve the data for the selected product
-               // ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedOption);
-                if (selectedProduct != null)
+                FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
+                Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
+
+                foreach (var product in products.Values)
                 {
-                    // Display the unit for the selected product
-                    lblUnit.Text = selectedProduct.pro_refillUnit;
-                    lblSize.Text = selectedProduct.pro_refillSize;
-                    lblprice.Text = selectedProduct.pro_refillPrice;
-                    lblDiscount.Text = selectedProduct.pro_discount;
+                    drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
+                    drdUnit.Items.Add(new ListItem(product.pro_refillUnit));
+                    drdSize.Items.Add(new ListItem(product.pro_refillSize));
                 }
+
+
             }
+            else if (selectedOption == "Other Products")
+            {
+                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
+                Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
+
+                foreach (var otherproduct in otherproducts.Values)
+                {
+                    drdProdName.Items.Add(new ListItem(otherproduct.other_productName));
+                    drdUnit.Items.Add(new ListItem(otherproduct.other_productUnit));
+                    drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
+                }
+               
+            }
+            lblDescription.Text = "Choose product type, unit and size:";
+            btnSearchPrice.Visible = true;
 
         }
+        //RETRIEVING THE PRICE AND DISCOUNT 
+        protected void btnSearchPrice_Click(object sender, EventArgs e)
+        {
+            string selectedSize = drdSize.SelectedValue;
+            string selectedType = drdProdName.SelectedValue;
+            string selectedUnit = drdUnit.SelectedValue;
+
+            //if (!string.IsNullOrEmpty(selectedSize))
+            //{
+            //    if (!string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
+            //    {
+            //        FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
+            //        Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
+
+            //        otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productSize == selectedSize && p.other_productName == selectedType && p.other_productUnit == selectedUnit);
+
+            //        if (otherselectedProduct != null)
+            //        {
+            //            // Display the unit for the selected product
+            //            if (otherselectedProduct.other_productPrice != null || otherselectedProduct.other_productDiscount != null)
+            //            {
+            //                lblprice.Text = otherselectedProduct.other_productPrice.ToString();
+            //                lblDiscount.Text = otherselectedProduct.other_productDiscount.ToString();
+            //            }
+            //            else
+            //            {
+            //                lblprice.Text = "";
+            //                lblDiscount.Text = ""; 
+            //            }
+
+            //        }
+            //        else
+            //        {
+
+            //            Response.Write("<script>alert ('No product found with the selected options!');</script>");
+
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Response.Write("<script>alert ('Please select the product type and unit');</script>");
+            //    }
+            //}
+            if (!string.IsNullOrEmpty(selectedSize) && !string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
+            {
+                // Check if the product exists in the "otherPRODUCTS" table
+                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
+                Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
+                otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productSize == selectedSize && p.other_productName == selectedType && p.other_productUnit == selectedUnit);
+
+                if (otherselectedProduct != null)
+                {
+                    // Display the unit for the selected product
+                    if (otherselectedProduct.other_productPrice != null)
+                    {
+                        lblprice.Text = otherselectedProduct.other_productPrice.ToString();
+                    }
+                    else
+                    {
+                        lblprice.Text = "";
+                    }
+
+                    if (otherselectedProduct.other_productDiscount != null)
+                    {
+                        lblDiscount.Text = otherselectedProduct.other_productDiscount.ToString();
+                    }
+                    else
+                    {
+                        lblDiscount.Text = "0"; // or some default value
+                    }
+                }
+                else
+                {
+                    // Check if the product exists in the "PRODUCTREFILL" table
+                    response = twoBigDB.Get("PRODUCTREFILL/");
+                    Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
+                    ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillSize == selectedSize && p.pro_refillWaterType == selectedType && p.pro_refillUnit == selectedUnit);
+
+                    if (selectedProduct != null)
+                    {
+                        // Display the unit for the selected product
+                        if (selectedProduct.pro_refillPrice != null)
+                        {
+                            lblprice.Text = selectedProduct.pro_refillPrice.ToString();
+                        }
+                        else
+                        {
+                            lblprice.Text = "";
+                        }
+
+                        if (selectedProduct.pro_discount != null)
+                        {
+                            lblDiscount.Text = selectedProduct.pro_discount.ToString();
+                        }
+                        else
+                        {
+                            lblDiscount.Text = "0"; // or some default value
+                        }
+                    }
+                    else
+                    {
+                        lblprice.Text = "";
+                        lblDiscount.Text = "";
+                        // display a message to the user that no product was found
+                        var noProductFound = new Label { Text = "No product found with the selected options!", ForeColor = System.Drawing.Color.Red };
+                        this.Controls.Add(noProductFound);
+                    }
+                }
+            }
+            else
+            {
+                Response.Write("<script>alert ('Please select the product size, type, and unit');</script>");
+            }
+
+            btnSearchPrice.Visible = true;
+
+        }
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            txtQty.Text = "";
+            lblprice.Text = "";
+            lblDiscount.Text = "";
+            lblAmount.Text = "";
+            drdProdName.Items.Clear();
+            drdUnit.Items.Clear();
+            drdSize.Items.Clear();
+        }
+
 
     }
 }

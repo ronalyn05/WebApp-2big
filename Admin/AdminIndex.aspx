@@ -142,7 +142,7 @@
                                                 </div>
                                             </div>
                                             <!-- task, page, download counter  end -->
-                                            <!--  sale analytics start -->
+                                           <%-- <!--  sale analytics start -->
                                             <div class="col-xl-8 col-md-12">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -195,7 +195,7 @@
                                                         <div class="progress"><div class="progress-bar bg-c-green" style="width: 50%"></div></div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                             <!--  sale analytics end -->
                                             <!--  project and team member start -->
                                             <%--<div class="col-xl-8 col-md-12">

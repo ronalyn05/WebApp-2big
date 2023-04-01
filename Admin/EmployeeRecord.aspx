@@ -225,36 +225,27 @@
                                                             <div class="tab-pane active">
                                                                 <%--the gridview starts here--%>
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
-                                                                    <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" 
-                                                    SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                              <%--  <asp:GridView runat="server" ID="GridView1" DataKeyNames="EMPLOYEE ID" CellPadding="3" Width="975px" CssClass="auto-style1" 
-                                                    SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >--%>
-                                                      <Columns>
-                                                          <%--<asp:BoundField HeaderText="STATUS" DataField="STATUS" />--%>
-                                                        <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                             <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnUpdate_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal" BorderStyle="None" ForeColor="White"/>
-                                                         <%-- <asp:Button ID="btnEdit" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal" runat="server" Text="Edit"/>--%>
-                                                              <%--<button type="button" class="btn btn-primary btn-md" data-toggle="modal"  data-target="#editModal"><i class="fa fa-edit"></i> Edit </button>--%>
-                                                             <%-- BUTTON TO TRIGGER THE MODAL--%>
-                                                           <%-- <asp:Button ID="btnedit" CssClass="btn btn-primary btn-md" runat="server"
-                                                                  Text="Edit" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
-                                                                  data-toggle="modal" data-target=".update" />--%>
-                                                          </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>
-                                                        <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                        <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
-                                                        <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                        <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
-                                                        <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                        <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                        <SortedDescendingHeaderStyle BackColor="#00547E" />
-                                                    </asp:GridView>
-                                                       
-                                                 </div>
+                                                                  <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                          <Columns>
+                                                                            <asp:TemplateField>
+                                                                              <ItemTemplate>
+                                                                                 <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnUpdate_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
+                                                                                        data-target="#editModal" BorderStyle="None" ForeColor="White"/>
+                                                                              </ItemTemplate>
+                                                                            </asp:TemplateField>
+                                                                          </Columns>
+                                                                            <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                                            <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
+                                                                            <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                                            <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
+                                                                            <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                                            <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                                            <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                                            <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                                            <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                                        </asp:GridView>
+                                                                    </div>
 
                                                                <%--Gridview ends here--%>
 
