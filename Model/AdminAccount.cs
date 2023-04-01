@@ -112,8 +112,8 @@ namespace WRS2big_Web.Model
     public class standardDelivery
     {
         public int standardID { get; set; }
-        public int standistance { get; set; }
-        public int stanDeliveryFee { get; set; }
+        public string standistance { get; set; }
+        public string stanDeliveryFee { get; set; }
         public string stanDeliverytype { get; set; }
         public string stanDeliveryTime { get; set; }
         public string stanOrderMethod { get; set; }
@@ -124,7 +124,7 @@ namespace WRS2big_Web.Model
     public class expressDelivery
     {
         public int expressID { get; set; }
-        public int exDeliveryFee { get; set; }
+        public string exDeliveryFee { get; set; }
         public string exEstimatedDelivery { get; set; }
         public string exDeliveryType { get; set; }
         public string exOrderMethod { get;set;}
@@ -136,8 +136,8 @@ namespace WRS2big_Web.Model
     public class reservationDelivery
     {
         public int reservationID { get; set; }
-        public int resDistanceFree { get; set; }
-        public int resDeliveryFee { get; set; }
+        public string resDistanceFree { get; set; }
+        public string resDeliveryFee { get; set; }
         public string resOrderMethod { get; set; }
         public string resOrderType { get; set; }
         public string resDeliveryType { get; set; }
