@@ -15,24 +15,6 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
-        /// TankSupply control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label TankSupply;
-
-        /// <summary>
-        /// date control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label date;
-
-        /// <summary>
         /// drdTankUnit control.
         /// </summary>
         /// <remarks>
@@ -474,12 +456,57 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.GridView gridotherProduct;
 
         /// <summary>
-        /// gridDeliveryDetails control.
+        /// lblExpress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridDeliveryDetails;
+        protected global::System.Web.UI.WebControls.Label lblExpress;
+
+        /// <summary>
+        /// gridExpress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridExpress;
+
+        /// <summary>
+        /// lblStandard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStandard;
+
+        /// <summary>
+        /// gridStandard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridStandard;
+
+        /// <summary>
+        /// lblReservation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblReservation;
+
+        /// <summary>
+        /// gridReservation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridReservation;
     }
 }
