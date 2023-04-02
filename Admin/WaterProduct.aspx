@@ -52,9 +52,7 @@
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i> Add Tank Supply</button>
-                                       <asp:Label ID="TankSupply" runat="server"></asp:Label>
-                                       <asp:Label ID="date" runat="server"></asp:Label>
-
+                                     
                                          <%--VIEW BUTTON --%>
                                           &nbsp;
                                        <%-- MODAL FOR TANK SUPPLY --%>
@@ -97,7 +95,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                 <%--  BUTTON TANK SUPPLY HERE--%>
-                                               <asp:Button ID="btnAddSupply" runat="server" Text="Add Supply" class="btn btn-primary btn-sm" OnClick="btnAddSupply_Click" AutoPostBack="true"/>
+                                               <asp:Button ID="btnAddSupply" runat="server" Text="Add Supply" class="btn btn-primary btn-sm" OnClick="btnAddSupply_Click"/>
                                             </div>
                                               </div>
                                             </div>
@@ -172,7 +170,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" runat="server" Text="Add other Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="true"/>
+                                               <asp:Button ID="btnAdd" runat="server" Text="Add other Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="false"/>
                                                 <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
                                                 --%></div>
                                               </div>
@@ -240,7 +238,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- set data button--%>
-                                               <asp:Button ID="btnSet" runat="server" Text="Add Product Refill" class="btn btn-primary btn-sm" OnClick="btnSet_Click" AutoPostBack="true"/>
+                                               <asp:Button ID="btnSet" runat="server" Text="Add Product Refill" class="btn btn-primary btn-sm" OnClick="btnSet_Click" AutoPostBack="false"/>
                                                 </div>
                                               </div>
                                             </div>
@@ -475,7 +473,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- set data button--%>
-                                               <asp:Button ID="btnDeliverydetails" runat="server" Text="Add details" class="btn btn-primary btn-sm" OnClick="btnDeliverydetails_Click" AutoPostBack="true" />
+                                               <asp:Button ID="btnDeliverydetails" runat="server" Text="Add details" class="btn btn-primary btn-sm" OnClick="btnDeliverydetails_Click" AutoPostBack="false" />
                                                 </div>
                                               </div>
                                             </div>
@@ -499,51 +497,28 @@
                                                                 </ul>
                                                             </div>
                                                             <%--<h5> Tank Supply:</h5>--%>
-                                                            <asp:Label ID="Label1" runat="server" Text="Tank Supply" Font-Bold="true" Font-Size="Medium" Width="364px"></asp:Label>
+                                                            <asp:Label ID="Label1" runat="server" Text="Tank Supply" Font-Bold="true" Font-Size="Large" Width="364px"></asp:Label>
                                                             <%--<button type="button" style="font-size:14px; width: 154px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addSupply"><i class="fa fa-plus"></i> Add Tank Supply</button>--%>
 
                                                         </div>
                                                         <div class="card-block">   
                                                              <div class="col-md-12 col-sm-12 ">
-                                                  <%--tank unit --%>
-                                                <%--  <strong>Tank Unit:</strong>
-                                                        <asp:DropDownList ID="drdTankUnit" runat="server" Height="40px" Width="300px">--%>
-                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                      <%-- <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
-                                                       <asp:ListItem Text="Liters" Value="liter/s" ></asp:ListItem>
-                                                     <asp:ListItem Text="Mililiters" Value="mililiter/s" ></asp:ListItem>
-                                                   </asp:DropDownList>
-                                               </div>
-                                                            <br />--%>
-                                              <%--  Tank Size--%>
-                                               <%-- <div class="col-md-12 col-sm-12 ">
-                                                     <strong>Tank Size:</strong>
-                                                        <asp:TextBox ID="tankSize" Placeholder="Enter the size of tank water supply" runat="server" Width="300px"></asp:TextBox>
-                                                     </div>
-                                                         <br />--%>
-                                                          <%--  BUTTON TANK SUPPLY HERE--%>
-                                                          <%--  <asp:Button ID="AddTanksupply" runat="server" class="btn btn-primary btn-sm" Text="Add Supply" OnClick="btnAddSupply_Click" Width="131px"/>--%>
-                                                          <%--  <hr />
-                                                            <h5>Tank Supply for the day:</h5>--%>
-                                                          <%--  <hr />--%>
+                                         
                                                              <div class="col-md-12 col-sm-12">
-                                                    <strong>Date:</strong>
-                                                        <asp:Label ID="lbl_Date" runat="server" Width="364px"></asp:Label>
+                                                    <strong class="font-weight-bold" style="font-size:large">Date:</strong>
+                                                        <asp:Label ID="lbl_Date" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label>
                                                                  </div>
+                                                                 <br />
                                                              <div class="col-md-12 col-sm-12">
-                                                    <strong>Tank Supply of the day:</strong>
-                                                        <asp:Label ID="lbltankSupply" runat="server" Width="364px"></asp:Label>
+                                                    <strong class="font-weight-bold" style="font-size:large">Tank Supply of the day:</strong>
+                                                        <asp:Label ID="lbltankSupply" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label>
                                                                  </div>
                                                    <br />
                                                                   <div class="col-md-12 col-sm-12">
-                                                   <strong>Remaining Supply:</strong>
-                                                        <asp:Label ID="lblremainingSupply" runat="server" Width="364px"></asp:Label><br />
+                                                   <strong class="font-weight-bold" style="font-size:large">Remaining Supply:</strong>
+                                                        <asp:Label ID="lblremainingSupply" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label><br />
                                                </div>
-                                                            
-                                                          <%-- <asp:ListBox ID="ListBox1" runat="server" style="border:transparent; font-size:20px;padding:4px 7px 2px 4px;" Width="273px" Height="179px">
-                                                           </asp:ListBox> 
-                                                            <asp:Button ID="Button1" onclick="btnDisplay_Click" type="button" style="font-size:14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
-                                                        --%>
+                                                         
                                                         </div>
                                                     
                                                     </div>
@@ -565,13 +540,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server">
+                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
+                                                            <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
+                                                           <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
                                                            <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
                                                            <asp:ListItem Text="otherProduct" Value="2"></asp:ListItem>
                                                            <asp:ListItem Text="deliveryDetails" Value="3"></asp:ListItem>
                                                         </asp:DropDownList>
 
-                                                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
+                                                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" />
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
@@ -637,8 +614,57 @@
                                                                <%-- <h5> Delivery Details</h5>
                                                                 <br />--%>
                                                                        <%--the gridview starts here--%>
+                                                                <asp:Label ID="lblExpress" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
                                                              <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
-                                                <asp:GridView runat="server" ID="gridDeliveryDetails" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                <asp:GridView runat="server" ID="gridExpress" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+
+                                                <%-- </div>--%> <%--Gridview ends here--%>
+                                                                <%--the gridview starts here--%>
+                                                                <asp:Label ID="lblStandard" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridStandard" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+
+                                                <%-- </div>--%> <%--Gridview ends here--%>
+                                                                 <asp:Label ID="lblReservation" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                <%--the gridview starts here--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridReservation" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
