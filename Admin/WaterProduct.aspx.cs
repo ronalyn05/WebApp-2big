@@ -47,7 +47,7 @@ namespace WRS2big_Web.Admin
             displayTankSupply();
 
         }
-        //DISPALY TANK SUPPLY NI DIRI
+        //DISPLAY TANK SUPPLY NI DIRI
         private void displayTankSupply()
         {
 
@@ -59,83 +59,129 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
                 Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
 
-                // Filter the list of orders by the owner's ID and the order status and delivery type
-                var filteredSupply = supply.Values.SingleOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
-
-
-                if (filteredSupply != null)
-                {
-                    lbl_Date.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
-
-                    // Retrieve all orders from the ORDERS table
-                    FirebaseResponse responseOrder = twoBigDB.Get("ORDERS");
-                    Dictionary<string, Order> orders = responseOrder.ResultAs<Dictionary<string, Order>>();
-
+                if (supply != null)
+                { 
                     // Filter the list of orders by the owner's ID and the order status and delivery type
-                    var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Pending" 
-                    && d.order_DeliveryTypeValue == "Express" || d.order_DeliveryTypeValue == "Standard" || d.order_DeliveryTypeValue == "Reservation");
+                    var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
 
+                    if (filteredSupply != null)
+                    {
+                        lblDate.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                        lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
 
-                    // Convert tank capacity to gallons if it's not already in gallons
-                    double tankCapacity = double.Parse(filteredSupply.tankVolume);
-                    if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
-                    {
-                        double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
-                        tankCapacity *= gallonsPerLiter;
-                    }
-                    else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
-                    {
-                        double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
-                        tankCapacity /= gallonsPerML;
-                    }
+                        // Retrieve all orders from the ORDERS table
+                        FirebaseResponse responseOrder = twoBigDB.Get("ORDERS");
+                        Dictionary<string, Order> orders = responseOrder.ResultAs<Dictionary<string, Order>>();
 
-                    // Reduce tank supply based on the orders for today
-                    double remainingSupply = tankCapacity;
-                    foreach (Order order in filteredOrders)
-                    {
-                        // Convert order size to gallons or milliliters based on order unit
-                        double orderedGallons = 0;
-                        if (order.order_unit == "L" || order.order_unit == "liter/s")
+                        // Retrieve all walk-in orders from the WALKINORDERS table
+                        FirebaseResponse walkinResponse = twoBigDB.Get("WALKINORDERS");
+                        Dictionary<string, WalkInOrders> walkinOrders = walkinResponse.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                        // Convert tank capacity to gallons if it's not already in gallons
+                        double tankCapacity = double.Parse(filteredSupply.tankVolume);
+                        if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
                         {
                             double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
-                            orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+                            tankCapacity *= gallonsPerLiter;
                         }
-                        else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+                        else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
                         {
                             double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
-                            orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+                            tankCapacity /= gallonsPerML;
                         }
 
-                        remainingSupply -= orderedGallons;
-                    }
+                        // Calculate the total gallons ordered
+                        double totalOrderedGallons = 0;
+                        if (orders != null)
+                        {
+                            var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno
+                                && (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted")
+                                && (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
 
-                    // display the remaining supply
-                    if (remainingSupply <= 0)
-                    {
-                        lblremainingSupply.Text = "There is no remaining supply. We are sorry that we cannot fullfill any further orders.";
+                            foreach (Order order in filteredOrders)
+                            {
+                                double orderedGallons = 0;
+                                if (order.order_unit == "gallon/s")
+                                {
+                                    orderedGallons = Double.Parse(order.order_size);
+                                }
+                                else if (order.order_unit == "L" || order.order_unit == "liter/s")
+                                {
+                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                    orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+                                }
+                                else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+                                {
+                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+                                }
+                                //Get the total of ordered gallons 
+                                totalOrderedGallons += orderedGallons * order.order_Quantity;
+                            }
+                        }
+
+                        //Calculate the ordered gallons of walkin
+                        if (walkinOrders != null)
+                        {
+                            var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno && d.orderType == "Refill" || d.orderType == "New Gallon");
+                            foreach (WalkInOrders order in filteredWalkinOrders)
+                            {
+                                // Convert order size to gallons or milliliters based on order unit
+                                double orderedGallons = 0;
+                                if (order.productUnit == "L" || order.productUnit == "liter/s")
+                                {
+                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                    orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
+                                }
+                                else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
+                                {
+                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                    orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
+                                }
+                                //Get the total of ordered gallons 
+                                totalOrderedGallons += orderedGallons * order.productQty;
+                            }
+                        }
+                        //Get the total of remaining supply base on each ordered place
+                        double remainingSupply = tankCapacity - totalOrderedGallons;
+
+                        // display the remaining supply
+                        if (remainingSupply <= 0)
+                        {
+                            lblremainingSupply.Text = "There is no remaining supply. Currently unable to fullfill any further orders.";
+                        }
+                        else
+                        {
+                            lblremainingSupply.Text = remainingSupply.ToString("N2") + ' ' + "gallons";
+                       
+
+                            // Update the remaining supply in the TANKSUPPLY table
+                            TankSupply tankSupply = new TankSupply
+                                {
+                                    tankId = filteredSupply.tankId,
+                                    adminId = filteredSupply.adminId,
+                                    dateAdded = filteredSupply.dateAdded,
+                                    tankVolume = filteredSupply.tankVolume,
+                                    tankUnit = filteredSupply.tankUnit,
+                                    tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+                                    dateUpdated = DateTimeOffset.UtcNow
+                             };
+
+                                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
+                        }
                     }
                     else
                     {
-                        lblremainingSupply.Text = remainingSupply.ToString("N2") + "gallons";
+                        lblDate.Text = "";
+                        lbltankSupply.Text = "No supply found for today.";
+                        lblremainingSupply.Text = "";
                     }
-                    // Update the remaining supply in the TANKSUPPLY table
-                    TankSupply tankSupply = new TankSupply
-                    {
-                        tankId = filteredSupply.tankId,
-                        adminId = filteredSupply.adminId,
-                        dateAdded = filteredSupply.dateAdded,
-                        tankVolume = filteredSupply.tankVolume,
-                        tankUnit = filteredSupply.tankUnit,
-                        tankBalance = remainingSupply.ToString("N2") + "gallons", // Update the remaining supply field
-                        //dateUpdated = DateTimeOffset.UtcNow.LocalDateTime
-                    };
-                    FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
                 }
                 else
                 {
-                    lbl_Date.Text = "";
-                    lbltankSupply.Text = "No supply found for today.";
+                    lblDate.Text = "";
+                    lbltankSupply.Text = "No tank supply records found.";
                     lblremainingSupply.Text = "";
                 }
             }
@@ -144,6 +190,143 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
             }
         }
+        //private void displayTankSupply()
+        //{
+        //    //private void displayTankSupply()
+        //    //{
+        //    //    // Get the ID of the currently logged-in owner from session state
+        //    //    string idno = (string)Session["idno"];
+        //    //    try
+        //    //    {
+        //    //        // Retrieve the tank supply for today from the TANKSUPPLY table
+        //    //        FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
+        //    //        Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
+
+        //    //        if (supply != null)
+        //    //        {
+        //    //            // Filter the tank supply list by the owner's ID and the date added
+        //    //            var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+
+        //    //            if (filteredSupply != null)
+        //    //            {
+        //    //                lbl_Date.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+        //    //                lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
+
+        //    //                // Convert tank capacity to gallons if it's not already in gallons
+        //    //                double tankCapacity = double.Parse(filteredSupply.tankVolume);
+        //    //                if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
+        //    //                {
+        //    //                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //    //                    tankCapacity *= gallonsPerLiter;
+        //    //                }
+        //    //                else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
+        //    //                {
+        //    //                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //    //                    tankCapacity /= gallonsPerML;
+        //    //                }
+
+        //    //                // Retrieve all orders from the ORDERS table
+        //    //                FirebaseResponse responseOrder = twoBigDB.Get("ORDERS");
+        //    //                Dictionary<string, Order> orders = responseOrder.ResultAs<Dictionary<string, Order>>();
+
+        //    //                // Retrieve all walk-in orders from the WalkInOrders table
+        //    //                FirebaseResponse walkInOrder = twoBigDB.Get("WalkInOrders");
+        //    //                Dictionary<string, WalkInOrders> walkin = walkInOrder.ResultAs<Dictionary<string, WalkInOrders>>();
+
+        //    //                // Sum up the total gallons ordered for today
+        //    //                double totalOrders = 0;
+        //    //                foreach (Order order in orders.Values)
+        //    //                {
+        //    //                    if (order.admin_ID.ToString() != idno || order.order_OrderStatus != "Pending" || order.order_DeliveryTypeValue == "Scheduled")
+        //    //                    {
+        //    //                        continue;
+        //    //                    }
+
+        //    //                    if (order.order_OrderMethod == "New Gallon" || order.order_OrderMethod == "Refill")
+        //    //                    {
+        //    //                        double orderedGallons = 0;
+        //    //                        if (order.order_unit == "L" || order.order_unit == "liter/s")
+        //    //                        {
+        //    //                            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //    //                            orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+        //    //                        }
+        //    //                        else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+        //    //                        {
+        //    //                            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //    //                            orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+        //    //                        }
+
+        //    //                        totalOrders += orderedGallons;
+        //    //                    }
+        //    //                }
+
+        //                    // Reduce tank supply based on the walkin orders for today
+        //                    double remaining_supply = tankCapacity;
+        //                foreach (WalkInOrders order in filteredWalkin)
+        //                {
+        //                    // Convert order size to gallons or milliliters based on order unit
+        //                    double orderedGallons = 0;
+        //                    if (order.productUnit == "L" || order.productUnit == "liter/s")
+        //                    {
+        //                        double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //                        orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
+        //                    }
+        //                    else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
+        //                    {
+        //                        double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //                        orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
+        //                    }
+        //                      totalOrders = order.productQty + orderedGallons;
+
+        //                      remaining_supply -= totalOrders;
+        //                }
+        //                double totalRemainingSupply = remainingSupply - remaining_supply;
+
+        //                // display the remaining supply
+        //                if (totalRemainingSupply <= 0)
+        //                {
+        //                    lblremainingSupply.Text = ("There is no remaining supply. Unable to fullfill any further orders.");
+        //                }
+        //                else
+        //                {
+        //                    lblremainingSupply.Text = totalRemainingSupply.ToString("N2") + ' ' + "gallons";
+        //                }
+
+        //                // Update the remaining supply in the TANKSUPPLY table
+        //                TankSupply tankSupply = new TankSupply
+        //                {
+        //                    tankId = filteredSupply.tankId,
+        //                    adminId = filteredSupply.adminId,
+        //                    dateAdded = filteredSupply.dateAdded,
+        //                    tankVolume = filteredSupply.tankVolume,
+        //                    tankUnit = filteredSupply.tankUnit,
+        //                    tankBalance = totalRemainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+        //                    dateUpdated = DateTimeOffset.UtcNow
+        //                };
+
+
+        //                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
+        //            }
+        //            else
+        //            {
+        //                lbl_Date.Text = "";
+        //                lbltankSupply.Text = "No supply found for today.";
+        //                lblremainingSupply.Text = "";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            lbl_Date.Text = "";
+        //            lbltankSupply.Text = "No tank supply records found.";
+        //            lblremainingSupply.Text = "";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+        //    }
+        //}
 
         //RADIO BUTTON SELECTION FOT DELIVERY TYPE
         protected void radDevType_SelectedIndexChanged(object sender, EventArgs e)
@@ -324,6 +507,7 @@ namespace WRS2big_Web.Admin
         //TO BE UPDATED
 
         //STORE TANK SUPPLY
+        
         protected void btnAddSupply_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -334,42 +518,44 @@ namespace WRS2big_Web.Admin
                 // Check if a record with the same adminId and dateAdded exists in the TANKSUPPLY table
                 FirebaseResponse res = twoBigDB.Get("TANKSUPPLY");
                 Dictionary<string, TankSupply> supply = res.ResultAs<Dictionary<string, TankSupply>>();
-                // Filter the list of orders by the owner's ID and the order status and delivery type
-                var filteredList = supply.Values.SingleOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
-
-                if (filteredList != null)
+                if (supply != null) // Add this null check
                 {
-                    // A record with the same adminId and dateAdded already exists
-                    lbl_Date.Text = filteredList.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    lbltankSupply.Text = filteredList.tankVolume.ToString() + ' ' + filteredList.tankUnit.ToString();
-                    Response.Write("<script>alert ('A tank supply record for today already exists!');</script>");
-                    return;
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    var filteredList = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+
+                    if (filteredList != null)
+                    {
+                        // A record with the same adminId and dateAdded already exists
+                        lblDate.Text = filteredList.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                        lbltankSupply.Text = filteredList.tankVolume.ToString() + ' ' + filteredList.tankUnit.ToString();
+                        Response.Write("<script>alert ('A tank supply record for today already exists!');</script>");
+                        return;
+                    }
+
                 }
+                        // INSERT DATA TO TABLE = TANKSUPPLY
+                        Random rnd = new Random();
+                        int idnum = rnd.Next(1, 10000);
 
-                // INSERT DATA TO TABLE = TANKSUPPLY
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
+                    var data = new TankSupply
+                    {
+                        adminId = adminId,
+                        tankId = idnum,
+                        tankUnit = drdTankUnit.SelectedValue,
+                        tankVolume = tankSize.Text,
+                        dateAdded = DateTimeOffset.UtcNow
+                    };
 
-               
-                var data = new TankSupply
-                {
-                    adminId = adminId,
-                    tankId = idnum,
-                    tankUnit = drdTankUnit.SelectedValue,
-                    tankVolume = tankSize.Text,
-                    dateAdded = DateTimeOffset.UtcNow
-                };
+                    SetResponse response;
+                    response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
+                    TankSupply result = response.ResultAs<TankSupply>();
 
-                SetResponse response;
-                response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
-                TankSupply result = response.ResultAs<TankSupply>();
+                    // Display the tank supply result here
+                    lblDate.Text = data.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
 
-                // Display the tank supply result here
-                lbl_Date.Text = data.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
-                lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
-
-                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-
+                    Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                
             }
 
             catch (Exception ex)
@@ -695,61 +881,26 @@ namespace WRS2big_Web.Admin
             {
                 string selectedOption = ddlSearchOptions.SelectedValue;
 
-                //if (selectedOption == "0")
-                //{
-                //    lblProductRefill.Text = "PRODUCT REFILL";
-                //    lbldeliveryDetails.Text = "DELIVERY DETAILS";
-                //    lblotherProduct.Text = "OTHER PRODUCT";
-                //    gridProductRefill.Visible = true;
-                //    gridotherProduct.Visible = true;
-                //    gridDeliveryDetails.Visible = true;
-                //    productRefillDisplay();
-                //    otherProductsDisplay();
-                //    otherProductsDisplay();
-                //}
+                
                 if (selectedOption == "1")
                 {
-                    lblProductRefill.Text = "PRODUCT REFILL";
-                    lbldeliveryDetails.Visible = false;
-                    lblotherProduct.Visible = false;
-                    lblStandard.Visible = false;
-                    lblReservation.Visible = false;
-                    lblExpress.Visible = false;
+                    lblProductData.Text = "PRODUCT REFILL";
                     gridProductRefill.Visible = true;
                     gridotherProduct.Visible = false;
-                    gridExpress.Visible = false;
-                    gridReservation.Visible = false;
-                    gridStandard.Visible = false;
                     productRefillDisplay();
                 } 
                 else if (selectedOption == "2")
                 {
-                    lblotherProduct.Text = "OTHER PRODUCT";
-                    lbldeliveryDetails.Visible = false;
-                    lblProductRefill.Visible = false;
-                    lblStandard.Visible = false;
-                    lblReservation.Visible = false;
-                    lblExpress.Visible = false;
+                    lblProductData.Text = "OTHER PRODUCT";
                     gridProductRefill.Visible = false;
                     gridotherProduct.Visible = true;
-                    gridExpress.Visible = false;
-                    gridReservation.Visible = false;
-                    gridStandard.Visible = false;
                     otherProductsDisplay();
                 }
                 else if (selectedOption == "3")
                 {
-                    lbldeliveryDetails.Text = "DELIVERY DETAILS";
-                    lblExpress.Text = "Express Delivery";
-                    lblReservation.Text = "Standard";
-                    lblStandard.Text = "Reservation";
-                    lblProductRefill.Visible = false;
-                    lblotherProduct.Visible = false;
+                    lblProductData.Text = "DELIVERY DETAILS";
                     gridProductRefill.Visible = false;
                     gridotherProduct.Visible = false;
-                    gridExpress.Visible = true;
-                    gridReservation.Visible = true;
-                    gridStandard.Visible = true;
                     //deliveryExpressDisplay();
                 }
             }

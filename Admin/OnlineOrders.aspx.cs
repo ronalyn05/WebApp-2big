@@ -89,13 +89,13 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("PRODUCT SIZE");
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
+            ordersTable.Columns.Add("ORDER METHOD");
             //ordersTable.Columns.Add("GALLON TYPE");
             ordersTable.Columns.Add("PRICE");
             ordersTable.Columns.Add("QUANTITY");
-            ordersTable.Columns.Add("INITIAL AMOUNT");
             ordersTable.Columns.Add("RESERVATION DATE");
             ordersTable.Columns.Add("STATUS");
-            //ordersTable.Columns.Add("TOTAL AMOUNT");
+            ordersTable.Columns.Add("TOTAL AMOUNT");
 
             if (response != null && response.ResultAs<Order>() != null)
             {
@@ -104,10 +104,9 @@ namespace WRS2big_Web.Admin
                 {
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
                                               entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                                              entry.order_OrderTypeValue, entry.order_WaterPrice,
-                                              entry.order_Quantity, entry.order_InitialAmount,
-                                              entry.order_ReservationDate, entry.order_OrderStatus);
-                    //  entry.Value.order_SwapGallonTypeValue,
+                                              entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_WaterPrice,
+                                              entry.order_Quantity, entry.order_ReservationDate, 
+                                              entry.order_OrderStatus, entry.order_InitialAmount);
                 }
             }
             else
@@ -144,22 +143,62 @@ namespace WRS2big_Web.Admin
             Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
 
             List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
-                                                                && emp.emp_availability == "Available").ToList();
-            // Check if any available driver is available to accept the order
-            if (allDrivers.Count > 0)
+                                                                    && emp.emp_availability == "Available").ToList();
+            // Check if the order status is "Pickup"
+            if (existingOrder.order_OrderTypeValue == "pickup")
             {
-                // Assign the order to the first available driver
-                Employee driver = allDrivers[0];
-                existingOrder.driverId = driver.emp_id;
                 existingOrder.order_OrderStatus = "Accepted";
+                existingOrder.driverId = 0; // clear the driver ID
                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+                
+                // Display an error message indicating that no driver will be assigned
+                Response.Write("<script>alert ('This order will be pick up by the owner. No driver will be assigned.');</script>");
                 DisplayTable();
             }
             else
             {
-                // No drivers are currently available, display an error message
-                Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.');</script>");
+                // Check if any available driver is available to accept the order
+                if (allDrivers.Count > 0)
+                {
+                    // Assign the order to the first available driver
+                    Employee driver = allDrivers[0];
+                    existingOrder.driverId = driver.emp_id;
+                    existingOrder.order_OrderStatus = "Accepted";
+                    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+                    DisplayTable();
+                }
+                else
+                {
+                    // No drivers are currently available, display an error message
+                    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.');</script>");
+                }
             }
+
+            //// Retrieve the existing order object from the database
+            //FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            //Order existingOrder = response.ResultAs<Order>();
+
+            //// Get a list of all available drivers
+            //FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
+            //Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
+
+            //List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
+            //                                                    && emp.emp_availability == "Available").ToList();
+            //// Check if any available driver is available to accept the order
+            //if (allDrivers.Count > 0)
+            //{
+            //    // Assign the order to the first available driver
+            //    Employee driver = allDrivers[0];
+            //    existingOrder.driverId = driver.emp_id;
+            //    existingOrder.order_OrderStatus = "Accepted";
+            //    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+            //    DisplayTable();
+            //}
+            //else
+            //{
+            //    // No drivers are currently available, display an error message
+            //    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.');</script>");
+            //}
 
         }
 

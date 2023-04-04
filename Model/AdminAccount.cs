@@ -76,7 +76,7 @@ namespace WRS2big_Web.Model
         public string tankVolume { get; set; }
         public string tankBalance { get; set; }
         public DateTimeOffset dateAdded { get; set; }
-      //  public DateTimeOffset dateUpdated { get; set; }
+        public DateTimeOffset dateUpdated { get; set; }
     }
 
 
@@ -154,8 +154,10 @@ namespace WRS2big_Web.Model
     }
     public class WalkInOrders
     {
+        public int adminId { get; set; }
         public int orderNo { get; set; }
         public string productName { get; set; }
+        public string productUnit { get; set; }
         public string productSize { get; set; }
         public int productQty { get; set; }
         public decimal productPrice { get; set; }
