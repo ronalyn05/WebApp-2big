@@ -545,7 +545,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
             try
             {
-                // INSERT DATA TO TABLE = 
+                // INSERT DATA TO TABLE  
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
@@ -608,17 +608,12 @@ namespace WRS2big_Web.Admin
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
 
-
-
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
 
             Random rnd = new Random();
             int deliveryId = rnd.Next(1, 10000);
-            int standardID = rnd.Next(1, 10000);
-            int expressID = rnd.Next(1, 10000);
-            int reservationDelivery = rnd.Next(1, 10000);
-
+            
             //create the deliveryID and save the adminID
             var adminData = new DeliveryDetails
             {
@@ -648,7 +643,7 @@ namespace WRS2big_Web.Admin
             string reservation = selectedItems[1];
             string express = selectedItems[2];
 
-            
+
 
             //IF GICHECK STANDARD
             if (!string.IsNullOrEmpty(standard))
@@ -675,26 +670,39 @@ namespace WRS2big_Web.Admin
                 }
                 orderMethod = orderMethod.TrimEnd(' ', ',');
 
-
-                    var standardDeliver = new standardDelivery
+                string swapOptions = "";
+                foreach (ListItem item in standardSwapOptions.Items)
+                {
+                    if (item.Selected)
                     {
-                        stanDeliverytype = standard,
-                        stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
-                        stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
-                        standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
-                        stanOrderType = orderType,
-                        stanOrderMethod = orderMethod,
-                        standardID = standardID,
-                        dateAdded = DateTime.UtcNow
-                    };
+                        swapOptions += item.Value + ", ";
+                    }
+                }
+                swapOptions = swapOptions.TrimEnd(' ', ',');
 
-                    SetResponse standardre;
-                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
-                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+                Random standardRanID = new Random();
+                int standardID = standardRanID.Next(1, 10000);
+
+                var standardDeliver = new DeliveryDetails
+                {
+                    stanDeliverytype = standard,
+                    stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
+                    stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
+                    standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
+                    stanOrderType = orderType,
+                    stanOrderMethod = orderMethod,
+                    standardSwapOptions = swapOptions,
+                    standardID = standardID,
+                    dateAdded = DateTime.UtcNow
+                };
+
+                SetResponse standardre;
+                standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
+                Model.DeliveryDetails res = standardre.ResultAs<Model.DeliveryDetails>();
             }
 
             //IF GICHECK RESERVATION
-             if (!string.IsNullOrEmpty(reservation))
+            if (!string.IsNullOrEmpty(reservation))
             {
                 // Loop through the items in the CheckBoxList to build the orderType string
                 string resOrderType = "";
@@ -719,19 +727,42 @@ namespace WRS2big_Web.Admin
                 resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
 
 
-                    var reservationDeliver = new reservationDelivery
+                string swapOptions = "";
+                foreach (ListItem item in reserveSwap.Items)
+                {
+                    if (item.Selected)
                     {
-                        reservationID = reservationDelivery,
-                        resDeliveryType = reservation,
-                        resDeliveryFee = resDelFee.Text,
-                        resDistanceFree = resFreeDel.Text,
-                        resOrderMethod = resOrderMethod,
-                        resOrderType = resOrderType,
-                        dateAdded = DateTime.UtcNow
-                    };
-                    SetResponse reservere;
-                    reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
-                    DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
+                        swapOptions += item.Value + ", ";
+                    }
+                }
+                swapOptions = swapOptions.TrimEnd(' ', ',');
+
+                Random reserveRanID = new Random();
+                int reservationDelivery = reserveRanID.Next(1, 10000);
+
+
+                var reservationDeliver = new DeliveryDetails
+                {
+                    reservationID = reservationDelivery,
+                    resDeliveryType = reservation,
+                    resDeliveryFee = resDelFee.Text,
+                    resDistanceFree = resFreeDel.Text,
+                    resOrderMethod = resOrderMethod,
+                    resOrderType = resOrderType,
+                    reserveSwapOptions = swapOptions,
+                    dateAdded = DateTime.UtcNow
+                };
+                SetResponse reservere;
+                reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
+                DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
+
+                ////REMOVE ALL THE NULL VALUE
+                //FirebaseResponse getNull = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID);
+                //Model.AdminAccount pendingClients = getNull.ResultAs<Model.AdminAccount>();
+
+
+
+
             }
 
             //IF GICHECK ANG EXPRESS
@@ -759,24 +790,40 @@ namespace WRS2big_Web.Admin
                 }
                 resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
 
-                var expressDeliver = new expressDelivery
+                string swapOptions = "";
+                foreach (ListItem item in expressSwap.Items)
+                {
+                    if (item.Selected)
                     {
-                        expressID = expressID,
-                        exDeliveryType = express,
-                        exEstimatedDelivery = estimatedTime.Text,
-                        exDeliveryFee = expressdeliveryFee.Text,
-                        exOrderMethod = resOrderMethod,
-                        exOrderType = resOrderType,
-                        dateAdded = DateTime.UtcNow
-                    };
-                    SetResponse expreessres;
-                    expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
-                    DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
+                        swapOptions += item.Value + ", ";
+                    }
+                }
+                swapOptions = swapOptions.TrimEnd(' ', ',');
+
+                //Generate random ID for expressID
+                Random expressRanID = new Random();
+                int expressID = expressRanID.Next(1, 10000);
+
+                var expressDeliver = new DeliveryDetails
+                {
+                    expressID = expressID,
+                    exDeliveryType = express,
+                    exEstimatedDelivery = estimatedTime.Text,
+                    exDeliveryFee = expressdeliveryFee.Text,
+                    exOrderMethod = resOrderMethod,
+                    exOrderType = resOrderType,
+                    expressSwapOptions = swapOptions,
+                    dateAdded = DateTime.UtcNow
+                };
+                SetResponse expreessres;
+                expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
+                DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
             }
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
         }
-        protected void btnSearch_Click(object sender, EventArgs e)
+
+            protected void btnSearch_Click(object sender, EventArgs e)
         {
             string selectedOption = ddlSearchOptions.SelectedValue;
             

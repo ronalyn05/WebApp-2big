@@ -276,6 +276,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList OrderMethod;
 
         /// <summary>
+        /// refillSwapOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem refillSwapOptions;
+
+        /// <summary>
         /// DeliveryType control.
         /// </summary>
         /// <remarks>
@@ -283,6 +292,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList DeliveryType;
+
+        /// <summary>
+        /// standardSwapOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList standardSwapOptions;
 
         /// <summary>
         /// resFreeDel control.
@@ -312,6 +330,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderMethod;
 
         /// <summary>
+        /// reserveSwapOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem reserveSwapOptions;
+
+        /// <summary>
         /// reserveOrderType control.
         /// </summary>
         /// <remarks>
@@ -319,6 +346,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderType;
+
+        /// <summary>
+        /// reserveSwap control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList reserveSwap;
 
         /// <summary>
         /// estimatedTime control.
@@ -348,6 +384,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList expressOrderMethod;
 
         /// <summary>
+        /// expressSwapOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem expressSwapOptions;
+
+        /// <summary>
         /// expressOrderType control.
         /// </summary>
         /// <remarks>
@@ -355,6 +400,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList expressOrderType;
+
+        /// <summary>
+        /// expressSwap control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList expressSwap;
 
         /// <summary>
         /// btnDeliverydetails control.

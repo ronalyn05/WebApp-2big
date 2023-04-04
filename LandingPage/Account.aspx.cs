@@ -58,7 +58,8 @@ namespace WRS2big_Web.LandingPage
                     phone = txtphoneNum.Text,
                     email = txtEmail.Text,
                     pass = id_passwordreg.Text,
-                    status = "pending"
+                    status = "pending",
+                    subStatus = "notSubscribed"
                     
                     
                 };
@@ -107,7 +108,7 @@ namespace WRS2big_Web.LandingPage
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
 
                ValidateTerms();
-                Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has suucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
             catch
@@ -221,8 +222,45 @@ namespace WRS2big_Web.LandingPage
                         }
 
                         // Login successful, redirect to admin homepage
-                        Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+                        Response.Write("<script>alert ('Login Successfull!');</script>");
                         //Response.Redirect("/Admin/AdminIndex.aspx");
+
+
+
+                        //TO CHECK THE STATUS OF THE ADMIN
+                        var admin = (string)Session["idno"];
+                        int adminId = int.Parse(admin);
+
+                        // Retrieve the existing admin data from the database
+                        FirebaseResponse getStatus = twoBigDB.Get("ADMIN/" + adminId);
+                        Model.AdminAccount pendingClients = getStatus.ResultAs<Model.AdminAccount>();
+
+                        string clientStat = pendingClients.status;
+                        string subStatus = pendingClients.subStatus;
+
+                        // Retrieve the existing subscribed admin from the database
+
+                        if (clientStat == "pending") //NOT APPROVED BY SUPERADMIN
+                        {
+                            Response.Write("<script>alert ('Account is under review. Please wait for account confirmation'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+
+                        } 
+                        else if (clientStat == "Approved" || subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
+                        {
+                            Response.Write("<script>alert ('Your account is APPROVED! Please proceed to the Subscription Page to continue using the system'); location.reload(); window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+
+                        }
+                        else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
+                        {
+                            Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+
+                        }
+                        else
+                        {
+                            Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx';</script>");
+                        }
+
+
                     }
                     else
                     {

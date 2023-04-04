@@ -107,7 +107,7 @@
 
                         <div class="auth-box card">
                             <div class="card-block">
-                                    <div class="col-md-12" style="background-color: pink;">
+                                    <div class="col-md-12" style="background-color: transparent;">
                                         <div class="">
                                             <div class="text-center">
                                                 <img src="/images/BasicPlan.PNG" style="width:100%">
@@ -117,19 +117,7 @@
                                                 ₱3000 / 6 Months
                                             </h2> 
                                                 <div class="auth-box card">
-                                                    <div class="card-block text-left" style="font-size:20px; background-color:papayawhip">
-                                                        <i class="ti-check-box"> Admin Dashboard</i> <br />
-                                                        <i class="ti-check-box"> Point of Sale</i><br />
-                                                        <i class="ti-check-box"> Reports</i><br />
-                                                        <i class="ti-check-box"> Admin Profile</i><br />
-                                                         <i class="ti-check-box"> Employee Records</i><br />
-                                                        <i class="ti-check-box"> Water Orders</i><br />
-                                                        <i class="ti-check-box"> Deliveries</i><br />
-                                                        <i class="ti-check-box"> Reservations</i><br />
-                                                        <i class="ti-check-box"> Refilling Station</i><br />
-                                                        <i class="ti-check-box"> Products</i><br />
-                                                        <i class="ti-check-box"> Customer Reviews</i><br />
-                                                        <i class="ti-check-box"> Loyalty Program</i><br />
+                                                    <asp:ListBox ID="basicPlanFeatures" runat="server"></asp:ListBox>
                                                     </div>
                                                 </div>
                                             <br>
@@ -153,7 +141,7 @@
     </div>
 <!-- end of container-fluid -->
     </section>
-        <script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
+ <script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
     </script>
             <!--BASIC PLAN-->
             <script>

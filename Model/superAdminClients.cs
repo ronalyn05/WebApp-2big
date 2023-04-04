@@ -15,6 +15,10 @@ namespace WRS2big_Web.Model
 
         public string plan { get; set; }
         public int clientID { get; set; }
+
+        public DateTime dateSubscribed { get; set; }
+        public string status { get; set; }
+        
     }
 
     public class SubscriptionPlans

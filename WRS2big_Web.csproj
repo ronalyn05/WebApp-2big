@@ -292,6 +292,7 @@
     <Content Include="Admin\EmployeeRecord.aspx" />
     <Content Include="Admin\ListGraph.aspx" />
     <Content Include="Admin\Notification.aspx" />
+    <Content Include="Admin\WaitingPage.aspx" />
     <Content Include="Admin\WalkIns.aspx" />
     <Content Include="Admin\OnlineOrders.aspx" />
     <Content Include="Admin\Reports.aspx" />
@@ -647,6 +648,13 @@
     <Compile Include="Admin\Notification.aspx.designer.cs">
       <DependentUpon>Notification.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\WaitingPage.aspx.cs">
+      <DependentUpon>WaitingPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\WaitingPage.aspx.designer.cs">
+      <DependentUpon>WaitingPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\WalkIns.aspx.cs">
       <DependentUpon>WalkIns.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -795,6 +803,7 @@
     </Compile>
     <Compile Include="superAdmin\ClientReports.aspx.cs">
       <DependentUpon>ClientReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="superAdmin\ClientReports.aspx.designer.cs">
       <DependentUpon>ClientReports.aspx</DependentUpon>

@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\superAdmin"
   ],
-  "SelectedNode": "\\WRS2big_Web.sln",
+  "SelectedNode": "\\superAdmin\\ManageWRSClients.aspx.cs",
   "PreviewInSolutionExplorer": false
 }

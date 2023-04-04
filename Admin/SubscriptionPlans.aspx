@@ -35,6 +35,17 @@
     <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+
+    <style>
+        .texts{
+            font-size:22px;
+            color:black;
+        }
+        .auto-style1 {
+            margin-left: 68;
+        }
+    </style>
 </head>
 
 <body themebg-pattern="theme1">
@@ -118,52 +129,64 @@
                                     <div class="col-sm-3" style="background-color: transparent;">
                                     </div>
 
-                                    <div class="col-sm-3" style="background-color: transparent;">
+                                    <div class="col-sm-3 card" style="background-color: transparent;">
                                         <div class="">
                                             <div class="text-center">
                                                 <img src="/images/BasicPlan.PNG" style="width:100%">
                                             </div>
-                                            <p class="h3 text-center">
+                                            <p class="texts text-center">
                                                 <asp:Label runat="server" ID="basinplanLabel">
 
                                                 </asp:Label>
                                               </p>
-                                            <p class="h3 text-center">
+                                            <p class="texts text-center">
                                                 <asp:Label runat="server" ID="basicPriceLabel">
 
-                                                </asp:Label> /
+                                                </asp:Label> for
                                                 <asp:Label runat="server" ID="basicDurationLabel">
                                                     
                                                 </asp:Label> 
                                               </p>
-                                            <h2 class="texts text-center " style="font-size:20px;" > 
+                                            <p class="texts text-center " style="font-size:20px;" > 
                                                <%-- Grow your Water Refilling Business for only ₱3000 good for 6 Months ! Enjoy a hassle-free business process and attract new and loyal customers--%>
                                                 <asp:Label ID="descriptionBasic" runat="server"> 
 
                                                 </asp:Label>
-                                            </h2> <br>
-                                            <div cell small-24 class="text-center">
+                                            </p> <br /> <br>
+                                                <h7 runat="server" class="texts"> Features: </h7> <br />
+                                                <asp:ListBox ID="BasicfeaturesList" runat="server" Font-Size="14pt"  style="background-color:transparent" Width="389px" Height="213px">
+
+                                                </asp:ListBox> <br /> <br />
+<%--                                           <div cell small-24 class="text-center">
                                                 <a href="BasicPlanSub.aspx" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
                                                     SUBSCRIBE
                                                 </a>
-                                            </div> <br>
+                                            </div> --%>
+                                                <div class="container pt-4 px-0">
+                                                    <div id="paypal-button"></div>
+                                                </div>
+                                                  <div class="container pt-4 px-0">
+                                                   <a href="WaitingPage.aspx" class="button btn btn-danger">
+                                                    CANCEL
+                                                    </a>
+                                                </div> <br />
 
                                         </div>
                                     </div>
 
 
 
-                                    <div class="col-sm-3" style="background-color: transparent;">
+                                    <div class="col-sm-3 card" style="background-color: transparent;">
                                         <div class="service-item second-service">
                                             <div class="text-center">
                                                 <img src="/images/PremiumPlan.PNG" style="width:100%">
                                             </div>
-                                            <p class="h3 text-center">
+                                            <p class="texts text-center">
                                                 <asp:Label runat="server" ID="premiumplanLabel">
 
                                                 </asp:Label>
                                             </p>
-                                            <p class="h3 text-center">
+                                            <p class="texts text-center">
                                                 <asp:Label runat="server" ID="premiumPriceLabel">
 
                                                 </asp:Label> /
@@ -171,16 +194,29 @@
                                                     
                                                 </asp:Label> 
                                               </p>
-                                            <h2 class="texts text-center" style="font-size:20px;">
+                                            <p class="texts text-center" style="font-size:20px;">
                                                 <asp:Label ID="descriptionPremium" runat="server"> 
 
                                                 </asp:Label>
-                                            </h2> <br>
-                                            <div cell small-24 class="text-center">
+                                            </p> <br>
+                                                <asp:Label runat="server" class="texts" > Features: </asp:Label> <br />
+                                                <asp:ListBox ID="premiumFeaturesList" Font-Size="14pt" runat="server" style="background-color:transparent" CssClass="auto-style1" Width="389px" Height="207px">
+
+                                                </asp:ListBox> <br /> <br />
+<%--                                            <div cell small-24 class="text-center">
                                                 <a href="PremiumPlanSub" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
                                                     SUBSCRIBE
                                                 </a>
-                                            </div>
+                                            </div>--%>
+                                            <!--PAYPAL BUTTON-->
+                                                <div class="container pt-4 px-0">
+                                                    <div id="paypal-button-container-premium"></div>
+                                                </div>
+                                                 <div class="container pt-4 px-0">
+                                                   <a href="WaitingPage.aspx" class="button btn btn-danger">
+                                                    CANCEL
+                                                    </a>
+                                                </div> <br />
                                         </div>
                                     </div>
 
@@ -200,7 +236,92 @@
     </div>
 <!-- end of container-fluid -->
     </section>
+<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
+    </script>
+            <!--BASIC PLAN-->
+            <script>
+                var name = '<%= Session["Lname"] %>';
+                var lname = '<%= Session["Fname"] %>';
 
+                paypal.Buttons({
+                    createOrder: function (data, actions) {
+                        return actions.order.create({
+                            payee: {
+                                name: {
+                                    given_name: '<%= Session["Fname"] %>',
+                                    surname: '<%= Session["Lname"] %>'
+                                },
+                                phone: {
+                                    phone_type: "MOBILE",
+                                    phone_num: '<%= Session["Phone"] %>'
+                                },
+                                email: '<%= Session["Email"] %>',
+                            },
+                            purchase_units: [{
+                                amount: {
+                                    value: '.1'
+
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function (data, actions) {
+                        return actions.order.capture().then(function (details) {
+                            console.log(details)
+                            sessionStorage.setItem("plan", "basic");
+                            window.location.replace("BasicSubSuccess.aspx");
+                        });
+                    },
+                    onCancel: function (data) {
+                       window.location.replace("SubscriptionPlans.aspx");
+                      
+                    }
+                }).render("#paypal-button");
+            </script>
+
+        <%--<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
+    </script>--%>
+
+     <!--PREMIUM PLAN-->
+        <script>
+            var name = '<%= Session["Lname"] %>';
+            var lname = '<%= Session["Fname"] %>';
+            
+
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        payee: {
+                            name: {
+                                given_name: '<%= Session["Fname"] %>',
+                            surname: '<%= Session["Lname"] %>'
+                        },
+                        phone: {
+                            phone_type: "MOBILE",
+                            phone_num: '<%= Session["Phone"] %>'
+                        },
+                        email: '<%= Session["Email"] %>',
+                        },
+                        purchase_units: [{
+                            amount: {
+                                value: '3000'
+
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        console.log(details)
+                        sessionStorage.setItem("plan", "premium");
+                        window.location.replace("PremiumSubSuccess.aspx");
+                    });
+                },
+                onCancel: function (data) {
+                    window.location.replace("SubscriptionPlans.aspx");
+                }
+            }).render("#paypal-button-container-premium");
+        </script>
 
 
     <!-- Required Jquery -->

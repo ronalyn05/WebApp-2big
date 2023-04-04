@@ -18,6 +18,7 @@ namespace WRS2big_Web.Model
         public string pass { get; set; }
         public string profile_image { get; set; }
         public string status { get; set; }
+        public string subStatus { get; set; }
 
     }
 
@@ -96,18 +97,36 @@ namespace WRS2big_Web.Model
     {
         public int deliveryId { get; set; }
         public int adminId { get; set; }
-        //public int standardID { get; set; }
-        //public int reservationID { get; set; }
-        //public int expressID { get; set; }
-        //public string deliveryType { get; set; }
-        //public string deliveryFee { get; set; } //for STANDARD and RESERVATION
-        //public string deliveryDistance { get; set; } //for STANDARD and RESERVATION
-        //public string estimatedTime { get; set; } //for EXPRESS only
-        //public string deliveryTime { get; set; }  //for STANDARD and RESERVATION
-        //public string orderType { get; set; }
-        //public string orderMethod { get; set; }
-        //// public string status { get; set; }
+        public int standardID { get; set; }
+        public string standistance { get; set; }
+        public string stanDeliveryFee { get; set; }
+        public string stanDeliverytype { get; set; }
+        public string stanDeliveryTime { get; set; }
+        public string stanOrderMethod { get; set; }
+        public string stanOrderType { get; set; }
+        public string standardSwapOptions { get; set; }
+        public DateTime dateAdded { get; set; }
+        //EXPRESS DELIVERY
+        public int expressID { get; set; }
+        public string exDeliveryFee { get; set; }
+        public string exEstimatedDelivery { get; set; }
+        public string exDeliveryType { get; set; }
+        public string exOrderMethod { get; set; }
+        public string exOrderType { get; set; }
+        public string expressSwapOptions { get; set; }
+        //public string swapOptions { get; set; }
         //public DateTime dateAdded { get; set; }
+        //RESERVATION DELIVERY
+        public int reservationID { get; set; }
+        public string resDistanceFree { get; set; }
+        public string resDeliveryFee { get; set; }
+        public string resOrderMethod { get; set; }
+        public string resOrderType { get; set; }
+        public string resDeliveryType { get; set; }
+        public string reserveSwapOptions { get; set; }
+        //public string swapOptions { get; set; }
+        //public DateTime dateAdded { get; set; }
+
     }
 
     public class standardDelivery
@@ -119,6 +138,7 @@ namespace WRS2big_Web.Model
         public string stanDeliveryTime { get; set; }
         public string stanOrderMethod { get; set; }
         public string stanOrderType { get; set; }
+        public string swapOptions { get; set; }
         public DateTime dateAdded { get; set; }
     }
 
@@ -130,6 +150,7 @@ namespace WRS2big_Web.Model
         public string exDeliveryType { get; set; }
         public string exOrderMethod { get;set;}
         public string exOrderType { get; set; }
+        public string swapOptions { get; set; }
         public DateTime dateAdded { get; set; }
 
     }
@@ -142,7 +163,7 @@ namespace WRS2big_Web.Model
         public string resOrderMethod { get; set; }
         public string resOrderType { get; set; }
         public string resDeliveryType { get; set; }
-
+        public string swapOptions { get; set; }
         public DateTime dateAdded { get; set; }
 
     }
