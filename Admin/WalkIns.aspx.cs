@@ -86,8 +86,10 @@ namespace WRS2big_Web.Admin
                 // Update data with the calculated total amount, discount and adjusted quantity
                 var data = new WalkInOrders
                 {
+                    adminId = int.Parse(idno),
                     orderNo = idnum,
                     productName = drdProdName.SelectedValue,
+                    productUnit = drdUnit.SelectedValue,
                     productSize = drdSize.SelectedValue,
                     productPrice = price,
                     productDiscount = discount, // Store the discount value in the database
@@ -99,7 +101,7 @@ namespace WRS2big_Web.Admin
 
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("WalkInOrders/" + data.orderNo, data);
+                response = twoBigDB.Set("WALKINORDERS/" + data.orderNo, data);
                 WalkInOrders result = response.ResultAs<WalkInOrders>();
 
                 // Set the text of the txtTotalAmount textbox to the calculated total amount
