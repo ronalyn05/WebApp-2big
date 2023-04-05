@@ -245,7 +245,7 @@ namespace WRS2big_Web.LandingPage
                             Response.Write("<script>alert ('Account is under review. Please wait for account confirmation'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
 
                         } 
-                        else if (clientStat == "Approved" || subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
+                        else if (clientStat == "Approved" && subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
                         {
                             Response.Write("<script>alert ('Your account is APPROVED! Please proceed to the Subscription Page to continue using the system'); location.reload(); window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
 

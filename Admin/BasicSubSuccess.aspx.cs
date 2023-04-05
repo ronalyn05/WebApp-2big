@@ -59,6 +59,18 @@ namespace WRS2big_Web.Admin
                     if (planName == "BASIC")
                     {
                         var idno = planID;
+                        var adminID = Session["idno"].ToString();
+
+                        
+                        //to ADD the subscription Status to admin table
+                        FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
+                        Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
+
+                        update.subStatus = "Subscribed";
+                        //subscriptionStatus.subStatus = "Subscribed";
+
+                        updateAdmin = twoBigDB.Update("ADMIN/" + adminID, update);
+
 
                         FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + idno);
                         Model.SubscriptionPlans obj = res.ResultAs<Model.SubscriptionPlans>();
@@ -82,6 +94,7 @@ namespace WRS2big_Web.Admin
                         data.subStart = now;
                         data.subEnd = SubBasic;
                         data.price = amount;
+                        
 
                         //SAVE THE SUBSCRIPTION PLAN DETAILS SA ADMIN NGA TABLE
                         twoBigDB.Update("ADMIN/" + idnum + "/SubscribedPlan/", data);
