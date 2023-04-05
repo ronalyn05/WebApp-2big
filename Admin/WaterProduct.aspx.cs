@@ -39,125 +39,296 @@ namespace WRS2big_Web.Admin
 
             if (!IsPostBack)
             {
-                //  DisplayID();
-                //GetTankSupplyForToday();
                 //productRefillDisplay();
                 //otherProductsDisplay();
-                //deliveryDetailsDisplay();
-                // tanksupplyDisplay();
-               
-
+                //deliveryExpressDisplay();
+                //displayTankSupply();
             }
-
-            string idno = (string)Session["idno"];
-            //int tankID = (int)Session["tankId"];
-
-            //lbl_Date.Text = (string)Session["dateAdded"];
-            //lbltankSupply.Text = (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
-
-            if (Session["dateAdded"] != null && Session["tankVolume"] != null && Session["tankUnit"] != null)
-            {
-                DateTime dateAdded = (DateTime)Session["dateAdded"];
-                date.Text = dateAdded.ToString(); // format the date as a string
-
-                TankSupply.Text = (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
-            }
-            //date.Text = (string)Session["dateAdded"];
-            //TankSupply.Text = (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
-
-           //FirebaseResponse response;
-            //THIS RETRIEVE THE DATA FORM THE TANKSUPPLY TBL
-            //response = twoBigDB.Get("TANKSUPPLY/");
-            //TankSupply obj = response.ResultAs<TankSupply>();
-
-            //THIS RETRIEVE THE DATA FROM THE ORDERS TBL
-            var result = twoBigDB.Get("ORDERS/");
-            Order order = result.ResultAs<Order>();
-            // state the variable for orders
-            if (order != null && order.order_size != null && order.order_unit != null)
-            {
-
-                //state the variable for tank supply
-                string tankVolume = (string)Session["tankVolume"];
-                string tankUnit = (string)Session["tankUnit"];
-                string date = (string)Session["dateAdded"];
-
-                //state the variable for orders
-                Session["size"] = order.order_size;
-                Session["unit"] = order.order_unit;
-                Session["quantity"] = order.order_Quantity;
-           
-                //state the variable for orders
-                int orderSize = (int)Session["size"];
-                string orderUnit = (string)Session["unit"];
-                int qty = (int)Session["quantity"];
-
-                //Coversion
-                double tankCapacity = double.Parse(tankVolume + tankUnit);
-                double orderedVolume = double.Parse(orderSize + orderUnit);
-                double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
-                double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
-
-                //quantity of the customers ordered
-                double orders = qty * orderedVolume;
-
-                // convert ordered volume to gallons or milliliters based on order unit
-                double orderedGallons = 0;
-                if (orderUnit == "L" || orderUnit == "liter/s")
-                {
-                    orderedGallons = orders * gallonsPerLiter;
-                }
-                else if (orderUnit == "mL" || orderUnit == "ML" || orderUnit == "milliliters")
-                {
-                    orderedGallons = orders / gallonsPerML;
-                }
-
-                // calculate remaining supply in gallons
-                double remainingSupply = tankCapacity - orderedGallons;
-
-                // check if remaining supply is less than 0
-                if (remainingSupply <= 0)
-                {
-                    //Console.WriteLine("Sorry, we don't have enough alkaline water in stock to fulfill your order.");
-                   // The customer will be notified. Apply a firebase clound messaging here
-                }
-                else
-                {
-                    // display the remaining supply and the variable for tank supply
-                    string tankSupply = $"{tankVolume} {tankUnit}";
-                    lbl_Date.Text = date;
-                    lbltankSupply.Text = ($"Remaining supply in your tank is ({tankSupply})");
-                    lblremainingSupply.Text = ($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
-                   // Console.WriteLine($"Remaining supply of alkaline water in the owner's tank ({tankSupply}): {remainingSupply} gallons");
-                }
-
-                } 
-                else
-                {
-                    lbltankSupply.Text = "No data available for today! Add tank supply...";
-                }
-
-            //if (tankUnit != null && tankVolume != null)
-            //{
-            //    lbltankSupply.Text = "Your tank supply added for today is: " + (string)Session["tankVolume"] + " " + (string)Session["tankUnit"];
-
-            //    string orders = order.order_size + order.order_unit 
-            //   // int orders = orderSize * qty;
-
-            //    //lblremainingSupply.Text = orderVolume - orders.ToString();
-
-            //}
-            //else
-            //    {
-            //        lbltankSupply.Text = "No data available for today! You first need to add your water tank supply for today!";
-            //    }
-
-
-
-
-
+            displayTankSupply();
 
         }
+        //DISPLAY TANK SUPPLY NI DIRI
+        private void displayTankSupply()
+        {
+
+            // Get the ID of the currently logged-in owner from session state
+            string idno = (string)Session["idno"];
+            try
+            {
+                // Retrieve all orders from the TANKSUPPLY table
+                FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
+                Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
+
+                if (supply != null)
+                { 
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+
+                    if (filteredSupply != null)
+                    {
+                        lblDate.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                        lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
+
+                        // Retrieve all orders from the ORDERS table
+                        FirebaseResponse responseOrder = twoBigDB.Get("ORDERS");
+                        Dictionary<string, Order> orders = responseOrder.ResultAs<Dictionary<string, Order>>();
+
+                        // Retrieve all walk-in orders from the WALKINORDERS table
+                        FirebaseResponse walkinResponse = twoBigDB.Get("WALKINORDERS");
+                        Dictionary<string, WalkInOrders> walkinOrders = walkinResponse.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                        // Convert tank capacity to gallons if it's not already in gallons
+                        double tankCapacity = double.Parse(filteredSupply.tankVolume);
+                        if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
+                        {
+                            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                            tankCapacity *= gallonsPerLiter;
+                        }
+                        else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
+                        {
+                            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                            tankCapacity /= gallonsPerML;
+                        }
+
+                        // Calculate the total gallons ordered
+                        double totalOrderedGallons = 0;
+                        if (orders != null)
+                        {
+                            var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno
+                                && (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted")
+                                && (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
+
+                            foreach (Order order in filteredOrders)
+                            {
+                                double orderedGallons = 0;
+                                if (order.order_unit == "gallon/s")
+                                {
+                                    orderedGallons = Double.Parse(order.order_size);
+                                }
+                                else if (order.order_unit == "L" || order.order_unit == "liter/s")
+                                {
+                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                    orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+                                }
+                                else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+                                {
+                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+                                }
+                                //Get the total of ordered gallons 
+                                totalOrderedGallons += orderedGallons * order.order_Quantity;
+                            }
+                        }
+
+                        //Calculate the ordered gallons of walkin
+                        if (walkinOrders != null)
+                        {
+                            var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno && d.orderType == "Refill" || d.orderType == "New Gallon");
+                            foreach (WalkInOrders order in filteredWalkinOrders)
+                            {
+                                // Convert order size to gallons or milliliters based on order unit
+                                double orderedGallons = 0;
+                                if (order.productUnit == "L" || order.productUnit == "liter/s")
+                                {
+                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                    orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
+                                }
+                                else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
+                                {
+                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                    orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
+                                }
+                                //Get the total of ordered gallons 
+                                totalOrderedGallons += orderedGallons * order.productQty;
+                            }
+                        }
+                        //Get the total of remaining supply base on each ordered place
+                        double remainingSupply = tankCapacity - totalOrderedGallons;
+
+                        // display the remaining supply
+                        if (remainingSupply <= 0)
+                        {
+                            lblremainingSupply.Text = "There is no remaining supply. Currently unable to fullfill any further orders.";
+                        }
+                        else
+                        {
+                            lblremainingSupply.Text = remainingSupply.ToString("N2") + ' ' + "gallons";
+                       
+
+                            // Update the remaining supply in the TANKSUPPLY table
+                            TankSupply tankSupply = new TankSupply
+                                {
+                                    tankId = filteredSupply.tankId,
+                                    adminId = filteredSupply.adminId,
+                                    dateAdded = filteredSupply.dateAdded,
+                                    tankVolume = filteredSupply.tankVolume,
+                                    tankUnit = filteredSupply.tankUnit,
+                                    tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+                                    dateUpdated = DateTimeOffset.UtcNow
+                             };
+
+                                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
+                        }
+                    }
+                    else
+                    {
+                        lblDate.Text = "";
+                        lbltankSupply.Text = "No supply found for today.";
+                        lblremainingSupply.Text = "";
+                    }
+                }
+                else
+                {
+                    lblDate.Text = "";
+                    lbltankSupply.Text = "No tank supply records found.";
+                    lblremainingSupply.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+            }
+        }
+        //private void displayTankSupply()
+        //{
+        //    //private void displayTankSupply()
+        //    //{
+        //    //    // Get the ID of the currently logged-in owner from session state
+        //    //    string idno = (string)Session["idno"];
+        //    //    try
+        //    //    {
+        //    //        // Retrieve the tank supply for today from the TANKSUPPLY table
+        //    //        FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
+        //    //        Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
+
+        //    //        if (supply != null)
+        //    //        {
+        //    //            // Filter the tank supply list by the owner's ID and the date added
+        //    //            var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+
+        //    //            if (filteredSupply != null)
+        //    //            {
+        //    //                lbl_Date.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+        //    //                lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
+
+        //    //                // Convert tank capacity to gallons if it's not already in gallons
+        //    //                double tankCapacity = double.Parse(filteredSupply.tankVolume);
+        //    //                if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
+        //    //                {
+        //    //                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //    //                    tankCapacity *= gallonsPerLiter;
+        //    //                }
+        //    //                else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
+        //    //                {
+        //    //                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //    //                    tankCapacity /= gallonsPerML;
+        //    //                }
+
+        //    //                // Retrieve all orders from the ORDERS table
+        //    //                FirebaseResponse responseOrder = twoBigDB.Get("ORDERS");
+        //    //                Dictionary<string, Order> orders = responseOrder.ResultAs<Dictionary<string, Order>>();
+
+        //    //                // Retrieve all walk-in orders from the WalkInOrders table
+        //    //                FirebaseResponse walkInOrder = twoBigDB.Get("WalkInOrders");
+        //    //                Dictionary<string, WalkInOrders> walkin = walkInOrder.ResultAs<Dictionary<string, WalkInOrders>>();
+
+        //    //                // Sum up the total gallons ordered for today
+        //    //                double totalOrders = 0;
+        //    //                foreach (Order order in orders.Values)
+        //    //                {
+        //    //                    if (order.admin_ID.ToString() != idno || order.order_OrderStatus != "Pending" || order.order_DeliveryTypeValue == "Scheduled")
+        //    //                    {
+        //    //                        continue;
+        //    //                    }
+
+        //    //                    if (order.order_OrderMethod == "New Gallon" || order.order_OrderMethod == "Refill")
+        //    //                    {
+        //    //                        double orderedGallons = 0;
+        //    //                        if (order.order_unit == "L" || order.order_unit == "liter/s")
+        //    //                        {
+        //    //                            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //    //                            orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+        //    //                        }
+        //    //                        else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+        //    //                        {
+        //    //                            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //    //                            orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+        //    //                        }
+
+        //    //                        totalOrders += orderedGallons;
+        //    //                    }
+        //    //                }
+
+        //                    // Reduce tank supply based on the walkin orders for today
+        //                    double remaining_supply = tankCapacity;
+        //                foreach (WalkInOrders order in filteredWalkin)
+        //                {
+        //                    // Convert order size to gallons or milliliters based on order unit
+        //                    double orderedGallons = 0;
+        //                    if (order.productUnit == "L" || order.productUnit == "liter/s")
+        //                    {
+        //                        double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+        //                        orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
+        //                    }
+        //                    else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
+        //                    {
+        //                        double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+        //                        orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
+        //                    }
+        //                      totalOrders = order.productQty + orderedGallons;
+
+        //                      remaining_supply -= totalOrders;
+        //                }
+        //                double totalRemainingSupply = remainingSupply - remaining_supply;
+
+        //                // display the remaining supply
+        //                if (totalRemainingSupply <= 0)
+        //                {
+        //                    lblremainingSupply.Text = ("There is no remaining supply. Unable to fullfill any further orders.");
+        //                }
+        //                else
+        //                {
+        //                    lblremainingSupply.Text = totalRemainingSupply.ToString("N2") + ' ' + "gallons";
+        //                }
+
+        //                // Update the remaining supply in the TANKSUPPLY table
+        //                TankSupply tankSupply = new TankSupply
+        //                {
+        //                    tankId = filteredSupply.tankId,
+        //                    adminId = filteredSupply.adminId,
+        //                    dateAdded = filteredSupply.dateAdded,
+        //                    tankVolume = filteredSupply.tankVolume,
+        //                    tankUnit = filteredSupply.tankUnit,
+        //                    tankBalance = totalRemainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+        //                    dateUpdated = DateTimeOffset.UtcNow
+        //                };
+
+
+        //                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
+        //            }
+        //            else
+        //            {
+        //                lbl_Date.Text = "";
+        //                lbltankSupply.Text = "No supply found for today.";
+        //                lblremainingSupply.Text = "";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            lbl_Date.Text = "";
+        //            lbltankSupply.Text = "No tank supply records found.";
+        //            lblremainingSupply.Text = "";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+        //    }
+        //}
+
+        //RADIO BUTTON SELECTION FOT DELIVERY TYPE
         protected void radDevType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Get the selected value
@@ -180,19 +351,12 @@ namespace WRS2big_Web.Admin
         private void productRefillDisplay()
         {
             string idno = (string)Session["idno"];
-            string empId = (string)Session["emp_id"];
-            // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
             Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
             var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno);
-            //FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/" + idno);
-            //ProductRefill emp = response.ResultAs<ProductRefill>();
-            //var data = response.Body;
-            ////Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
-            //Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
-
+        
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable productRefillTable = new DataTable();
@@ -230,7 +394,7 @@ namespace WRS2big_Web.Admin
         private void otherProductsDisplay()
         {
             string idno = (string)Session["idno"];
-            string empId = (string)Session["emp_id"];
+            //string empId = (string)Session["emp_id"];
             // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
@@ -277,129 +441,66 @@ namespace WRS2big_Web.Admin
             gridotherProduct.DataSource = otherProductTable;
             gridotherProduct.DataBind();
         }
-        //private void deliveryDetailsDisplay()
+        //RETRIEVE DELIVERY DETAILS DATA
+        //private void deliveryExpressDisplay()
         //{
         //    string idno = (string)Session["idno"];
         //    string empId = (string)Session["emp_id"];
-        //     int adminId = int.Parse(idno);
+        //    // int adminId = int.Parse(idno);
 
-        //     Retrieve the delivery details for the logged in user
+        //    // Retrieve all data from the DELIVERY_DETAILS table
         //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
-        //    Dictionary<string, DeliveryDetails> deliverydetailsList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
-        //    var filteredList = deliverydetailsList.Values.Where(d => d.adminId.ToString() == idno);
+        //    Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
+        //    var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno && d.deliveryId );
 
-        //     Retrieve all orders from the ORDERS table
-        //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + idno);
-        //    DeliveryDetails emp = response.ResultAs<DeliveryDetails>();
-        //    var data = response.Body;
-        //    //Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
-        //    Dictionary<string, DeliveryDetails> deliverydetailsList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
+        //    // Retrieve all orders from the ORDERS table
+        //    FirebaseResponse res = twoBigDB.Get("DELIVERY_DETAILS/" + idno + "/deliveryTypes");
+        //    Dictionary<string, expressDelivery> expressList = res.ResultAs<Dictionary<string, expressDelivery>>();
+        //    var filteredexpressList = expressList.Values.Where(e => e.exDeliveryType == "Express"); 
 
-        //     Create the DataTable to hold the orders
-        //    sa pag create sa table
-        //    DataTable deliverydetailsTable = new DataTable();
-        //    deliverydetailsTable.Columns.Add("DELVERY ID");
-        //    deliverydetailsTable.Columns.Add("DELVERY TYPE");
-        //    deliverydetailsTable.Columns.Add("DELIVERY FEE");
-        //    deliverydetailsTable.Columns.Add("DELIVERY DISTANCE");
-        //    deliverydetailsTable.Columns.Add("ESTIMATED TIME");
-        //    deliverydetailsTable.Columns.Add("ORDER TYPE");
-        //    deliverydetailsTable.Columns.Add("ORDER OPTION");
-        //    deliverydetailsTable.Columns.Add("DATE ADDED");
-        //    deliverydetailsTable.Columns.Add("ADDED BY");
 
-        //    if (response != null && response.ResultAs<DeliveryDetails>() != null)
+        //    // Create the DataTable to hold the orders
+        //    //sa pag create sa table
+        //    DataTable expressTable = new DataTable();
+        //    expressTable.Columns.Add("DELIVERY ID");
+        //    expressTable.Columns.Add("DELIVERY TYPE");
+        //    expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
+        //    expressTable.Columns.Add("ORDER TYPE");
+        //    expressTable.Columns.Add("ORDER METHOD");
+        //    expressTable.Columns.Add("DELIVERY FEE");
+        //    expressTable.Columns.Add("DATE ADDED");
+        //    expressTable.Columns.Add("ADDED BY");
+
+        //    if (response != null && response.ResultAs<DeliveryDetails>() != null && res.ResultAs<expressDelivery>() != null)
         //    {
-        //         Loop through the orders and add them to the DataTable
-        //        foreach (KeyValuePair<string, DeliveryDetails> entry in filteredList)
+        //        foreach (var entry in filteredList)
         //        {
+        //            expressTable.Rows.Add(entry.deliveryId, "", "", "", "", "", "", entry.adminId);
+        //        }
+        //        // Loop through the data and add them to the DataTable
+        //        foreach (var entry in filteredexpressList)
+        //        {
+        //            expressTable.Rows.Add("", entry.exDeliveryType, entry.exEstimatedDelivery, entry.exOrderType,
+        //                entry.exOrderMethod, entry.exDeliveryFee, entry.dateAdded);
+        //        }
 
-        //            deliverydetailsTable.Rows.Add(entry.Value.deliveryId, entry.Value.deliveryType,
-        //                                 entry.Value.deliveryFee, entry.Value.deliveryDistance, entry.Value.estimatedTime,
-        //                                 entry.Value.orderType, entry.Value.orderMethod, entry.Value.dateAdded, entry.Value.adminId);
-        //        }
-        //        foreach (var deliveryDetail in filteredList)
-        //        {
-        //            deliverydetailsTable.Rows.Add(deliveryDetail.deliveryId, deliveryDetail.deliveryType,
-        //                                           deliveryDetail.deliveryFee, deliveryDetail.deliveryDistance, deliveryDetail.estimatedTime,
-        //                                           deliveryDetail.orderType, deliveryDetail.orderMethod, deliveryDetail.dateAdded, deliveryDetail.adminId);
-        //        }
         //    }
         //    else
         //    {
-        //         Handle null response or invalid selected value
-        //        deliverydetailsTable.Rows.Add("No data found", "", "", "", "", "", "");
+        //        // Handle null response or invalid selected value
+        //        expressTable.Rows.Add("No data found", "", "", "", "", "", "");
         //    }
 
-        //     Bind the DataTable to the GridView
-        //    gridDeliveryDetails.DataSource = deliverydetailsTable;
-        //    gridDeliveryDetails.DataBind();
+        //    // Bind the DataTable to the GridView
+        //    gridExpress.DataSource = expressTable;
+        //    gridExpress.DataBind();
         //}
 
+
         //TO BE UPDATED
-        protected void btnDisplay_Click(object sender, EventArgs e)
-        {
-            //try
-            //{
-            //    string idno = (string)Session["idno"];
-            //    string selected = ListBox1.SelectedValue;
-            //    //FirebaseResponse response = twoBigDB.Get("ADMIN/" + idno + "/Product/" + selected);
-            //    FirebaseResponse response = twoBigDB.Get("Product/" + selected);
 
-            //    if (response != null && response.ResultAs<Products>() != null)
-            //    {
-            //        Products obj = response.ResultAs<Products>();
-            //        LabelID.Text = obj.productId.ToString();
-            //        prodName.Text = obj.productName.ToString();
-            //        prodSize.Text = obj.productSize.ToString();
-            //        prodPrice.Text = obj.productPrice.ToString();
-            //        prodDiscount.Text = obj.productDiscount.ToString();
-            //        prodAvailable.Text = obj.productStock.ToString();
-            //       // waterSupAvailable.Text = obj.waterRefillSupply.ToString(); 
-            //        LblDate.Text = obj.dateAdded.ToString();
-            //    }
-            //    else
-            //    {
-            //        // Handle null response or invalid selected value
-            //        LabelID.Text = "";
-            //        prodName.Text = "";
-            //        prodSize.Text = "";
-            //        prodPrice.Text = "";
-            //        prodDiscount.Text = "";
-            //        prodAvailable.Text = "";
-            //        waterSupAvailable.Text = "";
-            //        LblDate.Text = "";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Handle exception
-            //    LabelID.Text = "";
-            //    prodName.Text = "";
-            //    prodSize.Text = "";
-            //    prodPrice.Text = "";
-            //    prodDiscount.Text = "";
-            //    prodAvailable.Text = "";
-            //    waterSupAvailable.Text = "";
-            //    LblDate.Text = "";
-            //}
-            //// string idno = (string)Session["idno"];
-            //// String slected;
-            //// slected = ListBox1.SelectedValue;
-            //// FirebaseResponse response;
-            //// response = twoBigDB.Get("ADMIN/" + idno + "/Product/" + slected);
-            ////// response = twoBigDB.Get("PRODUCT/" + slected);
-            //// Products obj = response.ResultAs<Products>();
-            //// LabelID.Text = obj.productId.ToString();
-            //// prodName.Text = obj.productName.ToString();
-            //// prodSize.Text = obj.productSize.ToString();
-            //// prodPrice.Text = obj.productPrice.ToString();
-            //// prodDiscount.Text = obj.productDiscount.ToString();
-            //// prodAvailable.Text = obj.productAvailable.ToString();
-            //// waterSupAvailable.Text = obj.waterRefillSupply.ToString();
-            //// LblDate.Text = obj.dateAdded.ToString();
-        }
-
+        //STORE TANK SUPPLY
+        
         protected void btnAddSupply_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -407,69 +508,54 @@ namespace WRS2big_Web.Admin
 
             try
             {
-                // INSERT DATA TO TABLE = TANKSUPPLY
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-
-                var data = new TankSupply
+                // Check if a record with the same adminId and dateAdded exists in the TANKSUPPLY table
+                FirebaseResponse res = twoBigDB.Get("TANKSUPPLY");
+                Dictionary<string, TankSupply> supply = res.ResultAs<Dictionary<string, TankSupply>>();
+                if (supply != null) // Add this null check
                 {
-                    adminId = adminId,
-                    tankId = idnum,
-                    tankUnit = drdTankUnit.SelectedValue,
-                    tankVolume = tankSize.Text,
-                    dateAdded = DateTime.UtcNow
-                };
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    var filteredList = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
 
-                SetResponse response;
-                //TANKSUPPLY = tablename, Idno = key(PK ? )
-                // response = twoBigDB.Set("ADMIN/" + idno + "/TANKSUPPLY/" + data.productId, data);
-                response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
-                TankSupply result = response.ResultAs<TankSupply>();
-                //btnAddSupply.Enabled = false;
+                    if (filteredList != null)
+                    {
+                        // A record with the same adminId and dateAdded already exists
+                        lblDate.Text = filteredList.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                        lbltankSupply.Text = filteredList.tankVolume.ToString() + ' ' + filteredList.tankUnit.ToString();
+                        Response.Write("<script>alert ('A tank supply record for today already exists!');</script>");
+                        return;
+                    }
 
-                // Get the data from the database
-                //FirebaseResponse res = twoBigDB.Get("TANKSUPPLY/" + data.tankId);
-                //TankSupply obj = res.ResultAs<TankSupply>();
+                }
+                        // INSERT DATA TO TABLE = TANKSUPPLY
+                        Random rnd = new Random();
+                        int idnum = rnd.Next(1, 10000);
 
-                // Display the tank supply result here
-                lbl_Date.Text = data.dateAdded.ToString();
-                lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
-               // lblremainingSupply.Text = ""; // Set this value as needed
+                    var data = new TankSupply
+                    {
+                        adminId = adminId,
+                        tankId = idnum,
+                        tankUnit = drdTankUnit.SelectedValue,
+                        tankVolume = tankSize.Text,
+                        dateAdded = DateTimeOffset.UtcNow
+                    };
 
-                // btnAddSupply.Enabled = false;
+                    SetResponse response;
+                    response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
+                    TankSupply result = response.ResultAs<TankSupply>();
 
-                //if (res.Body != null)
-                //{
-                //    TankSupply obj = res.ResultAs<TankSupply>();
+                    // Display the tank supply result here
+                    lblDate.Text = data.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                    lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
 
-                // Display the tank supply result here
-                //lbl_Date.Text = obj.dateAdded.ToString();
-                //lbltankSupply.Text = obj.tankVolume.ToString() + ' ' + obj.tankUnit.ToString();
-
-                //date.Text = obj.dateAdded.ToString();
-                //TankSupply.Text = obj.tankVolume.ToString() + ' ' + obj.tankUnit.ToString();
-
-                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-               // };
-
-                //// Get the data in the database
-                // var res = twoBigDB.Get("TANKSUPPLY/" + data.tankId);
-                // TankSupply obj = res.ResultAs<TankSupply>();
-
-                // //display the tank supply result here
-                // lbl_Date.Text = obj.dateAdded.ToString();
-                // lbltankSupply.Text = obj.tankVolume.ToString() + ' ' + obj.tankUnit.ToString();
-
-                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                    Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
                 
             }
 
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+                Response.Write("<script>alert('Error adding tank supply! " + ex.Message + "');</script>");
             }
         }
-
 
         //STORING DATA TO otherPRODUCT
         protected async void btnAdd_Click(object sender, EventArgs e)
@@ -545,7 +631,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
             try
             {
-                // INSERT DATA TO TABLE  
+                // INSERT DATA TO TABLE = 
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
@@ -604,383 +690,218 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
-
+        //STORING DELIVERY DETAILS NI DIRI
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
+            try
+            {
+                    var idno = (string)Session["idno"];
+                    int adminId = int.Parse(idno);
 
-            var idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
+                Random rnd = new Random();
+                int deliveryId = rnd.Next(1, 10000);
+                int standardID = rnd.Next(1, 10000);
+                int expressID = rnd.Next(1, 10000);
+                int reservationDelivery = rnd.Next(1, 10000);
 
-            Random rnd = new Random();
-            int deliveryId = rnd.Next(1, 10000);
+                //create the deliveryID and save the adminID
+                var adminData = new DeliveryDetails
+                {
+                    adminId = adminId,
+                    deliveryId = deliveryId
+                };
+
+                SetResponse response;
+                response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
+
+
+                //FOR THE CHECKBOXES OF DELIVERY TYPES
+                string[] selectedItems = new string[radDevType.Items.Count];
+                int index = 0;
+
+                foreach (ListItem item in radDevType.Items)
+                {
+                    if (item.Selected)
+                    {
+                        selectedItems[index] = item.Value;
+                        index++;
+                    }
+                }
+
+                //access each selected item separately using the index of the array
+                string standard = selectedItems[0];
+                string reservation = selectedItems[1];
+                string express = selectedItems[2];
+
             
-            //create the deliveryID and save the adminID
-            var adminData = new DeliveryDetails
-            {
-                adminId = adminId,
-                deliveryId = deliveryId
-            };
 
-            SetResponse response;
-            response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
-
-
-            //FOR THE CHECKBOXES OF DELIVERY TYPES
-            string[] selectedItems = new string[radDevType.Items.Count];
-            int index = 0;
-
-            foreach (ListItem item in radDevType.Items)
-            {
-                if (item.Selected)
+                //IF GICHECK STANDARD
+                if (!string.IsNullOrEmpty(standard))
                 {
-                    selectedItems[index] = item.Value;
-                    index++;
-                }
-            }
-
-            //access each selected item separately using the index of the array
-            string standard = selectedItems[0];
-            string reservation = selectedItems[1];
-            string express = selectedItems[2];
-
-
-
-            //IF GICHECK STANDARD
-            if (!string.IsNullOrEmpty(standard))
-            {
-                // Loop through the items in the CheckBoxList to build the orderType string
-                string orderType = "";
-                foreach (ListItem item in DeliveryType.Items)
-                {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderType string
+                    string orderType = "";
+                    foreach (ListItem item in DeliveryType.Items)
                     {
-                        orderType += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            orderType += item.Value + ", ";
+                        }
                     }
-                }
-                orderType = orderType.TrimEnd(' ', ',');
+                    orderType = orderType.TrimEnd(' ', ',');
 
-                // Loop through the items in the CheckBoxList to build the orderMethod string
-                string orderMethod = "";
-                foreach (ListItem item in OrderMethod.Items)
-                {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderMethod string
+                    string orderMethod = "";
+                    foreach (ListItem item in OrderMethod.Items)
                     {
-                        orderMethod += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            orderMethod += item.Value + ", ";
+                        }
                     }
-                }
-                orderMethod = orderMethod.TrimEnd(' ', ',');
+                    orderMethod = orderMethod.TrimEnd(' ', ',');
 
-                string swapOptions = "";
-                foreach (ListItem item in standardSwapOptions.Items)
+
+                        var standardDeliver = new standardDelivery
+                        {
+                            stanDeliverytype = standard,
+                            stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
+                            stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
+                            standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
+                            stanOrderType = orderType,
+                            stanOrderMethod = orderMethod,
+                            standardID = standardID,
+                            dateAdded = DateTime.UtcNow
+                        };
+
+                        SetResponse standardre;
+                        standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
+                        DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+                }
+
+                //IF GICHECK RESERVATION
+                 if (!string.IsNullOrEmpty(reservation))
                 {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderType string
+                    string resOrderType = "";
+                    foreach (ListItem item in reserveOrderType.Items)
                     {
-                        swapOptions += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            resOrderType += item.Value + ", ";
+                        }
                     }
-                }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
+                    resOrderType = resOrderType.TrimEnd(' ', ',');
 
-                Random standardRanID = new Random();
-                int standardID = standardRanID.Next(1, 10000);
-
-                var standardDeliver = new DeliveryDetails
-                {
-                    stanDeliverytype = standard,
-                    stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
-                    stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
-                    standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
-                    stanOrderType = orderType,
-                    stanOrderMethod = orderMethod,
-                    standardSwapOptions = swapOptions,
-                    standardID = standardID,
-                    dateAdded = DateTime.UtcNow
-                };
-
-                SetResponse standardre;
-                standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
-                Model.DeliveryDetails res = standardre.ResultAs<Model.DeliveryDetails>();
-            }
-
-            //IF GICHECK RESERVATION
-            if (!string.IsNullOrEmpty(reservation))
-            {
-                // Loop through the items in the CheckBoxList to build the orderType string
-                string resOrderType = "";
-                foreach (ListItem item in reserveOrderType.Items)
-                {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderMethod string
+                    string resOrderMethod = "";
+                    foreach (ListItem item in reserveOrderMethod.Items)
                     {
-                        resOrderType += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            resOrderMethod += item.Value + ", ";
+                        }
                     }
-                }
-                resOrderType = resOrderType.TrimEnd(' ', ',');
+                    resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
 
-                // Loop through the items in the CheckBoxList to build the orderMethod string
-                string resOrderMethod = "";
-                foreach (ListItem item in reserveOrderMethod.Items)
+
+                        var reservationDeliver = new reservationDelivery
+                        {
+                            reservationID = reservationDelivery,
+                            resDeliveryType = reservation,
+                            resDeliveryFee = resDelFee.Text,
+                            resDistanceFree = resFreeDel.Text,
+                            resOrderMethod = resOrderMethod,
+                            resOrderType = resOrderType,
+                            dateAdded = DateTime.UtcNow
+                        };
+                        SetResponse reservere;
+                        reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
+                        DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
+                }
+
+                //IF GICHECK ANG EXPRESS
+                if (!string.IsNullOrEmpty(express))
                 {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderType string
+                    string resOrderType = "";
+                    foreach (ListItem item in expressOrderType.Items)
                     {
-                        resOrderMethod += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            resOrderType += item.Value + ", ";
+                        }
                     }
-                }
-                resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+                    resOrderType = resOrderType.TrimEnd(' ', ',');
 
-
-                string swapOptions = "";
-                foreach (ListItem item in reserveSwap.Items)
-                {
-                    if (item.Selected)
+                    // Loop through the items in the CheckBoxList to build the orderMethod string
+                    string resOrderMethod = "";
+                    foreach (ListItem item in expressOrderMethod.Items)
                     {
-                        swapOptions += item.Value + ", ";
+                        if (item.Selected)
+                        {
+                            resOrderMethod += item.Value + ", ";
+                        }
                     }
+                    resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+
+                    var expressDeliver = new expressDelivery
+                    {
+                            expressID = expressID,
+                            exDeliveryType = express,
+                            exEstimatedDelivery = estimatedTime.Text,
+                            exDeliveryFee = expressdeliveryFee.Text,
+                            exOrderMethod = resOrderMethod,
+                            exOrderType = resOrderType,
+                            dateAdded = DateTime.UtcNow
+                    };
+                        SetResponse expreessres;
+                        expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
+                        DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
                 }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
-
-                Random reserveRanID = new Random();
-                int reservationDelivery = reserveRanID.Next(1, 10000);
-
-
-                var reservationDeliver = new DeliveryDetails
-                {
-                    reservationID = reservationDelivery,
-                    resDeliveryType = reservation,
-                    resDeliveryFee = resDelFee.Text,
-                    resDistanceFree = resFreeDel.Text,
-                    resOrderMethod = resOrderMethod,
-                    resOrderType = resOrderType,
-                    reserveSwapOptions = swapOptions,
-                    dateAdded = DateTime.UtcNow
-                };
-                SetResponse reservere;
-                reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
-                DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
-
-                ////REMOVE ALL THE NULL VALUE
-                //FirebaseResponse getNull = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID);
-                //Model.AdminAccount pendingClients = getNull.ResultAs<Model.AdminAccount>();
-
-
-
+                Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
             }
-
-            //IF GICHECK ANG EXPRESS
-            if (!string.IsNullOrEmpty(express))
+            catch (Exception ex)
             {
-                // Loop through the items in the CheckBoxList to build the orderType string
-                string resOrderType = "";
-                foreach (ListItem item in expressOrderType.Items)
-                {
-                    if (item.Selected)
-                    {
-                        resOrderType += item.Value + ", ";
-                    }
-                }
-                resOrderType = resOrderType.TrimEnd(' ', ',');
-
-                // Loop through the items in the CheckBoxList to build the orderMethod string
-                string resOrderMethod = "";
-                foreach (ListItem item in expressOrderMethod.Items)
-                {
-                    if (item.Selected)
-                    {
-                        resOrderMethod += item.Value + ", ";
-                    }
-                }
-                resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
-
-                string swapOptions = "";
-                foreach (ListItem item in expressSwap.Items)
-                {
-                    if (item.Selected)
-                    {
-                        swapOptions += item.Value + ", ";
-                    }
-                }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
-
-                //Generate random ID for expressID
-                Random expressRanID = new Random();
-                int expressID = expressRanID.Next(1, 10000);
-
-                var expressDeliver = new DeliveryDetails
-                {
-                    expressID = expressID,
-                    exDeliveryType = express,
-                    exEstimatedDelivery = estimatedTime.Text,
-                    exDeliveryFee = expressdeliveryFee.Text,
-                    exOrderMethod = resOrderMethod,
-                    exOrderType = resOrderType,
-                    expressSwapOptions = swapOptions,
-                    dateAdded = DateTime.UtcNow
-                };
-                SetResponse expreessres;
-                expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
-                DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
+                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
-            Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
         }
-
-            protected void btnSearch_Click(object sender, EventArgs e)
+        //DISPLAY DATA BY SEARCHING
+        protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string selectedOption = ddlSearchOptions.SelectedValue;
-            
-            if (selectedOption == "1")
+            try
             {
-                lblProductRefill.Text = "PRODUCT REFILL";
-                lbldeliveryDetails.Visible = false;
-                lblotherProduct.Visible = false;
-                gridProductRefill.Visible = true;
-                gridotherProduct.Visible = false;
-                gridDeliveryDetails.Visible = false;
-                productRefillDisplay();
-            } 
-            else if (selectedOption == "2")
-            {
-                lblotherProduct.Text = "OTHER PRODUCT";
-                lbldeliveryDetails.Visible = false;
-                lblProductRefill.Visible = false;
-                gridProductRefill.Visible = false;
-                gridotherProduct.Visible = true;
-                gridDeliveryDetails.Visible = false;
-                otherProductsDisplay();
+                string selectedOption = ddlSearchOptions.SelectedValue;
+
+                
+                if (selectedOption == "1")
+                {
+                    lblProductData.Text = "PRODUCT REFILL";
+                    gridProductRefill.Visible = true;
+                    gridotherProduct.Visible = false;
+                    productRefillDisplay();
+                } 
+                else if (selectedOption == "2")
+                {
+                    lblProductData.Text = "OTHER PRODUCT";
+                    gridProductRefill.Visible = false;
+                    gridotherProduct.Visible = true;
+                    otherProductsDisplay();
+                }
+                else if (selectedOption == "3")
+                {
+                    lblProductData.Text = "DELIVERY DETAILS";
+                    gridProductRefill.Visible = false;
+                    gridotherProduct.Visible = false;
+                    //deliveryExpressDisplay();
+                }
             }
-            else if (selectedOption == "3")
+            catch (Exception ex)
             {
-                lbldeliveryDetails.Text = "DELIVERY DETAILS";
-                lblProductRefill.Visible = false;
-                lblotherProduct.Visible = false;
-                gridProductRefill.Visible = false;
-                gridotherProduct.Visible = false;
-                gridDeliveryDetails.Visible = true;
-                //deliveryDetailsDisplay();
+                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
         }
 
-
-
-        //Display product ni diri
-        //private void DisplayID()
-        //{
-        //    string idno = (string)Session["idno"];
-        //    FirebaseResponse response;
-        //    //response = twoBigDB.Get("ADMIN/" + idno + "/Product/");
-        //    response = twoBigDB.Get("PRODUCTS/" + idno + );
-        //    Products obj = response.ResultAs<Products>();
-        //    var json = response.Body;
-        //    Dictionary<string, Products> list = JsonConvert.DeserializeObject<Dictionary<string, Products>>(json);
-
-
-        //    if (list != null && list.Count > 0)
-        //    {
-        //        foreach (KeyValuePair<string, Products> entry in list)
-        //        {
-        //            ListBox1.Items.Add(entry.Value.productId.ToString());
-        //        }
-        //    }
-
-        //}
-
-        protected async void btnEdit_Click(object sender, EventArgs e)
-        {
-          //  string idno = (string)Session["idno"];
-          //  int adminId = int.Parse(idno);
-          //  String deleteStr = ListBox1.SelectedValue;
-
-          //  // Retrieve the existing product data from the database
-          //  var result = await twoBigDB.GetAsync("PRODUCTS/" + deleteStr);
-          //  Products obj = result.ResultAs<Products>();
-
-          //  var data = new Products();
-          // // data.adminId = adminId;
-          //  data.productId = int.Parse(LabelID.Text);
-          //  data.productName = prodName.Text;
-          //  data.productSize = prodSize.Text;
-          //  data.productPrice = float.Parse(productPrice.Text);
-          ////  data.productDiscount = float.Parse(productDiscounts.Text);
-          //  data.productStock = int.Parse(productStock.Text);
-          //  //data.waterRefillSupply = waterSupAvailable.Text;
-          //  data.dateAdded = DateTime.UtcNow;
-          //  // Keep the existing productImage
-          //  data.productImage = obj.productImage;
-
-          //  FirebaseResponse response;
-          //  response = await twoBigDB.UpdateAsync("Product/" + deleteStr, data);
-
-          //  // Retrieve the updated product data from the database
-          //  result = await twoBigDB.GetAsync("Product/" + deleteStr);
-          //  obj = result.ResultAs<Products>();
-
-          //  LabelID.Text = obj.productId.ToString();
-          //  prodName.Text = obj.productName.ToString();
-          //  prodSize.Text = obj.productSize.ToString();
-          //  prodPrice.Text = obj.productPrice.ToString();
-          //  prodDiscount.Text = obj.productDiscount.ToString();
-          //  prodAvailable.Text = obj.productStock.ToString();
-          ////  waterSupAvailable.Text = obj.waterRefillSupply.ToString();
-          //  LblDate.Text = obj.dateAdded.ToString();
-
-          //  Response.Write("<script>alert ('Product ID : " + deleteStr + " successfully updated!');</script>");
-        }
-
-
-
-        //protected void btnEdit_Click(object sender, EventArgs e)
-        //{
-        //    string idno = (string)Session["idno"];
-        //    String deleteStr;
-        //    deleteStr = ListBox1.SelectedValue;
-
-        //    var data = new Products();
-
-        //    data.productId = int.Parse(LabelID.Text);
-        //    data.productName = prodName.Text;
-        //    data.productSize = prodSize.Text;
-        //    data.productPrice = prodPrice.Text;
-        //    data.productDiscount = prodDiscount.Text;
-        //    data.productAvailable = prodAvailable.Text;
-        //    data.waterRefillSupply = waterSupAvailable.Text;
-        //    data.dateAdded = DateTime.UtcNow;
-
-        //    FirebaseResponse response;
-        //    response = twoBigDB.Update("ADMIN/" + idno + "/Product/" + deleteStr, data);//Update Product Data 
-
-        //    var result = twoBigDB.Get("ADMIN/" + idno + "/Product/" + deleteStr);//Retrieve Updated Data From WATERPRODUCT TBL
-        //    Products obj = response.ResultAs<Products>();//Database Result
-
-        //    LabelID.Text = obj.productId.ToString();
-        //    prodName.Text = obj.productName.ToString();
-        //    prodSize.Text = obj.productSize.ToString();
-        //    prodPrice.Text = obj.productPrice.ToString();
-        //    prodDiscount.Text = obj.productDiscount.ToString();
-        //    prodAvailable.Text = obj.productAvailable.ToString();
-        //    waterSupAvailable.Text = obj.waterRefillSupply.ToString();
-        //    LblDate.Text = obj.dateAdded.ToString();
-
-        //    Response.Write("<script>alert ('Product ID : " + deleteStr + " successfully updated!');</script>");  
-        //}
-
-        protected void DeleteBtn_Click(object sender, EventArgs e)
-        {
-            //string idno = (string)Session["idno"];
-            //String deleteStr;
-            //deleteStr = ListBox1.SelectedValue;
-            //FirebaseResponse response = twoBigDB.Delete("Product/ " + deleteStr);
-
-            ////lbl_result.Text = "Records Successfully deleted!";
-            ////Response.Write("<div>Successfully deleted product ID : "+ deleteStr +" </div>");
-            //Response.Write("<script>alert ('Successfully deleted product ID : " + deleteStr + "'); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-
-            ////TO DELETE THE ID IN THE LISTBOX AFTER DELETED
-            //int selected = ListBox1.SelectedIndex;
-            //if (selected != 1)
-            //{
-            //    ListBox1.Items.RemoveAt(selected);
-            //}
-
-
-        }
     }
 }

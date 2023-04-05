@@ -37,6 +37,7 @@ namespace WRS2big_Web.Admin
                 DisplayTable();
                 displayLogs();
             }
+
         }
 
         private void displayLogs()
@@ -122,6 +123,7 @@ namespace WRS2big_Web.Admin
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
+            int logsId = (int)Session["logsId"];
             try
             {
                 Random rnd = new Random();
@@ -146,16 +148,35 @@ namespace WRS2big_Web.Admin
                     emp_emergencycontact = txtemergencycontact.Text,
                     emp_role = drdrole.Text,
                     emp_status = Drd_status.Text,
-                    dateAdded = DateTime.UtcNow
+                    dateAdded = DateTimeOffset.UtcNow
                 };
 
                 SetResponse response;
                 // Employee Records = tablename, emp_id = key ( PK? )
                 response = twoBigDB.Set("EMPLOYEES/" + data.emp_id, data);
-
                 Employee obj = response.ResultAs<Employee>();//Database Result
 
-                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); </script>");
+                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); location.reload(); </script>");
+
+                // Retrieve the existing employee object from the database
+                FirebaseResponse res = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = res.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = employee_id,
+                    empFullname = txtfirstname.Text + " " + txtlastname.Text,
+                    empDateAdded = data.dateAdded,
+                    dateLogin = existingLog.dateLogin
+                };
+                twoBigDB.Push("USERSLOG/" + idno, log);
 
                 DisplayTable();
             }
@@ -166,38 +187,42 @@ namespace WRS2big_Web.Admin
             }
         }
 
-        protected void btnUpdate_Click(object sender, EventArgs e)
-        {
+        //UPDATING THE EMPLOYEE DATA
+        //protected void btnUpdate_Click(object sender, EventArgs e)
+        //{
 
-            // Show the modal popup
-            //  ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#editModal').modal();", true);
+        //    // Show the modal popup
+        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#editModal').modal();", true);
 
-            // Get the admin ID from the session
-            string idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
+        //    // Get the admin ID from the session
+        //    string idno = (string)Session["idno"];
+        //    int adminId = int.Parse(idno);
 
-            // Get the GridViewRow that contains the clicked button
-            Button btn = (Button)sender;
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
+        //    // Get the GridViewRow that contains the clicked button
+        //    Button btn = (Button)sender;
+        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
 
-            // Get the employee ID from the first cell in the row
-            int empID = int.Parse(row.Cells[2].Text);
-            string status = row.Cells[1].Text;
-            string position = row.Cells[5].Text;
-            // Store the employee ID in Session for later use
-            Session["emp_id"] = empID;
-            //and existing status/position in Session
-            Session["emp_status"] = status;
-            Session["emp_position"] = position;
+        //    // Get the employee ID from the first cell in the row
+        //    int empID = int.Parse(row.Cells[2].Text);
+        //    string status = row.Cells[1].Text;
+        //    string position = row.Cells[5].Text;
+        //    // Store the employee ID in Session for later use
+        //    Session["emp_id"] = empID;
+        //    //and existing status/position in Session
+        //    Session["emp_status"] = status;
+        //    Session["emp_position"] = position;
 
-            // updateEmployee();
-            // Get the employee status and position from the second cell and sixth cell in the row
-            drd_empPosition.SelectedValue = (string)Session["emp_position"];
-            drd_empStatus.SelectedValue = (string)Session["emp_status"];
+        //    // updateEmployee();
+        //    // Get the employee status and position from the second cell and sixth cell in the row
+        //    drd_empPosition.SelectedValue = (string)Session["emp_position"];
+        //    drd_empStatus.SelectedValue = (string)Session["emp_status"];
 
-        }
+        //}
         protected void btnupdateData_Click(object sender, EventArgs e)
         {
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#editModal').modal();", true);
+
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
@@ -270,7 +295,7 @@ namespace WRS2big_Web.Admin
             // Show success message
             Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');</script>");
 
-          //  ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
         }
 
         //    private void updateEmployee()

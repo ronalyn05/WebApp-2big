@@ -115,14 +115,13 @@
                                                                             </div>
                                                                       </div>
                                                               </div><!--/tab-pane-->
+                                                                <asp:Button ID="PaymentBtn" style="font-size:14px;" class="btn btn-success btn-sm"  runat="server" Text="PROCESS PAYMENT" OnClick="btnPayment_Click"/>
+                                                         <asp:Button ID="btnClear" style="font-size:14px;" class="btn btn-danger btn-sm"  runat="server" Text="Clear All" OnClick="btnClear_Click"/>
                                                           </div><!--/tab-content-->
                                                            
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer">
-                                                        <asp:Button ID="PaymentBtn" style="font-size:14px;" class="btn btn-success btn-sm"  runat="server" Text="PROCESS PAYMENT" OnClick="btnPayment_Click"/>
-                                                         <asp:Button ID="btnClear" style="font-size:14px;" class="btn btn-danger btn-sm"  runat="server" Text="Clear All" OnClick="btnClear_Click"/>
-                                                    </div>
+                                                   
                                                 </div>
                                                </div> 
   </div>

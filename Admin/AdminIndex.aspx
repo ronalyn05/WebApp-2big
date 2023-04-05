@@ -143,8 +143,39 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                  <%--  TANK SUPPLY--%>
+                                            <%-- <div class="col-xl-3 col-md-6">
+                                                <div class="card">
+                                                    <div class="card-block">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-8">
+                                                                <asp:Label ID="label1" Font-Bold="true" runat="server" Text="Date:" Font-Size="Large" Width="349px"></asp:Label>
+                                                                  <asp:Label ID="lblDate" runat="server" CssClass="text-c-orenge" Font-Bold="true" Font-Size="Medium" Width="349px"></asp:Label>
+                                                                <br />
+                                                                <asp:Label ID="label2" Font-Bold="true" runat="server" Text="Remaining Supply:" Font-Size="Large" Width="349px"></asp:Label>
+                                                                <asp:Label ID="lblRemainingsupply" Font-Bold="true" runat="server" CssClass="text-c-orenge" Font-Size="Medium" Width="349px"></asp:Label>
+                                                            
+                                                            </div>
+                                                            <div class="col-4 text-right">
+                                                                <i class="fa fa-support f-28"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer bg-c-orenge">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-9">
+                                                                <p class="text-white m-b-0 text-center">REMAINING TANK SUPPLY</p>
+                                                            </div>
+                                                            <div class="col-3 text-right">
+                                                                <i class="fa fa-line-chart text-white f-16"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>--%> <%--  TANK SUPPLY END HERE--%>
+                                                   
                                             <!-- task, page, download counter  end -->
                                            <%-- <!--  sale analytics start -->
                                             <div class="col-xl-8 col-md-12">

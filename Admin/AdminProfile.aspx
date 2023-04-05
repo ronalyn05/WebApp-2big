@@ -111,19 +111,52 @@
                                         </div>
                                             <div class="col-md-12 col-sm-12">
                                                 <asp:Label ID="Label4" runat="server" style="color:black; font-size:20px">Operating hours:</asp:Label>
-                                                <asp:TextBox ID="txtOperatingHrs" placeholder="Set operating hours" runat="server" Width="364px"></asp:TextBox>
+                                                <br />
+                                                <strong> From:</strong>
+                                             <asp:TextBox ID="txtOperatingHrsFrom" TextMode="Time" placeholder="Set operating hours" runat="server"></asp:TextBox>
+                                                <strong> To:</strong>
+                                                 <asp:TextBox ID="txtOperatingHrsTo" TextMode="Time" placeholder="Set operating hours" runat="server"></asp:TextBox>
+                                             
+                                               <%-- <asp:TextBox ID="txtOperatingHrs" TextMode="Time" placeholder="Set operating hours" runat="server" Width="364px"></asp:TextBox>--%>
                                                  </div>
+                                            <br />
                                          <div class="col-md-12 col-sm-12">
                                                   <asp:Label ID="Label2" runat="server" style="color:black; font-size:20px">Status:</asp:Label>
-                                                   <asp:DropDownList ID="operatingStatus" runat="server" Width="364px">
+                                                   <asp:DropDownList ID="operatingStatus" Height="40px" runat="server" Width="364px">
                                                    <asp:ListItem Text="Open" Value="open" Selected="True"></asp:ListItem>
                                                    <asp:ListItem Text="Close" Value="close" ></asp:ListItem>
                                                </asp:DropDownList>
                                           </div>
+                                            <br />
                                          <div class="col-md-12 col-sm-12">
                                                  <asp:Label ID="Label3" runat="server" style="color:black; font-size:20px">Business Days:</asp:Label>
-                                                 <asp:TextBox ID="txtBusinessDays" placeholder="Set business days" runat="server" Width="364px"></asp:TextBox>
-                                                                         
+                                             <br /> 
+                                             <asp:Label ID="Label15" runat="server" style="color:black; font-size:20px">From:</asp:Label>
+                                              <br />
+                                                   <asp:DropDownList ID="drdBusinessDaysFrom" Height="40px" runat="server" Width="364px">
+                                                   <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
+                                                   <asp:ListItem Text="Tuesday" Value="Tuesday" ></asp:ListItem>
+                                                       <asp:ListItem Text="Wednesday" Value="Wednesday"></asp:ListItem>
+                                                   <asp:ListItem Text="Thursday" Value="Thursday" ></asp:ListItem>
+                                                       <asp:ListItem Text="Friday" Value="Friday"></asp:ListItem>
+                                                   <asp:ListItem Text="Saturday" Value="Saturday" ></asp:ListItem>
+                                                    <asp:ListItem Text="Sunday" Value="Sunday" ></asp:ListItem>
+                                                       </asp:DropDownList>
+                                             <br />
+                                              <br />
+                                            <asp:Label ID="Label16" runat="server" style="color:black; font-size:20px">To:</asp:Label>
+                                              <br />
+                                                   <asp:DropDownList ID="drdBusinessDaysTo" Height="40px" runat="server" Width="364px">
+                                                  <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
+                                                   <asp:ListItem Text="Tuesday" Value="Tuesday" ></asp:ListItem>
+                                                       <asp:ListItem Text="Wednesday" Value="Wednesday"></asp:ListItem>
+                                                   <asp:ListItem Text="Thursday" Value="Thursday" ></asp:ListItem>
+                                                       <asp:ListItem Text="Friday" Value="Friday" ></asp:ListItem>
+                                                   <asp:ListItem Text="Saturday" Value="Saturday" ></asp:ListItem>
+                                                    <asp:ListItem Text="Sunday" Value="Sunday" ></asp:ListItem>
+                                                       </asp:DropDownList>
+                                               <%--  <asp:TextBox ID="txtBusinessDaysTo" TextMode="Week" placeholder="Set business days" runat="server"></asp:TextBox>--%>
+                                                                   
                                           </div>
                                         </div>
                                         </div>
@@ -142,7 +175,7 @@
                                         <div class="modal-content">
                                         <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                         <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel2">Refilling Station</h4>
+                                        <h4 class="modal-title" id="myModalLabel2">Profile Information</h4>
                                             <%--exit button--%>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                         </div>
