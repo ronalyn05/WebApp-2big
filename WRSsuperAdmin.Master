@@ -177,7 +177,7 @@
                                         </a>
                                     </li>--%>
                                     <li class="waves-effect waves-light">
-                                        <a href="/LandingPage/index">
+                                        <a href="/superAdmin/Account">
                                             <i class="ti-layout-sidebar-left"></i> Logout
                                         </a>
                                     </li>
@@ -258,21 +258,21 @@
                                     </li>--%>
                                     <li>
                                         <a href="/superAdmin/ClientReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
+                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Clients</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/superAdmin/CustomerReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Registered Customers </span>
+                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers </span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/superAdmin/SubscriptionReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-stats-up"></i><b>FC</b></span>
+                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>

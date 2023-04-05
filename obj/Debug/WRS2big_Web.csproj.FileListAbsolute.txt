@@ -172,6 +172,8 @@ C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.dll
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.pdb
 C:\Users\Capstone2-Project\WRS2big_Web\obj\Debug\WRS2big_Web.csproj.AssemblyReference.cache
+C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.App.config
+C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CoreCompileInputs.cache
 C:\Users\trini\source\repos\WebApp-2big\bin\WRS2big_Web.dll.config
 C:\Users\trini\source\repos\WebApp-2big\bin\WRS2big_Web.dll
 C:\Users\trini\source\repos\WebApp-2big\bin\WRS2big_Web.pdb
@@ -224,8 +226,6 @@ C:\Users\trini\source\repos\WebApp-2big\bin\System.ValueTuple.xml
 C:\Users\trini\source\repos\WebApp-2big\bin\System.Web.Optimization.xml
 C:\Users\trini\source\repos\WebApp-2big\bin\Antlr3.Runtime.pdb
 C:\Users\trini\source\repos\WebApp-2big\bin\Microsoft.AspNet.FriendlyUrls.xml
-C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.App.config
-C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CoreCompileInputs.cache
 C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.dll
 C:\Users\trini\source\repos\WebApp-2big\obj\Debug\WRS2big_Web.pdb

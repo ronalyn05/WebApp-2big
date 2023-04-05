@@ -259,7 +259,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
                                             <div class="modal-body">
-                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="col-md-18 col-sm-18 ">
                                             <div class="x_content">
                                                 <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
                                                 <h6> Note: Please check the 'Delivery Types' you offer to your business and fill all the informations needed in each delivery type</h6>
@@ -305,7 +305,7 @@
                                                   
                                                            <strong>Choose types of order method you want to offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="OrderMethod" runat="server">
-                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="Refill" Value="Refill" onclick="refillOptions();" ID="refillSwapOptions"></asp:ListItem>
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
@@ -341,6 +341,34 @@
                                                         }
                                                     }
                                                 </script>
+                                                
+                                                <div id="standardrefillOptions" style="display:none"> <hr />
+                                                    <strong> Swap Gallon Options for Standard</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="standardSwapOptions" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
+                                                </div>
+                                                <script>
+                                                    function refillOptions() {
+                                                        var standardRefill = document.getElementById("refillSwapOptions");
+                                                        var reserveRefill = document.getElementById("reserveSwapOptions");
+                                                        var expressRefill = document.getElementById("expressSwapOptions")
+                                                        var fields = document.getElementById("standardrefillOptions");
+
+                                                        if (standardRefill.checked || reserveRefill.checked || expressRefill.checked) {
+                                                            fields.style.display = "none";
+                                                        }
+                                                        else {
+                                                            fields.style.display = "block";
+                                                        }
+                                                        
+
+                                                    }
+                                                </script>
 
                                                 <!--OPTIONS FOR RESERVATION WHEN CLICKED--> 
                                                 <div ID="reserveCheckedDIV" style="display:none"><hr /> 
@@ -360,7 +388,7 @@
                                                   
                                                            <strong>Choose types of orders you want to offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="reserveOrderMethod" runat="server">
-                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="Refill" Value="Refill" onclick="reserveRefillOptions();" ID="reserveSwapOptions"></asp:ListItem>
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
@@ -373,6 +401,17 @@
                                                                     <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                                 </asp:CheckBoxList>
                                                        </div>
+                                                </div>
+                                                
+                                               <div id="reserverefillOptions" style="display:none"> <hr />
+                                                    <strong> Swap Gallon Options for Reservation</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="reserveSwap" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
                                                 </div>
                                                 <!--SCRIPT FOR RESERVATION WHEN CLICKED-->
                                                 <script> 
@@ -388,7 +427,23 @@
                                                         }
                                                     }
                                                 </script>
-                                               
+                                                <script>
+                                                    function reserveRefillOptions() {
+                                                        
+                                                        var reserveRefill = document.getElementById("reserveSwapOptions");
+                                                        //var expressRefill = document.getElementById("expressSwapOptions")
+                                                        var fields = document.getElementById("reserverefillOptions");
+
+                                                        if (reserveRefill.checked) {
+                                                            fields.style.display = "none";
+                                                        }
+                                                        else {
+                                                            fields.style.display = "block";
+                                                        }
+
+
+                                                    }
+                                                </script>                              
 
                                                 <!--OPTIONS FOR EXPRESS WHEN CLICKED--> 
                                                 <div ID="expressCheckedDIV" style="display:none"> <hr />
@@ -410,7 +465,7 @@
                                                   
                                                            <strong>Choose types of orders you want to offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="expressOrderMethod" runat="server">
-                                                                    <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
+                                                                    <asp:ListItem Text="Refill" Value="Refill" onclick="expressRefillOptions();" ID="expressSwapOptions"></asp:ListItem>
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
@@ -419,10 +474,21 @@
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="expressOrderType" runat="server">
-                                                                    <%--<asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>--%>
+                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
                                                                     <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                                 </asp:CheckBoxList>
                                                        </div>
+                                                </div>
+                                                
+                                               <div id="expressrefillOptions" style="display:none"> <hr />
+                                                    <strong> Swap Gallon Options for Experss</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="expressSwap" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
                                                 </div>
                                                  <!--SCRIPT FOR EXPRESS WHEN CLICKED-->
                                                     <script>
@@ -433,23 +499,31 @@
 
                                                             if (express.checked) {
                                                                 expressFields.style.display = "none";
-                                                                // Disable other options
-                                                                //document.getElementById("standardChcked").setAttribute("disabled", "disabled");
-                                                                //document.getElementById("reserveChcked").setAttribute("disabled", "disabled");
-                                                                //document.getElementById("reserveChcked").disabled = true;
-                                                                //document.getElementById("standardChcked").disabled = true;
+
 
                                                             } else {
 
                                                                 expressFields.style.display = "block";
-                                                                // Enable other options
-                                                                //document.getElementById("reserveChcked").disabled = false;
-                                                                //document.getElementById("standardChcked").disabled = false;
+                                                                
                                                             }
 
                                                         }
                                                     </script>
+                                                <script>
+                                                    function expressRefillOptions() {
+                                                        var expressRefill = document.getElementById("expressSwapOptions")
+                                                        var fields = document.getElementById("expressrefillOptions");
 
+                                                        if (expressRefill.checked) {
+                                                            fields.style.display = "none";
+                                                        }
+                                                        else {
+                                                            fields.style.display = "block";
+                                                        }
+
+
+                                                    }
+                                                </script>  
                                                <%-- SCRIPT TO DISABLE OTHER RADIO BUTTONS--%>
                                                 <script>
                                                         function disableOtherRadios() {

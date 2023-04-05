@@ -29,17 +29,18 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            if (Session["email"] == null && Session["password"] == null)
-            {
-                Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
-            }
+            //if (Session["email"] == null && Session["password"] == null)
+            //{
+            //    Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
+            //}
 
             if (!IsPostBack)
             {
                 DisplayTable();
-
+                
 
             }
+           
         }
 
         private void DisplayTable()
@@ -50,7 +51,7 @@ namespace WRS2big_Web.superAdmin
             var data = response.Body;
             Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
-
+            //creating the columns of the gridview
             DataTable plansTable = new DataTable();
             plansTable.Columns.Add("CLIENT ID");
             plansTable.Columns.Add("CLIENT NAME");
@@ -78,6 +79,8 @@ namespace WRS2big_Web.superAdmin
 
         protected void btnAccept_Click(object sender, EventArgs e)
         {
+            
+
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
@@ -88,6 +91,13 @@ namespace WRS2big_Web.superAdmin
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
             Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
+
+            //to check if the status is already approved or declined 
+            if (pendingClients.status == "Approved" || pendingClients.status == "Declined")
+            {
+                
+                return;
+            }
 
             pendingClients.status = "Approved";
             response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
@@ -95,8 +105,11 @@ namespace WRS2big_Web.superAdmin
             DisplayTable();
         }
 
+
         protected void btnDecline_Click(object sender, EventArgs e)
         {
+         
+
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
@@ -108,10 +121,20 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
             Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
 
-            pendingClients.status = "Declined";
-            response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
+            //to check if the status is already approved or declined 
+            if (pendingClients.status =="Approved" || pendingClients.status == "Declined")
+            {
+                return;
+            }
 
+                pendingClients.status = "Declined";
+                response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
+
+
+            //DisableUpdateActionButtons();
             DisplayTable();
         }
+
+        
     }
 }

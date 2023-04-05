@@ -60,6 +60,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label descriptionBasic;
 
         /// <summary>
+        /// BasicfeaturesList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox BasicfeaturesList;
+
+        /// <summary>
         /// premiumplanLabel control.
         /// </summary>
         /// <remarks>
@@ -94,5 +103,14 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label descriptionPremium;
+
+        /// <summary>
+        /// premiumFeaturesList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox premiumFeaturesList;
     }
 }
