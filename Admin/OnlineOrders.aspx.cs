@@ -37,7 +37,7 @@ namespace WRS2big_Web.Admin
                 DisplayTable();
             }
 
-            string idno = (string)Session["idno"];  
+            string idno = (string)Session["idno"];
 
             FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
             Dictionary<string, Employee> employees = response.ResultAs<Dictionary<string, Employee>>();
@@ -60,7 +60,7 @@ namespace WRS2big_Web.Admin
             response = twoBigDB.Get("ORDERS");
             Order order = response.ResultAs<Order>();
 
-            Session["orderID"] = order.orderID; 
+            Session["orderID"] = order.orderID;
         }
         private void DisplayTable()
         {
@@ -79,7 +79,6 @@ namespace WRS2big_Web.Admin
 
             // Create the DataTable to hold the orders
             DataTable ordersTable = new DataTable();
-          //  ordersTable.Columns.Add("ACTION");
             ordersTable.Columns.Add("ORDER ID");
             ordersTable.Columns.Add("CUSTOMER ID");
             ordersTable.Columns.Add("DRIVER ID");
@@ -102,11 +101,11 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
-                                              entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                                              entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_WaterPrice,
-                                              entry.order_Quantity, entry.order_ReservationDate, 
-                                              entry.order_OrderStatus, entry.order_InitialAmount);
+                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
+                                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
+                                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_WaterPrice,
+                                          entry.order_Quantity, entry.order_ReservationDate,
+                                          entry.order_OrderStatus, entry.order_InitialAmount);
                 }
             }
             else
@@ -132,7 +131,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[1].Text);
+            int orderID = int.Parse(row.Cells[2].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -150,9 +149,9 @@ namespace WRS2big_Web.Admin
                 existingOrder.order_OrderStatus = "Accepted";
                 existingOrder.driverId = 0; // clear the driver ID
                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
-                
+
                 // Display an error message indicating that no driver will be assigned
-                Response.Write("<script>alert ('This order will be pick up by the owner. No driver will be assigned.');</script>");
+                Response.Write("<script>alert ('This order will be pick up by the owner. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
                 DisplayTable();
             }
             else
@@ -170,36 +169,9 @@ namespace WRS2big_Web.Admin
                 else
                 {
                     // No drivers are currently available, display an error message
-                    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.');</script>");
+                    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
                 }
             }
-
-            //// Retrieve the existing order object from the database
-            //FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
-            //Order existingOrder = response.ResultAs<Order>();
-
-            //// Get a list of all available drivers
-            //FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
-            //Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
-
-            //List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
-            //                                                    && emp.emp_availability == "Available").ToList();
-            //// Check if any available driver is available to accept the order
-            //if (allDrivers.Count > 0)
-            //{
-            //    // Assign the order to the first available driver
-            //    Employee driver = allDrivers[0];
-            //    existingOrder.driverId = driver.emp_id;
-            //    existingOrder.order_OrderStatus = "Accepted";
-            //    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
-            //    DisplayTable();
-            //}
-            //else
-            //{
-            //    // No drivers are currently available, display an error message
-            //    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.');</script>");
-            //}
-
         }
 
         //UPDATING THE STATUS ORDER ID DECLINE
@@ -208,17 +180,17 @@ namespace WRS2big_Web.Admin
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-           // int driverId = (int)Session["emp_id"];
+            // int driverId = (int)Session["emp_id"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[1].Text);
+            int orderID = int.Parse(row.Cells[2].Text);
 
             // Retrieve the existing order object from the database
-           FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
             Order existingOrder = response.ResultAs<Order>();
 
             // Update the order status in the existing object
@@ -232,6 +204,54 @@ namespace WRS2big_Web.Admin
 
             // Rebind the GridView
             DisplayTable();
+        }
+        //UPDATING THE ORDERS
+        protected void btnPaymentAccept_Click(object sender, EventArgs e)
+        {
+            // Get the admin ID from the session
+            string idno = (string)Session["idno"];
+            int adminId = int.Parse(idno);
+
+            // Get the GridViewRow that contains the clicked button
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            // Get the order ID from the first cell in the row
+            int orderID = int.Parse(row.Cells[2].Text);
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            Order existingOrder = response.ResultAs<Order>();
+
+            // Get a list of all available drivers
+            FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
+            Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
+
+            List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
+                                                                    && emp.emp_availability == "Available").ToList();
+            if (existingOrder.order_OrderStatus == "Delivered" || existingOrder.order_OrderStatus == "Received Order")
+            {
+                // Check if any available driver is available to accept the order
+                if (allDrivers.Count > 0)
+                {
+                    // Assign the order to the first available driver
+                    Employee driver = allDrivers[0];
+                    existingOrder.driverId = driver.emp_id;
+                    existingOrder.order_OrderStatus = "Payment Received";
+                    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                    // Display an error message indicating that no driver will be assigned
+                    Response.Write("<script>alert ('Payment successfully received.'); location.reload(); window.location.href = '/Admin/OnlineOrder.aspx';</script>");
+                    DisplayTable();
+                }
+            }
+            else
+            {
+                // Display an error messaged
+                Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/OnlineOrder.aspx';</script>");
+            }
+
+
         }
     }
 }

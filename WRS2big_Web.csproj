@@ -288,7 +288,7 @@
     <Content Include="Admin\AdminIndex.aspx" />
     <Content Include="Admin\AdminProfile.aspx" />
     <Content Include="Admin\CustomerRecord.aspx" />
-    <Content Include="Admin\DeliveryRecords.aspx" />
+    <Content Include="Admin\UserLogs.aspx" />
     <Content Include="Admin\EmployeeRecord.aspx" />
     <Content Include="Admin\ListGraph.aspx" />
     <Content Include="Admin\Notification.aspx" />
@@ -619,12 +619,12 @@
     <Compile Include="Admin\CustomerRecord.aspx.designer.cs">
       <DependentUpon>CustomerRecord.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\DeliveryRecords.aspx.cs">
-      <DependentUpon>DeliveryRecords.aspx</DependentUpon>
+    <Compile Include="Admin\UserLogs.aspx.cs">
+      <DependentUpon>UserLogs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\DeliveryRecords.aspx.designer.cs">
-      <DependentUpon>DeliveryRecords.aspx</DependentUpon>
+    <Compile Include="Admin\UserLogs.aspx.designer.cs">
+      <DependentUpon>UserLogs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>

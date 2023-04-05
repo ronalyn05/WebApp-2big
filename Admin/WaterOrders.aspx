@@ -79,7 +79,96 @@
                                       <div class="row">
                                        <div class="col-sm-12">
                                         <div class="card-box table-responsive">
-                                        <table id="datatable1" class="table table-striped table-bordered f-1" style="width:100%">     
+                                            <div class="col-xl-12 col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        
+                                                        <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="LIST OF SUCCESSFUL ORDERS"></asp:Label>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                <li><i class="fa fa-trash close-card"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
+                                                           <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+                                                           <asp:ListItem Text="Online Order" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="Walkin Order" Value="2"></asp:ListItem>
+                                                        </asp:DropDownList>
+
+                                                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px" Width="150px"/>
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                 <br /> 
+
+                                                                 <asp:Label ID="lblOrder" Font-Bold="true" CssClass="text-center align-items-center"  Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                   <br />    <br />   <%--the gridview starts here--%>
+                                                           <%--   <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridOrder" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                       <%-- <asp:TemplateField>
+                                                          <ItemTemplate>--%>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                              <%--  <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>--%>
+                                                        <%--  </ItemTemplate>
+                                                        </asp:TemplateField>--%>
+                                                      </Columns>
+                                                       <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                        <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
+                                                        <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                        <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
+                                                        <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                        <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                        <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+                                                                <%--Gridview ends here--%>
+                                             <%--    </div>--%>
+                                                              <%--  <br />
+                                                                 <br />--%>
+                                                               <%-- <hr /> --%>
+                                                                <%-- DELIVERY DETAILS NI DIRI--%>
+                                                               <%-- <h5> Delivery Details</h5>
+                                                                <br />--%>
+                                                               <%-- <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                                       <%--the gridview starts here--%>
+                                                               <%-- <asp:Label ID="lblWalkin" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="gridWalkIn" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                     
+                                                      </Columns>
+                                                       <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                       <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
+                                                       <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                       <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
+                                                       <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                       <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                       <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                       <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                        <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+                                               <%--  </div>--%> <%--Gridview ends here--%>
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                                    <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
+                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
+                                                    </div>
+                                                </div>
+                                               </div> 
+
+                                       <%-- <table id="datatable1" class="table table-striped table-bordered f-1" style="width:100%">     
                                          <thead>
                                          <tr class="bg-c-green text-light" id="trialtable">
                                               <th>ORDER ID</th>
@@ -137,7 +226,7 @@
                                                         </td>
                                 
                                        </tbody>
-                                     </table>
+                                     </table>--%>
                                                     </div>
                                                 </div>
                                             </div>

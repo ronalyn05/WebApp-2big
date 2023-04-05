@@ -165,42 +165,6 @@ namespace WRS2big_Web.Admin
             string selectedType = drdProdName.SelectedValue;
             string selectedUnit = drdUnit.SelectedValue;
 
-            //if (!string.IsNullOrEmpty(selectedSize))
-            //{
-            //    if (!string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
-            //    {
-            //        FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
-            //        Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
-
-            //        otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productSize == selectedSize && p.other_productName == selectedType && p.other_productUnit == selectedUnit);
-
-            //        if (otherselectedProduct != null)
-            //        {
-            //            // Display the unit for the selected product
-            //            if (otherselectedProduct.other_productPrice != null || otherselectedProduct.other_productDiscount != null)
-            //            {
-            //                lblprice.Text = otherselectedProduct.other_productPrice.ToString();
-            //                lblDiscount.Text = otherselectedProduct.other_productDiscount.ToString();
-            //            }
-            //            else
-            //            {
-            //                lblprice.Text = "";
-            //                lblDiscount.Text = ""; 
-            //            }
-
-            //        }
-            //        else
-            //        {
-
-            //            Response.Write("<script>alert ('No product found with the selected options!');</script>");
-
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Response.Write("<script>alert ('Please select the product type and unit');</script>");
-            //    }
-            //}
             if (!string.IsNullOrEmpty(selectedSize) && !string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
             {
                 // Check if the product exists in the "otherPRODUCTS" table
