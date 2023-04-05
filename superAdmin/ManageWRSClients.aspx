@@ -72,9 +72,8 @@
                                                                              <Columns>
                                                                                  <asp:TemplateField>
                                                                                     <ItemTemplate>
-                                                                                        <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
-                                                                                          <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
-                                                                                        <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                        <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
+                                                                                          <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
                                                                              </Columns>

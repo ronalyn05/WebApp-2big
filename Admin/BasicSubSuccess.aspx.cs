@@ -26,6 +26,22 @@ namespace WRS2big_Web.Admin
         {
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
+
+            // Get the ID of the currently logged-in owner from session state
+            string idno = (string)Session["idno"];
+            int adminId = int.Parse(idno);
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminId);
+            Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
+
+            string clientStat = pendingClients.status;
+
+            if (clientStat == "pending")
+            {
+                Response.Write("<script>alert ('Subscription Unsuccessful. You cannot subscribe yet since your account is still under review. Please wait until your account is approved before you can subscribe'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+
+            }
+
         }
         public void btnContinue_Click(object sender, EventArgs e)
         {
@@ -36,12 +52,25 @@ namespace WRS2big_Web.Admin
 
                 foreach (var basicplan in plans)
                 {
+                    var planName = basicplan.Value.planName;
                     var planID = basicplan.Value.idno;
 
                     //to check if ang plan is niexist ba sa database
-                    if (planID == 4862)
+                    if (planName == "BASIC")
                     {
                         var idno = planID;
+                        var adminID = Session["idno"].ToString();
+
+                        
+                        //to ADD the subscription Status to admin table
+                        FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
+                        Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
+
+                        update.subStatus = "Subscribed";
+                        //subscriptionStatus.subStatus = "Subscribed";
+
+                        updateAdmin = twoBigDB.Update("ADMIN/" + adminID, update);
+
 
                         FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + idno);
                         Model.SubscriptionPlans obj = res.ResultAs<Model.SubscriptionPlans>();
@@ -65,9 +94,14 @@ namespace WRS2big_Web.Admin
                         data.subStart = now;
                         data.subEnd = SubBasic;
                         data.price = amount;
+                        
 
                         //SAVE THE SUBSCRIPTION PLAN DETAILS SA ADMIN NGA TABLE
                         twoBigDB.Update("ADMIN/" + idnum + "/SubscribedPlan/", data);
+
+                        Session["subscribedPlan"] = plan;
+                        Session["subscriptionEnd"] = SubBasic;
+                        Session["subscriptionStart"] = now;
 
 
                         //to generate random ID
@@ -78,7 +112,8 @@ namespace WRS2big_Web.Admin
                         var fullname = Session["fullName"];
                         var contact = Session["contactNumber"];
                         var email = Session["email"];
-
+                        DateTime dateSubscribed = (DateTime)Session["subscriptionStart"];
+                         
                         var clients = new Model.superAdminClients
                         {
                             idno = clientNo,
@@ -86,16 +121,20 @@ namespace WRS2big_Web.Admin
                             fullname = fullname.ToString(),
                             email = email.ToString(),
                             phone = contact.ToString(),
-                            plan = plan
+                            plan = plan,
+                            dateSubscribed = dateSubscribed,
+                            status = "Subscribed"
                         };
+
+
 
                         SetResponse clientres;
                         //Storing the info of the admin nga ni subscribe to superadmin
-                        clientres = twoBigDB.Set("SUBSCRIBING_CLIENTS/" + clients.idno, clients);//Storing data to the database
+                        clientres = twoBigDB.Set("SUPERADMIN/SUBSCRIBING_CLIENTS/" + clients.idno, clients);//Storing data to the database
                         Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
 
 
-                        Response.Write("<script>alert ('Thankyou for Subscribing ! You successfully subscribed to: " + data.subPlan + " '); location.reload(); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                        Response.Write("<script>alert ('Thankyou for Subscribing ! You successfully subscribed to: " + data.subPlan + " '); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
                     }
 
                 }

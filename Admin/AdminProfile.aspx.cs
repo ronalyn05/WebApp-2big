@@ -51,6 +51,28 @@ namespace WRS2big_Web.Admin
             lbldob.Text = (string)Session["dob"];
             Lbl_user.Text = (string)Session["fullName"];
 
+            //to GET the subbscription
+            var adminID = Session["idno"].ToString();
+            FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
+            Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
+
+           string subscribedPlan = subscription.subPlan;
+            DateTime start = subscription.subStart;
+            DateTime end = subscription.subEnd;
+            
+            //populate the textboxes for the subscription details
+            LblSubPlan.Text = subscribedPlan;
+
+            DateTime subscriptionStart = start;
+            LblDateStarted.Text = subscriptionStart.ToString();
+            DateTime subscriptionEnd = end;
+            LblSubEnd.Text = subscriptionEnd.ToString();
+
+            //Session["subscribedPlan"] = plan;
+            //Session["subscriptionEnd"] = SubBasic;
+            //Session["subscriptionStart"] = now;
+
+
             //firstname.Text = (string)Session["fname"];
             //middlename.Text = (string)Session["mname"];
             //lastname.Text = (string)Session["lname"];

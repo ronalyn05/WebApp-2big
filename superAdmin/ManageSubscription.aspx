@@ -59,7 +59,7 @@
                                   <div class="clearfix">
                                         <%--BUTTON to ADD--%>
                                         <button type="button" style="font-size:14px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Create New Plan</button>
-                                        <button type="button" style="font-size:14px;margin-left:20px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".settings"><i class="ti-settings"></i>Settings</button>
+                                       <%-- <button type="button" style="font-size:14px;margin-left:20px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".settings"><i class="ti-settings"></i>Settings</button>--%>
 
                                                 <!--MODAL FOR ADD NEW PLAN-->
                                            <div class="modal fade add texts" tabindex="-1" role="dialog" aria-hidden="true">

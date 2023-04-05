@@ -103,10 +103,10 @@
                         <div class="card shadow-lg border-0 rounded-lg mb-4 bgColor">
                         <div class="card-header">
                             <div class="form-group d-flex justify-content-between">
-                                <h3 class="text-left font-weight-light my-2">Subscription Complete</h3>   
+                                <h3 class="text-left font-weight-light my-2">Subscription Confirmation</h3>   
                                
                             </div>
-                             <h2 class="texts text-center " style="font-size:20px;"> You successfully subscribed to 2BiG's</h2> 
+                             <h2 class="texts text-center " style="font-size:20px;">  You are trying to subscribe to 2BiG's</h2> 
                                             <div class="text-center">
                                                 <img src="/images/BasicPlan.PNG" style="width:70%">
                                             </div>
@@ -114,18 +114,9 @@
                                      <p class="h3 text-center">BASIC PLAN</p>
                                 </div>
                         </div>               
-                        <div class="card-body">
-
-                            <div class="jumbotron h4" style="background-color:cornsilk"> 
-                                <center>
-                                 Thank you for subscribing with TechNique!!
-                                </center>
-                               
-                            </div>
-                        </div> 
                         </div>
                          <div class="col text-center">
-                             <asp:Button ID="btnContinue" CssClass="btn btn-primary" OnClick="btnContinue_Click" runat="server" Text="Proceed" />
+                             <asp:Button ID="btnContinue" CssClass="btn btn-primary" OnClick="btnContinue_Click" runat="server" Text="Confirm" />
                         </div>
                     </div>
 
