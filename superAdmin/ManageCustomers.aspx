@@ -57,11 +57,21 @@
                                                                     <div class="card-box table-responsive">
 
                                                                           <!--PAGE CONTENTS-->
-                                                                              <div style="overflow: auto; text-align:center;padding:2px" class="texts table-hover">
+                                                                              <div class="texts table-responsive" style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" HtmlEncode="false" Width="1626px" CssClass="m-r-0">
                                                                                         <asp:GridView runat="server" ID="clientGridView">
-                                                 
+                                                                                            <Columns>
+                                                                                         </Columns>
+                                                                                            <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
+                                                                                            <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
+                                                                                            <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
+                                                                                            <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
+                                                                                            <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+                                                                                            <SortedAscendingCellStyle BackColor="#FFF1D4" />
+                                                                                            <SortedAscendingHeaderStyle BackColor="#B95C30" />
+                                                                                            <SortedDescendingCellStyle BackColor="#F1E5CE" />
+                                                                                            <SortedDescendingHeaderStyle BackColor="#93451F" />
                                                                                         </asp:GridView>
-                                                                                    </div>
+                                                                               </div>
                                                                               <br /><br />
                                                                       <!--PAGE CONTENTS END-->
 

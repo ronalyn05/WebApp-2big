@@ -46,7 +46,9 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-purple">₱30,200</h4>
+                                                                <h4 class="text-c-purple">
+                                                                    <asp:Label ID="salesLabel" runat="server"></asp:Label>
+                                                                </h4>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-bar-chart f-28"></i>

@@ -59,7 +59,7 @@ namespace WRS2big_Web.superAdmin
             {
                 //FirebaseResponse clientResponse = twoBigDB.Get("SUPERADMIN/SUBSCRIBING_CLIENTS" + entry.Key);
                 //Model.superAdminClients subscribingClients = clientResponse.ResultAs<Model.superAdminClients>();
-                plansTable.Rows.Add(entry.Value.idno, entry.Value.fullname, entry.Value.email, entry.Value.dateSubscribed, entry.Value.plan, entry.Value.status);
+                plansTable.Rows.Add(entry.Value.clientID, entry.Value.fullname, entry.Value.email, entry.Value.dateSubscribed, entry.Value.plan, entry.Value.status);
 
             }
 

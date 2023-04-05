@@ -145,13 +145,13 @@ namespace WRS2big_Web.superAdmin
             planAmount.Text = price;
 
 
-            string[] featuresArray = features.Split('\n');
-            string featuresList = string.Join(Environment.NewLine, featuresArray);
-            planFeatures.Text = featuresList;
-            //updatePlan.Text = name;
-            //updateDesc.Text = description;
-            //updateDuration.Text = duration;
-            //updateAmount.Text = price;
+            FirebaseResponse featuresponse = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + id + "/features");
+            List<string> featuresList = featuresponse.ResultAs<List<string>>();
+
+            // Bind the features to the ListBox control
+            planFeatures.DataSource = featuresList;
+            planFeatures.DataBind();
+
 
 
         }

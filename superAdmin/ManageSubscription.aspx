@@ -227,8 +227,8 @@
                                                             </div>
                                                             <div class="form-group form-default">
                                                                 <label class="form-control">Plan Features:</label>
-                                                                <%--<asp:ListBox runat="server" id="planFeatures"></asp:ListBox>--%>
-                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planFeatures"></asp:TextBox>
+                                                                <asp:ListBox runat="server" id="planFeatures" style="text-align:center" SelectionMode="Multiple" class="form-control" Height="184px"></asp:ListBox>
+                                                              <%--  <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planFeatures"></asp:TextBox>--%>
                                                             </div>
                                                             <asp:Button id="updateBtn" runat="server" Text="UPDATE" class="btn btn-primary btn-sm texts" OnClick="updateBtn_Click"/>
                                                         </div>

@@ -10,6 +10,7 @@ namespace WRS2big_Web.Model
         public int cusId { get; set; }
         public string firstName { get; set; }
         public string middleName { get; set; }
+        public string fullName { get; set; }
         public string lastName { get; set; }
         public string phoneNumber { get; set; }
         public string birthdate { get; set; }

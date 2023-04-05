@@ -44,8 +44,7 @@ namespace WRS2big_Web.superAdmin
 
             DataTable customerTable = new DataTable();
             customerTable.Columns.Add("CUSTOMER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("FULL NAME");
             customerTable.Columns.Add("EMAIL");
             customerTable.Columns.Add("ADDRESS");
             customerTable.Columns.Add("PHONE #");
@@ -55,8 +54,7 @@ namespace WRS2big_Web.superAdmin
             foreach (KeyValuePair<string, Model.Customer> entry in clients)
             {
                 customerTable.Rows.Add(entry.Value.cusId,
-                    entry.Value.firstName,
-                    entry.Value.lastName,
+                    entry.Value.firstName + " " + entry.Value.lastName,
                     entry.Value.email,
                     entry.Value.address,
                     entry.Value.phoneNumber);

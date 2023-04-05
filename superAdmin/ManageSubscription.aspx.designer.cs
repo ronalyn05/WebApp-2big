@@ -165,7 +165,7 @@ namespace WRS2big_Web.superAdmin
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox planFeatures;
+        protected global::System.Web.UI.WebControls.ListBox planFeatures;
 
         /// <summary>
         /// updateBtn control.

@@ -472,8 +472,6 @@
     <Content Include="LandingPage\Account.aspx" />
     <Content Include="Admin\BasicSubSuccess.aspx" />
     <Content Include="LandingPage\Index.aspx" />
-    <Content Include="Admin\BasicPlanSub.aspx" />
-    <Content Include="Admin\PremiumPlanSub.aspx" />
     <Content Include="Admin\PremiumSubSuccess.aspx" />
     <Content Include="LandingPage\Terms.aspx" />
     <Content Include="favicon.ico" />
@@ -734,20 +732,6 @@
     </Compile>
     <Compile Include="LandingPage\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\BasicPlanSub.aspx.cs">
-      <DependentUpon>BasicPlanSub.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\BasicPlanSub.aspx.designer.cs">
-      <DependentUpon>BasicPlanSub.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\PremiumPlanSub.aspx.cs">
-      <DependentUpon>PremiumPlanSub.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\PremiumPlanSub.aspx.designer.cs">
-      <DependentUpon>PremiumPlanSub.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\PremiumSubSuccess.aspx.cs">
       <DependentUpon>PremiumSubSuccess.aspx</DependentUpon>
