@@ -51,6 +51,14 @@ namespace WRS2big_Web.Admin
             lbldob.Text = (string)Session["dob"];
             Lbl_user.Text = (string)Session["fullName"];
 
+<<<<<<< HEAD
+            firstname.Text = (string)Session["fname"];
+            middlename.Text = (string)Session["mname"];
+            lastname.Text = (string)Session["lname"];
+            contactnum.Text = (string)Session["contactNumber"];
+            email.Text = (string)Session["email"];
+            birthdate.Text = (string)Session["dob"];
+=======
             //to GET the subbscription
             var adminID = Session["idno"].ToString();
             FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
@@ -79,6 +87,7 @@ namespace WRS2big_Web.Admin
             //contactnum.Text = (string)Session["contactNumber"];
             //email.Text = (string)Session["email"];
             //birthdate.Text = (string)Session["dob"];
+>>>>>>> master
             //Lbl_user.Text = (string)Session["fullName"];
 
             //retrieve the data of station details
@@ -89,37 +98,7 @@ namespace WRS2big_Web.Admin
             lblstatus.Text = (string)Session["status"];
             ImageButton_new.ImageUrl = (string)Session["profile_image"];
 
-            //LblSubPlan.Text = (string)Session["subType"];
-            //LblDateStarted.Text = Session["subsDate"].ToString();
-            //LblSubEnd.Text = Session["subEnd"].ToString();
-
-            // Make sure that the object in the Session is a byte array representing the image
-            //byte[] profileImage = Session["profile_image"] as byte[];
-            //if (profileImage != null)
-            //{
-            //    // Convert the byte array to a base64-encoded string
-            //    string base64String = Convert.ToBase64String(profileImage, 0, profileImage.Length);
-            //    // Set the ImageUrl property of the ImageButton to the base64-encoded string
-            //    ImageButton_new.ImageUrl = "data:image/png;base64," + base64String;
-            //    //string base64String = Convert.ToBase64String(imageData);
-            //}
-           
-
-            //FirebaseResponse response;
-            //response = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-            //RefillingStation obj = response.ResultAs<RefillingStation>();
-
-            //LblSubPlan.Text = obj.SubType.ToString();
-            //LblDateStarted.Text = obj.SubsDate.ToString();
-            //LblSubEnd.Text = obj.SubEnd.ToString();
-            //Session["operatingHrs"] = obj.operatingHrs;
-            //Session["status"] = obj.status;
-            //Session["businessdays"] = obj.businessDays;
-
-            
-
-
-
+          
         }
 
         protected void btnSubscription_Click(object sender, EventArgs e)
@@ -190,23 +169,27 @@ namespace WRS2big_Web.Admin
                 data.addLattitude = obj.addLattitude;
                 data.addLongitude = obj.addLongitude;
                 data.proof = obj.proof;
-                data.operatingHrs = obj.operatingHrs;
+                data.operatingHrsTo = obj.operatingHrsTo;
+                data.operatingHrsFrom = obj.operatingHrsFrom;
                 data.status = obj.status;
-                data.businessDays = obj.businessDays;
+                data.businessDaysTo = obj.businessDaysTo;
+                data.businessDaysFrom = obj.businessDaysFrom;
                 data.dateAdded = obj.dateAdded;
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(txtOperatingHrs.Text))
+                if (!string.IsNullOrEmpty(txtOperatingHrsFrom.Text) || !string.IsNullOrEmpty(txtOperatingHrsTo.Text))
                 {
-                    data.operatingHrs = txtOperatingHrs.Text;
+                    data.operatingHrsFrom = txtOperatingHrsFrom.Text;
+                    data.operatingHrsTo = txtOperatingHrsTo.Text;
                 }
-                if (!string.IsNullOrEmpty(txtBusinessDays.Text))
+                if (!string.IsNullOrEmpty(drdBusinessDaysFrom.SelectedValue) || !string.IsNullOrEmpty(drdBusinessDaysTo.SelectedValue))
                 {
-                    data.businessDays = txtBusinessDays.Text;
+                    data.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
+                    data.businessDaysTo = drdBusinessDaysTo.SelectedValue;
                 }
-                if (!string.IsNullOrEmpty(operatingStatus.Text))
+                if (!string.IsNullOrEmpty(operatingStatus.SelectedValue))
                 {
-                    data.status = operatingStatus.Text;
+                    data.status = operatingStatus.SelectedValue;
                 }
                 data.dateUpdated = DateTime.UtcNow;
 
@@ -219,8 +202,8 @@ namespace WRS2big_Web.Admin
 
                 lblStationName.Text = obj.stationName.ToString();
                 lblAddress.Text = obj.stationAddress.ToString();
-                lblOperatingHours.Text = obj.operatingHrs.ToString();
-                lblBusinessday.Text = obj.businessDays.ToString();
+                lblOperatingHours.Text = obj.operatingHrsFrom.ToString() + ' ' + obj.operatingHrsTo.ToString();
+                lblBusinessday.Text = obj.businessDaysFrom.ToString() + ' ' + obj.businessDaysTo.ToString();
                 lblstatus.Text = obj.status.ToString();
 
                 Response.Write("<script>alert ('Station details has successfully updated!');</script>");
@@ -237,6 +220,7 @@ namespace WRS2big_Web.Admin
             try
             {
                 string idno = (string)Session["idno"];
+
 
                 // Retrieve the existing product data from the database
                 var result = twoBigDB.Get("ADMIN/" + idno);
@@ -301,7 +285,7 @@ namespace WRS2big_Web.Admin
                 ImageButton_new.ImageUrl = obj.profile_image.ToString();
 
 
-                Response.Write("<script>alert ('Personal info has successfully updated!');</script>");
+                Response.Write("<script>alert ('Personal info has successfully updated!'); location.reload(); window.location.href = '/Admin/AdminProfile.aspx';</script>");
             }
             catch (Exception ex)
             {
@@ -350,9 +334,11 @@ namespace WRS2big_Web.Admin
             RefillingStation obj = result.ResultAs<RefillingStation>();
 
             // Update the specific fields that you want to change
-            obj.operatingHrs = txtOperatingHrs.Text;
-            obj.status = operatingStatus.Text;
-            obj.businessDays = txtBusinessDays.Text;
+            obj.operatingHrsFrom = txtOperatingHrsFrom.Text;
+            obj.operatingHrsTo = txtOperatingHrsTo.Text;
+            obj.status = operatingStatus.SelectedValue;
+            obj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
+            obj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
 
             // Pass the updated object to the Update method
             twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", obj);
@@ -362,9 +348,10 @@ namespace WRS2big_Web.Admin
             RefillingStation list = res.ResultAs<RefillingStation>();//Database Result
 
             // Display the updated data in the UI
-            lblOperatingHours.Text = list.operatingHrs;
-            lblBusinessday.Text = list.businessDays.ToString();
+            lblOperatingHours.Text = list.operatingHrsFrom.ToString() + ' ' + list.operatingHrsTo.ToString();
+            lblBusinessday.Text = list.businessDaysFrom.ToString() + ' ' + list.businessDaysTo.ToString();
             lblstatus.Text = list.status.ToString();
+            ImageButton_new.ImageUrl = (string)Session["profile_image"];
         }
     }
 }

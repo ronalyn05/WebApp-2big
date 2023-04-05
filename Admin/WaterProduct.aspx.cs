@@ -351,19 +351,12 @@ namespace WRS2big_Web.Admin
         private void productRefillDisplay()
         {
             string idno = (string)Session["idno"];
-            string empId = (string)Session["emp_id"];
-            // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
             Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
             var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno);
-            //FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/" + idno);
-            //ProductRefill emp = response.ResultAs<ProductRefill>();
-            //var data = response.Body;
-            ////Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
-            //Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
-
+        
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable productRefillTable = new DataTable();
@@ -401,7 +394,7 @@ namespace WRS2big_Web.Admin
         private void otherProductsDisplay()
         {
             string idno = (string)Session["idno"];
-            string empId = (string)Session["emp_id"];
+            //string empId = (string)Session["emp_id"];
             // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table

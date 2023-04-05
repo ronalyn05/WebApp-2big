@@ -1,9 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="OnlineOrders.aspx.cs" Inherits="WRS2big_Web.Admin.ProductGallon" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="UserLogs.aspx.cs" Inherits="WRS2big_Web.Admin.DeliveryRecords" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-        <div id="pcoded" class="pcoded">
+           <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
             <div class="pcoded-main-container">
@@ -11,13 +10,12 @@
  
                     <div class="pcoded-content">
                         <!-- Page-header start -->
-                        <!-- Page-header start -->
                         <div class="page-header">
                             <div class="page-block">
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">ORDERS - ONLINE </h5>
+                                            <h5 class="m-b-10">DELIVERY RECORDS </h5>
                                             <h6 class="m-b-0">2BiG: Water Refilling Station Management System</h6>
                                         </div>
                                     </div>
@@ -35,8 +33,9 @@
                             </div>
                         </div>
                         <!-- Page-header end -->
+
                         <div class="pcoded-inner-content">
-                            <!-- Main-body start -->
+                             <!-- Main-body start -->
                             <div class="main-body">
                                 <div class="page-wrapper">
                                     <!-- Page-body start -->
@@ -62,18 +61,10 @@
                                                                       <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
-                                                        <asp:TemplateField HeaderText="ACTION">
+                                                        <asp:TemplateField>
                                                           <ItemTemplate>
                                                               <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
                                                               <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
-                                                         </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>
-                                                   <Columns>
-                                                        <asp:TemplateField HeaderText="PAYMENT">
-                                                          <ItemTemplate>
-                                                              <asp:Button ID="btnPaymentAccept" runat="server" Text="Payment Received" OnClick="btnPaymentAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Blue"/>
-                                                             
                                                          </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
@@ -107,13 +98,12 @@
                                 </div>
                             </div>
                         </div>
+                        
+
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
-
-
 </asp:Content>
-

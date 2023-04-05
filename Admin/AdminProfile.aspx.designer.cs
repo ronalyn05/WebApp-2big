@@ -87,13 +87,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
-        /// txtOperatingHrs control.
+        /// txtOperatingHrsFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOperatingHrs;
+        protected global::System.Web.UI.WebControls.TextBox txtOperatingHrsFrom;
+
+        /// <summary>
+        /// txtOperatingHrsTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOperatingHrsTo;
 
         /// <summary>
         /// Label2 control.
@@ -123,13 +132,40 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// txtBusinessDays control.
+        /// Label15 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBusinessDays;
+        protected global::System.Web.UI.WebControls.Label Label15;
+
+        /// <summary>
+        /// drdBusinessDaysFrom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdBusinessDaysFrom;
+
+        /// <summary>
+        /// Label16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label16;
+
+        /// <summary>
+        /// drdBusinessDaysTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdBusinessDaysTo;
 
         /// <summary>
         /// btnManageStation control.

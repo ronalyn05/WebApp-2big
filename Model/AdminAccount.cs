@@ -30,9 +30,11 @@ namespace WRS2big_Web.Model
         public double addLattitude { get; set; }
         public double addLongitude { get; set; }
         public string proof { get; set; }
-        public string operatingHrs { get; set; }
+        public string operatingHrsFrom { get; set; }
+        public string operatingHrsTo { get; set; }
         public string status { get; set; }
-        public string businessDays { get; set; }
+        public string businessDaysFrom { get; set; }
+        public string businessDaysTo { get; set; }
         public DateTimeOffset dateAdded { get; set; }
         public DateTimeOffset dateUpdated { get; set; }
     }
@@ -201,8 +203,18 @@ namespace WRS2big_Web.Model
         public string orderType { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
-}
+    public class UsersLogs
+    {
+        public int logsId { get; set; }
+        public int userIdnum { get; set; }
+        public string userFullname{ get; set; }
+        public int emp_id { get; set; }
+        public string empFullname { get; set; }
+        public DateTimeOffset empDateAdded { get; set; }
+        public DateTimeOffset dateLogin { get; set; }
+    }
 
+    }
 
 
 

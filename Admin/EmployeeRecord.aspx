@@ -230,7 +230,7 @@
                                                                           <Columns>
                                                                             <asp:TemplateField>
                                                                               <ItemTemplate>
-                                                                                 <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnUpdate_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
+                                                                                 <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
                                                                                         data-target="#editModal" BorderStyle="None" ForeColor="White"/>
                                                                               </ItemTemplate>
                                                                             </asp:TemplateField>
@@ -258,7 +258,7 @@
                                              </div> 
 
                                            <%-- MODAL FOR UPDATE EMPLOYEE--%>
-                                       <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
                                             <div class="modal-content">
                                             <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
@@ -299,7 +299,7 @@
                                                <%-- update data button--%>
                                                      <%-- <asp:Button ID="btnUpdate" class="btn btn-primary" runat="server" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
                                                                 Text="Update Data" OnClick="btnupdate_Click"/>--%>
-                                                      <asp:Button ID="btnUpdateData" runat="server" Text="Update" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" BorderStyle="None" ForeColor="White"/>
+                                                      <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" BorderStyle="None" ForeColor="White"/>
                                                     <%-- <asp:Button ID="btnUpdateData" class="btn btn-primary" runat="server" Text="Update" CommandArgument='<%# Eval("EMPLOYEE ID") %>' OnClick="btnupdateData_Click" />--%>
 
                                                 </div>
