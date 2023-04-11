@@ -172,7 +172,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+                Response.Write("<script>alert('Data already exist'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
             }
         }
 

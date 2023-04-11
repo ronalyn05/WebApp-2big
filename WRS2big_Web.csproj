@@ -288,10 +288,10 @@
     <Content Include="Admin\AdminIndex.aspx" />
     <Content Include="Admin\AdminProfile.aspx" />
     <Content Include="Admin\CustomerRecord.aspx" />
-    <Content Include="Admin\UserLogs.aspx" />
     <Content Include="Admin\EmployeeRecord.aspx" />
     <Content Include="Admin\ListGraph.aspx" />
     <Content Include="Admin\Notification.aspx" />
+    <Content Include="Admin\UsersLog.aspx" />
     <Content Include="Admin\WaitingPage.aspx" />
     <Content Include="Admin\WalkIns.aspx" />
     <Content Include="Admin\OnlineOrders.aspx" />
@@ -620,13 +620,6 @@
     <Compile Include="Admin\CustomerRecord.aspx.designer.cs">
       <DependentUpon>CustomerRecord.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\UserLogs.aspx.cs">
-      <DependentUpon>UserLogs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\UserLogs.aspx.designer.cs">
-      <DependentUpon>UserLogs.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -647,6 +640,13 @@
     </Compile>
     <Compile Include="Admin\Notification.aspx.designer.cs">
       <DependentUpon>Notification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UsersLog.aspx.cs">
+      <DependentUpon>UsersLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UsersLog.aspx.designer.cs">
+      <DependentUpon>UsersLog.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\WaitingPage.aspx.cs">
       <DependentUpon>WaitingPage.aspx</DependentUpon>

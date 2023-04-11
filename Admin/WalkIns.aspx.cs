@@ -79,7 +79,7 @@ namespace WRS2big_Web.Admin
                 }
                 else
                 {
-                    Response.Write("<script>alert ('Invalid price or quantity value. Please enter valid decimal numbers.'); </script>");
+                    Response.Write("<script>alert ('Invalid price or quantity value. Please enter valid decimal numbers.');  location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
                     return;
                 }
 
@@ -107,7 +107,8 @@ namespace WRS2big_Web.Admin
                 // Set the text of the txtTotalAmount textbox to the calculated total amount
                 lblAmount.Text = totalAmount.ToString();
 
-                Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); </script>");
+                Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!');</script>");
+                //Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
             }
             catch (Exception ex)
             {
@@ -241,13 +242,7 @@ namespace WRS2big_Web.Admin
         }
         protected void btnClear_Click(object sender, EventArgs e)
         {
-            txtQty.Text = "";
-            lblprice.Text = "";
-            lblDiscount.Text = "";
-            lblAmount.Text = "";
-            drdProdName.Items.Clear();
-            drdUnit.Items.Clear();
-            drdSize.Items.Clear();
+            Response.Write("<script> location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
         }
 
 

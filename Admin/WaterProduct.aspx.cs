@@ -94,6 +94,7 @@ namespace WRS2big_Web.Admin
                         double totalOrderedGallons = 0;
                         if (orders != null)
                         {
+
                             var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno
                                 && (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted")
                                 && (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
@@ -148,6 +149,7 @@ namespace WRS2big_Web.Admin
                         // display the remaining supply
                         if (remainingSupply <= 0)
                         {
+                           // remainingSupply = 0;
                             lblremainingSupply.Text = "There is no remaining supply. Currently unable to fullfill any further orders.";
                         }
                         else
@@ -157,7 +159,7 @@ namespace WRS2big_Web.Admin
 
                             // Update the remaining supply in the TANKSUPPLY table
                             TankSupply tankSupply = new TankSupply
-                                {
+                            {
                                     tankId = filteredSupply.tankId,
                                     adminId = filteredSupply.adminId,
                                     dateAdded = filteredSupply.dateAdded,
@@ -505,6 +507,8 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            int logsId = (int)Session["logsId"];
+
 
             try
             {
@@ -543,12 +547,41 @@ namespace WRS2big_Web.Admin
                     response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
                     TankSupply result = response.ResultAs<TankSupply>();
 
-                    // Display the tank supply result here
-                    lblDate.Text = data.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
-                    lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
-
                     Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-                
+
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = existingLog.emp_id,
+                    empFullname = existingLog.empFullname,
+                    empDateAdded = existingLog.empDateAdded,
+                    dateLogin = existingLog.dateLogin,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                    productRefillId = existingLog.productRefillId,
+                    productrefillDateAdded = existingLog.productrefillDateAdded,
+                    other_productId = existingLog.other_productId,
+                    otherProductDateAdded = existingLog.otherProductDateAdded,
+                    tankId = data.tankId,
+                    tankSupplyDateAdded = data.dateAdded
+                };
+
+                twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
+
+                // Display the tank supply result here
+                lblDate.Text = data.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
             }
 
             catch (Exception ex)
@@ -562,6 +595,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            int logsId = (int)Session["logsId"];
 
             try
             {
@@ -616,12 +650,40 @@ namespace WRS2big_Web.Admin
                // response = twoBigDB.Set("ADMIN/" + idno + "/Product/" + data.productId, data);
                  response = twoBigDB.Set("otherPRODUCTS/" + data.other_productId, data);
                 otherProducts result = response.ResultAs<otherProducts>();
-                Response.Write("<script>alert ('Your other water product with Id number: " + data.other_productId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
-                
+                Response.Write("<script>alert ('Other water product offers with Id number: " + data.other_productId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = existingLog.emp_id,
+                    empFullname = existingLog.empFullname,
+                    empDateAdded = existingLog.empDateAdded,
+                    dateLogin = existingLog.dateLogin,
+                    tankId = existingLog.tankId,
+                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                    productRefillId = existingLog.productRefillId,
+                    productrefillDateAdded = existingLog.productrefillDateAdded,
+                    other_productId = data.other_productId,
+                    otherProductDateAdded = data.dateAdded
+                };
+
+                twoBigDB.Update("USERSLOG/" + log.logsId, log);
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+                Response.Write("<script>alert('Data already exist'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
         }
         //STORING DATA TO PRODUCT REFILL
@@ -629,6 +691,8 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            int logsId = (int)Session["logsId"];
+
             try
             {
                 // INSERT DATA TO TABLE  
@@ -684,6 +748,35 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
                 //Response.Write("<script>alert ('Delivery details successfully added!');</script>");
+
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = existingLog.emp_id,
+                    empFullname = existingLog.empFullname,
+                    empDateAdded = existingLog.empDateAdded,
+                    dateLogin = existingLog.dateLogin,
+                    tankId = existingLog.tankId,
+                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    other_productId = existingLog.other_productId,
+                    otherProductDateAdded = existingLog.otherProductDateAdded,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                    productRefillId = data.pro_refillId,
+                    productrefillDateAdded = data.dateAdded
+                };
+
+                twoBigDB.Update("USERSLOG/" + log.logsId, log);
             }
             catch (Exception ex)
             {
@@ -693,11 +786,9 @@ namespace WRS2big_Web.Admin
         //STORING DELIVERY DETAILS NI DIRI
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
-
-
-
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            int logsId = (int)Session["logsId"];
 
             Random rnd = new Random();
             int deliveryId = rnd.Next(1, 10000);
@@ -784,10 +875,11 @@ namespace WRS2big_Web.Admin
                     dateAdded = DateTime.UtcNow
                 };
 
-                SetResponse standardre;
-                standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
-                Model.DeliveryDetails res = standardre.ResultAs<Model.DeliveryDetails>();
-            }
+                    SetResponse standardre;
+                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
+                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+
+                }
 
             //IF GICHECK RESERVATION
             if (!string.IsNullOrEmpty(reservation))
@@ -903,48 +995,77 @@ namespace WRS2big_Web.Admin
                     expressSwapOptions = swapOptions,
                     dateAdded = DateTime.UtcNow
                 };
-                SetResponse expreessres;
-                expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
-                DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
-            }
+                    SetResponse expreessres;
+                    expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
+                    DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
+                }
+
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
+            // Retrieve the existing Users log object from the database
+            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+            // Get the current date and time
+            //DateTime addedTime = DateTime.UtcNow;
+
+            // Log user activity
+            var log = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = logsId,
+                userFullname = (string)Session["fullname"],
+                emp_id = existingLog.emp_id,
+                empFullname = existingLog.empFullname,
+                empDateAdded = existingLog.empDateAdded,
+                dateLogin = existingLog.dateLogin,
+                tankId = existingLog.tankId,
+                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                other_productId = existingLog.other_productId,
+                otherProductDateAdded = existingLog.otherProductDateAdded,
+                productRefillId = existingLog.productRefillId,
+                productrefillDateAdded = existingLog.productrefillDateAdded,
+                deliveryDetailsId = adminData.deliveryId,
+                deliveryDetailsDateAdded = adminData.dateAdded
+            };
+
+            twoBigDB.Update("USERSLOG/" + log.logsId, log);
         }
 
             protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            try
             {
-                string selectedOption = ddlSearchOptions.SelectedValue;
+                try
+                {
+                    string selectedOption = ddlSearchOptions.SelectedValue;
 
                 
-                if (selectedOption == "1")
-                {
-                    lblProductData.Text = "PRODUCT REFILL";
-                    gridProductRefill.Visible = true;
-                    gridotherProduct.Visible = false;
-                    productRefillDisplay();
-                } 
-                else if (selectedOption == "2")
-                {
-                    lblProductData.Text = "OTHER PRODUCT";
-                    gridProductRefill.Visible = false;
-                    gridotherProduct.Visible = true;
-                    otherProductsDisplay();
+                    if (selectedOption == "1")
+                    {
+                        lblProductData.Text = "PRODUCT REFILL";
+                        gridProductRefill.Visible = true;
+                        gridotherProduct.Visible = false;
+                        productRefillDisplay();
+                    } 
+                    else if (selectedOption == "2")
+                    {
+                        lblProductData.Text = "OTHER PRODUCT";
+                        gridProductRefill.Visible = false;
+                        gridotherProduct.Visible = true;
+                        otherProductsDisplay();
+                    }
+                    else if (selectedOption == "3")
+                    {
+                        lblProductData.Text = "DELIVERY DETAILS";
+                        gridProductRefill.Visible = false;
+                        gridotherProduct.Visible = false;
+                        //deliveryExpressDisplay();
+                    }
                 }
-                else if (selectedOption == "3")
+                catch (Exception ex)
                 {
-                    lblProductData.Text = "DELIVERY DETAILS";
-                    gridProductRefill.Visible = false;
-                    gridotherProduct.Visible = false;
-                    //deliveryExpressDisplay();
+                    Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
-            }
-        }
 
     }
 }
