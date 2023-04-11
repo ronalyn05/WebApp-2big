@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-  <form runat="server">
+    <form runat="server">
         <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -58,8 +58,16 @@
 
                                                                           <!--PAGE CONTENTS-->
                                                                               <div style="overflow: auto; text-align:center;padding:2px" class="texts table-hover">
-                                                                                        <asp:GridView runat="server" ID="customerReports">
-                                                 
+                                                                                        <asp:GridView runat="server" ID="customerReports" style=" text-align:center;overflow-y: auto;max-height: 500px;" Width="1467px"  >
+                                                                                                <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                                                                <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+                                                                                                <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                                                                <RowStyle ForeColor="#000066" />
+                                                                                                <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                                                                <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#00547E" />
                                                                                         </asp:GridView>
                                                                                     </div>
                                                                               <br /><br />
