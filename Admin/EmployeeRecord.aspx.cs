@@ -124,6 +124,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int logsId = (int)Session["logsId"];
+
             try
             {
                 Random rnd = new Random();
@@ -156,7 +157,7 @@ namespace WRS2big_Web.Admin
                 response = twoBigDB.Set("EMPLOYEES/" + data.emp_id, data);
                 Employee obj = response.ResultAs<Employee>();//Database Result
 
-                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); location.reload(); </script>");
+                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
 
                 // Retrieve the existing employee object from the database
                 FirebaseResponse res = twoBigDB.Get("USERSLOG/" + logsId);
@@ -171,14 +172,22 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
+                    dateLogin = existingLog.dateLogin,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                    productRefillId = existingLog.productRefillId,
+                    productrefillDateAdded = existingLog.productrefillDateAdded,
+                    other_productId = existingLog.other_productId,
+                    otherProductDateAdded = existingLog.otherProductDateAdded,
+                    tankId = existingLog.tankId,
+                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                     emp_id = employee_id,
                     empFullname = txtfirstname.Text + " " + txtlastname.Text,
-                    empDateAdded = data.dateAdded,
-                    dateLogin = existingLog.dateLogin
+                    empDateAdded = data.dateAdded   
                 };
-                twoBigDB.Push("USERSLOG/" + idno, log);
+                twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
-                DisplayTable();
+                DisplayTable(); 
             }
             catch (Exception ex)
             {
@@ -293,7 +302,7 @@ namespace WRS2big_Web.Admin
             //DisplayTable();
 
             // Show success message
-            Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');</script>");
+            Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');  location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
 
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
         }

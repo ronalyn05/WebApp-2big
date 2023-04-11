@@ -196,7 +196,7 @@ namespace WRS2big_Web.LandingPage
                             Session["dateAdded"] = obj.dateAdded;
                         }
 
-                        // Retrieve all TankSupply objects for the current admin
+                        // Retrieve Employee records for the current admin
                         response = twoBigDB.Get("EMPLOYEE/");
                         Employee emp = response.ResultAs<Employee>();
 
@@ -218,15 +218,19 @@ namespace WRS2big_Web.LandingPage
                             dateLogin = loginTime
                         };
 
-                        ////Storing the  info
+                        //Storing the  info
                         response = twoBigDB.Set("USERSLOG/" + data.logsId, data);//Storing data to the database
                         UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
 
-
-                        FirebaseResponse resLogs = twoBigDB.Get("USERSLOG/");
+                        //Get the exsiting data in the database
+                        FirebaseResponse resLogs = twoBigDB.Get("USERSLOG/" + data.logsId);
                         UsersLogs existingLog = resLogs.ResultAs<UsersLogs>();
 
-                        Session["logsId"] = existingLog.logsId;
+                        if (existingLog != null)
+                        {
+                            Session["logsId"] = existingLog.logsId;
+                        }
+
                         // Login successful, redirect to admin homepage
                         Response.Write("<script>alert ('Login Successfull!');</script>");
                         //Response.Redirect("/Admin/AdminIndex.aspx");

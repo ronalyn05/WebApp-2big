@@ -67,13 +67,14 @@ namespace WRS2big_Web.Admin
             decimal overAllSales = 0;
             decimal totalWalkInAmount = 0;
             // Compute the total number of delivery orders
-            int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received");
+            int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
             // Compute the total number of reservation orders
             int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
 
             foreach (Order order in filteredList)
             {
-                if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery" && order.order_OrderStatus == "Delivered")
+                if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery" 
+                    && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
                 {
                     totalOrderAmount += order.order_InitialAmount;
                 }
@@ -136,12 +137,46 @@ namespace WRS2big_Web.Admin
         //LOGOUT
         protected void btnLogout_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"]; 
+
+            // Retrieve the existing Users log object from the database
+            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+            //Get the current date and time
+            DateTimeOffset addedTime = DateTimeOffset.UtcNow;
+
+            // Log user activity
+            var log = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = logsId,
+                userFullname = (string)Session["fullname"],
+                emp_id = existingLog.emp_id,
+                empFullname = existingLog.empFullname,
+                empDateAdded = existingLog.empDateAdded,
+                dateLogin = existingLog.dateLogin,
+                deliveryDetailsId = existingLog.deliveryDetailsId,
+                deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                productRefillId = existingLog.productRefillId,
+                productrefillDateAdded = existingLog.productrefillDateAdded,
+                other_productId = existingLog.other_productId,
+                otherProductDateAdded = existingLog.otherProductDateAdded,
+                tankId = existingLog.tankId,
+                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                dateLogout = addedTime
+            };
+
+            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
             Session.Abandon();
             Session.RemoveAll();
             Session["idno"] = null;
             Session["password"] = null;
             Session.Clear();
-            Response.Redirect("LandingPage/Index.aspx");
+            Response.Redirect("LandingPage/Account.aspx");
         }
     }
 }

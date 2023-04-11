@@ -51,29 +51,29 @@ namespace WRS2big_Web.Admin
             lbldob.Text = (string)Session["dob"];
             Lbl_user.Text = (string)Session["fullName"];
 
-<<<<<<< HEAD
+
             firstname.Text = (string)Session["fname"];
             middlename.Text = (string)Session["mname"];
             lastname.Text = (string)Session["lname"];
             contactnum.Text = (string)Session["contactNumber"];
             email.Text = (string)Session["email"];
             birthdate.Text = (string)Session["dob"];
-=======
-            //to GET the subbscription
+
+          //to GET the subbscription
             var adminID = Session["idno"].ToString();
             FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
             Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
 
            string subscribedPlan = subscription.subPlan;
-            DateTime start = subscription.subStart;
-            DateTime end = subscription.subEnd;
+            DateTimeOffset start = subscription.subStart;
+            DateTimeOffset end = subscription.subEnd;
             
             //populate the textboxes for the subscription details
             LblSubPlan.Text = subscribedPlan;
 
-            DateTime subscriptionStart = start;
+            DateTimeOffset subscriptionStart = start;
             LblDateStarted.Text = subscriptionStart.ToString();
-            DateTime subscriptionEnd = end;
+            DateTimeOffset subscriptionEnd = end;
             LblSubEnd.Text = subscriptionEnd.ToString();
 
             //Session["subscribedPlan"] = plan;
@@ -81,13 +81,13 @@ namespace WRS2big_Web.Admin
             //Session["subscriptionStart"] = now;
 
 
-            //firstname.Text = (string)Session["fname"];
-            //middlename.Text = (string)Session["mname"];
-            //lastname.Text = (string)Session["lname"];
-            //contactnum.Text = (string)Session["contactNumber"];
-            //email.Text = (string)Session["email"];
-            //birthdate.Text = (string)Session["dob"];
->>>>>>> master
+            firstname.Text = (string)Session["fname"];
+            middlename.Text = (string)Session["mname"];
+            lastname.Text = (string)Session["lname"];
+            contactnum.Text = (string)Session["contactNumber"];
+            email.Text = (string)Session["email"];
+            birthdate.Text = (string)Session["dob"];
+
             //Lbl_user.Text = (string)Session["fullName"];
 
             //retrieve the data of station details

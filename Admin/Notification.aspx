@@ -40,7 +40,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">WATER ORDERS </h5>
+                                            <h5 class="m-b-10">NOTIFICATION </h5>
                                             <h6 class="m-b-0">2BiG: Water Refilling Station Management System</h6>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                                                 <div class="col-md-12 col-sm-12 ">
                                                     <div class="x_panel">
                                                         <div class="x_title">
-                                                            <h2>Order List</h2>
+                                                              <asp:Label ID="lblMessage" runat="server" Font-Bold="true" Font-Size="Medium"/>
                                                             <div class="clearfix">
                                                                 <%--BUTTON to ADD--%>
                                                                 <%--<button type="button" style="font-size:14px;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Delivery Type</button>--%>
@@ -77,7 +77,7 @@
                                                         </div>
                                                         <!--PAGE CONTENTS-->
                                                         <div class="row">
-                                                             <asp:Label ID="lblMessage" runat="server" Font-Bold="true" ForeColor="Green" Font-Size="Medium"/>
+                                                           
                                                             <div class="col-xl-3 col-md-12">
                                                                 <div class="card ">
                                                                     <div class="card-header">
@@ -91,18 +91,17 @@
                                                                                 <li><i class="fa fa-trash close-card"></i></li>
                                                                             </ul>
                                                                         </div>
-                                                                        <h5>Order ID:</h5>
+                                                                          <asp:Label ID="Label1" runat="server" Text="TRANSACTION" ForeColor="Blue" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                     </div>
                                                                     <div class="card-block">
-                                                                        <asp:ListBox ID="ListBox1" runat="server" Style="border: transparent; font-size: 20px; padding: 4px 7px 2px 4px;" Width="364px" Height="179px"></asp:ListBox>
-                                                                        <asp:Button ID="Button1" OnClick="btnDisplay_Click" type="button" Style="font-size: 14px;" class="btn btn-primary btn-sm" runat="server" Text="View Complete Details" />
+                                                                        <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" class="btn btn-default btn-sm" runat="server" Text=" " />
                                                                     </div>
                                                                     <div class="card-footer">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                                <div class="col-xl-9 col-md-12">
-                                                                <div class="card" style="background-color: #f2e2ff">
+                                                                <div class="card">
                                                                     <div class="card-header">
                                                                         <asp:Label ID="Label2" runat="server" Text="*****DI PA NI MAO ANG UI******" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                         <h5>WATER ORDER LIST</h5>
@@ -199,8 +198,8 @@
                                                                     </div>
                                                                     <div class="card-footer">
                                                                         <%--<asp:Button ID="EditBtn" Style="font-size: 14px;" class="btn btn-success btn-sm" runat="server" Text="Edit Order Details" OnClick="btnEdit_Click" />--%>
-                                                                        <asp:Button ID="AcceptBtn" Style="font-size: 14px;" class="btn btn-primary btn-sm" runat="server" Text="ACCEPT" OnClick="btnAccept_Click"/>
-                                                                        <asp:Button ID="DeclineBtn" Style="font-size: 14px;" class="btn btn-danger btn-sm" runat="server" Text="DECLINE" OnClick="DeclineBtn_Click"/>
+                                                                        <%--<asp:Button ID="AcceptBtn" Style="font-size: 14px;" class="btn btn-primary btn-sm" runat="server" Text="ACCEPT" OnClick="btnAccept_Click"/>
+                                                                        <asp:Button ID="DeclineBtn" Style="font-size: 14px;" class="btn btn-danger btn-sm" runat="server" Text="DECLINE" OnClick="DeclineBtn_Click"/>--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
