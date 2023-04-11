@@ -188,9 +188,8 @@
                                             </div>
                                             <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add Data" ValidationGroup="a" OnClick="btnAdd_Click" AutoPostback="true" />
-                                                <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
-                                                --%></div>
+                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add Data" ValidationGroup="a" OnClick="btnAdd_Click" />
+                                               </div>
                                                </form>
                                              </div>
                                             </div>

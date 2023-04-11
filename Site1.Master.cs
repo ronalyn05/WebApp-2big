@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
-using Firebase.Storage;
 using FireSharp.Response;
+using Newtonsoft.Json;
+using WRS2big_Web.Model;
 
 namespace WRS2big_Web
 {
@@ -49,19 +52,47 @@ namespace WRS2big_Web
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            //Session.Abandon();
-            //Session.Clear();
-            //if (Session["Email"] == null)
-            //{
-            //    Response.Redirect("/LandingPage/Index.aspx");
-            //}
+            string idno = (string)Session["idno"];
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"];
+
+            // Retrieve the existing Users log object from the database
+            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+            //Get the current date and time
+            DateTimeOffset addedTime = DateTimeOffset.UtcNow;
+
+            // Log user activity
+            var log = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = logsId,
+                userFullname = (string)Session["fullname"],
+                emp_id = existingLog.emp_id,
+                empFullname = existingLog.empFullname,
+                empDateAdded = existingLog.empDateAdded,
+                dateLogin = existingLog.dateLogin,
+                deliveryDetailsId = existingLog.deliveryDetailsId,
+                deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                productRefillId = existingLog.productRefillId,
+                productrefillDateAdded = existingLog.productrefillDateAdded,
+                other_productId = existingLog.other_productId,
+                otherProductDateAdded = existingLog.otherProductDateAdded,
+                tankId = existingLog.tankId,
+                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                dateLogout = addedTime
+            };
+
+            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
 
             Session.Abandon();
             Session.RemoveAll();
             Session["idno"] = null;
             Session["password"] = null;
             Session.Clear();
-            Response.Redirect("/LandingPage/Index.aspx");
+            Response.Redirect("/LandingPage/Account.aspx");
         }
     }
 }

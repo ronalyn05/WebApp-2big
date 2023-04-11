@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -125,6 +126,8 @@ namespace WRS2big_Web.Admin
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            // Get the log ID from the session 
+            int logsId = (int)Session["logsId"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -163,7 +166,41 @@ namespace WRS2big_Web.Admin
                     Employee driver = allDrivers[0];
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Accepted";
+                    existingOrder.dateOrderAccepted = DateTimeOffset.UtcNow;
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                    // Retrieve the existing Users log object from the database
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                    // Get the current date and time
+                    //DateTime addedTime = DateTime.UtcNow;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsId,
+                        orderId = orderID,
+                        userFullname = (string)Session["fullname"],
+                        emp_id = existingLog.emp_id,
+                        empFullname = existingLog.empFullname,
+                        empDateAdded = existingLog.empDateAdded,
+                        dateLogin = existingLog.dateLogin,
+                        deliveryDetailsId = existingLog.deliveryDetailsId,
+                        deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                        productRefillId = existingLog.productRefillId,
+                        productrefillDateAdded = existingLog.productrefillDateAdded,
+                        other_productId = existingLog.other_productId,
+                        otherProductDateAdded = existingLog.otherProductDateAdded,
+                        tankId = existingLog.tankId,
+                        cusId = existingLog.cusId,
+                        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                        datePaymentReceived = existingOrder.datePaymentReceived,
+                        dateOrderAccepted = existingOrder.dateOrderAccepted
+                    };
+
+                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
                     DisplayTable();
                 }
                 else
@@ -211,6 +248,8 @@ namespace WRS2big_Web.Admin
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -229,6 +268,7 @@ namespace WRS2big_Web.Admin
 
             List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
                                                                     && emp.emp_availability == "Available").ToList();
+
             if (existingOrder.order_OrderStatus == "Delivered" || existingOrder.order_OrderStatus == "Received Order")
             {
                 // Check if any available driver is available to accept the order
@@ -238,17 +278,55 @@ namespace WRS2big_Web.Admin
                     Employee driver = allDrivers[0];
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Payment Received";
+
+                    existingOrder.datePaymentReceived = DateTimeOffset.UtcNow;
+                    //existingOrder.datePaymentReceived = DateTimeOffset.Parse("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
                     // Display an error message indicating that no driver will be assigned
-                    Response.Write("<script>alert ('Payment successfully received.'); location.reload(); window.location.href = '/Admin/OnlineOrder.aspx';</script>");
+                    Response.Write("<script>alert ('Payment successfully received.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+
+                    // Retrieve the existing Users log object from the database
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                    // Get the current date and time
+                    //DateTime addedTime = DateTime.UtcNow;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsId,
+                        orderId = orderID,
+                        userFullname = (string)Session["fullname"],
+                        emp_id = existingLog.emp_id,
+                        empFullname = existingLog.empFullname,
+                        empDateAdded = existingLog.empDateAdded,
+                        dateLogin = existingLog.dateLogin,
+                        deliveryDetailsId = existingLog.deliveryDetailsId,
+                        deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                        productRefillId = existingLog.productRefillId,
+                        productrefillDateAdded = existingLog.productrefillDateAdded,
+                        other_productId = existingLog.other_productId,
+                        otherProductDateAdded = existingLog.otherProductDateAdded,
+                        cusId = existingLog.cusId,
+                        tankId = existingLog.tankId,
+                        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                        dateOrderAccepted = existingOrder.dateOrderAccepted,
+                        datePaymentReceived = existingOrder.datePaymentReceived
+                    };
+
+                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
                     DisplayTable();
                 }
             }
             else
             {
                 // Display an error messaged
-                Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/OnlineOrder.aspx';</script>");
+                Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
             }
 
 
