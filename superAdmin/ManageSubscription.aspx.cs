@@ -36,46 +36,67 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            if (!IsPostBack)
+
+            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/");
+
+            if (response.Body != null)
             {
-                //DisplayPlans();
                 DisplayTable();
-
-
             }
-
+            else
+            {
+                Response.Write("<script>alert ('You haven't created a subscription plan yet');window.location.href = '/superAdmin/ManageSubscription.aspx'; </script>");
+            }
         }
 
         private void DisplayTable()
         {
+
             // Retrieve all subscription plans from Firebase
             FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS");
             Dictionary<string, Model.SubscriptionPlans> subplans =
                 JsonConvert.DeserializeObject<Dictionary<string, Model.SubscriptionPlans>>(response.Body);
-
-            // Create a DataTable to store the subscription plans
-            DataTable plansTable = new DataTable();
-            plansTable.Columns.Add("PLAN ID");
-            plansTable.Columns.Add("PLAN NAME");
-            plansTable.Columns.Add("DESCRIPTION");
-            plansTable.Columns.Add("DURATION(months)");
-            plansTable.Columns.Add("PRICE");
-            plansTable.Columns.Add("FEATURES");
-
-
-            // Populate the DataTable with the subscription plans
-            foreach (KeyValuePair<string, Model.SubscriptionPlans> entry in subplans)
+            
+            if (response != null)
             {
-                string features = string.Join(",", entry.Value.features);
+                // Create a DataTable to store the subscription plans
+                DataTable plansTable = new DataTable();
+                plansTable.Columns.Add("PLAN ID");
+                plansTable.Columns.Add("PLAN NAME");
+                plansTable.Columns.Add("DESCRIPTION");
+                plansTable.Columns.Add("DURATION(months)");
+                plansTable.Columns.Add("PRICE");
+                plansTable.Columns.Add("FEATURES");
 
-                plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
-                    entry.Value.planDuration, entry.Value.planPrice, features);
 
+                // Populate the DataTable with the subscription plans
+                foreach (KeyValuePair<string, Model.SubscriptionPlans> entry in subplans)
+                {
+                    if (entry.Value.features == null)
+                    {
+                        plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
+                        entry.Value.planDuration, entry.Value.planPrice);
+                    }
+                    else
+                    {
+                        string features = string.Join(",", entry.Value.features);
+
+                        plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
+                            entry.Value.planDuration, entry.Value.planPrice, features);
+                    }
+                    
+
+                }
+
+                // Bind the DataTable to the GridView control
+                GridView1.DataSource = plansTable;
+                GridView1.DataBind();
             }
-
-            // Bind the DataTable to the GridView control
-            GridView1.DataSource = plansTable;
-            GridView1.DataBind();
+            else
+            {
+                return;
+            }
+            
         }
 
 
@@ -124,7 +145,6 @@ namespace WRS2big_Web.superAdmin
         {
 
         }
-
         protected void updateButton_Click1(object sender, EventArgs e)
         {
             LinkButton button = (LinkButton)sender;
@@ -145,25 +165,45 @@ namespace WRS2big_Web.superAdmin
             planAmount.Text = price;
 
 
-            string[] featuresArray = features.Split('\n');
-            string featuresList = string.Join(Environment.NewLine, featuresArray);
-            planFeatures.Text = featuresList;
-            //updatePlan.Text = name;
-            //updateDesc.Text = description;
-            //updateDuration.Text = duration;
-            //updateAmount.Text = price;
+            planFeatures.Items.Clear();
+            string[] featuresArray = features.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string feature in featuresArray)
+            {
+                planFeatures.Items.Add(feature.Replace("\r", "").Replace("\n", ""));
+            }
+
 
 
         }
 
         protected void updateBtn_Click(object sender, EventArgs e)
         {
+            //to select all the items selected in the features list
+            var features = featuresList.Items.Cast<ListItem>() //collection of all the items in the checkbox control.
+                .Where(li => li.Selected) // LINQ query to select only the items that have been selected by the user.
+                .Select(li => li.Value)// LINQ query that selects only the values of the selected items
+                .ToList();//converts the selected values to a List of strings
+
             var plans = new Model.SubscriptionPlans();
 
             plans.idno = int.Parse(planID.Text); // get the ID from the GridView
             plans.planName = planName.Text;
             plans.planDes = planDes.Text;
             plans.planDuration = planDuration.Text;
+            plans.planPrice = planAmount.Text;
+           
+            var resFeatures = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno);
+            Model.SubscriptionPlans results = resFeatures.ResultAs<Model.SubscriptionPlans>();
+
+            // Use the existing features if no features were selected
+            if (features.Any())
+            {
+                plans.features = features;
+            }
+            else
+            {
+                plans.features = results.features;
+            }
 
             FirebaseResponse response;
             response = twoBigDB.Update("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno, plans);

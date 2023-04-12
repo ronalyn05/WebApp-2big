@@ -119,7 +119,7 @@
                                                                                 <asp:ListItem> Reports </asp:ListItem>
                                                                                 <asp:ListItem> Loyalty Program </asp:ListItem>
                                                                                 <asp:ListItem> Customer Reviews </asp:ListItem>
-                                                                                 <asp:ListItem> Online Subscription </asp:ListItem>
+                                                                                 <asp:ListItem>Online Subscription </asp:ListItem>
                                                                             </asp:CheckBoxList>                                                                              
                                                                              </div>
                                                                          </div>
@@ -228,7 +228,8 @@
                                                             <div class="form-group form-default">
                                                                 <label class="form-control">Plan Features:</label>
                                                                 <%--<asp:ListBox runat="server" id="planFeatures"></asp:ListBox>--%>
-                                                                <asp:TextBox runat="server" style="text-align:center" class="form-control" id="planFeatures"></asp:TextBox>
+<%--                                                                <asp:CheckBoxList runat="server" style="text-align:center" class="form-control" id="planFeatures" Height="208px"></asp:CheckBoxList>--%>
+                                                                <asp:ListBox runat="server" style="text-align:center" SelectionMode="Multiple" class="form-control" id="planFeatures" Height="208px"></asp:ListBox>
                                                             </div>
                                                             <asp:Button id="updateBtn" runat="server" Text="UPDATE" class="btn btn-primary btn-sm texts" OnClick="updateBtn_Click"/>
                                                         </div>

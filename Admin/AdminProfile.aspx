@@ -99,16 +99,14 @@
                                         <div class="modal-content">
                                         <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                         <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel">Refilling Station</h4>
+                                        <h4 class="modal-title" id="myModalLabel">Manage Refilling Station
+
+                                        </h4>
                                             <%--exit button--%>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                         </div>
                                         <div class="modal-body">
                                         <div class="col-md-12 col-sm-12 ">
-                                        <div class="x_content">
-                                             <h6>Refilling Station details</h6>
-                                            <hr>    
-                                        </div>
                                             <div class="col-md-12 col-sm-12">
                                                 <asp:Label ID="Label4" runat="server" style="color:black; font-size:20px">Operating hours:</asp:Label>
                                                 <br />
@@ -119,19 +117,13 @@
                                              
                                                <%-- <asp:TextBox ID="txtOperatingHrs" TextMode="Time" placeholder="Set operating hours" runat="server" Width="364px"></asp:TextBox>--%>
                                                  </div>
-                                            <br />
-                                         <div class="col-md-12 col-sm-12">
-                                                  <asp:Label ID="Label2" runat="server" style="color:black; font-size:20px">Status:</asp:Label>
-                                                   <asp:DropDownList ID="operatingStatus" Height="40px" runat="server" Width="364px">
-                                                   <asp:ListItem Text="Open" Value="open" Selected="True"></asp:ListItem>
-                                                   <asp:ListItem Text="Close" Value="close" ></asp:ListItem>
-                                               </asp:DropDownList>
-                                          </div>
+                                           
                                             <br />
                                          <div class="col-md-12 col-sm-12">
                                                  <asp:Label ID="Label3" runat="server" style="color:black; font-size:20px">Business Days:</asp:Label>
                                              <br /> 
-                                             <asp:Label ID="Label15" runat="server" style="color:black; font-size:20px">From:</asp:Label>
+                                             <%--<asp:Label ID="Label15" runat="server" style="color:black; font-size:20px">From:</asp:Label>--%>
+                                             <strong> From:</strong>
                                               <br />
                                                    <asp:DropDownList ID="drdBusinessDaysFrom" Height="40px" runat="server" Width="364px">
                                                    <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
@@ -144,7 +136,8 @@
                                                        </asp:DropDownList>
                                              <br />
                                               <br />
-                                            <asp:Label ID="Label16" runat="server" style="color:black; font-size:20px">To:</asp:Label>
+                                           <%-- <asp:Label ID="Label16" runat="server" style="color:black; font-size:20px">To:</asp:Label>--%>
+                                              <strong> To:</strong>
                                               <br />
                                                    <asp:DropDownList ID="drdBusinessDaysTo" Height="40px" runat="server" Width="364px">
                                                   <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
@@ -162,8 +155,8 @@
                                         </div>
                                         <div class="modal-footer">
                                            <%-- manage station button--%>
-                                           <asp:Button ID="btnManageStation" class="active btn btn-primary btn-sm waves-effect text-right" runat="server" Text="Add" OnClick="btnManageStation_Click"/>
-                                            <asp:Button ID="btnEditStation" class="active btn btn-success btn-sm waves-effect text-right" runat="server" Text="Update" OnClick="btnEditStationDetails_Click"/>
+                                           <asp:Button ID="btnManageStation" class="active btn btn-primary btn-sm waves-effect text-right" runat="server" Text="SAVE" OnClick="btnManageStation_Click"/>
+                                            <%--<asp:Button ID="btnEditStation" class="active btn btn-success btn-sm waves-effect text-right" runat="server" Text="Update" OnClick="btnEditStationDetails_Click"/>--%>
                                         </div>
                                            <%--</form>--%>
                                          </div>
@@ -214,8 +207,8 @@
                                         </div>
                                         </div>
                                         <div class="modal-footer">
-                                           <%-- manage station button--%>
-                                           <asp:Button ID="btnEdit" class="active btn btn-primary btn-sm waves-effect text-right" runat="server" Text="Edit Info" OnClick="btnEditProfile_Click"/>
+                                           <%-- manage personal information button--%>
+                                           <asp:Button ID="btnEdit" class="active btn btn-primary btn-sm waves-effect text-right" runat="server" Text="SAVE" OnClick="btnEditProfile_Click"/>
                                            
                                         </div>
                                            <%--</form>--%>
