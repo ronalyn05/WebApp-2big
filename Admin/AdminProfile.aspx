@@ -80,12 +80,16 @@
                                                  </asp:Label>                                          
 
                                          </div>
-                                        </div>
+                                        </div> <br /><br /><br />
                                         <div class="modal-footer">
                                            <%-- renew subscription button--%>
-                                            <i class=" ti-credit-card ">
-                                           <asp:Button ID="btnSubscription" class="active btn btn-primary waves-effect text-right" runat="server" Text="Renew Subscription" OnClick="btnSubscription_Click"/>
-                                            </i>
+                                           
+                                           <asp:LinkButton ID="subscribeBTN" href="SubscriptionPlans.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> Subscribe now </asp:LinkButton>
+                                            <asp:LinkButton ID="renewBTN" href="PremiumSubSuccess.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;">Renew </asp:LinkButton>
+                                            <asp:LinkButton ID="cancelBTN" href="PremiumSubSuccess.aspx" class="active btn btn-danger waves-effect text-right" runat="server" style="font-size:18px;">Cancel Subscription </asp:LinkButton>
+
+                                           <%--<asp:Button ID="btnSubscription" class="active btn btn-primary waves-effect text-right" runat="server" Text="Renew" style="font-size:18px;" OnClick="btnSubscription_Click"/>--%>
+                                            
                                         </div>
                                            <%--</form>--%>
                                          </div>
@@ -125,7 +129,7 @@
                                              <%--<asp:Label ID="Label15" runat="server" style="color:black; font-size:20px">From:</asp:Label>--%>
                                              <strong> From:</strong>
                                               <br />
-                                                   <asp:DropDownList ID="drdBusinessDaysFrom" Height="40px" runat="server" Width="364px">
+                                                   <asp:DropDownList ID="drdBusinessDaysFrom" Height="40px" runat="server" placeholder="Business Days" Width="364px">
                                                    <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
                                                    <asp:ListItem Text="Tuesday" Value="Tuesday" ></asp:ListItem>
                                                        <asp:ListItem Text="Wednesday" Value="Wednesday"></asp:ListItem>
@@ -139,7 +143,7 @@
                                            <%-- <asp:Label ID="Label16" runat="server" style="color:black; font-size:20px">To:</asp:Label>--%>
                                               <strong> To:</strong>
                                               <br />
-                                                   <asp:DropDownList ID="drdBusinessDaysTo" Height="40px" runat="server" Width="364px">
+                                                   <asp:DropDownList ID="drdBusinessDaysTo" Height="40px" runat="server" placeholder="Business Days" Width="364px">
                                                   <asp:ListItem Text="Monday" Value="Monday"></asp:ListItem>
                                                    <asp:ListItem Text="Tuesday" Value="Tuesday" ></asp:ListItem>
                                                        <asp:ListItem Text="Wednesday" Value="Wednesday"></asp:ListItem>

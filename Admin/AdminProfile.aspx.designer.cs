@@ -69,13 +69,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label LblSubEnd;
 
         /// <summary>
-        /// btnSubscription control.
+        /// subscribeBTN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubscription;
+        protected global::System.Web.UI.WebControls.LinkButton subscribeBTN;
+
+        /// <summary>
+        /// renewBTN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton renewBTN;
+
+        /// <summary>
+        /// cancelBTN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cancelBTN;
 
         /// <summary>
         /// Label4 control.
