@@ -651,8 +651,8 @@
                                                             <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
                                                             <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
                                                            <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
-                                                           <asp:ListItem Text="otherProduct" Value="2"></asp:ListItem>
-                                                           <asp:ListItem Text="deliveryDetails" Value="3"></asp:ListItem>
+                                                           <asp:ListItem Text="other Product" Value="2"></asp:ListItem>
+                                                           <asp:ListItem Text="Delivery Details" Value="3"></asp:ListItem>
                                                         </asp:DropDownList>
 
                                                         <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px"/>
@@ -755,6 +755,112 @@
                                                     <div class="card-footer">
                                                                     <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
                                                                        <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <asp:DropDownList ID="drdDeliverytype" runat="server" CssClass="text-center" Height="40px" Width="364px">
+                                                            <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
+                                                            <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+                                                           <asp:ListItem Text="Express" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
+                                                           <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                        </asp:DropDownList>
+
+                                                        <asp:Button ID="btnDeliverytype" runat="server" Text="Search" OnClick="btnSearchDeliverytype_Click" CssClass="btn-primary" Height="40px"/>
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                <hr />
+                                                               <%-- PRODUCTS REFILL NI DIRI--%>
+                                                               <%-- <h5> Products Refill</h5>--%>
+                                                                <asp:Label ID="lblDeliveryType" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                               <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                 <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                             <br />
+                                                                       <%--the gridview starts here--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+
+                                                 <%--</div>--%> <%--Gridview ends here--%>
+                                                              <%--  <hr />--%>
+                                                                 <%-- OTHER PRODUCTS NI DIRI--%>
+                                                               <%-- <h5> Other Products</h5>--%>
+                                                                <%-- <br />--%>
+                                                               <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                                       <%--the gridview starts here--%>
+                                                            <%--  <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="GridView2" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+                                                                <%--Gridview ends here--%>
+                                                <%-- </div>
+                                                                <hr />--%> 
+                                                                <%-- DELIVERY DETAILS NI DIRI--%>
+                                                               <%-- <h5> Delivery Details</h5>
+                                                                <br />--%>
+                                                               <%-- <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                                       <%--the gridview starts here--%>
+                                                                <%--<asp:Label ID="lblExpress" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
+                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                <asp:GridView runat="server" ID="GridView3" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                      <Columns>
+                                                        <asp:TemplateField>
+                                                          <ItemTemplate>
+                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                      </Columns>
+                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
+                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
+                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
+                                                      <RowStyle Width="200px" ForeColor="#000066" />
+                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
+                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                    </asp:GridView>
+
+                                            
+                                                <%-- </div>--%> <%--Gridview ends here--%>
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                           
+                                                        </div>
                                                     </div>
                                                 </div>
                                                </div> 

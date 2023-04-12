@@ -52,12 +52,6 @@ namespace WRS2big_Web.Admin
                 Session["emp_id"] = driver.emp_id;
             }
 
-            //if (driver != null)
-            //{
-            //    Session["emp_id"] = driver.emp_id;
-            //}
-
-
             response = twoBigDB.Get("ORDERS");
             Order order = response.ResultAs<Order>();
 
@@ -90,7 +84,7 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
             ordersTable.Columns.Add("ORDER METHOD");
-            //ordersTable.Columns.Add("GALLON TYPE");
+            ordersTable.Columns.Add("GALLON SWAP OPTION");
             ordersTable.Columns.Add("PRICE");
             ordersTable.Columns.Add("QUANTITY");
             ordersTable.Columns.Add("RESERVATION DATE");
@@ -104,9 +98,9 @@ namespace WRS2big_Web.Admin
                 {
                     ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
                                           entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_WaterPrice,
+                                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_choosenSwapOption, entry.order_WaterPrice,
                                           entry.order_Quantity, entry.order_ReservationDate,
-                                          entry.order_OrderStatus, entry.order_InitialAmount);
+                                          entry.order_OrderStatus, entry.order_TotalAmount);
                 }
             }
             else
@@ -143,7 +137,7 @@ namespace WRS2big_Web.Admin
             // Get a list of all available drivers
             FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
             Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
-
+            
             List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && emp.emp_role == "Driver"
                                                                     && emp.emp_availability == "Available").ToList();
             // Check if the order status is "Pickup"
@@ -153,7 +147,7 @@ namespace WRS2big_Web.Admin
                 existingOrder.driverId = 0; // clear the driver ID
                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                // Display an error message indicating that no driver will be assigned
+                // Display an error message indicating that no driver will be assigned 
                 Response.Write("<script>alert ('This order will be pick up by the owner. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
                 DisplayTable();
             }
@@ -167,6 +161,25 @@ namespace WRS2big_Web.Admin
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Accepted";
                     existingOrder.dateOrderAccepted = DateTimeOffset.UtcNow;
+
+                    // Set notification based on amount of gallons ordered
+                    int gallonsOrdered = existingOrder.order_Quantity;
+                    int notificationDelay = 0; // in seconds
+                    switch (gallonsOrdered)
+                    {
+                        case 1:
+                            notificationDelay = 2 * 24 * 60 * 60; // 2 days
+                            break;
+                        case 2:
+                            notificationDelay = 4 * 24 * 60 * 60; // 4 days
+                            break;
+                        default:
+                            // Default delay is 1 day
+                            notificationDelay = 1 * 24 * 60 * 60; // 1 day
+                            break;
+                    }
+                    DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
+
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
                     // Retrieve the existing Users log object from the database

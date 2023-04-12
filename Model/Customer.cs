@@ -39,6 +39,8 @@ namespace WRS2big_Web.Model
         public string order_WaterPrice { get; set; }
         public string order_unit { get; set; }
         public string order_size { get; set; }
+        public string order_choosenSwapOption { get; set; }
+        public string order_TotalAmount { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
     }
