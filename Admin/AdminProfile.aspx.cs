@@ -42,115 +42,130 @@ namespace WRS2big_Web.Admin
                 //Response.Redirect("/LandingPage/Account.aspx");
             }
            
-           //  string idno = (string)Session["idno"];
-            Lbl_Idno.Text = (string)Session["idno"];
-            lblfname.Text = (string)Session["fname"];
-            lblmname.Text = (string)Session["mname"];
-            lblLname.Text = (string)Session["lname"];
-            lblcontactnum.Text = (string)Session["contactNumber"];
-            lblemail.Text = (string)Session["email"];
-            lbldob.Text = (string)Session["dob"];
-            Lbl_user.Text = (string)Session["fullName"];
-
-
-            firstname.Text = (string)Session["fname"];
-            middlename.Text = (string)Session["mname"];
-            lastname.Text = (string)Session["lname"];
-            contactnum.Text = (string)Session["contactNumber"];
-            email.Text = (string)Session["email"];
-            birthdate.Text = (string)Session["dob"];
-
-            //to GET the subscription
+            
             var adminID = Session["idno"].ToString();
-           
+
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
-            string subStatus = admin.subStatus;
-            //check if naka subscribe na ba ang admin 
-            if (subStatus == "Subscribed")
+           
+            if (adminDet != null)
             {
-                FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
-                Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
+                //POPULATE THE PERSONAL DETAILS IN THE TEXTBOXES
+                Lbl_Idno.Text = admin.idno.ToString();
+                lblfname.Text = admin.fname;
+                lblmname.Text = admin.mname;
+                lblLname.Text = admin.lname;
+                lblcontactnum.Text = admin.phone;
+                lblemail.Text = admin.email;
+                lbldob.Text = admin.bdate;
 
-                string subscribedPlan = subscription.subPlan;
-                DateTimeOffset start = subscription.subStart;
-                DateTimeOffset end = subscription.subEnd;
+                if (admin.profile_image != null)
+                {
+                    ImageButton_new.ImageUrl = admin.profile_image.ToString();
 
-                //populate the textboxes for the subscription details
-                LblSubPlan.Text = subscribedPlan;
+                }
 
-                DateTimeOffset subscriptionStart = start;
-                LblDateStarted.Text = subscriptionStart.ToString();
-                DateTimeOffset subscriptionEnd = end;
-                LblSubEnd.Text = subscriptionEnd.ToString();
+                //POPULATE THE PERSONAL DETAILS IN THE MODAL
+                firstname.Attributes["placeholder"] = admin.fname;
+                middlename.Attributes["placeholder"] = admin.mname;
+                lastname.Attributes["placeholder"] = admin.lname;
+                contactnum.Attributes["placeholder"] = admin.phone;
+                email.Attributes["placeholder"] = admin.email;
+                birthdate.Text = admin.bdate;
 
-               
+                //to GET the subscription details
+                string subStatus = admin.subStatus;
+                //check if naka subscribe na ba ang admin 
+                if (subStatus == "Subscribed")
+                {
+                    FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
+                    Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
+
+                    string subscribedPlan = subscription.subPlan;
+                    DateTimeOffset start = subscription.subStart;
+                    DateTimeOffset end = subscription.subEnd;
+
+                    //populate the textboxes for the subscription details
+                    LblSubPlan.Text = subscribedPlan;
+
+                    DateTimeOffset subscriptionStart = start;
+                    LblDateStarted.Text = subscriptionStart.ToString();
+                    DateTimeOffset subscriptionEnd = end;
+                    LblSubEnd.Text = subscriptionEnd.ToString();
+
+
+                }
+                else if (subStatus == "notSubscribed")
+                {
+
+                    Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
+                }
             }
             else
             {
-               
-                Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
+                Response.Write("<script> window.location.href = '/LandingPage/Account.aspx';</script>");
+
             }
 
-            
+
+
+
 
             //TO GET THE REFILLING STATION DETAILS
             FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
             Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
 
+            //string name = refillStation.stationName;
             string days = refillStation.businessDaysFrom;
             
             //to check if naka add na ug station details
             if (days != null)
             {
-                //retrieve the data of station details
+                //POPULATE THE STATION DETAILS IN THE TEXTBOXES
                 lblStationName.Text = refillStation.stationName;
                 lblAddress.Text = refillStation.stationAddress;
-                lblOperatingHours.Text = refillStation.operatingHrsFrom + "AM - " + refillStation.operatingHrsTo + "PM";
+                lblOperatingHours.Text = refillStation.operatingHrsFrom + "- " + refillStation.operatingHrsTo + "";
                 lblBusinessday.Text = refillStation.businessDaysFrom + " - " + refillStation.businessDaysTo;
+
+                //POPULATE THE REFILL STATION DETAILS IN THE MODAL
+                txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom.ToString();
+                txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
+                drdBusinessDaysFrom.Text = refillStation.businessDaysFrom;
+                drdBusinessDaysTo.Text = refillStation.businessDaysTo;
+
+
 
                 DateTime timeNow = DateTime.Now;
                 DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
                 DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
-                string businessClose = refillStation.businessDaysTo;
-                //method to convert the businessDaysTo from DB value to a DayOfWeek enum value
-                DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
+                //string businessClose = refillStation.businessDaysTo;
+                ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
+                //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
+
+                // Check if the current day is within the business days
+                DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
+                DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
+                DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
+
+                bool isBusinessDay = (currentDayOfWeek >= businessDayFrom && currentDayOfWeek <= businessDayTo);
 
 
                 //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
                 string status = "CLOSE";
                 lblstatus.Text = status;
-                if (timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
+                if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
                 {
-
                     status = "OPEN";
-                    lblstatus.Text = status; //display sa profile
-
-                    //if (timeNow.DayOfWeek == storeClose)
-                    //{
-                    //    status = "CLOSE";
-                    //    lblstatus.Text = status;
-                    //}
                 }
+                lblstatus.Text = status;
 
-                else
-                {
-                    status = "CLOSE";
-                    lblstatus.Text = status;
-                }
                 var statusUpdate = new Dictionary<string, object>
                 {
                   { "status", status }
                 };
 
                 FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
-                //POPULATE THE REFILL STATION DETAILS IN THE MODAL
-                txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom;
-                txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
-                drdBusinessDaysFrom.Text = refillStation.businessDaysFrom;
-                drdBusinessDaysTo.Text = refillStation.businessDaysTo;
-
             }
             else
             {
@@ -165,8 +180,14 @@ namespace WRS2big_Web.Admin
           
         }
 
+        //RENEW SUBSCRIPTION
         protected void btnSubscription_Click(object sender, EventArgs e)
         {
+            var adminID = Session["idno"].ToString();
+            FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
+            Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
+
+            Response.Write("<script>alert ('You are about to RENEW your " + subscription.subPlan + " subscription ! Click 'OK' to continue.'); window.location.href = '/Admin/PremiumSubSuccess.aspx'; </script>");
 
 
 
@@ -218,78 +239,79 @@ namespace WRS2big_Web.Admin
         //UPDATE THE STATION DETAILS
 
         //EDIT STATION DETAILS - UPDATE BUTTON
-        protected void btnEditStationDetails_Click(object sender, EventArgs e)  //EDIT STATION DETAILS - UPDATE BUTTON
+        //protected void btnEditStationDetails_Click(object sender, EventArgs e)  //EDIT STATION DETAILS - UPDATE BUTTON
+        //{
+        //    try
+        //    {
+        //        string idno = (string)Session["idno"];
+
+        //        // Retrieve the existing product data from the database
+        //        var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+        //        RefillingStation obj = result.ResultAs<RefillingStation>();
+
+        //        // Create a new object and copy the existing data - DISPLAY THE DATA IN THE MODAL
+        //        var data = new RefillingStation();
+        //        data.stationName = obj.stationName;
+        //        data.stationAddress = obj.stationAddress;
+        //        data.addLattitude = obj.addLattitude;
+        //        data.addLongitude = obj.addLongitude;
+        //        data.proof = obj.proof;
+        //        data.operatingHrsTo = obj.operatingHrsTo;
+        //        data.operatingHrsFrom = obj.operatingHrsFrom;
+        //        data.status = obj.status;
+        //        data.businessDaysTo = obj.businessDaysTo;
+        //        data.businessDaysFrom = obj.businessDaysFrom;
+        //        data.dateAdded = obj.dateAdded;
+
+        //        // Update the fields that have changed
+        //        if (!string.IsNullOrEmpty(txtOperatingHrsFrom.Text) || !string.IsNullOrEmpty(txtOperatingHrsTo.Text))
+        //        {
+        //            data.operatingHrsFrom = txtOperatingHrsFrom.Text;
+        //            data.operatingHrsTo = txtOperatingHrsTo.Text;
+        //        }
+        //        if (!string.IsNullOrEmpty(drdBusinessDaysFrom.SelectedValue) || !string.IsNullOrEmpty(drdBusinessDaysTo.SelectedValue))
+        //        {
+        //            data.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
+        //            data.businessDaysTo = drdBusinessDaysTo.SelectedValue;
+        //        }
+
+        //        data.dateUpdated = DateTime.UtcNow;
+
+        //        FirebaseResponse response;
+        //        response = twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", data);
+
+        //        // Retrieve the updated product data from the database
+        //        result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+        //        obj = result.ResultAs<RefillingStation>();
+
+        //        lblStationName.Text = obj.stationName.ToString();
+        //        lblAddress.Text = obj.stationAddress.ToString();
+        //        lblOperatingHours.Text = obj.operatingHrsFrom.ToString() + " - " + obj.operatingHrsTo.ToString();
+        //        lblBusinessday.Text = obj.businessDaysFrom.ToString() + " - " + obj.businessDaysTo.ToString();
+        //        lblstatus.Text = obj.status.ToString();
+
+        //        Response.Write("<script>alert ('Station details has successfully updated!');</script>");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle the exception and log the error message
+        //        string errorMessage = "An error occurred while updating the data: " + ex.Message;
+        //    }
+        //}
+
+
+       
+        protected void btnEditProfile_Click(object sender, EventArgs e)  //UPDATE THE PROFILE INFORMATION
         {
             try
             {
                 string idno = (string)Session["idno"];
-
-                // Retrieve the existing product data from the database
-                var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-                RefillingStation obj = result.ResultAs<RefillingStation>();
-
-                // Create a new object and copy the existing data - DISPLAY THE DATA IN THE MODAL
-                var data = new RefillingStation();
-                data.stationName = obj.stationName;
-                data.stationAddress = obj.stationAddress;
-                data.addLattitude = obj.addLattitude;
-                data.addLongitude = obj.addLongitude;
-                data.proof = obj.proof;
-                data.operatingHrsTo = obj.operatingHrsTo;
-                data.operatingHrsFrom = obj.operatingHrsFrom;
-                data.status = obj.status;
-                data.businessDaysTo = obj.businessDaysTo;
-                data.businessDaysFrom = obj.businessDaysFrom;
-                data.dateAdded = obj.dateAdded;
-
-                // Update the fields that have changed
-                if (!string.IsNullOrEmpty(txtOperatingHrsFrom.Text) || !string.IsNullOrEmpty(txtOperatingHrsTo.Text))
-                {
-                    data.operatingHrsFrom = txtOperatingHrsFrom.Text;
-                    data.operatingHrsTo = txtOperatingHrsTo.Text;
-                }
-                if (!string.IsNullOrEmpty(drdBusinessDaysFrom.SelectedValue) || !string.IsNullOrEmpty(drdBusinessDaysTo.SelectedValue))
-                {
-                    data.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
-                    data.businessDaysTo = drdBusinessDaysTo.SelectedValue;
-                }
-
-                data.dateUpdated = DateTime.UtcNow;
-
-                FirebaseResponse response;
-                response = twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", data);
-
-                // Retrieve the updated product data from the database
-                result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-                obj = result.ResultAs<RefillingStation>();
-
-                lblStationName.Text = obj.stationName.ToString();
-                lblAddress.Text = obj.stationAddress.ToString();
-                lblOperatingHours.Text = obj.operatingHrsFrom.ToString() + " - " + obj.operatingHrsTo.ToString();
-                lblBusinessday.Text = obj.businessDaysFrom.ToString() + " - " + obj.businessDaysTo.ToString();
-                lblstatus.Text = obj.status.ToString();
-
-                Response.Write("<script>alert ('Station details has successfully updated!');</script>");
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception and log the error message
-                string errorMessage = "An error occurred while updating the data: " + ex.Message;
-            }
-        }
-        //UPDATE THE PROFILE INFORMATION
-        protected void btnEditProfile_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string idno = (string)Session["idno"];
-
 
                 // Retrieve the existing product data from the database
                 var result = twoBigDB.Get("ADMIN/" + idno);
                 AdminAccount obj = result.ResultAs<AdminAccount>();
 
-                // Create a new object and copy the existing data
+                //fetch the existing data from the database
                 var data = new AdminAccount();
                 data.idno = obj.idno;
                 data.fname = obj.fname;
@@ -300,6 +322,8 @@ namespace WRS2big_Web.Admin
                 data.email = obj.email;
                 data.pass = obj.pass;
                 data.profile_image = obj.profile_image;
+                data.status = obj.status;
+                data.subStatus = obj.subStatus;
 
                 // Update the fields that have changed
                 if (!string.IsNullOrEmpty(firstname.Text))
@@ -326,29 +350,11 @@ namespace WRS2big_Web.Admin
                 {
                     data.email = email.Text;
                 }
-                if (!string.IsNullOrEmpty(ImageButton_new.ImageUrl))
-                {
-                    data.profile_image = ImageButton_new.ImageUrl;
-                }
+
 
                 FirebaseResponse response;
                 response = twoBigDB.Update("ADMIN/" + idno, data);
-
-                // Retrieve the updated product data from the database
-                result = twoBigDB.Get("ADMIN/" + idno);
-                obj = result.ResultAs<AdminAccount>();
-
-                Lbl_Idno.Text = obj.idno.ToString();
-                lblfname.Text = obj.fname.ToString();
-                lblmname.Text = obj.mname.ToString();
-                lblLname.Text = obj.lname.ToString();
-                lbldob.Text = obj.bdate.ToString();
-                lblcontactnum.Text = obj.phone.ToString();
-                lblemail.Text = obj.email.ToString();
-                ImageButton_new.ImageUrl = obj.profile_image.ToString();
-
-
-                Response.Write("<script>alert ('Personal info has successfully updated!'); location.reload(); window.location.href = '/Admin/AdminProfile.aspx';</script>");
+                Response.Write("<script>alert ('Personal info has successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
             }
             catch (Exception ex)
             {
@@ -388,87 +394,114 @@ namespace WRS2big_Web.Admin
             }
 
         }
-        //STORE STATION DETAILS - ADD BUTTON
-        //protected void btnManageStation_Click(object sender, EventArgs e)
-        //{
-        //    string idno = (string)Session["idno"];
-        //    // Retrieve the existing object from the database
-        //    var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-        //    RefillingStation obj = result.ResultAs<RefillingStation>();
 
-        //    // Update the specific fields that you want to change
-        //    obj.operatingHrsFrom = txtOperatingHrsFrom.Text;
-        //    obj.operatingHrsTo = txtOperatingHrsTo.Text;
-        //    obj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
-        //    obj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
 
-        //    // Pass the updated object to the Update method
-        //    twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", obj);
-
-        //    // Retrieve the updated data from the database  
-        //    var res = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-        //    RefillingStation list = res.ResultAs<RefillingStation>();//Database Result
-
-        //    Response.Write("<script>alert ('Station details successfully added!');</script>");
-        //}
-
+        //UPDATE AND CREATE REFILLING STATION DETAILS
         protected void btnManageStation_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
 
             // Check if the RefillingStation object already exists in the database
             var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-            if (result != null)
+            RefillingStation stationObject = result.ResultAs<RefillingStation>();
+            string checkHours = stationObject.operatingHrsFrom;
+
+            //UPDATE THE EXISTING DETAILS
+            if (checkHours != null)
             {
-                
-                // Update the existing RefillingStation object
+                var station = new RefillingStation();
+
+                //FETCH ALL THE DATA PARA DI MAWALA IG UPDATE
                 RefillingStation obj = result.ResultAs<RefillingStation>();
 
-                // Check if the textboxes and dropdown lists have values
-                if (!string.IsNullOrEmpty(txtOperatingHrsFrom.Text.Trim()))
+                DateTime operatingHrsFrom = DateTime.ParseExact(obj.operatingHrsFrom, "h:mm tt", CultureInfo.InvariantCulture);
+                DateTime operatingHrsTo = DateTime.ParseExact(obj.operatingHrsTo, "h:mm tt", CultureInfo.InvariantCulture);
+
+                // Convert the updated time strings to DateTime objects in 12-hour format with AM/PM
+                DateTime updatedOperatingHrsFrom = DateTime.ParseExact(Request.Form[txtOperatingHrsFrom.UniqueID].ToString(), "h:mm tt", CultureInfo.InvariantCulture);
+                DateTime updatedOperatingHrsTo = DateTime.ParseExact(Request.Form[txtOperatingHrsTo.UniqueID].ToString(), "h:mm tt", CultureInfo.InvariantCulture);
+
+
+                //EDITABLE
+                station.operatingHrsFrom = obj.operatingHrsFrom;
+                station.operatingHrsTo = obj.operatingHrsTo;
+                station.businessDaysFrom = obj.businessDaysFrom;
+                station.businessDaysTo = obj.businessDaysTo;
+
+                //NOT EDITABLE
+                station.stationName = obj.stationName;
+                station.status = obj.status;
+                station.addLattitude = obj.addLattitude;
+                station.addLongitude = obj.addLongitude;
+                station.dateAdded = obj.dateAdded;
+                station.stationAddress = obj.stationAddress;
+                station.dateUpdated = DateTime.UtcNow;
+
+
+                // Convert the operating hours from and to times to 12-hour format with AM and PM
+                if (!string.IsNullOrEmpty(Request.Form[txtOperatingHrsFrom.UniqueID].ToString()))
                 {
-                    obj.operatingHrsFrom = txtOperatingHrsFrom.Text;
+                    station.operatingHrsFrom = updatedOperatingHrsFrom.ToString("h:mm tt");
+                }
+                if (!string.IsNullOrEmpty(Request.Form[txtOperatingHrsTo.UniqueID].ToString()))
+                {
+                    station.operatingHrsTo = updatedOperatingHrsTo.ToString("h:mm tt");
                 }
 
-                if (!string.IsNullOrEmpty(txtOperatingHrsTo.Text.Trim()))
+                if (!string.IsNullOrEmpty(Request.Form[drdBusinessDaysFrom.UniqueID].ToString()))
                 {
-                    obj.operatingHrsTo = txtOperatingHrsTo.Text;
+                    station.businessDaysFrom = Request.Form[drdBusinessDaysFrom.UniqueID].ToString();
                 }
-
-                if (!string.IsNullOrEmpty(drdBusinessDaysFrom.SelectedValue))
+                if (!string.IsNullOrEmpty(Request.Form[drdBusinessDaysTo.UniqueID].ToString()))
                 {
-                    obj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
-                }
-
-                if (!string.IsNullOrEmpty(drdBusinessDaysTo.SelectedValue))
-                {
-                    obj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
+                    station.businessDaysTo = Request.Form[drdBusinessDaysTo.UniqueID].ToString();
                 }
 
                 // Pass the updated object to the Update method
-                twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", obj);
+                FirebaseResponse response;
+                response = twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", station);
+                Response.Write("<script>alert ('Station details successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
 
-
-                Response.Write("<script>alert ('Station details successfully updated!');</script>");
-            }
-            else
+            } 
+            //CREATE NEW DETAILS
+            else 
             {
+
+                // Parse the operating hours from and to times as DateTime objects
+                DateTime operatingHrsFrom = DateTime.ParseExact(txtOperatingHrsFrom.Text, "HH:mm", CultureInfo.InvariantCulture);
+                DateTime operatingHrsTo = DateTime.ParseExact(txtOperatingHrsTo.Text, "HH:mm", CultureInfo.InvariantCulture);
+
+                // Convert the times to 12-hour format with AM and PM
+                string operatingHrsFrom12Hr = operatingHrsFrom.ToString("h:mm tt");
+                string operatingHrsTo12Hr = operatingHrsTo.ToString("h:mm tt");
+
+                //FETCH ALL THE DATA PARA DI MAWALA IG UPDATE
+                RefillingStation obj = result.ResultAs<RefillingStation>();
+
                 // Create a new RefillingStation object
-                RefillingStation obj = new RefillingStation();
+                RefillingStation newObj = new RefillingStation();
 
                 // Set the properties of the new object
-                obj.operatingHrsFrom = txtOperatingHrsFrom.Text;
-                obj.operatingHrsTo = txtOperatingHrsTo.Text;
-                obj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
-                obj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
+                newObj.operatingHrsFrom = operatingHrsFrom12Hr;
+                newObj.operatingHrsTo = operatingHrsTo12Hr;
+                newObj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
+                newObj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
+                newObj.dateAdded = DateTime.UtcNow;
+                newObj.dateUpdated = DateTime.UtcNow;
+                //NOT EDITABLE
+                newObj.stationAddress = obj.stationAddress;
+                newObj.stationName = obj.stationName;
+                newObj.addLongitude = obj.addLongitude;
+                newObj.addLattitude = obj.addLattitude;
+                newObj.status = obj.status;
 
                 // Save the new object to the database
-                twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", obj);
+                twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", newObj);
 
-                Response.Write("<script>alert ('Station details successfully added!');</script>");
+                Response.Write("<script>alert ('Station details successfully added!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
+
             }
         }
-
 
     }
 }
