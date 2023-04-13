@@ -231,6 +231,41 @@ namespace WRS2big_Web.LandingPage
                             Session["logsId"] = existingLog.logsId;
                         }
 
+                        //// Get the current date and time
+                        //DateTime loginTime = DateTime.UtcNow;
+
+                        //// Get the user ID
+                        //int userId = int.Parse(idno);
+
+                        //// Check if there is an existing log for the user
+                        //FirebaseResponse resLogs = twoBigDB.Get("USERSLOG/" + userId);
+                        //UsersLogs existingLog = resLogs.ResultAs<UsersLogs>();
+
+                        //if (existingLog != null)
+                        //{
+                        //    // Update the existing log with the new login information
+                        //    existingLog.userFullname = (string)Session["fullName"];
+                        //    existingLog.dateLogin = loginTime;
+
+                        //    response = twoBigDB.Update("USERSLOG/" + userId, existingLog);
+                        //}
+                        //else
+                        //{
+                        //    // Create a new log for the user
+                        //    var data = new UsersLogs
+                        //    {
+                        //        logsId = idnum,
+                        //        userIdnum = userId,
+                        //        userFullname = (string)Session["fullName"],
+                        //        dateLogin = loginTime
+                        //    };
+
+                        //    response = twoBigDB.Set("USERSLOG/" + userId, data);
+                        //}
+
+                        //// Store the logs ID in the session
+                        //Session["logsId"] = userId.ToString();
+
                         // Login successful, redirect to admin homepage
                         Response.Write("<script>alert ('Login Successfull!');</script>");
                         //Response.Redirect("/Admin/AdminIndex.aspx");

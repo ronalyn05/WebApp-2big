@@ -222,9 +222,12 @@ namespace WRS2big_Web.Model
         public int orderId { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateLogin { get; set; }
+        public DateTimeOffset lastLogin { get; set; }
         public DateTimeOffset dateLogout { get; set; }
         public int cusId { get; set; }
+        public DateTimeOffset dateDeclined { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
+        public string userActivity { get; set; } // New property for user activity
     }
 
 }

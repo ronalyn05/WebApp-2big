@@ -1,5 +1,5 @@
 ﻿<%--<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UsersLog.aspx.cs" Inherits="WRS2big_Web.Admin.UsersLog" %>--%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="UsersLog.aspx.cs" Inherits="WRS2big_Web.Admin.UsersLog" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="UsersLog.aspx.cs" Inherits="WRS2big_Web.Admin.UsersLog" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         .auto-style1 {
@@ -66,8 +66,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-                                                    </div>
-                                                    <div class="card-footer">
+                                                   <%-- </div>
+                                                    <div class="card-footer">--%>
                                                                     <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
                                                                      --%> 
                                                         <div class="table-responsive">
@@ -75,12 +75,14 @@
                                                             <div class="tab-pane active">
                                                                 <%--the gridview starts here--%>
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
-                                                                  <asp:GridView runat="server" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                  <asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                                          <%--<Columns>
-                                                                            <asp:TemplateField>
+                                                                         <%--  <Columns>
+                                                                            <asp:TemplateField HeaderText="ACTIVITY">
                                                                               <ItemTemplate>
-                                                                              </ItemTemplate>
+                                                                                  <asp:Button ID="btnView" runat="server" ToolTip="Click to view the details" Text="View" OnClick="btnView_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
+                                                                                        data-target="#editModal" BorderStyle="None" ForeColor="White"/>
+                                                                             </ItemTemplate>
                                                                             </asp:TemplateField>
                                                                           </Columns>--%>
                                                                             <FooterStyle BackColor="White" ForeColor="#000066" />

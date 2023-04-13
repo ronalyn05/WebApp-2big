@@ -48,7 +48,7 @@ namespace WRS2big_Web.Admin
                 {
                     // If there is only one incoming order, display its details in the button text
                     var order = filteredList.First();
-                    btn.Text = "You have an pending order from customer id " + order.cusId.ToString();
+                    btn.Text = "You have pending order from customer " + order.cusId.ToString();
                     btn.CommandArgument = order.orderID.ToString();
                     btn.Click += new EventHandler(btnTransaction_Click);
                     btnTransaction.Controls.Add(btn);

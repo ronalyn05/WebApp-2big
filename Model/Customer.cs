@@ -44,4 +44,13 @@ namespace WRS2big_Web.Model
         public DateTimeOffset dateOrderAccepted { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
     }
+
+    // Define the notification message class
+    public class NotificationMessage
+    {
+        public string title { get; set; }
+        public string body { get; set; }
+        public object data { get; set; }
+    }
+
 }
