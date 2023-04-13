@@ -28,62 +28,102 @@ namespace WRS2big_Web.Admin
         protected void Page_Load(object sender, EventArgs e)
         {
 
-                //connection to database 
-                twoBigDB = new FireSharp.FirebaseClient(config);
+            //connection to database 
+            twoBigDB = new FireSharp.FirebaseClient(config);
 
-                //WORKING BUT NEED TO BE MODIFIED
+            //WORKING BUT NEED TO BE MODIFIED
 
-                string idno = (string)Session["idno"];
-                    // int adminId = int.Parse(idno);
+            string idno = (string)Session["idno"];
 
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse response = twoBigDB.Get("USERSLOG/");
-                Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"];
 
-                // Create the DataTable to hold the orders
-                //sa pag create sa table
-                DataTable userLogTable = new DataTable();
-                userLogTable.Columns.Add("LOG ID");
-                userLogTable.Columns.Add("USER NAME");
-                userLogTable.Columns.Add("LOGIN TIME");
-                userLogTable.Columns.Add("EMPLOYEE");
-                userLogTable.Columns.Add("PRODUCT REFILL OFFER");
-                userLogTable.Columns.Add("OTHER PRODUCTS OFFER");
-                userLogTable.Columns.Add("TANK SUPPLY");
-                userLogTable.Columns.Add("ORDER TRANSACTION");
-                userLogTable.Columns.Add("PAYMENT TRANSACTION");
-                userLogTable.Columns.Add("LOGOUT TIME");
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("USERSLOG/");
+            Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno)
+                               .OrderByDescending(d => d.dateLogin);
 
-            if (response != null && response.ResultAs<UsersLogs>() != null)
-                {
+            // Create the DataTable to hold the orders
+            //sa pag create sa table
+            DataTable userLogTable = new DataTable();
+            userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("LOGIN TIME");
+            userLogTable.Columns.Add("ACTIVITY");
+            userLogTable.Columns.Add("LOGOUT TIME");
+
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            {
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    // Check if payment has been received for this entry
+                    // Check for user actions and set activity property
+                    string activity = "";
+                    if (!string.IsNullOrEmpty(entry.productrefillDateAdded.ToString()))
+                    {
+                        //activity += "Added product with ID " + entry.productRefillId + " on " + entry.productrefillDateAdded;
+                        activity += entry.productRefillId + " on " + entry.productrefillDateAdded;
+                    }
+                    if (!string.IsNullOrEmpty(entry.tankSupplyDateAdded.ToString()))
+                    {
+                        //activity += "Added tank supply with ID " + entry.tankId + " on " + entry.tankSupplyDateAdded;
+                        activity += entry.tankId + " on " + entry.tankSupplyDateAdded;
+                    }
+                    if (!string.IsNullOrEmpty(entry.dateOrderAccepted.ToString()))
+                    {
+                        activity += entry.userActivity + " of " + entry.orderId + " from customer " + entry.cusId 
+                                    + " on " + entry.dateOrderAccepted;
+                    }
                     if (!string.IsNullOrEmpty(entry.datePaymentReceived.ToString()))
                     {
-                        string employee = "Added employee with id number: " + entry.emp_id + " on " + entry.empDateAdded;
-                        string tankSupply = "Added tank supply on: " + entry.tankSupplyDateAdded + " with tank id " + entry.tankId;
-                        string productRefill = "Added product refill on: " + entry.productrefillDateAdded + " with product id " + entry.productRefillId;
-                        string otherProduct = "Added other product offers on: " + entry.otherProductDateAdded + " with other product id " + entry.other_productId;
-                        string order = "Accepted order from customer: " + entry.cusId + " with other order id " + entry.orderId + " on " + entry.dateOrderAccepted;
-                        string payment = "Received payment on: " + entry.datePaymentReceived + " with order id " + entry.orderId;
-
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, employee, productRefill, otherProduct,
-                                              tankSupply, order, payment, entry.dateLogout);
+                        activity += entry.userActivity + " of " + entry.orderId + " on " + entry.datePaymentReceived;
                     }
-                    else
+                    if (activity != "")
                     {
-                        string employee = "Added employee with id number: " + entry.emp_id + " on " + entry.empDateAdded;
-                        string tankSupply = "Added tank supply on: " + entry.tankSupplyDateAdded + " with tank id " + entry.tankId;
-                        string productRefill = "Added product refill on: " + entry.productrefillDateAdded + " with product id " + entry.productRefillId;
-                        string otherProduct = "Added other product offers on: " + entry.otherProductDateAdded + " with other product id " + entry.other_productId;
-                        string order = "Accepted order from customer: " + entry.cusId + " with other order id " + entry.orderId + " on " + entry.dateOrderAccepted;
-
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, employee, productRefill, otherProduct,
-                                              tankSupply, order, "", entry.dateLogout);
+                        // Remove the trailing ", " from the activity string
+                        activity = activity.Substring(0, activity.Length - 2);
                     }
+
+                    // Update the user's activity in the database
+                    //entry.Activity = activity;
+                    //twoBigDB.Set("USERSLOG/" + entry.logsId, entry);
+
+
+                    // Retrieve the existing Users log object from the database
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsId,
+                        orderId = existingLog.orderId,
+                        userFullname = (string)Session["fullname"],
+                        emp_id = existingLog.emp_id,
+                        empFullname = existingLog.empFullname,
+                        empDateAdded = existingLog.empDateAdded,
+                        dateLogin = existingLog.dateLogin,
+                        deliveryDetailsId = existingLog.deliveryDetailsId,
+                        deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                        productRefillId = existingLog.productRefillId,
+                        productrefillDateAdded = existingLog.productrefillDateAdded,
+                        other_productId = existingLog.other_productId,
+                        otherProductDateAdded = existingLog.otherProductDateAdded,
+                        cusId = existingLog.cusId,
+                        tankId = existingLog.tankId,
+                        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                        dateOrderAccepted = existingLog.dateOrderAccepted,
+                        datePaymentReceived = existingLog.datePaymentReceived,
+                        userActivity = activity
+                    };
+
+                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
+                    // Update the userLogTable with the user's activity
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
                 }
 
             }
@@ -93,10 +133,26 @@ namespace WRS2big_Web.Admin
                 userLogTable.Rows.Add("No data found", "", "", "", "", "", "");
             }
 
-                // Bind the DataTable to the GridView
-                gridUserLog.DataSource = userLogTable;
-                gridUserLog.DataBind();
-            
+            // Bind the DataTable to the GridView
+            gridUserLog.DataSource = userLogTable;
+            gridUserLog.DataBind();
+
         }
+        protected void gridUserLog_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Get the activity column value of the current row
+                string activity = DataBinder.Eval(e.Row.DataItem, "ACTIVITY").ToString();
+
+                // Replace any comma followed by a space with a line break
+                activity = activity.Replace(", ", "<br>");
+
+                // Set the modified activity value to the activity column of the current row
+                e.Row.Cells[3].Text = activity;
+            }
+        }
+
+
     }
 }

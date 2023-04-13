@@ -5,11 +5,15 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using FireSharp;
 using FireSharp.Config;
+using FireSharp.Exceptions;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
@@ -27,6 +31,32 @@ namespace WRS2big_Web.Admin
 
         };
         IFirebaseClient twoBigDB;
+
+        // Define the method to send a notification to FCM
+        //protected async Task SendNotification(NotificationMessage message, string[] registrationIds)
+        //{
+        //    var payload = new
+        //    {
+        //        notification = message,
+        //        registration_ids = registrationIds
+        //    };
+
+        //    var httpClient = new HttpClient();
+        //    var jsonPayload = JsonConvert.SerializeObject(payload);
+        //    var request = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send");
+        //    request.Headers.TryAddWithoutValidation("Authorization", "Bearer AAAAm5wKMi4:APA91bH5jN5pxh7S-BveV_f9rBbhu-pH34M9fTS8BnZB-OEcUTMjutFbhTkyE-UpmUL9OHpGZJ2c6AJJBl87ayegVH22OQibAsXr_oH-CN3FcVMOmStGXN5EBp0X9sJduTSVkuB2qrw1");
+        //    request.Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        //    var response = await httpClient.SendAsync(request);
+        //    var responseContent = await response.Content.ReadAsStringAsync();
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        throw new FirebaseException(responseContent);
+        //    }
+
+        //    var result = JsonConvert.DeserializeObject<object>(responseContent);
+        //}
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -115,6 +145,7 @@ namespace WRS2big_Web.Admin
         }
 
         //UPDATING THE ORDERS
+        // trigger the appropriate notifications based on the customer's order status
         protected void btnAccept_Click(object sender, EventArgs e)
         {
             // Get the admin ID from the session
@@ -147,8 +178,18 @@ namespace WRS2big_Web.Admin
                 existingOrder.driverId = 0; // clear the driver ID
                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
+                // Notify the customer that their order has been accepted
+                //var customerRegistrationIds = new string[] { existingOrder.cusId.ToString() };
+                //var message = new NotificationMessage
+                //{
+                //    title = "Your order has been accepted",
+                //    body = "Your order has been accepted and is ready to pick up.",
+                //    data = new { orderId = orderID }
+                //};
+                //  SendNotification(message, customerRegistrationIds);
+
                 // Display an error message indicating that no driver will be assigned 
-                Response.Write("<script>alert ('This order will be pick up by the owner. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
                 DisplayTable();
             }
             else
@@ -161,6 +202,16 @@ namespace WRS2big_Web.Admin
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Accepted";
                     existingOrder.dateOrderAccepted = DateTimeOffset.UtcNow;
+
+                    // Notify the customer that their order has been accepted
+                    //var customerRegistrationIds = new string[] { existingOrder.cusId.ToString() };
+                    //var message = new NotificationMessage
+                    //{
+                    //    title = "Your order has been accepted",
+                    //    body = "Your order has been accepted and will be delivered afterwards.",
+                    //    data = new { orderId = orderID }
+                    //};
+                    // SendNotification(message, customerRegistrationIds);
 
                     // Set notification based on amount of gallons ordered
                     int gallonsOrdered = existingOrder.order_Quantity;
@@ -210,7 +261,8 @@ namespace WRS2big_Web.Admin
                         cusId = existingLog.cusId,
                         tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                         datePaymentReceived = existingOrder.datePaymentReceived,
-                        dateOrderAccepted = existingOrder.dateOrderAccepted
+                        dateOrderAccepted = existingOrder.dateOrderAccepted,
+                        userActivity = "Accepted Order"
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -231,6 +283,8 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
             // int driverId = (int)Session["emp_id"];
+            // Get the log ID from the session 
+            int logsId = (int)Session["logsId"];
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -252,9 +306,43 @@ namespace WRS2big_Web.Admin
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-            // Rebind the GridView
+            // Retrieve the existing Users log object from the database
+            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+            // Get the current date and time
+            //DateTime addedTime = DateTime.UtcNow;
+
+            // Log user activity
+            var log = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = logsId,
+                orderId = orderID,
+                userFullname = (string)Session["fullname"],
+                emp_id = existingLog.emp_id,
+                empFullname = existingLog.empFullname,
+                empDateAdded = existingLog.empDateAdded,
+                dateLogin = existingLog.dateLogin,
+                deliveryDetailsId = existingLog.deliveryDetailsId,
+                deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
+                productRefillId = existingLog.productRefillId,
+                productrefillDateAdded = existingLog.productrefillDateAdded,
+                other_productId = existingLog.other_productId,
+                otherProductDateAdded = existingLog.otherProductDateAdded,
+                tankId = existingLog.tankId,
+                cusId = existingLog.cusId,
+                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                datePaymentReceived = existingOrder.datePaymentReceived,
+                dateOrderAccepted = existingOrder.dateOrderAccepted,
+                userActivity = "Declined Order",
+                dateDeclined = DateTimeOffset.UtcNow
+            };
+
+            twoBigDB.Update("USERSLOG/" + log.logsId, log);
             DisplayTable();
-        }
+        
+    }
         //UPDATING THE ORDERS
         protected void btnPaymentAccept_Click(object sender, EventArgs e)
         {
@@ -328,7 +416,8 @@ namespace WRS2big_Web.Admin
                         tankId = existingLog.tankId,
                         tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                         dateOrderAccepted = existingOrder.dateOrderAccepted,
-                        datePaymentReceived = existingOrder.datePaymentReceived
+                        datePaymentReceived = existingOrder.datePaymentReceived,
+                        userActivity = "Received Payment"
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
