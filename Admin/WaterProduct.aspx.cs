@@ -47,6 +47,7 @@ namespace WRS2big_Web.Admin
             displayTankSupply();
             drdDeliverytype.Visible = false;
             btnDeliverytype.Visible = false;
+
         }
         //DISPLAY TANK SUPPLY NI DIRI
         private void displayTankSupply()
@@ -282,11 +283,6 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("otherPRODUCTS");
             Dictionary<string, otherProducts> otherproductsList = response.ResultAs<Dictionary<string, otherProducts>>();
             var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
-            //FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/" + idno);
-            //otherProducts emp = response.ResultAs<otherProducts>();
-            //var data = response.Body;
-            ////Dictionary<string, Employee> employeeList = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(data);
-            //Dictionary<string, otherProducts> otherproductList = response.ResultAs<Dictionary<string, otherProducts>>();
 
             // Create the DataTable to hold the orders
             //sa pag create sa table
@@ -323,40 +319,84 @@ namespace WRS2big_Web.Admin
             gridotherProduct.DataBind();
         }
         //RETRIEVE DELIVERY DETAILS DATA
+        //private void deliveryExpressDisplay()
+        //{
+        //    string idno = (string)Session["idno"];
+        //    string empId = (string)Session["emp_id"];
+        //    string delID = (string)Session["deliveryID"];
+        //    // int adminId = int.Parse(idno);
+
+        //    // Retrieve all data from the DELIVERY_DETAILS table
+        //    //("ADMIN/" + user.idno + "/RefillingStation/");
+        //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2/");
+        //    Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
+
+        //    //var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+        //    // Retrieve all orders from the ORDERS table
+        //    //FirebaseResponse res = twoBigDB.Get("DELIVERY_DETAILS/");
+        //    //Dictionary<string, expressDelivery> expressList = res.ResultAs<Dictionary<string, expressDelivery>>();
+        //    //var filteredexpressList = expressList.Values.Where(e => e.exDeliveryType == "Express"); 
+
+
+        //    // Create the DataTable to hold the orders
+        //    //sa pag create sa table
+        //    DataTable expressTable = new DataTable();
+        //    expressTable.Columns.Add("DELIVERY ID");
+        //    expressTable.Columns.Add("DELIVERY TYPE");
+        //    expressTable.Columns.Add("DATE ADDED");
+        //    expressTable.Columns.Add("ADDED BY");
+
+        //    if (response != null && response.ResultAs<DeliveryDetails>() != null)
+        //    {
+        //        foreach (var entry in deliveryList)
+        //        {
+        //            expressTable.Rows.Add(entry.Key, entry.Value.exDeliveryType + ' ' + entry.Value.stanDeliverytype + ' ' + entry.Value.resDeliveryType,
+        //                                    entry.Value.dateAdded, entry.Value.adminId);
+        //        }
+
+
+        //    }
+        //    else
+        //    {
+        //        // Handle null response or invalid selected value
+        //        expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+        //    }
+
+        //    // Bind the DataTable to the GridView
+        //    gridDeliveryDetails.DataSource = expressTable;
+        //    gridDeliveryDetails.DataBind();
+
+        //    drdDeliverytype.Visible = true;
+        //    btnDeliverytype.Visible = true;
+
+
+        //}
+
+
+        //TO BE UPDATED
+
+        //STORE TANK SUPPLY
+
+
         private void deliveryExpressDisplay()
         {
             string idno = (string)Session["idno"];
+
             string empId = (string)Session["emp_id"];
             // int adminId = int.Parse(idno);
 
             // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2/"+ idno);
             Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
             var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
-
-            // Retrieve all orders from the ORDERS table
-            //FirebaseResponse res = twoBigDB.Get("DELIVERY_DETAILS/");
-            //Dictionary<string, expressDelivery> expressList = res.ResultAs<Dictionary<string, expressDelivery>>();
-            //var filteredexpressList = expressList.Values.Where(e => e.exDeliveryType == "Express"); 
 
 
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable expressTable = new DataTable();
             expressTable.Columns.Add("DELIVERY ID");
-            expressTable.Columns.Add("DELIVERY TYPE");
-            //expressTable.Columns.Add("TIME SCHEDULE FOR DELIVERY (STANDARD)");
-            //expressTable.Columns.Add("DISTANCE FOR FREE DELIVERY (STANDARD)");
-            //expressTable.Columns.Add("DELIVERY FEE (STANDARD)");
-            //expressTable.Columns.Add("REFILL SWAP OPTIONS (STANDARD)");
-            //expressTable.Columns.Add("DISTANCE FOR FREE DELIVERY (RESERVATION)");
-            //expressTable.Columns.Add("DELIVERY FEE (RESERVATION)");
-            //expressTable.Columns.Add("REFILL SWAP OPTIONS (RESERVATION)");
-            //expressTable.Columns.Add("ESTIMATED TIME DELIVERY (EXPRESS)");
-            //expressTable.Columns.Add("DELIVERY FEE (EXPRESS)");
-            //expressTable.Columns.Add("REFILL SWAP OPTIONS (EXPRESS)");
-            //expressTable.Columns.Add("ORDER TYPE");
-            //expressTable.Columns.Add("ORDER METHOD");
+            expressTable.Columns.Add("DELIVERY TYPES");
             expressTable.Columns.Add("DATE ADDED");
             expressTable.Columns.Add("ADDED BY");
 
@@ -364,11 +404,10 @@ namespace WRS2big_Web.Admin
             {
                 foreach (var entry in filteredList)
                 {
-                    expressTable.Rows.Add(entry.deliveryId, entry.exDeliveryType + ' ' + entry.stanDeliverytype + ' ' + entry.resDeliveryType,
+                    string deliveryTypes = (entry.exDeliveryType + "\n" + entry.stanDeliverytype + "\n" + entry.resDeliveryType).Replace(" ", "");
+                    expressTable.Rows.Add(entry.deliveryId, deliveryTypes,
                                             entry.dateAdded, entry.adminId);
                 }
-              
-
             }
             else
             {
@@ -385,10 +424,7 @@ namespace WRS2big_Web.Admin
         }
 
 
-        //TO BE UPDATED
 
-        //STORE TANK SUPPLY
-        
         protected void btnAddSupply_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -669,257 +705,478 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
-        //STORING DELIVERY DETAILS NI DIRI
+
+
+        //STORING DELIVERY DETAILS NI DIRI - PREVIOUS WORKING DELIVERY DETAILS  (OLD STRUCTURE)
+        //protected void btnDeliverydetails_Click(object sender, EventArgs e)
+        //{
+        //    var idno = (string)Session["idno"];
+        //    int adminId = int.Parse(idno);
+        //    int logsId = (int)Session["logsId"];
+
+        //    Random rnd = new Random();
+        //    int deliveryId = rnd.Next(1, 10000);
+
+        //    Session["deliveryID"] = deliveryId;
+
+        //    //create the deliveryID and save the adminID
+        //    var adminData = new DeliveryDetails
+        //    {
+        //        adminId = adminId,
+        //        deliveryId = deliveryId
+        //    };
+
+        //    SetResponse response;
+        //    response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
+
+
+        //    //FOR THE CHECKBOXES OF DELIVERY TYPES
+        //    string[] selectedItems = new string[radDevType.Items.Count];
+        //    int index = 0;
+
+        //    foreach (ListItem item in radDevType.Items)
+        //    {
+        //        if (item.Selected)
+        //        {
+        //            selectedItems[index] = item.Value;
+        //            index++;
+        //        }
+        //    }
+
+        //    //access each selected item separately using the index of the array
+        //    string standard = selectedItems[0];
+        //    string reservation = selectedItems[1];
+        //    string express = selectedItems[2];
+
+
+
+        //    //IF GICHECK STANDARD
+        //    if (!string.IsNullOrEmpty(standard))
+        //    {
+        //        // Loop through the items in the CheckBoxList to build the orderType string
+        //        string orderType = "";
+        //        foreach (ListItem item in DeliveryType.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                orderType += item.Value + ", ";
+        //            }
+        //        }
+        //        orderType = orderType.TrimEnd(' ', ',');
+
+        //        // Loop through the items in the CheckBoxList to build the orderMethod string
+        //        string orderMethod = "";
+        //        foreach (ListItem item in OrderMethod.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                orderMethod += item.Value + ", ";
+        //            }
+        //        }
+        //        orderMethod = orderMethod.TrimEnd(' ', ',');
+
+        //        string swapOptions = "";
+        //        foreach (ListItem item in standardSwapOptions.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                swapOptions += item.Value + ", ";
+        //            }
+        //        }
+        //        swapOptions = swapOptions.TrimEnd(' ', ',');
+
+        //        Random standardRanID = new Random();
+        //        int standardID = standardRanID.Next(1, 10000);
+
+        //        var standardDeliver = new DeliveryDetails
+        //        {
+        //            stanDeliverytype = standard,
+        //            stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
+        //            stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
+        //            standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
+        //            stanOrderType = orderType,
+        //            stanOrderMethod = orderMethod,
+        //            standardSwapOptions = swapOptions,
+        //            standardID = standardID,
+        //            dateAdded = DateTimeOffset.UtcNow
+        //        };
+
+        //        SetResponse standardre;
+        //        standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
+        //        DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
+
+        //    }
+
+        //    //IF GICHECK RESERVATION
+        //    if (!string.IsNullOrEmpty(reservation))
+        //    {
+        //        // Loop through the items in the CheckBoxList to build the orderType string
+        //        string resOrderType = "";
+        //        foreach (ListItem item in reserveOrderType.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                resOrderType += item.Value + ", ";
+        //            }
+        //        }
+        //        resOrderType = resOrderType.TrimEnd(' ', ',');
+
+        //        // Loop through the items in the CheckBoxList to build the orderMethod string
+        //        string resOrderMethod = "";
+        //        foreach (ListItem item in reserveOrderMethod.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                resOrderMethod += item.Value + ", ";
+        //            }
+        //        }
+        //        resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+
+
+        //        string swapOptions = "";
+        //        foreach (ListItem item in reserveSwap.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                swapOptions += item.Value + ", ";
+        //            }
+        //        }
+        //        swapOptions = swapOptions.TrimEnd(' ', ',');
+
+        //        Random reserveRanID = new Random();
+        //        int reservationDelivery = reserveRanID.Next(1, 10000);
+
+
+        //        var reservationDeliver = new DeliveryDetails
+        //        {
+        //            reservationID = reservationDelivery,
+        //            resDeliveryType = reservation,
+        //            resDeliveryFee = resDelFee.Text,
+        //            resDistanceFree = resFreeDel.Text,
+        //            resOrderMethod = resOrderMethod,
+        //            resOrderType = resOrderType,
+        //            reserveSwapOptions = swapOptions,
+        //            dateAdded = DateTimeOffset.UtcNow
+        //        };
+        //        SetResponse reservere;
+        //        reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
+        //        DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
+
+        //        ////REMOVE ALL THE NULL VALUE
+        //        //FirebaseResponse getNull = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID);
+        //        //Model.AdminAccount pendingClients = getNull.ResultAs<Model.AdminAccount>();
+
+
+
+
+        //    }
+
+        //    //IF GICHECK ANG EXPRESS
+        //    if (!string.IsNullOrEmpty(express))
+        //    {
+        //        // Loop through the items in the CheckBoxList to build the orderType string
+        //        string resOrderType = "";
+        //        foreach (ListItem item in expressOrderType.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                resOrderType += item.Value + ", ";
+        //            }
+        //        }
+        //        resOrderType = resOrderType.TrimEnd(' ', ',');
+
+        //        // Loop through the items in the CheckBoxList to build the orderMethod string
+        //        string resOrderMethod = "";
+        //        foreach (ListItem item in expressOrderMethod.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                resOrderMethod += item.Value + ", ";
+        //            }
+        //        }
+        //        resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
+
+        //        string swapOptions = "";
+        //        foreach (ListItem item in expressSwap.Items)
+        //        {
+        //            if (item.Selected)
+        //            {
+        //                swapOptions += item.Value + ", ";
+        //            }
+        //        }
+        //        swapOptions = swapOptions.TrimEnd(' ', ',');
+
+        //        //Generate random ID for expressID
+        //        Random expressRanID = new Random();
+        //        int expressID = expressRanID.Next(1, 10000);
+
+        //        var expressDeliver = new DeliveryDetails
+        //        {
+        //            expressID = expressID,
+        //            exDeliveryType = express,
+        //            exEstimatedDelivery = estimatedTime.Text,
+        //            exDeliveryFee = expressdeliveryFee.Text,
+        //            exOrderMethod = resOrderMethod,
+        //            exOrderType = resOrderType,
+        //            expressSwapOptions = swapOptions,
+        //            dateAdded = DateTimeOffset.UtcNow
+        //        };
+        //        SetResponse expreessres;
+        //        expreessres = twoBigDB.Set("DELIVERY_DETAILS3/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
+        //        DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
+        //    }
+
+        //    Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+        //    // Retrieve the existing Users log object from the database
+        //    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+        //    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+        //    // Get the current date and time
+        //    //DateTime addedTime = DateTime.UtcNow;
+
+        //    // Log user activity
+        //    var log = new UsersLogs
+        //    {
+        //        userIdnum = int.Parse(idno),
+        //        logsId = logsId,
+        //        userFullname = (string)Session["fullname"],
+        //        emp_id = existingLog.emp_id,
+        //        empFullname = existingLog.empFullname,
+        //        empDateAdded = existingLog.empDateAdded,
+        //        dateLogin = existingLog.dateLogin,
+        //        tankId = existingLog.tankId,
+        //        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+        //        other_productId = existingLog.other_productId,
+        //        otherProductDateAdded = existingLog.otherProductDateAdded,
+        //        productRefillId = existingLog.productRefillId,
+        //        productrefillDateAdded = existingLog.productrefillDateAdded,
+        //        deliveryDetailsId = adminData.deliveryId,
+        //        deliveryDetailsDateAdded = adminData.dateAdded
+        //    };
+
+        //    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+        //}
+
+
+
+        //protected void btnDeliverydetails_Click(object sender, EventArgs e) //WORKING- FLAT STRUCTURE
+        //{
+        //    var idno = (string)Session["idno"];
+        //    int adminId = int.Parse(idno);
+
+        //    Random rnd = new Random();
+        //    int deliveryId = rnd.Next(1, 10000);
+
+
+
+        //    // Create the delivery object and set its properties based on the selected delivery types
+        //    var delivery = new DeliveryDetails
+        //    {
+        //        adminId = adminId,
+        //        deliveryId = deliveryId,
+        //        dateAdded = DateTimeOffset.UtcNow
+        //    };
+
+        //    // Loop through the items in the CheckBoxList to check which delivery types are selected
+        //    foreach (ListItem item in radDevType.Items)
+        //    {
+        //        if (item.Selected)
+        //        {
+        //            switch (item.Value)
+        //            {
+        //                case "Standard":
+        //                    int standardID = rnd.Next(1, 10000);
+        //                    // Set the properties for standard delivery
+        //                    delivery.stanDeliverytype = "Standard";
+        //                    delivery.standardID = standardID;
+        //                    delivery.stanDeliveryFee = DeliveryFee.Text;
+        //                    delivery.stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM";
+        //                    delivery.standistance = FreeDelivery.Text;
+        //                    delivery.stanOrderType = GetSelectedValues(DeliveryType);
+        //                    delivery.stanOrderMethod = GetSelectedValues(OrderMethod);
+        //                    delivery.standardSwapOptions = GetSelectedValues(standardSwapOptions);
+        //                    break;
+        //                case "Reservation":
+        //                    int reserveID = rnd.Next(1, 10000);
+        //                    // Set the properties for reservation delivery
+        //                    delivery.resDeliveryType = "Reservation";
+        //                    delivery.reservationID = reserveID;
+        //                    delivery.resDeliveryFee = resDelFee.Text;
+        //                    delivery.resDistanceFree = resFreeDel.Text;
+        //                    delivery.resOrderMethod = GetSelectedValues(reserveOrderMethod);
+        //                    delivery.resOrderType = GetSelectedValues(reserveOrderType);
+        //                    delivery.reserveSwapOptions = GetSelectedValues(reserveSwap);
+        //                    break;
+        //                case "Express":
+        //                    int expressID = rnd.Next(1, 10000);
+        //                    // Set the properties for express delivery
+        //                    delivery.exDeliveryType = "Express";
+        //                    delivery.expressID = expressID;
+        //                    delivery.exDeliveryFee = expressdeliveryFee.Text;
+        //                    delivery.exEstimatedDelivery = estimatedTime.Text;
+        //                    delivery.exOrderType = GetSelectedValues(expressOrderType);
+        //                    delivery.exOrderMethod = GetSelectedValues(expressOrderMethod);
+        //                    delivery.expressSwapOptions = GetSelectedValues(expressSwap);
+        //                    break;
+        //            }
+        //        }
+        //    }
+
+        //    // Save the delivery object to the database under the DELIVERY_DETAILS2 -> deliveryID location
+        //    SetResponse response = twoBigDB.Set("DELIVERY_DETAILS2/" + deliveryId, delivery);
+        //    DeliveryDetails res = response.ResultAs<DeliveryDetails>();
+        //    Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+
+        //    int logsId = (int)Session["logsId"];
+        //    // Retrieve the existing Users log object from the database
+        //    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+        //    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+        //    // Get the current date and time
+        //    //DateTime addedTime = DateTime.UtcNow;
+
+        //    // Log user activity
+        //    var log = new UsersLogs
+        //    {
+        //        userIdnum = int.Parse(idno),
+        //        logsId = logsId,
+        //        userFullname = (string)Session["fullname"],
+        //        emp_id = existingLog.emp_id,
+        //        empFullname = existingLog.empFullname,
+        //        empDateAdded = existingLog.empDateAdded,
+        //        dateLogin = existingLog.dateLogin,
+        //        tankId = existingLog.tankId,
+        //        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+        //        other_productId = existingLog.other_productId,
+        //        otherProductDateAdded = existingLog.otherProductDateAdded,
+        //        productRefillId = existingLog.productRefillId,
+        //        productrefillDateAdded = existingLog.productrefillDateAdded,
+        //        deliveryDetailsId = delivery.deliveryId,
+        //        deliveryDetailsDateAdded = delivery.dateAdded
+        //    };
+
+        //    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+        //}
+
+        // Helper method to get the selected values from a CheckBoxList
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            int logsId = (int)Session["logsId"];
 
-            Random rnd = new Random();
-            int deliveryId = rnd.Next(1, 10000);
-            
-            //create the deliveryID and save the adminID
-            var adminData = new DeliveryDetails
+            // Check if there is an existing delivery object for this admin
+            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS2/" + adminId);
+            DeliveryDetails delivery = null;
+            if (resDelivery.Body != "null")
             {
-                adminId = adminId,
-                deliveryId = deliveryId
-            };
-
-                SetResponse response;
-                response = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId, adminData);
-
-
-                //FOR THE CHECKBOXES OF DELIVERY TYPES
-                string[] selectedItems = new string[radDevType.Items.Count];
-                int index = 0;
-
-                foreach (ListItem item in radDevType.Items)
-                {
-                    if (item.Selected)
-                    {
-                        selectedItems[index] = item.Value;
-                        index++;
-                    }
-                }
-
-                //access each selected item separately using the index of the array
-                string standard = selectedItems[0];
-                string reservation = selectedItems[1];
-                string express = selectedItems[2];
-
-
-
-                //IF GICHECK STANDARD
-                if (!string.IsNullOrEmpty(standard))
-                {
-                    // Loop through the items in the CheckBoxList to build the orderType string
-                    string orderType = "";
-                    foreach (ListItem item in DeliveryType.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            orderType += item.Value + ", ";
-                        }
-                    }
-                    orderType = orderType.TrimEnd(' ', ',');
-
-                    // Loop through the items in the CheckBoxList to build the orderMethod string
-                    string orderMethod = "";
-                    foreach (ListItem item in OrderMethod.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            orderMethod += item.Value + ", ";
-                        }
-                    }
-                    orderMethod = orderMethod.TrimEnd(' ', ',');
-
-                string swapOptions = "";
-                foreach (ListItem item in standardSwapOptions.Items)
-                {
-                    if (item.Selected)
-                    {
-                        swapOptions += item.Value + ", ";
-                    }
-                }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
-
-                Random standardRanID = new Random();
-                int standardID = standardRanID.Next(1, 10000);
-
-                var standardDeliver = new DeliveryDetails
-                {
-                    stanDeliverytype = standard,
-                    stanDeliveryFee = DeliveryFee.Text, // DELIVERY FEE for STANDARD and RESERVATION
-                    stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM", //for STANDARD ONLY
-                    standistance = FreeDelivery.Text, //FREE DELIVERY for STANDARD and RESERVATION
-                    stanOrderType = orderType,
-                    stanOrderMethod = orderMethod,
-                    standardSwapOptions = swapOptions,
-                    standardID = standardID,
-                    dateAdded = DateTime.UtcNow
-                };
-
-                    SetResponse standardre;
-                    standardre = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + standardDeliver.standardID, standardDeliver);
-                    DeliveryDetails res = standardre.ResultAs<DeliveryDetails>();
-
-                }
-
-            //IF GICHECK RESERVATION
-            if (!string.IsNullOrEmpty(reservation))
+                delivery = resDelivery.ResultAs<DeliveryDetails>();
+            }
+            else
             {
-                // Loop through the items in the CheckBoxList to build the orderType string
-                string resOrderType = "";
-                foreach (ListItem item in reserveOrderType.Items)
+                // If there is no existing delivery object, create a new one
+                Random rnd = new Random();
+                int deliveryId = rnd.Next(1, 10000);
+                delivery = new DeliveryDetails
                 {
-                    if (item.Selected)
-                    {
-                        resOrderType += item.Value + ", ";
-                    }
-                }
-                resOrderType = resOrderType.TrimEnd(' ', ',');
-
-                    // Loop through the items in the CheckBoxList to build the orderMethod string
-                    string resOrderMethod = "";
-                    foreach (ListItem item in reserveOrderMethod.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            resOrderMethod += item.Value + ", ";
-                        }
-                    }
-                    resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
-
-
-                string swapOptions = "";
-                foreach (ListItem item in reserveSwap.Items)
-                {
-                    if (item.Selected)
-                    {
-                        swapOptions += item.Value + ", ";
-                    }
-                }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
-
-                Random reserveRanID = new Random();
-                int reservationDelivery = reserveRanID.Next(1, 10000);
-
-
-                var reservationDeliver = new DeliveryDetails
-                {
-                    reservationID = reservationDelivery,
-                    resDeliveryType = reservation,
-                    resDeliveryFee = resDelFee.Text,
-                    resDistanceFree = resFreeDel.Text,
-                    resOrderMethod = resOrderMethod,
-                    resOrderType = resOrderType,
-                    reserveSwapOptions = swapOptions,
-                    dateAdded = DateTime.UtcNow
+                    adminId = adminId,
+                    deliveryId = adminId,
+                    dateAdded = DateTimeOffset.UtcNow
                 };
-                SetResponse reservere;
-                reservere = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID, reservationDeliver);
-                DeliveryDetails res = reservere.ResultAs<DeliveryDetails>();
-
-                ////REMOVE ALL THE NULL VALUE
-                //FirebaseResponse getNull = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + reservationDeliver.reservationID);
-                //Model.AdminAccount pendingClients = getNull.ResultAs<Model.AdminAccount>();
-
-
-
-
+                Session["deliveryID"] = deliveryId;
             }
 
-                //IF GICHECK ANG EXPRESS
-                if (!string.IsNullOrEmpty(express))
+            // Loop through the items in the CheckBoxList to check which delivery types are selected
+            foreach (ListItem item in radDevType.Items)
+            {
+                if (item.Selected)
                 {
-                    // Loop through the items in the CheckBoxList to build the orderType string
-                    string resOrderType = "";
-                    foreach (ListItem item in expressOrderType.Items)
+                    switch (item.Value)
                     {
-                        if (item.Selected)
-                        {
-                            resOrderType += item.Value + ", ";
-                        }
-                    }
-                    resOrderType = resOrderType.TrimEnd(' ', ',');
-
-                    // Loop through the items in the CheckBoxList to build the orderMethod string
-                    string resOrderMethod = "";
-                    foreach (ListItem item in expressOrderMethod.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            resOrderMethod += item.Value + ", ";
-                        }
-                    }
-                    resOrderMethod = resOrderMethod.TrimEnd(' ', ',');
-
-                string swapOptions = "";
-                foreach (ListItem item in expressSwap.Items)
-                {
-                    if (item.Selected)
-                    {
-                        swapOptions += item.Value + ", ";
+                        case "Standard":
+                            // check If there is an existing standard delivery type
+                            if (delivery.stanDeliverytype == "Standard")
+                            {
+                                Response.Write("<script>alert ('FAILED! Existing STANDARD Delivery type! You already created Standard delivery.');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                                break;
+                            }
+                            else
+                            {
+                                int standardID = new Random().Next(1, 10000);
+                                delivery.stanDeliverytype = "Standard";
+                                delivery.standardID = standardID;
+                                delivery.stanDeliveryFee = DeliveryFee.Text;
+                                delivery.stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM";
+                                delivery.standistance = FreeDelivery.Text;
+                                delivery.stanOrderType = GetSelectedValues(DeliveryType);
+                                delivery.stanOrderMethod = GetSelectedValues(OrderMethod);
+                                delivery.standardSwapOptions = GetSelectedValues(standardSwapOptions);
+                            }
+                            break;
+                        case "Reservation":
+                            // If there is an existing reservation delivery object, update it, otherwise create a new one
+                            if (delivery.resDeliveryType == "Reservation")
+                            {
+                                Response.Write("<script>alert ('FAILED! Existing RESERVATION Delivery type! You already created Reservation delivery.');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                                break;
+                            }
+                            else
+                            {
+                                int reserveID = new Random().Next(1, 10000);
+                                delivery.resDeliveryType = "Reservation";
+                                delivery.reservationID = reserveID;
+                                delivery.resDeliveryFee = resDelFee.Text;
+                                delivery.resDistanceFree = resFreeDel.Text;
+                                delivery.resOrderMethod = GetSelectedValues(reserveOrderMethod);
+                                delivery.resOrderType = GetSelectedValues(reserveOrderType);
+                                delivery.reserveSwapOptions = GetSelectedValues(reserveSwap);
+                            }
+                            break;
+                        case "Express":
+                            // check If there is an existing express delivery type
+                            if (delivery.exDeliveryType == "Express")
+                            {
+                                Response.Write("<script>alert ('FAILED! Existing EXPRESS Delivery type! You already created Express delivery.');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                                break;
+                            }
+                            else
+                            {
+                                int expressID = new Random().Next(1, 10000);
+                                delivery.exDeliveryType = "Express";
+                                delivery.expressID = expressID;
+                                delivery.exDeliveryFee = expressdeliveryFee.Text;
+                                delivery.exEstimatedDelivery = estimatedTime.Text;
+                                delivery.exOrderMethod = GetSelectedValues(expressOrderMethod);
+                                delivery.exOrderType = GetSelectedValues(expressOrderType);
+                                delivery.expressSwapOptions = GetSelectedValues(expressSwap);
+                            }
+                            break;
                     }
                 }
-                swapOptions = swapOptions.TrimEnd(' ', ',');
-
-                //Generate random ID for expressID
-                Random expressRanID = new Random();
-                int expressID = expressRanID.Next(1, 10000);
-
-                var expressDeliver = new DeliveryDetails
-                {
-                    expressID = expressID,
-                    exDeliveryType = express,
-                    exEstimatedDelivery = estimatedTime.Text,
-                    exDeliveryFee = expressdeliveryFee.Text,
-                    exOrderMethod = resOrderMethod,
-                    exOrderType = resOrderType,
-                    expressSwapOptions = swapOptions,
-                    dateAdded = DateTime.UtcNow
-                };
-                    SetResponse expreessres;
-                    expreessres = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryId + "/deliveryTypes/" + expressDeliver.expressID, expressDeliver);
-                    DeliveryDetails res = expreessres.ResultAs<DeliveryDetails>();
-                }
-
+            }   
+            // Save the updated delivery object to the database
+            FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS2/" + adminId, delivery);
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
-            // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-            // Get the current date and time
-            //DateTime addedTime = DateTime.UtcNow;
-
-            // Log user activity
-            var log = new UsersLogs
+        }
+        private string GetSelectedValues(CheckBoxList checkboxList)
+        {
+            string values = "";
+            foreach (ListItem item in checkboxList.Items)
             {
-                userIdnum = int.Parse(idno),
-                logsId = logsId,
-                userFullname = (string)Session["fullname"],
-                emp_id = existingLog.emp_id,
-                empFullname = existingLog.empFullname,
-                empDateAdded = existingLog.empDateAdded,
-                dateLogin = existingLog.dateLogin,
-                tankId = existingLog.tankId,
-                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                other_productId = existingLog.other_productId,
-                otherProductDateAdded = existingLog.otherProductDateAdded,
-                productRefillId = existingLog.productRefillId,
-                productrefillDateAdded = existingLog.productrefillDateAdded,
-                deliveryDetailsId = adminData.deliveryId,
-                deliveryDetailsDateAdded = adminData.dateAdded
-            };
-
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                if (item.Selected)
+                {
+                    values += item.Value + ", ";
+                }
+            }
+            if (!string.IsNullOrEmpty(values))
+            {
+                values = values.TrimEnd(',', ' '); // remove trailing comma and space
+            }
+            return values;
         }
 
-        //SEARCH PRODUCT DATA
-            protected void btnSearch_Click(object sender, EventArgs e)
+        protected void btnSearch_Click(object sender, EventArgs e)
             {
                 try
                 {
@@ -1042,10 +1299,6 @@ namespace WRS2big_Web.Admin
             Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
             var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
-            // Retrieve all orders from the ORDERS table
-            //FirebaseResponse res = twoBigDB.Get("DELIVERY_DETAILS/");
-            //Dictionary<string, expressDelivery> expressList = res.ResultAs<Dictionary<string, expressDelivery>>();
-            //var filteredexpressList = expressList.Values.Where(e => e.exDeliveryType == "Express"); 
 
 
             // Create the DataTable to hold the orders
@@ -1089,42 +1342,58 @@ namespace WRS2big_Web.Admin
             // int adminId = int.Parse(idno);
 
             // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + idno + "/deliveryTypes/");
-            Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
-            var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2/");
+            Model.DeliveryDetails getID = response.ResultAs<Model.DeliveryDetails>();
+           
 
-
-            // Create the DataTable to hold the orders
-            //sa pag create sa table
-            DataTable expressTable = new DataTable();
-            expressTable.Columns.Add("RESERVATION ID");
-            expressTable.Columns.Add("DISTANCE FOR FREE DELIVERY (RESERVATION)");
-            expressTable.Columns.Add("DELIVERY FEE (RESERVATION)");
-            expressTable.Columns.Add("REFILL SWAP OPTIONS (RESERVATION)");
-            expressTable.Columns.Add("ORDER TYPE");
-            expressTable.Columns.Add("ORDER METHOD");
-            expressTable.Columns.Add("DATE ADDED");
-            expressTable.Columns.Add("ADDED BY");
-
-            if (response != null && response.ResultAs<DeliveryDetails>() != null)
+            if (getID.adminId == int.Parse(idno))
             {
-                foreach (var entry in filteredList)
+                int deliveryID = getID.deliveryId;
+                response = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryID);
+
+                Dictionary<string, DeliveryDetails> deliveryList = response.ResultAs<Dictionary<string, DeliveryDetails>>();
+                var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+
+                // Create the DataTable to hold the orders
+                //sa pag create sa table
+                DataTable expressTable = new DataTable();
+                expressTable.Columns.Add("RESERVATION ID");
+                expressTable.Columns.Add("DISTANCE FOR FREE DELIVERY (RESERVATION)");
+                expressTable.Columns.Add("DELIVERY FEE (RESERVATION)");
+                expressTable.Columns.Add("REFILL SWAP OPTIONS (RESERVATION)");
+                expressTable.Columns.Add("ORDER TYPE");
+                expressTable.Columns.Add("ORDER METHOD");
+                expressTable.Columns.Add("DATE ADDED");
+                expressTable.Columns.Add("ADDED BY");
+
+                if (response != null && response.ResultAs<DeliveryDetails>() != null)
                 {
-                    expressTable.Rows.Add(entry.reservationID, entry.resDistanceFree, entry.resDeliveryFee, entry.reserveSwapOptions,
-                                            entry.resOrderType, entry.resOrderMethod, entry.dateAdded, entry.adminId);
+                    foreach (var entry in filteredList)
+                    {
+                        expressTable.Rows.Add(entry.reservationID, entry.resDistanceFree, entry.resDeliveryFee, entry.reserveSwapOptions,
+                                                entry.resOrderType, entry.resOrderMethod, entry.dateAdded, entry.adminId);
+                    }
+
+
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    expressTable.Rows.Add("No data found", "", "", "", "", "", "");
                 }
 
-
+                // Bind the DataTable to the GridView
+                GridView3.DataSource = expressTable;
+                GridView3.DataBind();
             }
             else
             {
-                // Handle null response or invalid selected value
-                expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+                Response.Write("<script>alert ('You don't have RESERVATION as delivery type!'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+
             }
 
-            // Bind the DataTable to the GridView
-            GridView3.DataSource = expressTable;
-            GridView3.DataBind();
+
         }
 
     }

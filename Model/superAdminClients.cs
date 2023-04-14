@@ -18,6 +18,7 @@ namespace WRS2big_Web.Model
 
         public DateTime dateSubscribed { get; set; }
         public string status { get; set; }
+        public int amount { get; set; }
         
     }
 

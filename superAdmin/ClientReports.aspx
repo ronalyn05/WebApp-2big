@@ -9,7 +9,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<form runat="server">
+    <form runat="server">
         <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -65,19 +65,20 @@
 
 
                                                                           <!--PAGE CONTENTS-->
-                                                                          <asp:GridView runat="server" ID="ClientsGridview" class="texts table-responsive"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" CellSpacing="2" HtmlEncode="false" Width="1626px" CssClass="m-r-0">
+                                                                          <asp:GridView runat="server" ID="ClientsGridview" class="texts table-responsive"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px" CellPadding="3" HtmlEncode="false" Width="1626px" CssClass="m-r-0" GridLines="Vertical">
                                                                              <Columns>
                                                                                 
                                                                              </Columns>
-                                                                                <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
-                                                                                <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
-                                                                                <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
-                                                                                <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
-                                                                                <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
-                                                                                <SortedAscendingCellStyle BackColor="#FFF1D4" />
-                                                                                <SortedAscendingHeaderStyle BackColor="#B95C30" />
-                                                                                <SortedDescendingCellStyle BackColor="#F1E5CE" />
-                                                                                <SortedDescendingHeaderStyle BackColor="#93451F" />
+                                                                                <AlternatingRowStyle BackColor="#DCDCDC" />
+                                                                                <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Center" BackColor="#999999" />
+                                                                                <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
+                                                                                <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#0000A9" />
+                                                                                <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#000065" />
                                                                             </asp:GridView>
                                                                               <br /><br />
                                                                       <!--PAGE CONTENTS END-->
