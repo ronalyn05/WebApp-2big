@@ -213,23 +213,23 @@ namespace WRS2big_Web.Admin
                     //};
                     // SendNotification(message, customerRegistrationIds);
 
-                    // Set notification based on amount of gallons ordered
-                    int gallonsOrdered = existingOrder.order_Quantity;
-                    int notificationDelay = 0; // in seconds
-                    switch (gallonsOrdered)
-                    {
-                        case 1:
-                            notificationDelay = 2 * 24 * 60 * 60; // 2 days
-                            break;
-                        case 2:
-                            notificationDelay = 4 * 24 * 60 * 60; // 4 days
-                            break;
-                        default:
-                            // Default delay is 1 day
-                            notificationDelay = 1 * 24 * 60 * 60; // 1 day
-                            break;
-                    }
-                    DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
+                    //// Set notification based on amount of gallons ordered
+                    //int gallonsOrdered = existingOrder.order_Quantity;
+                    //int notificationDelay = 0; // in seconds
+                    //switch (gallonsOrdered)
+                    //{
+                    //    case 1:
+                    //        notificationDelay = 2 * 24 * 60 * 60; // 2 days
+                    //        break;
+                    //    case 2:
+                    //        notificationDelay = 4 * 24 * 60 * 60; // 4 days
+                    //        break;
+                    //    default:
+                    //        // Default delay is 1 day
+                    //        notificationDelay = 1 * 24 * 60 * 60; // 1 day
+                    //        break;
+                    //}
+                    //DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
 
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
@@ -342,7 +342,7 @@ namespace WRS2big_Web.Admin
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
             DisplayTable();
         
-    }
+        }
         //UPDATING THE ORDERS
         protected void btnPaymentAccept_Click(object sender, EventArgs e)
         {

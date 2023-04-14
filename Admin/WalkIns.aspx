@@ -111,7 +111,7 @@
                                                                             <br />
                                                                             <h5>Total Amount: </h5>
                                                                             <%--  <asp:TextBox  ID="txtTotalAmount" type="number" step="0.01" min="0" pattern="\d+(\.\d{2})?" runat="server"  Height="40px" Width="364px"></asp:TextBox>--%>
-                                                                              <asp:Label ID="lblAmount" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" ForeColor="Green" Font-Size="18px" Font-Bold="True"></asp:Label>
+                                                                              <asp:Label ID="lblAmount" Placeholder="Total amount of order" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" ForeColor="Green" Font-Size="18px" Font-Bold="True"></asp:Label>
                                                                             </div>
                                                                       </div>
                                                               </div><!--/tab-pane-->

@@ -52,5 +52,13 @@ namespace WRS2big_Web.Model
         public string body { get; set; }
         public object data { get; set; }
     }
+    public class StoreReview
+    {
+        public int orderId { get; set; }
+        public int adminID { get; set; }
+        public int cusId { get; set; }
+        public string feedback { get; set; }
+        public int ratings { get; set; }
+    }
 
 }
