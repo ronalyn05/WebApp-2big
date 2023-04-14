@@ -103,12 +103,15 @@ namespace WRS2big_Web.Model
         public int standardID { get; set; }
         public string standistance { get; set; }
         public string stanDeliveryFee { get; set; }
+
         public string stanDeliverytype { get; set; }
         public string stanDeliveryTime { get; set; }
         public string stanOrderMethod { get; set; }
         public string stanOrderType { get; set; }
         public string standardSwapOptions { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public DateTimeOffset standardDateAdded { get; set; }
+        public DateTimeOffset reservationdateAdded { get; set; }
+        public DateTimeOffset expressdateAdded { get; set; }
         //EXPRESS DELIVERY
         public int expressID { get; set; }
         public string exDeliveryFee { get; set; }
@@ -127,6 +130,8 @@ namespace WRS2big_Web.Model
         public string resOrderType { get; set; }
         public string resDeliveryType { get; set; }
         public string reserveSwapOptions { get; set; }
+        public string paymentMethods { get; set; }
+        public string gcashNumber { get; set; }
         //public string swapOptions { get; set; }
         //public DateTime dateAdded { get; set; }
 
