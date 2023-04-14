@@ -40,12 +40,52 @@
                                 <div class="page-wrapper">
                                    <!-- Page-body start -->
                                     <div class="container">
-                                        <h1 class="mt-5 mb-5">Review & Rating </h1>
+                                      <%--  <h1 class="mt-5 mb-5">Review & Rating </h1>--%>
                                         <div class="card">
-                                            <div class="card-header">2BiG's Customers</div>
+                                            <div class="card-header"><h4>2BIG LOYALTY PROMO</h4>
+                                            </div> 
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-sm-4 text-center">
+                                                   <div class="col-md-12 col-sm-12 ">
+                                            <h5>Promo Name:</h5>
+                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="Note: must enter promo in percentage" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                                     <div class="col-md-12 col-sm-12 ">
+                                            <h5>Description:</h5>
+                                            <asp:TextBox ID="txtdescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdescription" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                             <div class="col-md-12 col-sm-12 ">
+                                            <h5>Points Required:</h5>
+                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required "></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                                     <div class="col-md-12 col-sm-12 ">
+                                            <h5>Promo Expiration:</h5>
+                                                         <br />
+                                                          <strong> From:</strong>
+                                             <asp:TextBox ID="txtpromoExpirationFrom" TextMode="Date" runat="server"></asp:TextBox>
+                                                <strong> To:</strong>
+                                                 <asp:TextBox ID="txtpromoExpirationTo" TextMode="Date" runat="server"></asp:TextBox>
+                                          <%--  <asp:TextBox ID="TextBox1" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required "></asp:TextBox>--%>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                                     </div> 
+                                                 <br />
+                                                 <div class="modal-footer">
+                                               <%-- add data button--%>
+                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAdd_Click" />
+                                                     <input type="hidden" id="confirm_add" name="confirm_add" value="" />
+                                               </div>
+                                               <script type="text/javascript">
+                                                        function confirmAdd() {
+                                                            var confirmValue = confirm("Are you sure you want to add the data? Make sure your promo is final and no further changes as you can only set your promo once until the expiration");
+                                                            document.getElementById('confirm_add').value = confirmValue ? 'Yes' : 'No';
+                                                        }
+                                               </script>
+
+                                                   <%-- <div class="col-md-12 text-center">
                                                         <h1 class="text-warning mt-4 mb-4">
                                                             <b><span id="average_rating">0.0</span> / 5</b>
                                                         </h1>
@@ -99,12 +139,12 @@
                                                                 <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="one_star_progress"></div>
                                                             </div>
                                                         </p>
-                                                    </div>
+                                                    </div>--%>
 
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mt-5" id="review_content"></div>
+                                       <%-- <div class="mt-5"></div>--%>
                                     </div>
                                 </div>
                             </div>

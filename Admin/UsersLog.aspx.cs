@@ -86,12 +86,12 @@ namespace WRS2big_Web.Admin
                         activity = activity.Substring(0, activity.Length - 2);
                     }
 
-                    // Update the user's activity in the database
+                    //Update the user's activity in the database
                     //entry.Activity = activity;
                     //twoBigDB.Set("USERSLOG/" + entry.logsId, entry);
 
 
-                    // Retrieve the existing Users log object from the database
+                   // Retrieve the existing Users log object from the database
                     FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
@@ -152,7 +152,48 @@ namespace WRS2big_Web.Admin
                 e.Row.Cells[3].Text = activity;
             }
         }
+        //SEARCH
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string selectedOption = ddlSearchOptions.SelectedValue;
 
+
+                if (selectedOption == "0")
+                {
+                    //lblProductData.Text = "PRODUCT REFILL";
+                    //gridProductRefill.Visible = true;
+                    //gridotherProduct.Visible = false;
+                    //productRefillDisplay();
+                }
+                else if (selectedOption == "1")
+                {
+                    //lblProductData.Text = "OTHER PRODUCT";
+                    //gridProductRefill.Visible = false;
+                    //gridotherProduct.Visible = true;
+                    //otherProductsDisplay();
+                }
+                else if (selectedOption == "2")
+                {
+                    //lblProductData.Text = "OTHER PRODUCT";
+                    //gridProductRefill.Visible = false;
+                    //gridotherProduct.Visible = true;
+                    //otherProductsDisplay();
+                }
+                else if (selectedOption == "3")
+                {
+                    //lblProductData.Text = "DELIVERY DETAILS";
+                    //gridProductRefill.Visible = false;
+                    //gridotherProduct.Visible = false;
+                    //deliveryExpressDisplay();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/UsersLog.aspx';" + ex.Message);
+            }
+        }
 
     }
 }
