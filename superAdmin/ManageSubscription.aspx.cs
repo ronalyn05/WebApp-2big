@@ -72,18 +72,18 @@ namespace WRS2big_Web.superAdmin
                 // Populate the DataTable with the subscription plans
                 foreach (KeyValuePair<string, Model.SubscriptionPlans> entry in subplans)
                 {
-                    if (entry.Value.features == null)
-                    {
-                        plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
-                        entry.Value.planDuration, entry.Value.planPrice);
-                    }
-                    else
-                    {
+                    //if (entry.Value.features == null)
+                    //{
+                    //    plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
+                    //    entry.Value.planDuration, entry.Value.planPrice);
+                    //}
+                    //else
+                    //{
                         string features = string.Join(",", entry.Value.features);
 
                         plansTable.Rows.Add(entry.Value.idno, entry.Value.planName, entry.Value.planDes,
                             entry.Value.planDuration, entry.Value.planPrice, features);
-                    }
+                    ////}
                     
 
                 }
@@ -164,14 +164,15 @@ namespace WRS2big_Web.superAdmin
             planDuration.Text = duration;
             planAmount.Text = price;
 
+            //string[] featuresArray = features.Split('\n');
+            //planFeatures.DataSource = featuresArray;
+            //planFeatures.DataBind();
+            FirebaseResponse featuresponse = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + id + "/features");
+            List<string> featuresList = featuresponse.ResultAs<List<string>>();
 
-            planFeatures.Items.Clear();
-            string[] featuresArray = features.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string feature in featuresArray)
-            {
-                planFeatures.Items.Add(feature.Replace("\r", "").Replace("\n", ""));
-            }
-
+            // Bind the features to the ListBox control
+            planFeatures.DataSource = featuresList;
+            planFeatures.DataBind();
 
 
         }
@@ -207,7 +208,7 @@ namespace WRS2big_Web.superAdmin
 
             FirebaseResponse response;
             response = twoBigDB.Update("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno, plans);
-            Response.Write("<script>alert ('PLAN ID : " + plans.idno + " successfully updated!');</script>");
+            Response.Write("<script>alert ('PLAN ID : " + plans.idno + " successfully updated!');window.location.href = '/superAdmin/ManageSubscription.aspx';</script>");
 
             var result = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PLANS/" + plans.idno);
             Model.SubscriptionPlans obj = response.ResultAs<Model.SubscriptionPlans>();

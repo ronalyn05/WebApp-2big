@@ -231,7 +231,7 @@
                                                     <div class="col-md-12 col-sm-12 ">
                                                         <strong>Discounts</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="refillDiscount" Width="364px" Placeholder="Enter discounts offered" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="refillDiscount" Width="364px" TextMode="Number" Placeholder="Enter discounts offered in percentage (%)" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                   </div>
@@ -249,9 +249,9 @@
 
 
                                     <%-- MODAL FOR Delivery details--%>
-                                       <div class="modal fade manage" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
-                                            <div class="modal-content">
+                                       <div class="modal fade manage col-xl-8 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-10">
+                                            <div class="modal-content col-xl-10 col-md-10" style="/*background-color:red;*/ margin-left:370px">
                                             <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
                                             <h4 class="modal-title" id="myModalLabel2">Manage delivery details</h4>
@@ -262,7 +262,7 @@
                                             <div class="col-md-18 col-sm-18 ">
                                             <div class="x_content">
                                                 <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
-                                                <h6> Note: Please check the 'Delivery Types' you offer to your business and fill all the informations needed in each delivery type</h6>
+                                                <h6> Note: Please check ONE 'Delivery Type' you offer to your business and fill all the informations needed <br /> You can only create a delivery type ONCE</h6>
                                                 <hr />
                                            <%-- <div class="item form-group">--%>
                                             <div class="col-md-12 col-sm-12 ">
@@ -278,7 +278,7 @@
                                             </div>
                                                 <!--OPTIONS FOR STANDARD WHEN CLICKED--> 
                                                 <div ID="standardCheckedDIV" style="display:none"> <hr />
-                                                    <strong>Standard Options</strong>
+                                                    <strong style="font-size:18px">Standard Options</strong>
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Time Schedule for Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -291,12 +291,12 @@
                                                         
                                                          <%--  delivery fee--%>
                                                         <div class="col-md-12 col-sm-12 ">
-                                                                <strong>Distance in km for FREE Delivery:</strong>
+                                                                <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                          </div>
                                                         <div class="col-md-12 col-sm-12 ">
-                                                                <strong>Delivery FEE:</strong>
+                                                                <strong>Delivery FEE:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="DeliveryFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                          </div>
@@ -309,7 +309,17 @@
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                       </div>  <hr />
+                                                       </div>  <br />
+                                                <div id="standardrefillOptions" style="display:none"> 
+                                                    <strong> Refill options: <br />Swap Gallon Options for Standard</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6>
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="standardSwapOptions" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
+                                                </div> <br />
                                                        <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of deliver type you offer to customers:</strong>
@@ -342,16 +352,7 @@
                                                     }
                                                 </script>
                                                 
-                                                <div id="standardrefillOptions" style="display:none"> <hr />
-                                                    <strong> Swap Gallon Options for Standard</strong>
-                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
-                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
-                                                                <asp:CheckBoxList ID="standardSwapOptions" runat="server">
-                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
-                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
-                                                                </asp:CheckBoxList>
-                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
-                                                </div>
+
                                                 <script>
                                                     function refillOptions() {
                                                         var standardRefill = document.getElementById("refillSwapOptions");
@@ -372,7 +373,7 @@
 
                                                 <!--OPTIONS FOR RESERVATION WHEN CLICKED--> 
                                                 <div ID="reserveCheckedDIV" style="display:none"><hr /> 
-                                                    <strong>Reservation Options</strong>
+                                                    <strong style="font-size:18px">Reservation Options</strong>
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -380,7 +381,7 @@
                                                      
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 ">
-                                                                <strong>Delivery FEE:</strong>
+                                                                <strong>Delivery FEE:</strong><br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="resDelFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                          </div> <br />
@@ -392,7 +393,17 @@
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                       </div>  <hr />
+                                                       </div> 
+                                                    <div id="reserverefillOptions" style="display:none"> <hr />
+                                                    <strong> Swap Gallon Options for Reservation</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="reserveSwap" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
+                                                </div>
                                                        <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
@@ -403,16 +414,7 @@
                                                        </div>
                                                 </div>
                                                 
-                                               <div id="reserverefillOptions" style="display:none"> <hr />
-                                                    <strong> Swap Gallon Options for Reservation</strong>
-                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
-                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
-                                                                <asp:CheckBoxList ID="reserveSwap" runat="server">
-                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
-                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
-                                                                </asp:CheckBoxList>
-                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
-                                                </div>
+
                                                 <!--SCRIPT FOR RESERVATION WHEN CLICKED-->
                                                 <script> 
                                                     function displayReserveOptions() {
@@ -447,7 +449,7 @@
 
                                                 <!--OPTIONS FOR EXPRESS WHEN CLICKED--> 
                                                 <div ID="expressCheckedDIV" style="display:none"> <hr />
-                                                     <strong>Express Options</strong>
+                                                     <strong style="font-size:18px">Express Options</strong>
                                                         <div  class="col-md-12 col-sm-12 ">
                                                                 <strong>Estimated time in minutes for Express Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -457,7 +459,7 @@
                                                         
                                                          <%--  delivery fee--%>
                                                         <div class="col-md-12 col-sm-12 ">
-                                                                <strong>Express Delivery fee:</strong>
+                                                                <strong>Express Delivery fee:</strong><br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="expressdeliveryFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
                                                          </div> <br />
@@ -469,7 +471,17 @@
                                                                     <asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>
                                                                      <asp:ListItem Text="Other Products" Value="other products"></asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                       </div>  <hr />
+                                                       </div>  
+                                                    <div id="expressrefillOptions" style="display:none"> <hr />
+                                                    <strong> Swap Gallon Options for Experss</strong>
+                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
+                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
+                                                                <asp:CheckBoxList ID="expressSwap" runat="server">
+                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
+                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
+                                                </div>
                                                        <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
@@ -480,16 +492,7 @@
                                                        </div>
                                                 </div>
                                                 
-                                               <div id="expressrefillOptions" style="display:none"> <hr />
-                                                    <strong> Swap Gallon Options for Experss</strong>
-                                                    <h6> Note: This will give your customers an option on how you can swap their gallons for the refill</h6> <br />
-                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
-                                                                <asp:CheckBoxList ID="expressSwap" runat="server">
-                                                                     <asp:ListItem Text="Swap with no Reservations" Value="Swap Without Reservation"></asp:ListItem>
-                                                                    <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
-                                                                </asp:CheckBoxList>
-                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
-                                                </div>
+
                                                  <!--SCRIPT FOR EXPRESS WHEN CLICKED-->
                                                     <script>
                                                         function displayExpressOptions() {

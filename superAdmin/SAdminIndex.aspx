@@ -46,7 +46,7 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-purple">₱30,200</h4>
+                                                                <asp:Label runat="server" class="text-c-purple" style="font-size:26px" ID="totalSubSale"></asp:Label>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-bar-chart f-28"></i>
@@ -71,7 +71,7 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-green">290+</h4>
+                                                                <asp:Label runat="server" class="text-c-green"  style="font-size:26px" ID="subscribedClients"> </asp:Label>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-file-text-o f-28"></i>
@@ -95,7 +95,7 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-red">145</h4>
+                                                                <asp:Label runat="server" class="text-c-red" style="font-size:26px" ID="pendingClients"></asp:Label>
                                                             </div>
                                                             <div class="col-4 text-right">
                                                                 <i class="fa fa-shopping-cart f-28"></i>
@@ -119,10 +119,10 @@
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
                                                             <div class="col-8">
-                                                                <h4 class="text-c-blue">500</h4>
+                                                                <asp:Label runat="server" class="text-c-blue" id="registeredCustomers" style="font-size:26px" ></asp:Label>
                                                             </div>
                                                             <div class="col-4 text-right">
-                                                                <i class="fa fa-calendar-check-o f-28"></i>
+                                                                <i class="ti-user f-28"></i>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -132,7 +132,7 @@
                                                                 <p class="text-white m-b-0 text-center">REGISTERED CUSTOMERS</p>
                                                             </div>
                                                             <div class="col-3 text-right">
-                                                                <i class="fa fa-line-chart text-white f-16"></i>
+                                                                <i class="ti-user text-white f-16"></i>
                                                             </div>
                                                         </div>
                                                     </div>

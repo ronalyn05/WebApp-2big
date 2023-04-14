@@ -131,7 +131,8 @@ namespace WRS2big_Web.Admin
                             phone = contact.ToString(),                         
                             plan = plan,
                             dateSubscribed = dateSubscribed,
-                            status = "Subscribed"
+                            status = "Subscribed",
+                            amount =  int.Parse(obj.planPrice)
                         };
 
                             SetResponse clientres;

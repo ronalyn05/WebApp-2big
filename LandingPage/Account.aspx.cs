@@ -184,6 +184,13 @@ namespace WRS2big_Web.LandingPage
                         Session["businessdaysTo"] = stations.businessDaysTo;
                         Session["businessdaysFrom"] = stations.businessDaysFrom;
 
+                        response = twoBigDB.Get("DELIVERY_DETAILS2/");
+                        DeliveryDetails delivery = response.ResultAs<DeliveryDetails>();
+                        int deliver = delivery.deliveryId;
+
+                        Session["deliveryID"] = delivery;
+
+
                         // Retrieve all TankSupply objects for the current admin
                         response = twoBigDB.Get("TANKSUPPLY/");
                         TankSupply obj = response.ResultAs<TankSupply>();

@@ -148,8 +148,30 @@ namespace WRS2big_Web.Admin
                 DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
                 DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
 
-                bool isBusinessDay = (currentDayOfWeek >= businessDayFrom && currentDayOfWeek <= businessDayTo);
+                //convert into INT
+                int currentDay = (int)currentDayOfWeek;
+                int businessDayStart = (int)businessDayFrom;
+                int businessDayEnd = (int)businessDayTo;
 
+                bool isBusinessDay = false;
+                // check if the businessDayFrom is less than or equal to businessDayTo
+                if (businessDayStart <= businessDayEnd)
+                {
+                    //check if the current day is within the range using the >= and <= operators.
+                    isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
+                }
+                else
+                {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
+                    isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
+                }
+
+
+             
+                //DEBUG STATEMENTS
+                Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
+                Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
+                Debug.WriteLine($"businessDayTo: {businessDayTo}");
+                Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
 
                 //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
                 string status = "CLOSE";
