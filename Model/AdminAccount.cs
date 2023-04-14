@@ -24,7 +24,7 @@ namespace WRS2big_Web.Model
 
     public class RefillingStation
     {
-       // public int stationID { get; set; }
+        // public int stationID { get; set; }
         public string stationName { get; set; }
         public string stationAddress { get; set; }
         public double addLattitude { get; set; }
@@ -47,7 +47,7 @@ namespace WRS2big_Web.Model
         public string subDescription { get; set; }
         public int price { get; set; }
         public DateTimeOffset subEnd { get; set; }
-        
+
 
     }
 
@@ -151,7 +151,7 @@ namespace WRS2big_Web.Model
         public string exDeliveryFee { get; set; }
         public string exEstimatedDelivery { get; set; }
         public string exDeliveryType { get; set; }
-        public string exOrderMethod { get;set;}
+        public string exOrderMethod { get; set; }
         public string exOrderType { get; set; }
         public string swapOptions { get; set; }
         public DateTime dateAdded { get; set; }
@@ -182,7 +182,7 @@ namespace WRS2big_Web.Model
         public string pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
-   
+
     public class AdminNotification
     {
         public int adminnotificationID { get; set; }
@@ -207,7 +207,7 @@ namespace WRS2big_Web.Model
     {
         public int logsId { get; set; }
         public int userIdnum { get; set; }
-        public string userFullname{ get; set; }
+        public string userFullname { get; set; }
         public int emp_id { get; set; }
         public string empFullname { get; set; }
         public DateTimeOffset empDateAdded { get; set; }
@@ -222,14 +222,32 @@ namespace WRS2big_Web.Model
         public int orderId { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateLogin { get; set; }
-        public DateTimeOffset lastLogin { get; set; }
+        // public DateTimeOffset lastLogin { get; set; }
         public DateTimeOffset dateLogout { get; set; }
         public int cusId { get; set; }
         public DateTimeOffset dateDeclined { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
         public string userActivity { get; set; } // New property for user activity
     }
+    public class Reward
+    {
+        public int rewardId { get; set; }
+        public int adminId { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public int points_required { get; set; }
+        public DateTimeOffset promoExpirationFrom { get; set; }
+        public DateTimeOffset promoExpirationTo { get; set; }
+        public DateTimeOffset rewardsDateAdded { get; set; }
+    }
 
+    public class Logs
+    {
+        public int adminId { get; set; }
+        public DateTimeOffset timestamp { get; set; }
+        public string action { get; set; }
+       // public int count { get; set; }
+    }
 }
 
 
