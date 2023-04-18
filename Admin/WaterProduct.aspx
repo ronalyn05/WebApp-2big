@@ -6,6 +6,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js" integrity="sha512-7QDFvrSg50P7i5/lCZ/IM5ozmavhK26X7l3qy/Z3wsSaLKhjGwDd7QPNdlZmepnJVPl0bzmmPqj3qBwtJ1h9cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <style>
+        texts{
+            font-size:16px;
+
+        }
+    </style>
     </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -52,7 +58,7 @@
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i> Add Tank Supply</button>
-                                     
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managePayment"><i class="fa fa-plus"></i> Manage Payment Methods</button> 
                                          <%--VIEW BUTTON --%>
                                           &nbsp;
                                        <%-- MODAL FOR TANK SUPPLY --%>
@@ -102,6 +108,66 @@
                                              <%--  </form>--%>
                                              </div>
                                            </div>
+<%--                                      MODAL FOR PAYMENT METHOD--%>
+                                       <div class="modal fade managePayment" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                            <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title" id="paymentModal"></h4>
+                                                <%--exit button--%>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="x_content">
+                                           <%-- <div class="item form-group">--%>
+                                                <h4 style="color:black;font-family:Bahnschrift"> PAYMENT METHODS</h4>
+
+                                                 <div class="col-md-12 col-sm-12" style="font-size:20px">
+                                                    <h4 style="font-size:16px;color:black"> Please choose the Payment Methods you want to use for the Orders</h4>
+                                                    <p style="font-size:16px;color:black;">"These payment methods are applicable to all orders made in your station regardless of its Delivery Type"</p> <hr />
+                                                        <asp:CheckBoxList ID="paymentsCheckBox" runat="server" Height="40px" Width="300px" >
+                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                       <asp:ListItem style="font-size:20px;color:black" Text="Cash on Delivery" Value="CashOnDelivery"></asp:ListItem>
+                                                       <asp:ListItem style="font-size:20px;color:black" Text="Gcash" Value="Gcash" onclick="gcashPayment();" id="gcashPayment"></asp:ListItem>
+                                                       <asp:ListItem style="font-size:20px;color:black" Text="Reward Points" Value="Points" ></asp:ListItem>
+                                                   </asp:CheckBoxList>
+
+                                               </div><br />
+                                                 <div class="col-md-12 col-sm-12" id="gcashChecked" style="font-size:20px;display:none">
+                                                    <h4 style="font-size:16px;color:black">Please enter your GCASH Registered number:</h4>
+                                                   <h4 style="font-size:16px;color:black"> Reminder: This will be the number where the customer can send their payments</h4>
+                                                         <asp:TextBox ID="gcashnum" runat="server" TextMode="Number" Placeholder="09123456789" Width="364px"></asp:TextBox>
+
+                                               </div><br />
+                                              
+                                                  </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <%--  BUTTON ADD PAYMENT METHOD--%>
+                                               <asp:Button ID="paymentButton" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="paymentButton_Click"/>
+                                            </div>
+                                              </div>
+                                            </div>
+                                             <%--  </form>--%>
+                                             </div>
+                                           </div>
+                                    <%--  SCRIPT FOR GCASH NUMBER TEXTBOX--%>
+                                                <script>
+                                                    function gcashPayment() {
+                                                        var gcashNumber = document.getElementById("gcashPayment");
+                                                        var fields = document.getElementById("gcashChecked");
+                                                        if (gcashNumber.checked) {
+                                                            fields.style.display = "none";
+                                                        }
+                                                        else {
+                                                            fields.style.display = "block";
+                                                        }
+
+
+                                                    }
+                                                </script>
                                        <%-- MODAL FOR ADD PRODUCT--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
@@ -481,7 +547,7 @@
                                                                     <asp:ListItem Text="Swap with Reservations" Value="Swap With Reservation"></asp:ListItem>
                                                                 </asp:CheckBoxList>
                                                       <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
-                                                </div>
+                                                </div> <br />
                                                        <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
@@ -579,7 +645,7 @@
 
                                                         </div>
                                                         <%-- TANK SUPPLY STARTS HERE --%>
-                                                        <div class="col-xl-3 col-md-6">
+                                              <div class="col-xl-3 col-md-6">
                                                 <div class="card">
                                                     <div class="card-block">
                                                         <div class="row align-items-center">
@@ -594,46 +660,12 @@
                                                                 <asp:Label ID="lblremainingSupply" Font-Bold="true" runat="server" CssClass="text-c-blue" Font-Size="18px" Width="349px"></asp:Label>
                                                             
                                                             </div>
-                                                           <%-- <div class="col-4 text-right">
-                                                                <i class="fa fa-support f-28"></i>
-                                                            </div>--%>
                                                         </div>
                                                     </div>
-                                                  <%--  <div class="card-footer bg-c-blue">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-9">
-                                                                <p class="text-white m-b-0 text-center"> TANK SUPPLY</p>
-                                                            </div>
-                                                            <div class="col-3 text-right">
-                                                                <i class="fa fa-line-chart text-white f-16"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>--%>
                                                     </div>
                                                 </div><%-- TANK SUPPLY ENDS HERE --%>
-                                                        <%--<div class="card-block">   
-                                                             <div class="col-md-12 col-sm-12 ">
-                                         
-                                                             <div class="col-md-12 col-sm-12">
-                                                    <strong class="font-weight-bold" style="font-size:large">Date:</strong>
-                                                        <asp:Label ID="lbl_Date" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label>
-                                                                 </div>
-                                                                 <br />
-                                                             <div class="col-md-12 col-sm-12">
-                                                    <strong class="font-weight-bold" style="font-size:large">Tank Supply of the day:</strong>
-                                                        <asp:Label ID="lbltankSupply" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label>
-                                                                 </div>
-                                                   <br />
-                                                                  <div class="col-md-12 col-sm-12">
-                                                   <strong class="font-weight-bold" style="font-size:large">Remaining Supply:</strong>
-                                                        <asp:Label ID="lblremainingSupply" runat="server" Width="364px" Font-Size="18px" ForeColor="Blue"></asp:Label><br />
                                                </div>
-                                                         
-                                                        </div>
-                                                    
-                                                    </div>--%>
-                                                  </div>
-                                                    </div>
+                                              </div>
                                             <div class="col-xl-9 col-md-12">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -773,15 +805,12 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                 <hr />
-                                                               <%-- PRODUCTS REFILL NI DIRI--%>
-                                                               <%-- <h5> Products Refill</h5>--%>
                                                                 <asp:Label ID="lblDeliveryType" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
-                                                               <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
-                                                                 <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                             <br />
-                                                                       <%--the gridview starts here--%>
-                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
-                                                <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                <asp:Label ID="nullLabel" Font-Size="16px" runat="server" Width="364px"></asp:Label>
+                                                             <br /> <br />
+
+                                            <%--GRIDVIEW FOR EXPRESS--%>
+                                               <asp:GridView runat="server" ID="expressGridview" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -801,15 +830,9 @@
                                                       <SortedDescendingHeaderStyle BackColor="#00547E" />
                                                     </asp:GridView>
 
-                                                 <%--</div>--%> <%--Gridview ends here--%>
-                                                              <%--  <hr />--%>
-                                                                 <%-- OTHER PRODUCTS NI DIRI--%>
-                                                               <%-- <h5> Other Products</h5>--%>
-                                                                <%-- <br />--%>
-                                                               <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                                       <%--the gridview starts here--%>
-                                                            <%--  <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
-                                                <asp:GridView runat="server" ID="GridView2" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                               
+                                                    <%--GRIDVIEW FOR STANDARD--%>
+                                                <asp:GridView runat="server" ID="standardGridview" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -828,17 +851,10 @@
                                                       <SortedDescendingCellStyle BackColor="#CAC9C9" />
                                                       <SortedDescendingHeaderStyle BackColor="#00547E" />
                                                     </asp:GridView>
-                                                                <%--Gridview ends here--%>
-                                                <%-- </div>
-                                                                <hr />--%> 
-                                                                <%-- DELIVERY DETAILS NI DIRI--%>
-                                                               <%-- <h5> Delivery Details</h5>
-                                                                <br />--%>
-                                                               <%-- <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                                       <%--the gridview starts here--%>
-                                                                <%--<asp:Label ID="lblExpress" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                             <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
-                                                <asp:GridView runat="server" ID="GridView3" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                            
+
+                                            <%--GRIDVIEW FOR RESERVATION--%>
+                                                <asp:GridView runat="server" ID="reservationGridView" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -884,4 +900,4 @@
                          </div>
                        <%--</div>--%>
 
-</asp:Content>
+ </asp:Content>

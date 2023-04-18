@@ -42,6 +42,42 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnAddSupply;
 
         /// <summary>
+        /// paymentsCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList paymentsCheckBox;
+
+        /// <summary>
+        /// gcashPayment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem gcashPayment;
+
+        /// <summary>
+        /// gcashnum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox gcashnum;
+
+        /// <summary>
+        /// paymentButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button paymentButton;
+
+        /// <summary>
         /// productName control.
         /// </summary>
         /// <remarks>
@@ -555,30 +591,39 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblDeliveryType;
 
         /// <summary>
-        /// GridView1 control.
+        /// nullLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.Label nullLabel;
 
         /// <summary>
-        /// GridView2 control.
+        /// expressGridview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView2;
+        protected global::System.Web.UI.WebControls.GridView expressGridview;
 
         /// <summary>
-        /// GridView3 control.
+        /// standardGridview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView3;
+        protected global::System.Web.UI.WebControls.GridView standardGridview;
+
+        /// <summary>
+        /// reservationGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView reservationGridView;
     }
 }

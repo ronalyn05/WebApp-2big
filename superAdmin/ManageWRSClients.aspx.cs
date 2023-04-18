@@ -36,105 +36,191 @@ namespace WRS2big_Web.superAdmin
 
             if (!IsPostBack)
             {
-                DisplayTable();
-                
+                DisplayAll();
+                DisplayPending();
+                DisplayApproved();
 
             }
-           
         }
 
-        private void DisplayTable()
+        private void DisplayAll()
         {
 
             FirebaseResponse response = twoBigDB.Get("ADMIN");
-            Model.AdminAccount wrs = response.ResultAs<Model.AdminAccount>();
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
             var data = response.Body;
-            Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+            Dictionary<string, Model.AdminAccount> Allclients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
             //creating the columns of the gridview
-            DataTable plansTable = new DataTable();
-            plansTable.Columns.Add("CLIENT ID");
-            plansTable.Columns.Add("CLIENT NAME");
-            plansTable.Columns.Add("EMAIL");
-            plansTable.Columns.Add("CONTACT #");
-            plansTable.Columns.Add("STATION NAME");
-            plansTable.Columns.Add("STATION ADDRESS");
-            plansTable.Columns.Add("STATUS");
+            DataTable clientsTable = new DataTable();
+            clientsTable.Columns.Add("CLIENT ID");
+            clientsTable.Columns.Add("CLIENT NAME");
+            clientsTable.Columns.Add("EMAIL");
+            clientsTable.Columns.Add("CONTACT #");
+            clientsTable.Columns.Add("STATION NAME");
+            clientsTable.Columns.Add("STATION ADDRESS");
+            clientsTable.Columns.Add("STATUS");
 
 
-            foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in Allclients)
             {
+
+
                 FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                 Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
-                plansTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+               
+                clientsTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
 
             }
 
 
             // Bind DataTable to GridView control
-            GridView1.DataSource = plansTable;
-            GridView1.DataBind();
+            AllGridview.DataSource = clientsTable;
+            AllGridview.DataBind();
         }
 
 
-        protected void btnAccept_Click(object sender, EventArgs e)
+        private void DisplayPending()
         {
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount pending = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> pendingClients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+            //creating the columns of the gridview
+            DataTable pendingTable = new DataTable();
+            pendingTable.Columns.Add("CLIENT ID");
+            pendingTable.Columns.Add("CLIENT NAME");
+            pendingTable.Columns.Add("EMAIL");
+            pendingTable.Columns.Add("CONTACT #");
+            pendingTable.Columns.Add("STATION NAME");
+            pendingTable.Columns.Add("STATION ADDRESS");
+            pendingTable.Columns.Add("STATUS");
+
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in pendingClients)
+            {
+                if (entry.Value.status == "pending")
+                {
+                    FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
+                    Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+                    pendingTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+
+                }
+
+            }
+            // Bind DataTable to GridView control
+            pendingGridView.DataSource = pendingTable;
+            pendingGridView.DataBind();
+        }
+        private void DisplayApproved()
+        {
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount pending = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> pendingClients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+            //creating the columns of the gridview
+            DataTable approvedTable = new DataTable();
+            approvedTable.Columns.Add("CLIENT ID");
+            approvedTable.Columns.Add("CLIENT NAME");
+            approvedTable.Columns.Add("EMAIL");
+            approvedTable.Columns.Add("CONTACT #");
+            approvedTable.Columns.Add("STATION NAME");
+            approvedTable.Columns.Add("STATION ADDRESS");
+            approvedTable.Columns.Add("STATUS");
+
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in pendingClients)
+            {
+                if (entry.Value.status == "Approved")
+                {
+                    FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
+                    Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+                    approvedTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+
+                }
+
+            }
+            // Bind DataTable to GridView control
+            approvedGridView.DataSource = approvedTable;
+            approvedGridView.DataBind();
+        }
+
+        protected void viewButton_Clicked (object sender, EventArgs e)
+        {
+            //Get the GridViewRow that contains the clicked button
+                Button btn = (Button)sender;
+               GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            //Get the order ID from the first cell in the row
+                int adminID = int.Parse(row.Cells[1].Text);
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
+            Model.AdminAccount clientDetails = response.ResultAs<Model.AdminAccount>();
+
             
 
-            // Get the GridViewRow that contains the clicked button
-            Button btn = (Button)sender;
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-            // Get the order ID from the first cell in the row
-            int adminID = int.Parse(row.Cells[1].Text);
-
-            // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
-            Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
-
-            //to check if the status is already approved or declined 
-            if (pendingClients.status == "Approved" || pendingClients.status == "Declined")
-            {
-                
-                return;
-            }
-
-            pendingClients.status = "Approved";
-            response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
-
-            DisplayTable();
         }
 
-
-        protected void btnDecline_Click(object sender, EventArgs e)
-        {
-         
-
-            // Get the GridViewRow that contains the clicked button
-            Button btn = (Button)sender;
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-            // Get the order ID from the first cell in the row
-            int adminID = int.Parse(row.Cells[1].Text);
-
-            // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
-            Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
-
-            //to check if the status is already approved or declined 
-            if (pendingClients.status =="Approved" || pendingClients.status == "Declined")
-            {
-                return;
-            }
-
-                pendingClients.status = "Declined";
-                response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
+        //protected void btnAccept_Click(object sender, EventArgs e)
+        //{
 
 
-            //DisableUpdateActionButtons();
-            DisplayTable();
-        }
+        //     Get the GridViewRow that contains the clicked button
+        //    Button btn = (Button)sender;
+        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
 
-        
+        //     Get the order ID from the first cell in the row
+        //    int adminID = int.Parse(row.Cells[1].Text);
+
+        //     Retrieve the existing order object from the database
+        //    FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
+        //    Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
+
+        //    to check if the status is already approved or declined 
+        //    if (pendingClients.status == "Approved" || pendingClients.status == "Declined")
+        //    {
+
+        //        return;
+        //    }
+
+        //    pendingClients.status = "Approved";
+        //    response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
+
+        //    DisplayTable();
+        //}
+
+
+        //protected void btnDecline_Click(object sender, EventArgs e)
+        //{
+
+
+        //     Get the GridViewRow that contains the clicked button
+        //    Button btn = (Button)sender;
+        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+        //     Get the order ID from the first cell in the row
+        //    int adminID = int.Parse(row.Cells[1].Text);
+
+        //     Retrieve the existing order object from the database
+        //    FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
+        //    Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
+
+        //    to check if the status is already approved or declined 
+        //    if (pendingClients.status =="Approved" || pendingClients.status == "Declined")
+        //    {
+        //        return;
+        //    }
+
+        //        pendingClients.status = "Declined";
+        //        response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
+
+
+        //    DisableUpdateActionButtons();
+        //    DisplayTable();
+        //}
+
+
     }
 }
