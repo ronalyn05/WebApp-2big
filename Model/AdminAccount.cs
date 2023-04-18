@@ -236,6 +236,7 @@ namespace WRS2big_Web.Model
         public string name { get; set; }
         public string description { get; set; }
         public int points_required { get; set; }
+        public string productOffered { get; set; }
         public DateTimeOffset promoExpirationFrom { get; set; }
         public DateTimeOffset promoExpirationTo { get; set; }
         public DateTimeOffset rewardsDateAdded { get; set; }

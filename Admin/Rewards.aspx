@@ -42,7 +42,7 @@
                                     <div class="container">
                                       <%--  <h1 class="mt-5 mb-5">Review & Rating </h1>--%>
                                         <div class="card">
-                                            <div class="card-header"><h4>2BIG LOYALTY PROMO</h4>
+                                            <div class="card-header"><h4>SET YOUR REWARD OFFERED HERE</h4>
                                             </div> 
                                             <div class="card-body">
                                                 <div class="row">
@@ -55,6 +55,13 @@
                                             <h5>Description:</h5>
                                             <asp:TextBox ID="txtdescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdescription" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                                     <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any product offers that applies to the promo you offered:</h5>
+                                                    <asp:CheckBoxList ID="checkPromoOffered" runat="server" AutoPostBack="false">
+                                                        <asp:ListItem Text="Product Refill" Value="Product Refill" ID="pro_refillRadio" ></asp:ListItem>
+                                                        <asp:ListItem Text="other Product" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
+                                                    </asp:CheckBoxList>
                                             </div>
                                              <div class="col-md-12 col-sm-12 ">
                                             <h5>Points Required:</h5>
@@ -75,7 +82,7 @@
                                                  <br />
                                                  <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAdd_Click" />
+                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" />
                                                      <input type="hidden" id="confirm_add" name="confirm_add" value="" />
                                                </div>
                                                <script type="text/javascript">
@@ -85,66 +92,49 @@
                                                         }
                                                </script>
 
-                                                   <%-- <div class="col-md-12 text-center">
-                                                        <h1 class="text-warning mt-4 mb-4">
-                                                            <b><span id="average_rating">0.0</span> / 5</b>
-                                                        </h1>
-                                                        <div class="mb-3">
-                                                            <i class="fas fa-star star-light mr-1 main_star"></i>
-                                                            <i class="fas fa-star star-light mr-1 main_star"></i>
-                                                            <i class="fas fa-star star-light mr-1 main_star"></i>
-                                                            <i class="fas fa-star star-light mr-1 main_star"></i>
-                                                            <i class="fas fa-star star-light mr-1 main_star"></i>
-                                                        </div>
-                                                        <h3><span id="total_review">0</span> Review</h3>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <p>
-                                                            <div class="progress-label-left"><b>5</b> <i class="fas fa-star text-warning"></i></div>
-
-                                                            <div class="progress-label-right">(<span id="total_five_star_review">0</span>)</div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="five_star_progress"></div>
-                                                            </div>
-                                                        </p>
-                                                        <p>
-                                                            <div class="progress-label-left"><b>4</b> <i class="fas fa-star text-warning"></i></div>
-
-                                                            <div class="progress-label-right">(<span id="total_four_star_review">0</span>)</div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="four_star_progress"></div>
-                                                            </div>
-                                                        </p>
-                                                        <p>
-                                                            <div class="progress-label-left"><b>3</b> <i class="fas fa-star text-warning"></i></div>
-
-                                                            <div class="progress-label-right">(<span id="total_three_star_review">0</span>)</div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="three_star_progress"></div>
-                                                            </div>
-                                                        </p>
-                                                        <p>
-                                                            <div class="progress-label-left"><b>2</b> <i class="fas fa-star text-warning"></i></div>
-
-                                                            <div class="progress-label-right">(<span id="total_two_star_review">0</span>)</div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="two_star_progress"></div>
-                                                            </div>
-                                                        </p>
-                                                        <p>
-                                                            <div class="progress-label-left"><b>1</b> <i class="fas fa-star text-warning"></i></div>
-
-                                                            <div class="progress-label-right">(<span id="total_one_star_review">0</span>)</div>
-                                                            <div class="progress">
-                                                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="one_star_progress"></div>
-                                                            </div>
-                                                        </p>
-                                                    </div>--%>
+                                                  
 
                                                 </div>
                                             </div>
                                         </div>
                                        <%-- <div class="mt-5"></div>--%>
+                                  <%--  sa pag set sa discount ni here --%>
+                                   <%-- <div class="container">
+                                     <div class="card">
+                                            <div class="card-header"><h4>SET DISCOUNT OFFERED HERE</h4>
+                                            </div> 
+                                            <div class="card-body">
+                                                <div class="row">
+                                                      <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any product offers that applies to the discount you offered:</h5>
+                                                    <asp:CheckBoxList ID="chckdiscountOffered" runat="server" AutoPostBack="false">
+                                                        <asp:ListItem Text="Product Refill" Value="Product Refill" ></asp:ListItem>
+                                                        <asp:ListItem Text="other Product" Value="other Product" ></asp:ListItem>
+                                                    </asp:CheckBoxList>
+                                            </div>
+                                                     <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any unit below that applies to the discount you offered:</h5>
+                                                    <asp:CheckBoxList ID="chckunitOffered" runat="server" AutoPostBack="false">
+                                                        <asp:ListItem Text="gallon" Value="gallon" ></asp:ListItem>
+                                                        <asp:ListItem Text="liter" Value="liter" ></asp:ListItem>
+                                                        <asp:ListItem Text="mL" Value="mL" ></asp:ListItem>
+                                                    </asp:CheckBoxList>
+                                            </div>
+                                                   <div class="col-md-12 col-sm-12 ">
+                                            <h5>Discount:</h5>
+                                            <asp:TextBox ID="txtdiscount" runat="server" TextMode="Number" ToolTip="Note: must enter discount in percentage (%)" class="form-control" placeholder="Enter discount offered"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
+                                                    
+                                                     </div> 
+                                                 <br />
+                                                 <div class="modal-footer">
+                                               <asp:Button ID="Button1" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAddDiscount_Click" />
+                                                     <input type="hidden" id="confirm_add2" name="confirm_add2" value="" />
+                                               </div>
+                                                </div>
+                                            </div>
+                                         </div>--%>
                                     </div>
                                 </div>
                             </div>
