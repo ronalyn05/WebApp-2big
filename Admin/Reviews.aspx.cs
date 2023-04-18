@@ -38,14 +38,10 @@ namespace WRS2big_Web.Admin
                 Dictionary<string, StoreReview> reviews = response.ResultAs<Dictionary<string, StoreReview>>();
                 var filteredList = reviews.Values.Where(d => d.adminID.ToString() == idno);
 
-
-
                 GridView1.DataSource = filteredList;
                 GridView1.DataBind();
             }
             
         }
-      
-
     }
 }

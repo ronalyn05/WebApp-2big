@@ -251,6 +251,14 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
+                                            
+                                    <li>
+                                        <a href="/Admin/Rewards" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-gift"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards and Discounts</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
                                            <%-- <li class=" ">
                                                 <a href="/Admin/DeliveryRecords" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
@@ -334,14 +342,6 @@
                                         <a href="/Admin/Reviews" class="waves-effect waves-dark active">
                                             <span class="pcoded-micon"><i class="ti-star"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reviews and Ratings</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a href="/Admin/Rewards" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-gift"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
