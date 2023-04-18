@@ -223,7 +223,11 @@ namespace WRS2big_Web.Model
         public int productRefillId { get; set; }
         public DateTimeOffset productrefillDateAdded { get; set; }
         public int deliveryDetailsId { get; set; }
-        public DateTimeOffset deliveryDetailsDateAdded { get; set; }
+        //public DateTimeOffset deliveryDetailsDateAdded { get; set; }
+        public DateTimeOffset standardAdded { get; set; }
+        public DateTimeOffset reservationAdded { get; set; }
+        public DateTimeOffset expressAdded { get; set; }
+
         public int orderId { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateLogin { get; set; }

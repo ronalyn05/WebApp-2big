@@ -17,6 +17,12 @@ namespace WRS2big_Web.Model
         public string email { get; set; }
         public string password { get; set; }
         public string confirmPassword { get; set; }
+        public string cus_status { get; set; }
+        public string imageProof { get; set; }
+        public string imageSelfie { get; set; }
+        public double lattitudeLocation { get; set; }
+        public double longitudeLocation { get; set; }
+
        // public string CusSecurityQuestion { get; set; }
 
 

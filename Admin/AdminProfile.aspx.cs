@@ -129,8 +129,8 @@ namespace WRS2big_Web.Admin
                 lblBusinessday.Text = refillStation.businessDaysFrom + " - " + refillStation.businessDaysTo;
 
                 //POPULATE THE REFILL STATION DETAILS IN THE MODAL
-                txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom.ToString();
-                txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
+                //txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom;
+                //txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
                 drdBusinessDaysFrom.Text = refillStation.businessDaysFrom;
                 drdBusinessDaysTo.Text = refillStation.businessDaysTo;
 
@@ -433,20 +433,14 @@ namespace WRS2big_Web.Admin
             {
                 var station = new RefillingStation();
 
-                //FETCH ALL THE DATA PARA DI MAWALA IG UPDATE
+               
                 RefillingStation obj = result.ResultAs<RefillingStation>();
 
-                DateTime operatingHrsFrom = DateTime.ParseExact(obj.operatingHrsFrom, "h:mm tt", CultureInfo.InvariantCulture);
-                DateTime operatingHrsTo = DateTime.ParseExact(obj.operatingHrsTo, "h:mm tt", CultureInfo.InvariantCulture);
-
-                // Convert the updated time strings to DateTime objects in 12-hour format with AM/PM
-                DateTime updatedOperatingHrsFrom = DateTime.ParseExact(Request.Form[txtOperatingHrsFrom.UniqueID].ToString(), "h:mm tt", CultureInfo.InvariantCulture);
-                DateTime updatedOperatingHrsTo = DateTime.ParseExact(Request.Form[txtOperatingHrsTo.UniqueID].ToString(), "h:mm tt", CultureInfo.InvariantCulture);
-
-
+                //FETCH ALL THE DATA PARA DI MAWALA IG UPDATE
                 //EDITABLE
                 station.operatingHrsFrom = obj.operatingHrsFrom;
                 station.operatingHrsTo = obj.operatingHrsTo;
+
                 station.businessDaysFrom = obj.businessDaysFrom;
                 station.businessDaysTo = obj.businessDaysTo;
 
@@ -457,19 +451,22 @@ namespace WRS2big_Web.Admin
                 station.addLongitude = obj.addLongitude;
                 station.dateAdded = obj.dateAdded;
                 station.stationAddress = obj.stationAddress;
-                station.dateUpdated = DateTime.UtcNow;
+                station.dateUpdated = DateTimeOffset.UtcNow;
 
-
-                // Convert the operating hours from and to times to 12-hour format with AM and PM
                 if (!string.IsNullOrEmpty(Request.Form[txtOperatingHrsFrom.UniqueID].ToString()))
                 {
-                    station.operatingHrsFrom = updatedOperatingHrsFrom.ToString("h:mm tt");
+                    DateTime operatingHrsFrom = DateTime.ParseExact(txtOperatingHrsFrom.Text, "HH:mm", CultureInfo.InvariantCulture);
+                    station.operatingHrsFrom = operatingHrsFrom.ToString("h:mm tt");
                 }
                 if (!string.IsNullOrEmpty(Request.Form[txtOperatingHrsTo.UniqueID].ToString()))
                 {
-                    station.operatingHrsTo = updatedOperatingHrsTo.ToString("h:mm tt");
+                    DateTime operatingHrsTo = DateTime.ParseExact(txtOperatingHrsTo.Text, "HH:mm", CultureInfo.InvariantCulture);
+                    station.operatingHrsTo = operatingHrsTo.ToString("h:mm tt");
+                    //station.operatingHrsTo = operatingHrsTo12Hr;
                 }
 
+
+                // Update the station business days
                 if (!string.IsNullOrEmpty(Request.Form[drdBusinessDaysFrom.UniqueID].ToString()))
                 {
                     station.businessDaysFrom = Request.Form[drdBusinessDaysFrom.UniqueID].ToString();
@@ -483,6 +480,38 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response;
                 response = twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", station);
                 Response.Write("<script>alert ('Station details successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
+
+                int logsId = (int)Session["logsId"];
+
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = existingLog.emp_id,
+                    empFullname = existingLog.empFullname,
+                    empDateAdded = existingLog.empDateAdded,
+                    dateLogin = existingLog.dateLogin,
+                    tankId = existingLog.tankId,
+                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    productRefillId = existingLog.productRefillId,
+                    productrefillDateAdded = existingLog.productrefillDateAdded,
+                    other_productId = existingLog.other_productId,
+                    otherProductDateAdded = existingLog.otherProductDateAdded,
+                    userActivity = "Update Station details"
+
+                };
+
+                twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
             } 
             //CREATE NEW DETAILS
@@ -508,8 +537,8 @@ namespace WRS2big_Web.Admin
                 newObj.operatingHrsTo = operatingHrsTo12Hr;
                 newObj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
                 newObj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
-                newObj.dateAdded = DateTime.UtcNow;
-                newObj.dateUpdated = DateTime.UtcNow;
+                newObj.dateAdded = DateTimeOffset.UtcNow;
+                newObj.dateUpdated = DateTimeOffset.UtcNow;
                 //NOT EDITABLE
                 newObj.stationAddress = obj.stationAddress;
                 newObj.stationName = obj.stationName;
@@ -521,7 +550,37 @@ namespace WRS2big_Web.Admin
                 twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", newObj);
 
                 Response.Write("<script>alert ('Station details successfully added!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
+                int logsId = (int)Session["logsId"];
 
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                //DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = logsId,
+                    userFullname = (string)Session["fullname"],
+                    emp_id = existingLog.emp_id,
+                    empFullname = existingLog.empFullname,
+                    empDateAdded = existingLog.empDateAdded,
+                    dateLogin = existingLog.dateLogin,
+                    tankId = existingLog.tankId,
+                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    deliveryDetailsId = existingLog.deliveryDetailsId,
+                    productRefillId = existingLog.productRefillId,
+                    productrefillDateAdded = existingLog.productrefillDateAdded,
+                    other_productId = existingLog.other_productId,
+                    otherProductDateAdded = existingLog.otherProductDateAdded,
+                    userActivity = "Create Station details"
+
+                };
+
+                twoBigDB.Update("USERSLOG/Test" + log.logsId, log);
             }
         }
 

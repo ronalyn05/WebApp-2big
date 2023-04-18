@@ -1,5 +1,16 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WRSsuperAdmin.Master" AutoEventWireup="true" CodeBehind="ManageCustomers.aspx.cs" Inherits="WRS2big_Web.superAdmin.ManageCustomers" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+        <style>
+        .texts{
+            font-size:16px;
+            color:black;
+        
+        }
+        .scrollable-listbox {
+        height: 200px;
+        overflow-y: auto;
+         }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <form runat="server">
@@ -16,7 +27,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10"> NEW CUSTOMERS</h5>
+                                            <h5 class="m-b-10"> REFILLING STATION CLIENTS</h5>
                                             <h6 class="m-b-0">2BiG: Water Refilling Station Management System</h6>
                                         </div>
                                     </div>
@@ -46,44 +57,132 @@
                                             <div class="clearfix">
                                             </div>
 
-
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 ">
-                                                    <div class="x_panel">
-                                                        <div class="x_title">
-                                                        <div class="x_content">
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <div class="card-box table-responsive">
-
-                                                                          <!--PAGE CONTENTS-->
-                                                                              <div style="overflow: auto; text-align:center;padding:2px" class="texts table-hover">
-                                                                                        <asp:GridView runat="server" ID="clientGridView" BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px" CellPadding="3" GridLines="Vertical" Width="461px">
-                                                                                            <AlternatingRowStyle BackColor="#DCDCDC" />
-                                                                                            <FooterStyle BackColor="#CCCCCC" ForeColor="Black" />
-                                                                                            <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />
-                                                                                            <PagerStyle BackColor="#999999" ForeColor="Black" HorizontalAlign="Center" />
-                                                                                            <RowStyle BackColor="#EEEEEE" ForeColor="Black" />
-                                                                                            <SelectedRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                                                                                            <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                                                            <SortedAscendingHeaderStyle BackColor="#0000A9" />
-                                                                                            <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                                                            <SortedDescendingHeaderStyle BackColor="#000065" />
-                                                 
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <!-- Tab variant tab card start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>CLIENT APPROVAL</h5>
+                                                </div>
+                                                <div class="card-block tab-icon">
+                                                    <!-- Row start -->
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-xl-16">
+                                                            <!-- <h6 class="sub-title">Tab With Icon</h6> -->
+                                                            
+                                                            <!-- Nav tabs -->
+                                                            <ul class="nav nav-tabs md-tabs " role="tablist">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link active" data-toggle="tab" href="#AllCustomers" role="tab">All Clients</a>
+                                                                    <div class="slide"></div>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#pendingCustomers" role="tab">Pending Clients</a>
+                                                                    <div class="slide"></div>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#approvedCustomers" role="tab">Approved Clients</a>
+                                                                    <div class="slide"></div>
+                                                                </li>
+                                                            </ul>
+                                                            <!-- Tab panes -->
+                                                            <div class="tab-content card-block">
+                                                                <div class="tab-pane active" ID="AllCustomers" role="tabpanel">
+                                                                        <div class="col-lg-16 col-xl-18">
+                                                                            <div class="card table-card">
+                                                                                <div class="card-block">
+                                                                                    <div class="table-responsive"> <br />
+                                                                                      <asp:GridView runat="server" ID="AllGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                         <Columns>
+                                                                                             <asp:TemplateField >
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White" />
+                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
+                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                         </Columns>
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                                         </asp:GridView>
                                                                                     </div>
-                                                                              <br /><br />
-                                                                      <!--PAGE CONTENTS END-->
-
-                                              
-                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="tab-pane" id="pendingCustomers" role="tabpanel">
+                                                                        <div class="col-lg-12 col-xl-12">
+                                                                            <div class="card table-card">
+                                                                                <div class="card-block">
+                                                                                    <div class="table-responsive"> <br />
+                                                                                      <asp:GridView runat="server" ID="pendingGridView" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                         <Columns>
+                                                                                             <asp:TemplateField >
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>
+                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
+                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                         </Columns>
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="tab-pane" id="approvedCustomers" role="tabpanel">
+                                                                          <div class="col-lg-12 col-xl-12">
+                                                                            <div class="card table-card">
+                                                                                <div class="card-block">
+                                                                                    <div class="table-responsive"> <br />
+                                                                                      <asp:GridView runat="server" ID="approvedGridView" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                         <Columns>
+                                                                                             <asp:TemplateField >
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>
+                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
+                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                         </Columns>
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- Row end -->
                                                 </div>
                                             </div>
+                                            <!-- Tab variant tab card start -->
                                         </div>
+                                    </div>
                                     </div>
 
 
@@ -98,6 +197,6 @@
             </div>
         </div>
     </div>
-            </div>
+   </div>
 </form>
 </asp:Content>
