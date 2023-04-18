@@ -551,13 +551,15 @@ namespace WRS2big_Web.Admin
                     empDateAdded = existingLog.empDateAdded,
                     dateLogin = existingLog.dateLogin,
                     deliveryDetailsId = existingLog.deliveryDetailsId,
-                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
                     productRefillId = existingLog.productRefillId,
                     productrefillDateAdded = existingLog.productrefillDateAdded,
                     other_productId = existingLog.other_productId,
                     otherProductDateAdded = existingLog.otherProductDateAdded,
                     tankId = data.tankId,
-                    tankSupplyDateAdded = data.dateAdded
+                    tankSupplyDateAdded = data.dateAdded,
+                    standardAdded = existingLog.standardAdded,
+                    reservationAdded = existingLog.reservationAdded,
+                    expressAdded = existingLog.expressAdded
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -656,11 +658,11 @@ namespace WRS2big_Web.Admin
                     tankId = existingLog.tankId,
                     tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                     deliveryDetailsId = existingLog.deliveryDetailsId,
-                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
                     productRefillId = existingLog.productRefillId,
                     productrefillDateAdded = existingLog.productrefillDateAdded,
                     other_productId = data.other_productId,
-                    otherProductDateAdded = data.dateAdded
+                    otherProductDateAdded = data.dateAdded,
+
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -755,9 +757,12 @@ namespace WRS2big_Web.Admin
                     other_productId = existingLog.other_productId,
                     otherProductDateAdded = existingLog.otherProductDateAdded,
                     deliveryDetailsId = existingLog.deliveryDetailsId,
-                    deliveryDetailsDateAdded = existingLog.deliveryDetailsDateAdded,
                     productRefillId = data.pro_refillId,
-                    productrefillDateAdded = data.dateAdded
+                    productrefillDateAdded = data.dateAdded,
+                    standardAdded = existingLog.standardAdded,
+                    reservationAdded = existingLog.reservationAdded,
+                    expressAdded = existingLog.expressAdded
+
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -1224,7 +1229,38 @@ namespace WRS2big_Web.Admin
             FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS2/" + adminId, delivery);
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/WaterProduct.aspx'; </script>");
 
-        } 
+            int logsId = (int)Session["logsId"];
+            // Retrieve the existing Users log object from the database
+            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+            // Get the current date and time
+            //DateTime addedTime = DateTime.UtcNow;
+
+            // Log user activity
+            var log = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = logsId,
+                userFullname = (string)Session["fullname"],
+                emp_id = existingLog.emp_id,
+                empFullname = existingLog.empFullname,
+                empDateAdded = existingLog.empDateAdded,
+                dateLogin = existingLog.dateLogin,
+                tankId = existingLog.tankId,
+                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                other_productId = existingLog.other_productId,
+                otherProductDateAdded = existingLog.otherProductDateAdded,
+                productRefillId = existingLog.productRefillId,
+                productrefillDateAdded = existingLog.productrefillDateAdded,
+                deliveryDetailsId = delivery.deliveryId,
+                standardAdded = delivery.standardDateAdded,
+                reservationAdded = delivery.reservationdateAdded,
+                expressAdded = delivery.expressdateAdded
+            };
+
+            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+        }
         private string GetSelectedValues(CheckBoxList checkboxList)
         {
             string values = "";

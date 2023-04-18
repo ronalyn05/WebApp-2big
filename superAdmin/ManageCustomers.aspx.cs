@@ -36,47 +36,96 @@ namespace WRS2big_Web.superAdmin
 
             if (!IsPostBack)
             {
-                //DisplayIDs();
+                DisplayAll();
+                DisplayPending();
+                DisplayApproved();
             }
         }
+        private void DisplayAll()
+        {
 
-        //private void DisplayIDs()
-        //{
-        //    //TO LOAD THE IDs FROM THE DATABASE
-        //    FirebaseResponse response;
-        //    response = twoBigDB.Get("CUSTOMER");
-        //    Model.Customer admin = response.ResultAs<Model.Customer>();
-        //    var item = response.Body;
-        //    ListBoxCustomers.Items.Clear();
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer all = response.ResultAs<Model.Customer>();
+            var data = response.Body;
+            Dictionary<string, Model.Customer> Allclients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
 
-        //    Dictionary<string, Model.Customer> list = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(item);
-
-        //    foreach (KeyValuePair<string, Model.Customer> entry in list)
-        //    {
-
-        //        ListBoxCustomers.Items.Add(entry.Value.cusID.ToString());
-        //        //WaterTypeDDL.Items.Add(entry.Value.waterType.ToString());
-        //    }
-        //}
-        //protected void CustomerDetails_Click(object sender, EventArgs e)
-        //{
-        //        String selected;
-        //        selected = ListBoxCustomers.SelectedValue;
-
-        //        FirebaseResponse response;
-        //        response = twoBigDB.Get("CUSTOMER/" + selected);
-        //        Model.Customer obj = response.ResultAs<Model.Customer>();
-
-        //        LblID.Text = obj.cusID.ToString();
-        //        firstname.Text = obj.cusFirstName.ToString();
-        //        midname.Text = obj.cusMiddleName.ToString();
-        //        lastname.Text = obj.cusLastName.ToString();
-        //        LblDOB.Text = obj.cusBirthOfDate.ToString();
-        //        address.Text = obj.cusAddress.ToString();
-        //        contactnum.Text = obj.cusContactNumber.ToString();
-        //        email.Text = obj.cusEmail.ToString();
+            //creating the columns of the gridview
+            DataTable clientsTable = new DataTable();
+            clientsTable.Columns.Add("CUSTOMER ID");
+            clientsTable.Columns.Add("CUSTOMER NAME");
+            clientsTable.Columns.Add("EMAIL");
+            clientsTable.Columns.Add("CONTACT #");
+            clientsTable.Columns.Add("STATUS"); 
 
 
-        //}
+            foreach (KeyValuePair<string, Model.Customer> entry in Allclients)
+            {
+
+                clientsTable.Rows.Add(entry.Value.cusId, entry.Value.firstName + " " + entry.Value.lastName, entry.Value.email, entry.Value.phoneNumber, entry.Value.cus_status);
+
+            }
+
+
+            // Bind DataTable to GridView control
+            AllGridview.DataSource = clientsTable;
+            AllGridview.DataBind();
+        }
+
+        private void DisplayPending()
+        {
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer pending = response.ResultAs<Model.Customer>();
+            var data = response.Body;
+            Dictionary<string, Model.Customer> pendingCustomers = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+
+            //creating the columns of the gridview
+            DataTable pendingTable = new DataTable();
+            pendingTable.Columns.Add("CUSTOMER ID");
+            pendingTable.Columns.Add("CUSTOMER NAME");
+            pendingTable.Columns.Add("EMAIL");
+            pendingTable.Columns.Add("CONTACT #");
+            pendingTable.Columns.Add("STATUS");
+
+            foreach (KeyValuePair<string, Model.Customer> entry in pendingCustomers)
+            {
+                if (entry.Value.cus_status == "Pending")
+                {
+                    pendingTable.Rows.Add(entry.Value.cusId, entry.Value.firstName + " " + entry.Value.lastName, entry.Value.email, entry.Value.phoneNumber, entry.Value.cus_status);
+
+                }
+
+            }
+            // Bind DataTable to GridView control
+            pendingGridView.DataSource = pendingTable;
+            pendingGridView.DataBind();
+        }
+        private void DisplayApproved()
+        {
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer pending = response.ResultAs<Model.Customer>();
+            var data = response.Body;
+            Dictionary<string, Model.Customer> pendingClients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+
+            //creating the columns of the gridview
+            DataTable approvedTable = new DataTable();
+            approvedTable.Columns.Add("CUSTOMER ID");
+            approvedTable.Columns.Add("CUSTOMER NAME");
+            approvedTable.Columns.Add("EMAIL");
+            approvedTable.Columns.Add("CONTACT #");
+            approvedTable.Columns.Add("STATUS");
+
+            foreach (KeyValuePair<string, Model.Customer> entry in pendingClients)
+            {
+                if (entry.Value.cus_status == "Approved")
+                {
+                    approvedTable.Rows.Add(entry.Value.cusId, entry.Value.firstName + " " + entry.Value.lastName, entry.Value.email, entry.Value.phoneNumber, entry.Value.cus_status);
+
+                }
+
+            }
+            // Bind DataTable to GridView control
+            approvedGridView.DataSource = approvedTable;
+            approvedGridView.DataBind();
+        }
     }
 }
