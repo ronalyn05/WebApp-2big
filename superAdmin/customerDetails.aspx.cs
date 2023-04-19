@@ -49,6 +49,12 @@ namespace WRS2big_Web.superAdmin
             cusmiddleName.Text = admin.middleName;
             clientValidID.ImageUrl = admin.imageProof.ToString();
 
+            //if (admin.cus_status == "Approved" && admin.cus_status == "Declined")
+            //{
+            //    approveButton.Enabled = false;
+            //    declineButton.Enabled = false;
+            //}
+
         }
 
         protected void approveButton_Click(object sender, EventArgs e)
