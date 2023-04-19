@@ -73,15 +73,15 @@
                                                             <!-- Nav tabs -->
                                                             <ul class="nav nav-tabs md-tabs " role="tablist">
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link active" data-toggle="tab" href="#AllCustomers" role="tab">All Clients</a>
+                                                                    <a class="nav-link active" data-toggle="tab" href="#AllCustomers" role="tab">All Customers</a>
                                                                     <div class="slide"></div>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" href="#pendingCustomers" role="tab">Pending Clients</a>
+                                                                    <a class="nav-link" data-toggle="tab" href="#pendingCustomers" role="tab">Pending Customers</a>
                                                                     <div class="slide"></div>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" href="#approvedCustomers" role="tab">Approved Clients</a>
+                                                                    <a class="nav-link" data-toggle="tab" href="#approvedCustomers" role="tab">Approved Customers</a>
                                                                     <div class="slide"></div>
                                                                 </li>
                                                             </ul>
