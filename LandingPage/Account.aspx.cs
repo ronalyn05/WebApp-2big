@@ -41,12 +41,27 @@ namespace WRS2big_Web.LandingPage
 
             try
             {
+                if (businessProof == null)
+                {
+                    Response.Write("<script>alert('You must upload a proof of your business');</script>");
+                    return;
+                }
+                if (validIDUpload == null)
+                {
+                    Response.Write("<script>alert('You must upload a VALID ID!'); </script>");
+                    return;
+                }
+
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
                 string address = Request.Form["address"];
                 double latitude = double.Parse(Request.Form["lat"]);
                 double longitude = double.Parse(Request.Form["long"]);
+
+
+                string selectedProof = documentDropDown.SelectedValue;
+                string validID = validIDList.SelectedValue;
 
                 var data = new AdminAccount
                 {
@@ -58,7 +73,11 @@ namespace WRS2big_Web.LandingPage
                     phone = txtphoneNum.Text,
                     email = txtEmail.Text,
                     pass = id_passwordreg.Text,
+                    businessProof = selectedProof,
+                    validID = validID,
                     status = "pending",
+                    businessProofLnk = null,
+                    validIDLnk = null,
                     subStatus = "notSubscribed"
                     
                     
@@ -72,13 +91,34 @@ namespace WRS2big_Web.LandingPage
                     proof = null,
                     dateAdded = DateTime.UtcNow
                 };
+                //FOR THE VALID ID 
+                if (validIDUpload.HasFile)
+                {
+                    //FOR THE VALID ID
+                    // Get the file name and extension
+                    string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
+                    string fileExtension = Path.GetExtension(fileName);
 
+                    // Generate a unique file name
+                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+
+                    // Upload the file to Firebase Storage
+                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                    var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
+
+                    // Get the download URL of the uploaded file
+                    string imageUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+                    data.validIDLnk = imageUrl;
+
+                }
+
+                //FOR THE BUSINESS PROOF
                 byte[] fileBytes = null;
-                if (txtproof.HasFile)
+                if (businessProof.HasFile)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        txtproof.PostedFile.InputStream.CopyTo(memoryStream);
+                        businessProof.PostedFile.InputStream.CopyTo(memoryStream);
                         fileBytes = memoryStream.ToArray();
                     }
                 }
@@ -86,18 +126,18 @@ namespace WRS2big_Web.LandingPage
                 if (fileBytes != null)
                 {
                     var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                    var fileExtension = Path.GetExtension(txtproof.FileName);
-                    var filePath = $"station/{list.stationName}{fileExtension}";
+                    var fileExtension = Path.GetExtension(businessProof.FileName);
+                    var filePath = $"clientBusinessProof/{list.stationName}{fileExtension}";
                     //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         var storageTask = storage.Child(filePath).PutAsync(stream);
                         var downloadUrl = await storageTask;
                         // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        list.proof = downloadUrl;
+                        data.businessProofLnk = downloadUrl;
                     }
                 }
-                
+
                 SetResponse response;
                 //Storing the admin info
                 response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
@@ -107,9 +147,9 @@ namespace WRS2big_Web.LandingPage
                 response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
 
-               ValidateTerms();
+
                 Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
-                //Response.Write("<script>alert ('Your account has suucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
             catch
             {
@@ -117,15 +157,6 @@ namespace WRS2big_Web.LandingPage
             }
         }
        // To validate the terms and condition
-        protected void ValidateTerms()
-        {
-            bool terms = chkTerms.Checked;
-            if (!terms)
-            {
-                lblTerms.Text = "You must agree to our terms and conditions!";
-            }
-
-        }
 
         //LOGGING IN 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -294,6 +325,7 @@ namespace WRS2big_Web.LandingPage
                 string errorMessage = "An error occurred while trying to login: " + ex.Message;
             }
         }
+
     }
 }
 

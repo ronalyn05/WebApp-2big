@@ -19,6 +19,10 @@ namespace WRS2big_Web.Model
         public string profile_image { get; set; }
         public string status { get; set; }
         public string subStatus { get; set; }
+        public string businessProof { get; set; }
+        public string validID { get; set; }
+        public string businessProofLnk { get; set; }
+        public string validIDLnk { get; set; }
 
     }
 

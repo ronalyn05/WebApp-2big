@@ -157,7 +157,7 @@ namespace WRS2big_Web.Admin
                 response = twoBigDB.Set("EMPLOYEES/" + data.emp_id, data);
                 Employee obj = response.ResultAs<Employee>();//Database Result
 
-                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
+                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
 
                 // Retrieve the existing employee object from the database
                 FirebaseResponse res = twoBigDB.Get("USERSLOG/" + logsId);

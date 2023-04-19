@@ -105,11 +105,73 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form class="md-float-material form-material">
+                    <div class="md-float-material form-material">
                         <div class="text-center">
                             <img src="/images/2ndLogo.png" style="width:500px" alt="logo.png">
                         </div>
+                              <%-- MODAL FOR Delivery details--%>
+                                       <div class="modal fade termsCondition col-xl-8 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-10">
+                                                <div class="modal-content col-xl-10 col-md-10" style="/*background-color:red;*/ margin-left:550px">
+                                                    <div id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                    <div class="modal-header">
+                                                       
+                                                            <%--exit button--%>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="col-md-10 col-sm-18 ">
+                                                            <div class="x_content">
+                                                            <h5>Terms and Conditions</h5>
+                                                           
+                                                            <p>Greetings Users,</p>
+                                                            <p style="font-size:larger">
+                                                                <center>Welcome to 2BiG:<br />A Web and Mobile Water Refilling Station Management System. </center>
+                                                                <br /> These terms and conditions outline the rules and regulations for the use of  <strong>  '2BIG WRS Management System'     </strong>
+
+                                                                <br /> <br />By accessing this website we assume you accept these terms and conditions in full. <br /> Do not continue to use <strong>  '2BIG WRS Management System'     </strong>  if you do not accept all of the terms and conditions stated on this page. <br />
+
+                                      
+                                                                <br /> <br /><strong>
+                                                                    Cookies
+                                                                </strong>  <br />
+
+                                                                We employ the use of cookies. By using <strong>  '2BIG WRS Management System'     </strong> you consent to the use of cookies in accordance with  <strong>  '2BIG WRS Management System'     </strong> privacy policy.
+                                                                Most of the modern day interactive websites use cookies to enable us to retrieve user details for each visit.
+
+                                                                <br />Cookies are used in some areas of our site to enable the functionality of this area and ease of use for those people visiting.
+                                                              
+
+                                                                 <strong> License</strong> <br />
+
+                                                                Unless otherwise stated,<strong>  '2BIG WRS Management System'     </strong> and/or its licensors own the intellectual property rights for all material on<strong>  '2BIG WRS Management System'     </strong>
+
+                                                                All intellectual property rights are reserved. 
+                                                                <br />
+                                                                <strong>
+                                                                    Disclaimer <br />
+                                                                </strong>
+
+                                                                To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website (including, without limitation, any warranties implied by law in respect of satisfactory quality, fitness for purpose and/or the use of reasonable care and skill).
+
+                                                                
+                                                                 <br /> The limitations and exclusions of liability set out in this Section and elsewhere in this disclaimer: <br />
+
+                                                                are subject to the preceding paragraph; and
+                                                                govern all liabilities arising under the disclaimer or in relation to the subject matter of this disclaimer, including liabilities that arise in contract, tort (including negligence) and for breach of statutory duty.
+                                                                <br />To the extent that the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.
+                                                            </p>
+                                                        </div>
+                                                      
+                                                             </div>
+                                                         </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                         <div class="col-xl-6 col-md-12" style="align-content:center;margin-left:480px; top: 113px; left: 171px;">
+
                         <div class="card">
                             <div class="card-block">
                                 <div class="button-box">
@@ -186,7 +248,7 @@
                                   </div> <%--end of login here--%>
 <%--                                @*      SIGN UP     *@--%>
                             <div class="active" id="register" style="display:none;">
-                              <div style="background-color:wheat" class="card card-block">
+                              <div style="background-color:#018cff;color:white" class="card card-block">
 	                               <h5 >PERSONAL INFORMATION</h5>
                                </div>
                                 <div class="row ">
@@ -315,7 +377,7 @@
 
                                 <br />
                                 <!--REFILLING STATION-->
-                              <div style="background-color:wheat" class="card card-block">
+                             <div style="background-color:#018cff;color:white" class="card card-block">
 	                               <h5>REFILLING STATION INFORMATION</h5>
                                </div>
                                 <div class="row">
@@ -429,21 +491,71 @@
                                         },
                                         { enableHighAccuracy: true }
                                     );
-                                </script>
-
-
-
-                                <div class="row">
-                                   <%-- Upload File--%>
+                                </script> <br />
+                                  <%-- Upload File--%>
+                              <div style="background-color:#018cff;color:white" class="card card-block">
+	                               <h7>UPLOAD THE NECESSARY DOCUMENTS</h7>
+                               </div>
+                                <div class="row" style="margin-left:20px">
                                     <div class="col">
-                                        <div class="form-group">
-                                           <label>Upload Valid Business Documents</label> 
+                                        <div class="form-group">    <br />
+                                            <h5>Valid Business Documents</h5>
                                             <div class="input-group-sm">
-                                                <asp:FileUpload ID="txtproof" runat="server" Font-Size="Medium" Height="38px" Width="301px"  />  
+                                                <label>Please choose from the options below. <br /> You must upload the file that you selected in the options. <br /> Picture is not allowed.</label>
                                             </div>
-                                         </div>
-                                     </div>
+                                        </div>
+                                    </div>
+                                   <div class="col">
+                                        <div class="form-group">    <br />
+                                            <h5>Valid ID</h5>
+                                            <div class="input-group-sm">
+                                                <label>Please choose from the list of government issued ID below. <br /> Please upload a clear and high quality picture of your Valid ID </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+                                <div class="row"  style="margin-left:30px">
+                                   <div class="col">
+                                         <div class="input-group-sm">
+                                            <asp:DropDownList ID="documentDropDown" runat="server" Font-Size="12pt" Height="30px"  Width="250px">
+                                                <asp:ListItem ></asp:ListItem>
+                                                <asp:ListItem Value="Business Permit">Business Permit</asp:ListItem>
+                                                <asp:ListItem Value="Mayors Business Permit">Mayors Business Permit</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div> <br />
+                                    </div>
+                                   <div class="col">
+                                         <div class="input-group-sm">
+                                            <asp:DropDownList ID="validIDList" runat="server" Font-Size="12pt" Height="30px" Width="250px">
+                                                <asp:ListItem ></asp:ListItem>
+                                                <asp:ListItem Value="Drivers License">Drivers License</asp:ListItem>
+                                                <asp:ListItem Value="Passport">Passport</asp:ListItem>
+                                                <asp:ListItem Value="Postal ID">Postal ID</asp:ListItem>
+                                                <asp:ListItem Value="Voters ID">Voters ID</asp:ListItem>
+                                                <asp:ListItem Value="National ID">National ID</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div> <br />
+                                    </div>
+                                   <div>
+                                </div>  
+                            </div>
+                                <div class="row"  style="margin-left:30px">
+                                    <div class="col">
+                                       <div class="form-group"> 
+                                        <div class="input-group-sm"> 
+                                            <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="col">
+                                       <div class="form-group"> 
+                                        <div class="input-group-sm"> 
+                                            <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" />
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
+
 
 
 <%--                                @*Show Password script*@--%>
@@ -468,16 +580,16 @@
                                         this.classList.toggle('fa-eye-slash');
                                     });
                                 </script>
-                                <!-- Show Password -->
+                                <!-- Show Password END-->
                                 <div class="row m-t-25 text-left">
                                     <div class="col-md-12">
                                        <div>
-                                            <asp:Label ID="lblTerms" runat="server"></asp:Label>
-                                            <asp:CheckBox ID="chkTerms" runat="server" />
+                                         
+                                            <hr />
                                             <label>
                                                <%-- <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>--%>
                                                 <span class="text-inverse">
-                                                    I agree to 2BiG's <a href="/LandingPage/Terms"> Terms and Conditions </a>
+                                                    By signing up, you agree to 2BiG's <a href="#" data-toggle="modal" data-target=".termsCondition"> Terms and Conditions </a>
                                                 </span>
                                             </label>
                                         </div>
@@ -491,7 +603,8 @@
 <%--                                        @*buttons*@--%>
                                         <div class="d-flex justify-content-center">
                                             <%--SIGN UP BUTTON--%>
-                                            <asp:Button ID="btnSignup" runat="server" Text="Sign Up"  class="btn" style="background: linear-gradient(to right, #5bc0de, #9dd9eb);"  OnClick="btnSignup_Click"/>
+
+                                            <asp:Button ID="btnSignup" runat="server" Text="Sign Up"  class="btn" style="background-color:#018cff;color:white" OnClick="btnSignup_Click"/>
                                           <%--  <button id="btnCreateAcc" class="btn" style="background: linear-gradient(to right, #5bc0de, #9dd9eb);" >
                                         
                                                 Sign up
@@ -504,7 +617,7 @@
                                  </div>
                                 </div>
                             </div>
-                       </form>
+                       </div>
                       </div>
                      <!-- end of col-sm-12 -->
                     </div>

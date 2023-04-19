@@ -96,9 +96,7 @@
                                                                                          <Columns>
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White" />
-                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
-                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                      <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -125,9 +123,8 @@
                                                                                          <Columns>
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>
-                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
-                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                      <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
+                                                                                                   
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -154,9 +151,8 @@
                                                                                          <Columns>
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>
-                                                                                                   <%-- <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>
-                                                                                                      <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click"  BorderStyle="Solid" ForeColor="Black" BackColor="transparent"/>--%> <%--  <asp:LinkButton ID="approve" runat="server" Text="Approve" OnClick="approve_Click"/>--%>
+                                                                                                      <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
+                                                                                                  
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
