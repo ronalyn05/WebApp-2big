@@ -65,7 +65,7 @@
                                     <div class="right_col" role="main">
                                         <div class="">
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12 ">
+                                                <div class="col-md-12 col-md-12 ">
                                                     <div class="x_panel">
                                                         <div class="x_title">
                                                               <asp:Label ID="lblMessage" runat="server" Font-Bold="true" Font-Size="Medium"/>
@@ -78,7 +78,7 @@
                                                         <!--PAGE CONTENTS-->
                                                         <div class="row">
                                                            
-                                                            <div class="col-xl-3 col-md-12">
+                                                            <div class="col-xl-12 col-sm-12">
                                                                 <div class="card ">
                                                                     <div class="card-header">
                                                                         <div class="card-header-right">
@@ -94,112 +94,9 @@
                                                                           <asp:Label ID="Label1" runat="server" Text="TRANSACTION" ForeColor="Blue" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                     </div>
                                                                     <div class="card-block">
-                                                                        <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" class="btn btn-default btn-sm" runat="server" Text=" " />
+                                                                        <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" class="btn btn-default btn-sm" runat="server" />
                                                                     </div>
                                                                     <div class="card-footer">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                               <div class="col-xl-9 col-md-12">
-                                                                <div class="card">
-                                                                    <div class="card-header">
-                                                                        <asp:Label ID="Label2" runat="server" Text="*****DI PA NI MAO ANG UI******" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>
-                                                                        <h5>WATER ORDER LIST</h5>
-                                                                        <div class="card-header-right">
-                                                                            <ul class="list-unstyled card-option">
-                                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="card-block">
-                                                                        <div class="table-responsive">
-                                                                            <div class="tab-content">
-                                                                                <div class="tab-pane active">
-                                                                                    <div class="form-group">
-                                                                                        <div class="col-xs-12" style="font-size: 16px">
-                                                                                            <h5>Order ID:</h5>
-                                                                                            <asp:Label ID="LabelID" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Customer ID:</h5>
-                                                                                            <asp:Label ID="custID" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                            <br>
-                                                                                             <h5>Store Name:  </h5>
-                                                                                            <%--<asp:TextBox ID="txtOrderQty" TextMode="Number" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:TextBox>--%>
-                                                                                            <asp:Label ID="lblStore" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Delivery Type: </h5>
-                                                                                            <asp:Label ID="DeliveryType" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                           <%-- <asp:DropDownList ID="lblDeliveryType" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px">
-                                                                                                <asp:ListItem  Text="Select" Value="0"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Standard" Value="Standard" Selected="True"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Express" Value="Express"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Reservation" Value="Reservation"></asp:ListItem>
-                                                                                            </asp:DropDownList>--%>
-                                                                                            <%--<asp:Label ID="LblBorrowGal" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>--%>
-                                                                                            <br>
-                                                                                            <h5>Order Type: </h5>
-                                                                                             <asp:Label ID="OrderType" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                           <%-- <asp:DropDownList ID="Drd_OrderType" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px">
-                                                                                                <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Refill" Value="Refill" Selected="True"></asp:ListItem>
-                                                                                                <asp:ListItem Text="New Order" Value="New Order"></asp:ListItem>
-                                                                                            </asp:DropDownList>--%>
-                                                                                            <%--<asp:Label ID="Lbl_OwnGallons" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>--%>
-                                                                                            <br>
-                                                                                            <h5>Product Type: </h5>
-                                                                                           <%-- <asp:DropDownList ID="Drd_ProductType" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px">
-                                                                                                <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Alkaline" Value="Alkaline" Selected="True"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Mineral" Value="Mineral"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Sparkling Water" Value="Sparkling"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Distilled Drinking Water" Value="Distilled"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Purified Drinking Water" Value="Purified"></asp:ListItem>
-                                                                                            </asp:DropDownList>--%>
-                                                                                            <asp:Label ID="ProductType" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Quantity:  </h5>
-                                                                                            <%--<asp:TextBox ID="txtOrderQty" TextMode="Number" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:TextBox>--%>
-                                                                                            <asp:Label ID="Quantity" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Price:  </h5>
-                                                                                            <asp:Label ID="price" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                            <%--<asp:TextBox ID="txtPrice" TextMode="Number" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:TextBox>--%>
-                                                                                            <br>
-                                                                                            <h5>Total Amount:  </h5>
-                                                                                            <asp:Label ID="totalAmount" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>
-                                                                                            <%--<asp:TextBox ID="txtAmount" TextMode="Number" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:TextBox>--%>
-                                                                                            <br>
-                                                                                            <h5>Date Ordered:</h5>
-                                                                                            <asp:Label ID="dateOrder" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Reservation Date:</h5>
-                                                                                            <asp:Label ID="ReservDate" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px"></asp:Label>
-                                                                                            <br>
-                                                                                            <h5>Status:  </h5>
-                                                                                             <%--<asp:Label ID="status" runat="server" class="btn btn-round waves-effect text-center" style="background-color:#bae1ff;font-size:16px;color:black;font-family:Bahnschrift;width:700px" ></asp:Label>--%>
-                                                                                              <asp:DropDownList ID="Drd_Status" runat="server" class="btn btn-round waves-effect text-center" Style="background-color: #bae1ff; font-size: 16px; color: black; font-family: Bahnschrift; width: 700px">
-                                                                                                <%--<asp:ListItem Text="Pending" Value="pending" Selected="True"></asp:ListItem>--%>
-                                                                                                <asp:ListItem Text="Accept" Value="accepted" Selected="True"></asp:ListItem>
-                                                                                                <asp:ListItem Text="Decline" Value="declined"></asp:ListItem>
-                                                                                            </asp:DropDownList>
-                                                                                            <br>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/tab-pane-->
-                                                                            </div>
-                                                                            <!--/tab-content-->
-
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="card-footer">
-                                                                        <%--<asp:Button ID="EditBtn" Style="font-size: 14px;" class="btn btn-success btn-sm" runat="server" Text="Edit Order Details" OnClick="btnEdit_Click" />--%>
-                                                                        <%--<asp:Button ID="AcceptBtn" Style="font-size: 14px;" class="btn btn-primary btn-sm" runat="server" Text="ACCEPT" OnClick="btnAccept_Click"/>
-                                                                        <asp:Button ID="DeclineBtn" Style="font-size: 14px;" class="btn btn-danger btn-sm" runat="server" Text="DECLINE" OnClick="DeclineBtn_Click"/>--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
