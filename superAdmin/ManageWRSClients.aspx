@@ -98,7 +98,7 @@
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
                                                                                                    <%--<button type="button" class="active btn waves-effect text-center" OnClick="viewButton_Clicked" style="background-color:transparent;font-size:16px;"><i class="ti-marker"></i>View</button>--%> 
-                                                                                                  <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
+                                                                                                  <asp:Button runat="server"  OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -126,7 +126,7 @@
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
                                                                                                     <%--<asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>--%>
-                                                                                                    <asp:Button runat="server"  OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
+                                                                                                    <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
