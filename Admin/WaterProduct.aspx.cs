@@ -133,7 +133,7 @@ namespace WRS2big_Web.Admin
                         {
 
                             var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
-                                && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
+                                                || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
 
                             foreach (Order order in filteredOrders)
                             {
@@ -144,12 +144,12 @@ namespace WRS2big_Web.Admin
                                 }
                                 else if (order.order_unit == "L" || order.order_unit == "liter/s")
                                 {
-                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                    double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
                                     orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
                                 }
                                 else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
                                 {
-                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                    double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
                                     orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
                                 }
                                 //Get the total of ordered gallons 

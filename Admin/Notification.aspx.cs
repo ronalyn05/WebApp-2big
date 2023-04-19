@@ -35,79 +35,37 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
 
-            FirebaseResponse response = twoBigDB.Get("ORDERS");
-            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Pending");
+            FirebaseResponse response = twoBigDB.Get("NOTIFICATION/");
+            Dictionary<string, CustomerNotification> orderlist = response.ResultAs<Dictionary<string, CustomerNotification>>();
+            //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
+            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.body == "Your order has been assigned to a driver and will be delivered soon.");
+
 
             if (filteredList.Any())
             {
                 // If there are incoming orders, display them in a button
-                Button btn = new Button();
-                int orderCount = filteredList.Count();
-                if (orderCount == 1)
+                // If there are incoming orders, display them in separate buttons
+                foreach (var order in filteredList)
                 {
-                    // If there is only one incoming order, display its details in the button text
-                    var order = filteredList.First();
-                    btn.Text = "You have pending order from customer " + order.cusId.ToString();
+                    Button btn = new Button();
+                    btnTransaction.Text = order.body + ' ' + "with order id" + ' ' + order.orderID;
                     btn.CommandArgument = order.orderID.ToString();
                     btn.Click += new EventHandler(btnTransaction_Click);
                     btnTransaction.Controls.Add(btn);
-                }
-                else
-                {
-                    // If there are multiple incoming orders, display a message that iterates through them
-                    string message = "You have " + orderCount.ToString() + " pending orders. Click to view the first order.";
-                    btn.Text = message;
-                    btn.Click += new EventHandler(btnTransaction_Click);
-                    btnTransaction.Controls.Add(btn);
-                    int index = 0;
-                    foreach (var order in filteredList)
-                    {
-                        // Store the order information in the session variable to pass it to the order details page
-                        Session["order_" + index.ToString()] = order;
-                        index++;
-                    }
-                    Session["order_count"] = index.ToString();
                 }
             }
             else
             {
                 // If there are no incoming orders, display a message
-                Label lblNoOrders = new Label();
-                lblNoOrders.Text = "You have no incoming orders.";
-                btnTransaction.Controls.Add(lblNoOrders);
+              //  Label lblNoOrders = new Label();
+                btnTransaction.Text = "You have no incoming orders.";
+              //  btnTransaction.Controls.Add(lblNoOrders);
             }
         }
 
         protected void btnTransaction_Click(object sender, EventArgs e)
         {
-            // Check if there are multiple orders pending
-            if (Session["order_count"] != null)
-            {
-                int orderCount = Int32.Parse(Session["order_count"].ToString());
-                if (orderCount > 1)
-                {
-                    // Iterate to the next order and update the button text
-                    int currentIndex = Int32.Parse(Session["order_index"].ToString());
-                    currentIndex++;
-                    if (currentIndex >= orderCount)
-                    {
-                        currentIndex = 0;
-                    }
-                    //var order = (Order)Session["order_" + currentIndex.ToString()];
-                    //string message = "You have " + orderCount.ToString() + " pending orders. Click to view the next order.";
-                    //Button btn = (Button)sender;
-                    //btn.Text = message;
-                    //Session["order_index"] = currentIndex.ToString();
-                    //Session["order_current"] = order;
-                    //return;
-                }
-            }
-            // If there is only one pending order or the last order in the iteration has been reached, redirect to the order details page
-            Button btn = (Button)sender;
-            var order = (Order)Session["order_current"];
-            string orderID = order.orderID.ToString();
-            Response.Redirect("OnlineOrders.aspx?orderID=" + orderID);
+            Response.Redirect("OnlineOrders.aspx");
         }
 
         //SEARCH ORDER DETAILS
