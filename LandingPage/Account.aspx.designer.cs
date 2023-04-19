@@ -240,31 +240,40 @@ namespace WRS2big_Web.LandingPage
         protected global::System.Web.UI.WebControls.TextBox @long;
 
         /// <summary>
-        /// txtproof control.
+        /// documentDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload txtproof;
+        protected global::System.Web.UI.WebControls.DropDownList documentDropDown;
 
         /// <summary>
-        /// lblTerms control.
+        /// validIDList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTerms;
+        protected global::System.Web.UI.WebControls.DropDownList validIDList;
 
         /// <summary>
-        /// chkTerms control.
+        /// businessProof control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkTerms;
+        protected global::System.Web.UI.WebControls.FileUpload businessProof;
+
+        /// <summary>
+        /// validIDUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload validIDUpload;
 
         /// <summary>
         /// btnSignup control.

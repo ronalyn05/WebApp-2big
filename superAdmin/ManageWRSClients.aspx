@@ -56,33 +56,7 @@
                                             <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
                                             <div class="clearfix">
                                             </div>
-                                         <div class="modal fade ViewDetails col-xl-8 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-10">
-                                            <div class="modal-content col-xl-10 col-md-10" style="/*background-color:red;*/ margin-left:370px">
-                                               <div id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                                   <div class="modal-header">
-                                                    <h4 class="modal-title" id="myModalLabel1">Client Full Details</h4>
-                                                        <%--exit button--%>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                                   </div>
-                                                <div class="modal-body">
-                                                     <div class="col-md-18 col-sm-18 ">
-                                                        <div class="x_content">
-                                                             
-                                                            <hr>          
-                                                        </div>
-                                                         <div class="col-md-12 col-sm-12">
-                                                             <asp:ImageButton ID="ClientImage" class="img-100 img-radius" style="width:200px" runat="server" />
-                                                         </div>
-                                                    </div> <br /><br /><br />
-                                                    <div class="modal-footer">
-                                                        <asp:LinkButton ID="updateButton" href="SubscriptionPlans.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> UPDATE </asp:LinkButton>
-                                                    </div>
-                                                 </div>
-                                               </div>
-                                          </div>
-                                          </div>
-                                        </div>
+                                     <!--MAIN CONTENT-->
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <!-- Tab variant tab card start -->
@@ -98,21 +72,23 @@
                                                             <!-- Nav tabs -->
                                                             <ul class="nav nav-tabs md-tabs " role="tablist">
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link active" data-toggle="tab" href="#AllClients" role="tab">All Clients</a>
+                                                                    <a class="nav-link" data-toggle="tab" href="#AllClients" role="tab">All Clients</a>
                                                                     <div class="slide"></div>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" href="#pendingClients" role="tab">Pending Clients</a>
+                                                                     <a class="nav-link active " data-toggle="tab" href="#pendingClients" role="tab">Pending Clients</a>
+                                                                 
                                                                     <div class="slide"></div>
                                                                 </li>
                                                                 <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" href="#approvedClients" role="tab">Approved Clients</a>
+                                                                     <a class="nav-link " data-toggle="tab" href="#approvedClients" role="tab">Approved Clients</a>
+                                                                   
                                                                     <div class="slide"></div>
                                                                 </li>
                                                             </ul>
                                                             <!-- Tab panes -->
                                                             <div class="tab-content card-block">
-                                                                <div class="tab-pane active" ID="AllClients" role="tabpanel">
+                                                                <div class="tab-pane" ID="AllClients" role="tabpanel">
                                                                         <div class="col-lg-16 col-xl-18">
                                                                             <div class="card table-card">
                                                                                 <div class="card-block">
@@ -121,8 +97,8 @@
                                                                                          <Columns>
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
-                                                                                                   <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".ViewDetails" OnClick="viewButton_Clicked" style="background-color:transparent;font-size:16px;"><i class="ti-marker"></i>View</button> 
-                                                                                                  
+                                                                                                   <%--<button type="button" class="active btn waves-effect text-center" OnClick="viewButton_Clicked" style="background-color:transparent;font-size:16px;"><i class="ti-marker"></i>View</button>--%> 
+                                                                                                  <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -140,7 +116,7 @@
                                                                             </div>
                                                                         </div>
                                                                 </div>
-                                                                <div class="tab-pane" id="pendingClients" role="tabpanel">
+                                                                <div class="tab-pane active" id="pendingClients" role="tabpanel">
                                                                         <div class="col-lg-12 col-xl-12">
                                                                             <div class="card table-card">
                                                                                 <div class="card-block">
@@ -150,7 +126,7 @@
                                                                                              <asp:TemplateField >
                                                                                                 <ItemTemplate>
                                                                                                     <%--<asp:Button ID="ViewButton" runat="server" Text="Open" ForeColor="Black" BackColor="transparent" BorderStyle="Solid" BorderColor="White"/>--%>
-                                                                                                    <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".ViewDetails" style="background-color:transparent;font-size:16px;"><i class="ti-marker"></i>View</button> 
+                                                                                                    <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -178,7 +154,7 @@
                                                                                           <Columns>
                                                                                              <asp:TemplateField>
                                                                                                 <ItemTemplate>  
-                                                                                                          <asp:ImageButton ID="ImageClient" class="img-100 img-radius"  data-toggle="modal" data-target=".ViewDetails" style="width:200px" runat="server" /> 
+                                                                                                           <asp:Button runat="server" ID="detailsButton" OnClick="detailsButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                          </Columns>
@@ -205,6 +181,7 @@
                                             <!-- Tab variant tab card start -->
                                         </div>
                                     </div>
+
                                           </div>
                                     </div>
 
@@ -220,6 +197,5 @@
             </div>
         </div>
     </div>
-   </div>
 </form>
 </asp:Content>
