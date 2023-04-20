@@ -39,6 +39,7 @@ namespace WRS2big_Web.superAdmin
                 DisplayAll();
                 DisplayPending();
                 DisplayApproved();
+                DisplayFullDetails();
 
             }
         }
@@ -145,21 +146,31 @@ namespace WRS2big_Web.superAdmin
             approvedGridView.DataSource = approvedTable;
             approvedGridView.DataBind();
         }
-
-        protected void viewButton_Clicked (object sender, EventArgs e)
+        private void DisplayFullDetails()
         {
+
+
+        }
+
+
+        protected void detailsButton_Click(object sender, EventArgs e)
+        {
+
             //Get the GridViewRow that contains the clicked button
-                Button btn = (Button)sender;
-               GridViewRow row = (GridViewRow)btn.NamingContainer;
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             //Get the order ID from the first cell in the row
-                int adminID = int.Parse(row.Cells[1].Text);
+            int adminID = int.Parse(row.Cells[1].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
             Model.AdminAccount clientDetails = response.ResultAs<Model.AdminAccount>();
 
-            
+            int currentClient = clientDetails.idno;
+            Session["currentClient"] = currentClient;
+
+            Response.Write("<script>window.location.href = '/superAdmin/clientDetails.aspx'; </script>");
 
         }
 

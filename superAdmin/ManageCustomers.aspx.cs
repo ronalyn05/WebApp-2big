@@ -127,5 +127,25 @@ namespace WRS2big_Web.superAdmin
             approvedGridView.DataSource = approvedTable;
             approvedGridView.DataBind();
         }
+        protected void detailsButton_Click(object sender, EventArgs e)
+        {
+
+            //Get the GridViewRow that contains the clicked button
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            //Get the order ID from the first cell in the row
+            int customerID = int.Parse(row.Cells[1].Text);
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
+            Model.Customer customerDetails = response.ResultAs<Model.Customer>();
+
+            int currentClient = customerDetails.cusId;
+            Session["currentCustomer"] = currentClient;
+
+            Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
+
+        }
     }
 }

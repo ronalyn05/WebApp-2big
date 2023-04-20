@@ -584,7 +584,9 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="superAdmin\Account.aspx" />
+    <Content Include="superAdmin\clientDetails.aspx" />
     <Content Include="superAdmin\ClientReports.aspx" />
+    <Content Include="superAdmin\customerDetails.aspx" />
     <Content Include="superAdmin\CustomerReports.aspx" />
     <Content Include="superAdmin\ManageCustomers.aspx" />
     <Content Include="superAdmin\ManageSubscription.aspx" />
@@ -801,12 +803,26 @@
     <Compile Include="superAdmin\Account.aspx.designer.cs">
       <DependentUpon>Account.aspx</DependentUpon>
     </Compile>
+    <Compile Include="superAdmin\clientDetails.aspx.cs">
+      <DependentUpon>clientDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\clientDetails.aspx.designer.cs">
+      <DependentUpon>clientDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="superAdmin\ClientReports.aspx.cs">
       <DependentUpon>ClientReports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="superAdmin\ClientReports.aspx.designer.cs">
       <DependentUpon>ClientReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\customerDetails.aspx.cs">
+      <DependentUpon>customerDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\customerDetails.aspx.designer.cs">
+      <DependentUpon>customerDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="superAdmin\CustomerReports.aspx.cs">
       <DependentUpon>CustomerReports.aspx</DependentUpon>

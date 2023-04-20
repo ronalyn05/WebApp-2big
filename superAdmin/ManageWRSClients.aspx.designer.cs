@@ -15,24 +15,6 @@ namespace WRS2big_Web.superAdmin
     {
 
         /// <summary>
-        /// ClientImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ClientImage;
-
-        /// <summary>
-        /// updateButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton updateButton;
-
-        /// <summary>
         /// AllGridview control.
         /// </summary>
         /// <remarks>
