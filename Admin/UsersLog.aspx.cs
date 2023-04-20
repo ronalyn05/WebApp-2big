@@ -60,38 +60,38 @@ namespace WRS2big_Web.Admin
                 foreach (var entry in filteredList)
                 {
                     // Check for user actions and set activity property
-                    string activity = "";
-                    if (!string.IsNullOrEmpty(entry.productrefillDateAdded.ToString()))
-                    {
-                        //activity += "Added product with ID " + entry.productRefillId + " on " + entry.productrefillDateAdded;
-                        activity += entry.productRefillId + " on " + entry.productrefillDateAdded;
-                    }
-                    if (!string.IsNullOrEmpty(entry.tankSupplyDateAdded.ToString()))
-                    {
-                        //activity += "Added tank supply with ID " + entry.tankId + " on " + entry.tankSupplyDateAdded;
-                        activity += entry.tankId + " on " + entry.tankSupplyDateAdded;
-                    }
-                    if (!string.IsNullOrEmpty(entry.dateOrderAccepted.ToString()))
-                    {
-                        activity += entry.userActivity + " of " + entry.orderId + " from customer " + entry.cusId 
-                                    + " on " + entry.dateOrderAccepted;
-                    }
-                    if (!string.IsNullOrEmpty(entry.datePaymentReceived.ToString()))
-                    {
-                        activity += entry.userActivity + " of " + entry.orderId + " on " + entry.datePaymentReceived;
-                    }
-                    if (activity != "")
-                    {
-                        // Remove the trailing ", " from the activity string
-                        activity = activity.Substring(0, activity.Length - 2);
-                    }
+                    //string activity = "";
+                    //if (!string.IsNullOrEmpty(entry.userActivity.ToString()))
+                    //{
+                    //    //activity += "Added product with ID " + entry.productRefillId + " on " + entry.productrefillDateAdded;
+                    //    activity += entry.userActivity;
+                    //}
+                    //if (!string.IsNullOrEmpty(entry.tankSupplyDateAdded.ToString()))
+                    //{
+                    //    //activity += "Added tank supply with ID " + entry.tankId + " on " + entry.tankSupplyDateAdded;
+                    //    activity += entry.tankId + " on " + entry.tankSupplyDateAdded;
+                    //}
+                    //if (!string.IsNullOrEmpty(entry.dateOrderAccepted.ToString()))
+                    //{
+                    //    activity += entry.userActivity + " of " + entry.orderId + " from customer " + entry.cusId 
+                    //                + " on " + entry.dateOrderAccepted;
+                    //}
+                    //if (!string.IsNullOrEmpty(entry.datePaymentReceived.ToString()))
+                    //{
+                    //    activity += entry.userActivity + " of " + entry.orderId + " on " + entry.datePaymentReceived;
+                    //}
+                    //if (activity != "")
+                    //{
+                    //    // Remove the trailing ", " from the activity string
+                    //    activity = activity.Substring(0, activity.Length - 2);
+                    //}
 
                     //Update the user's activity in the database
                     //entry.Activity = activity;
                     //twoBigDB.Set("USERSLOG/" + entry.logsId, entry);
 
 
-                   // Retrieve the existing Users log object from the database
+                    // Retrieve the existing Users log object from the database
                     FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
@@ -119,13 +119,14 @@ namespace WRS2big_Web.Admin
                         tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                         dateOrderAccepted = existingLog.dateOrderAccepted,
                         datePaymentReceived = existingLog.datePaymentReceived,
-                        userActivity = activity
+                      //  userActivity = activity
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
                     // Update the userLogTable with the user's activity
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
+                    //userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, entry.userActivity, entry.dateLogout);
                 }
 
             }

@@ -48,7 +48,7 @@
                                                 <div class="row">
                                                    <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Name:</h5>
-                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="Note: must enter promo in percentage" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
+                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: 10% OFF or 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
@@ -63,6 +63,33 @@
                                                         <asp:ListItem Text="other Product" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
                                                     </asp:CheckBoxList>
                                             </div>
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                  <h5>How would you like your customer to earn points?</h5>
+                                                    <asp:CheckBoxList ID="check_cusEarnPoints" runat="server" AutoPostBack="false">
+                                                        <asp:ListItem Text="per transaction" Value="per transaction" ></asp:ListItem>
+                                                        <asp:ListItem Text="per amount" Value="other Product" ></asp:ListItem>
+                                                    </asp:CheckBoxList>
+                                                         <div id="pointsInput" style="display: none;">
+                                                        <label for="points">Points:</label>
+                                                         <asp:TextBox ID="txtpoints" runat="server" class="form-control" placeholder="Enter points"></asp:TextBox>
+                                                      </div>
+                                            </div>
+                                                    <script>
+                                                        var checkBoxList = document.getElementById("check_cusEarnPoints");
+                                                        var pointsInput = document.getElementById("pointsInput");
+                                                        var pointsInputField = document.getElementById("points");
+
+                                                        checkBoxList.addEventListener("change", function () {
+                                                            if (checkBoxList.value === "per transaction" || checkBoxList.value === "per amount") {
+                                                                pointsInput.style.display = "block";
+                                                                pointsInputField.required = true;
+                                                            } else {
+                                                                pointsInput.style.display = "none";
+                                                                pointsInputField.required = false;
+                                                            }
+                                                        });
+                                                    </script>
+
                                              <div class="col-md-12 col-sm-12 ">
                                             <h5>Points Required:</h5>
                                             <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required "></asp:TextBox>

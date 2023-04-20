@@ -78,6 +78,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.ListItem otherproductRadio;
 
         /// <summary>
+        /// check_cusEarnPoints control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList check_cusEarnPoints;
+
+        /// <summary>
+        /// txtpoints control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtpoints;
+
+        /// <summary>
         /// txtpointsrequired control.
         /// </summary>
         /// <remarks>
