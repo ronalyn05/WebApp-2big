@@ -125,6 +125,12 @@
                                                                                                           <asp:Label  class="form-control-round" id="clientPhone" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Home Address:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
+                                                                                                          <asp:Label  class="form-control-round" id="clientAddress" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
 
                                                                                             </div>
 

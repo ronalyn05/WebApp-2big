@@ -58,6 +58,9 @@
     <Reference Include="FireSharp.Serialization.JsonNet, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FireSharp.Serialization.JsonNet.1.1.0\lib\net45\FireSharp.Serialization.JsonNet.dll</HintPath>
     </Reference>
+    <Reference Include="GroupDocs.Viewer, Version=23.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>packages\GroupDocs.Viewer.23.3.0\lib\net40\GroupDocs.Viewer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -589,8 +592,11 @@
     <Content Include="superAdmin\customerDetails.aspx" />
     <Content Include="superAdmin\CustomerReports.aspx" />
     <Content Include="superAdmin\ManageCustomers.aspx" />
+    <Content Include="superAdmin\ManagePackagePlans.aspx" />
     <Content Include="superAdmin\ManageSubscription.aspx" />
     <Content Include="superAdmin\ManageWRSClients.aspx" />
+    <Content Include="superAdmin\Notifications.aspx" />
+    <Content Include="superAdmin\packageDetails.aspx" />
     <Content Include="superAdmin\SAdminIndex.aspx" />
     <Content Include="superAdmin\SubscriptionReports.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -838,6 +844,13 @@
     <Compile Include="superAdmin\ManageCustomers.aspx.designer.cs">
       <DependentUpon>ManageCustomers.aspx</DependentUpon>
     </Compile>
+    <Compile Include="superAdmin\ManagePackagePlans.aspx.cs">
+      <DependentUpon>ManagePackagePlans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\ManagePackagePlans.aspx.designer.cs">
+      <DependentUpon>ManagePackagePlans.aspx</DependentUpon>
+    </Compile>
     <Compile Include="superAdmin\ManageSubscription.aspx.cs">
       <DependentUpon>ManageSubscription.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -851,6 +864,20 @@
     </Compile>
     <Compile Include="superAdmin\ManageWRSClients.aspx.designer.cs">
       <DependentUpon>ManageWRSClients.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\Notifications.aspx.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\Notifications.aspx.designer.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\packageDetails.aspx.cs">
+      <DependentUpon>packageDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\packageDetails.aspx.designer.cs">
+      <DependentUpon>packageDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="superAdmin\SAdminIndex.aspx.cs">
       <DependentUpon>SAdminIndex.aspx</DependentUpon>

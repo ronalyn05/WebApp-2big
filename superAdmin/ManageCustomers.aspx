@@ -27,7 +27,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10"> REFILLING STATION CLIENTS</h5>
+                                            <h5 class="m-b-10"> REGISTERED CUSTOMERS</h5>
                                             <h6 class="m-b-0">2BiG: Water Refilling Station Management System</h6>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                             <!-- Tab variant tab card start -->
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>CLIENT APPROVAL</h5>
+                                                    <h5>CUSTOMER APPROVAL</h5>
                                                 </div>
                                                 <div class="card-block tab-icon">
                                                     <!-- Row start -->

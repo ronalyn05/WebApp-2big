@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,7 +11,7 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
 
 namespace WRS2big_Web.superAdmin
 {
@@ -47,6 +48,11 @@ namespace WRS2big_Web.superAdmin
             cusFirstName.Text = admin.firstName;
             cuslastName.Text = admin.lastName;
             cusmiddleName.Text = admin.middleName;
+            clientAddress.Text = admin.address;
+
+            
+
+
             clientValidID.ImageUrl = admin.imageProof.ToString();
 
             //if (admin.cus_status == "Approved" && admin.cus_status == "Declined")
@@ -55,6 +61,32 @@ namespace WRS2big_Web.superAdmin
             //    declineButton.Enabled = false;
             //}
 
+            double lattitude = admin.lattitudeLocation;
+            double longitude = admin.longitudeLocation;
+            string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+
+            string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
+
+            clientAddress.Text = address;
+
+        }
+
+
+        //TO REVERSE THE COORDINATES INTO ADDRESS
+        public static string GetAddressFromLatLong(double latitude, double longitude, string apiKey)
+        {
+            string url = string.Format("https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&key={2}", latitude, longitude, apiKey);
+            string result = string.Empty;
+
+            using (var client = new WebClient())
+            {
+                result = client.DownloadString(url);
+            }
+
+            JObject json = JObject.Parse(result);
+            string address = json["results"][0]["formatted_address"].ToString();
+
+            return address;
         }
 
         protected void approveButton_Click(object sender, EventArgs e)
