@@ -15,6 +15,7 @@
         overflow-y: auto;
          }
     </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
    <form runat="server">
@@ -134,7 +135,7 @@
                                                                                                     <div class="form-group row text" >
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">Government-issued ID:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                            <asp:Image runat="server" ID="clientValidID" class="img-500  img-container" style="width:600px;height:600px" />
+                                                                                                            <asp:Image runat="server" ID="clientValidID" class="img-500  " style="width:600px;height:600px" />
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
@@ -167,11 +168,12 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px">Proof of Business File:</label>
+                                                                                                        <asp:Label runat="server" class="col-sm-5 col-form-label" id="proofChosen" style="font-size:18px"></asp:Label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:Label  class="form-control-round" id="clientBusinessProof" runat="server"></asp:Label>
+                                                                                                            <asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
                                                                                                         </div>
                                                                                                     </div>
+
                                                                                             </div>
 
                                                                             </div>

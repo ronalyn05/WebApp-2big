@@ -48,6 +48,14 @@ namespace WRS2big_Web.superAdmin
             clientPhone.Text = admin.phone;
             chosenValidID.Text = admin.validID;
             chosenProof.Text = admin.businessProof;
+            proofChosen.Text = admin.businessProof + " " + "File:";
+
+            //FILE 
+            string proofLink = admin.businessProofLnk;
+            fileProofLink.NavigateUrl = proofLink;
+
+
+
 
             //TO CHECK IF NAY VALID ID AND PROOF
             if (admin.businessProofLnk != null || admin.validIDLnk != null)
@@ -56,6 +64,7 @@ namespace WRS2big_Web.superAdmin
 
             }
 
+           
             
 
             adminDet = twoBigDB.Get("ADMIN/" + clientID + "/RefillingStation");
@@ -93,6 +102,8 @@ namespace WRS2big_Web.superAdmin
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             Response.Write("<script>alert ('successfully approved! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+
+           
 
         }
 

@@ -56,28 +56,8 @@
     <script src="assets/js/vertical-layout.min.js "></script>
     <!-- Custom js -->
     <script type="text/javascript" src="assets/js/script.js"></script>
-                                                        <%--                                @*Show Password script*@--%>
-                                                                                        <script>
-                                                                                            const toggleregPassword = document.querySelector('#togglePasswordreg');
-                                                                                            const regpassword = document.querySelector('#id_passwordreg');
-                                                                                            const con_pass = document.querySelector('#conpass');
-                                                                                            // SHOW PASSWORD
-                                                                                            toggleregPassword.addEventListener('click', function (e) {
-                                                                                                // toggle the type attribute
-                                                                                                const type = regpassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                                                                regpassword.setAttribute('type', type);
-                                                                                                // toggle the eye slash icon
-                                                                                                this.classList.toggle('fa-eye-slash');
-                                                                                            });
-                                                                                            // SHOW CONFIRM PASSWORD
-                                                                                            toggleregPassword.addEventListener('click', function (e) {
-                                                                                                // toggle the type attribute
-                                                                                                const type = con_pass.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                                                                con_pass.setAttribute('type', type);
-                                                                                                // toggle the eye slash icon
-                                                                                                this.classList.toggle('fa-eye-slash');
-                                                                                            });
-                                                                                        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/Scripts/viewer.min.js"></script>
 </head>
 <body>
 
@@ -131,7 +111,7 @@
 
                         <!-- NOTIFICATIONS -->
                         <ul class="nav-right">
-                            <li class="header-notification">
+<%--                            <li class="header-notification">
                                 <a href="#!" class="waves-effect waves-light">
                                     <i class="ti-bell"></i>
                                     <span class="badge bg-c-red"></span>
@@ -172,7 +152,7 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
+                            </li>--%>
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
                                 <a href="#!" class="waves-effect waves-light">
@@ -234,6 +214,13 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
+                                    <li class="">
+                                        <a href="/superAdmin/Notifications" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-bell"></i><b></b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Notifications</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
                                 </ul>
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
                                 <ul class="pcoded-item pcoded-left-item">
@@ -252,9 +239,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/superAdmin/ManageSubscription" class="waves-effect waves-dark">
+                                        <a href="/superAdmin/ManagePackagePlans" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-notepad"></i><b></b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Plans</span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Packages</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>

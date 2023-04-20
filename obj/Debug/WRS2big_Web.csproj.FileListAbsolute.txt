@@ -238,6 +238,7 @@ C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\AspNet.ScriptManager.jQuery.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Firebase.Storage.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\FireSharp.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\FireSharp.Serialization.JsonNet.dll
+C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\GroupDocs.Viewer.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.AspNet.FriendlyUrls.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.Bcl.AsyncInterfaces.dll
@@ -262,6 +263,7 @@ C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\System.Threading.Tasks.Extensions.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\System.ValueTuple.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\System.Web.Optimization.dll
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\WebGrease.dll
+C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\GroupDocs.Viewer.xml
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.Threading.Tasks.xml
 C:\Users\trini\CAPSTONE 2\WebApp-2big\bin\Microsoft.Threading.Tasks.Extensions.xml

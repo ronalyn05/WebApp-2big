@@ -11,7 +11,16 @@ namespace WRS2big_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           superLbl.Text = Session["name"].ToString();
+            string name = (string) Session["name"];
+            if (name == null)
+            {
+                Response.Write("<script>alert('Please Login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
+            }
+            else
+            {
+                superLbl.Text = Session["name"].ToString();
+            }
+           
         }
     }
 }

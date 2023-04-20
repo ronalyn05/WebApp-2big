@@ -220,8 +220,9 @@
                                                 <br />
                                                  <%--PRODUCT Discount--%>
                                                       <div class="col-md-12 col-sm-12 ">
-                                                          <strong>Product Discount:</strong>
-                                                        <asp:TextBox ID="productDiscounts" Placeholder="Enter discounts offered" runat="server" Width="364px"></asp:TextBox>
+                                                          <strong>Product Discount:</strong> <br />
+                                                          <h7>Please enter the discount percentage (%) you offer for this product</h7>
+                                                        <asp:TextBox ID="productDiscounts" TextMode="Number" Placeholder="Enter discount offered" runat="server" Width="364px"></asp:TextBox>
                                                           </div>
                                                 <br />
                                                         <%--PRODUCT Available--%>
@@ -295,9 +296,9 @@
                                                      </div>
                                                 <br />
                                                     <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Discounts</strong>
-                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="refillDiscount" Width="364px" TextMode="Number" Placeholder="Enter discounts offered in percentage (%)" runat="server"></asp:TextBox>
+                                                        <strong>Discounts</strong> <br />
+                                                         <h7>Please enter the discount percentage (%) you offer for this product</h7>
+                                                        <asp:TextBox ID="refillDiscount" Width="364px" TextMode="Number" Placeholder="Enter discount offered" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                   </div>

@@ -87,6 +87,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label clientPhone;
 
         /// <summary>
+        /// clientAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label clientAddress;
+
+        /// <summary>
         /// clientValidID control.
         /// </summary>
         /// <remarks>

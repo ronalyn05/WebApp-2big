@@ -597,7 +597,7 @@ namespace WRS2big_Web.Admin
                     other_productUnit = drdprodUnit.SelectedValue,
                     other_productSize = productSize.Text,
                     other_productPrice = productPrice.Text,
-                    other_productDiscount = productDiscounts.Text,
+                    other_productDiscount = int.Parse(productDiscounts.Text),
                     other_productStock = productStock.Text,
                     other_productImage = null,
                     dateAdded = DateTime.UtcNow
@@ -692,7 +692,7 @@ namespace WRS2big_Web.Admin
                     pro_refillWaterType = refillwaterType.Text,
                     pro_Image = null,
                     pro_refillUnit = refillUnit.SelectedValue,
-                    pro_discount = productDiscounts.Text,
+                    pro_discount = int.Parse(refillDiscount.Text),
                     pro_refillSize = refillSize.Text,
                     pro_refillPrice = refillPrice.Text,
                     dateAdded = DateTime.UtcNow
