@@ -192,12 +192,12 @@ namespace WRS2big_Web.Model
         public DateTimeOffset dateAdded { get; set; }
     }
 
-    public class AdminNotification
-    {
-        public int adminnotificationID { get; set; }
-        public int orderID { get; set; }
-        public string orderStatus { get; set; }
-    }
+    //public class AdminNotification
+    //{
+    //    public int adminnotificationID { get; set; }
+    //    public int orderID { get; set; }
+    //    public string orderStatus { get; set; }
+    //}
     public class WalkInOrders
     {
         public int adminId { get; set; }
@@ -248,6 +248,7 @@ namespace WRS2big_Web.Model
         public int adminId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
+        public string cusEarnPoints { get; set; }
         public int points_required { get; set; }
         public string productOffered { get; set; }
         public DateTimeOffset promoExpirationFrom { get; set; }

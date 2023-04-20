@@ -96,11 +96,11 @@
                         <!-- NOTIFICATIONS -->
                         <ul class="nav-right">
                             <li class="header-notification">
-                              <%--  <a href="#!" class="waves-effect waves-light">
+                                <a href="#!" class="waves-effect waves-light">
                                     <i class="ti-bell"></i>
                                     <span class="badge bg-c-red"></span>
-                                </a>--%>
-                               <%-- <ul class="show-notification">
+                                </a>
+                                <ul class="show-notification">
                                     <li>
                                         <h6>Notifications</h6>
                                         <label class="label label-danger">New</label>
@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                </ul>--%>
+                                </ul>
                             </li>
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
@@ -255,7 +255,7 @@
                                     <li>
                                         <a href="/Admin/Rewards" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-gift"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards and Discounts</span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>

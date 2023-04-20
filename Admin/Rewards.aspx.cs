@@ -65,21 +65,21 @@ namespace WRS2big_Web.Admin
                     // Get the current UTC date and time as a DateTimeOffset object
                     DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
 
-                    // Query the "REWARDS" node in your database
-                    var responseReward = twoBigDB.Get("REWARDS");
-                    Dictionary<string, Reward> rewards = responseReward.ResultAs<Dictionary<string, Reward>>();
-                    if (rewards != null) // Add this null check
-                    {
-                        // Check if there are any rewards with an expiration date later than the current UTC date and time
-                        foreach (var reward in rewards.Values)
-                        {
-                            if (currentDateTime < reward.promoExpirationTo)
-                            {
-                                Response.Write("<script> alert('There is an existing reward promo with a later expiration date. Please wait until that promo expires before adding a new one.'); location.reload(); window.location.href = '/Admin/Rewards.aspx';</script>");
-                                return;
-                            }
-                        }
-                    }
+                    //// Query the "REWARDS" node in your database
+                    //var responseReward = twoBigDB.Get("REWARDS");
+                    //Dictionary<string, Reward> rewards = responseReward.ResultAs<Dictionary<string, Reward>>();
+                    //if (rewards != null) // Add this null check
+                    //{
+                    //    // Check if there are any rewards with an expiration date later than the current UTC date and time
+                    //    foreach (var reward in rewards.Values)
+                    //    {
+                    //        if (currentDateTime < reward.promoExpirationTo)
+                    //        {
+                    //            Response.Write("<script> alert('There is an existing reward promo with a later expiration date. Please wait until that promo expires before adding a new one.'); location.reload(); window.location.href = '/Admin/Rewards.aspx';</script>");
+                    //            return;
+                    //        }
+                    //    }
+                    //}
 
                     // Define the format of the date string
                     string format = "MMMM, dd yyyy";
@@ -102,6 +102,21 @@ namespace WRS2big_Web.Admin
                     {
                         selectedValues = selectedValues.TrimEnd(',');
                     }
+                    // Get the selected values from the CheckBoxList
+                    string cusEarnPoints_selectedValues = "";
+                    foreach (ListItem item in check_cusEarnPoints.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            cusEarnPoints_selectedValues += item.Value + ",";
+                        }
+                    }
+
+                    // Remove the trailing comma if there are any selected values
+                    if (!string.IsNullOrEmpty(cusEarnPoints_selectedValues))
+                    {
+                        cusEarnPoints_selectedValues = cusEarnPoints_selectedValues.TrimEnd(',');
+                    }
 
                     // Add the reward promo to the database
                     var data = new Reward
@@ -113,6 +128,7 @@ namespace WRS2big_Web.Admin
                         points_required = pointsRequired,
                         rewardsDateAdded = rewardsDateAdded,
                         productOffered = selectedValues,
+                        cusEarnPoints = cusEarnPoints_selectedValues,
                         promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
                         promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text)
                     };
