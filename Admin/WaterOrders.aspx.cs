@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,15 +29,6 @@ namespace WRS2big_Web.Admin
             //connection to database
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            //if (!IsPostBack)
-            //{
-            //    BindOrders();
-            //    DisplayOrders();
-            //}
-            //onlineordersDisplay();
-            //walkinordersDisplay();
-            //gridOrder.Visible = false;
-            //gridWalkIn.Visible = false;
         }
         private void onlineordersDisplay()
         {
@@ -54,33 +45,22 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("CUSTOMER ID");
             ordersTable.Columns.Add("DRIVER ID");
             ordersTable.Columns.Add("STORE NAME");
-            ordersTable.Columns.Add("PRODUCT NAME");
-            ordersTable.Columns.Add("PRODUCT UNIT");
-            ordersTable.Columns.Add("PRODUCT SIZE");
-            ordersTable.Columns.Add("DELIVERY TYPE");
-            ordersTable.Columns.Add("ORDER TYPE");
-            ordersTable.Columns.Add("ORDER METHOD");
-            //ordersTable.Columns.Add("GALLON TYPE");
-            ordersTable.Columns.Add("PRICE");
-            ordersTable.Columns.Add("QUANTITY");
-            ordersTable.Columns.Add("RESERVATION DATE");
-            ordersTable.Columns.Add("STATUS");
             ordersTable.Columns.Add("TOTAL AMOUNT");
-            //ordersTable.Rows.Add("OVERALL AMOUNT");
+            ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
+            ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
+            ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
+            ordersTable.Columns.Add("PAYMENT RECEIVED BY");
 
             if (response != null && response.ResultAs<Order>() != null)
             {
                 var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Received"
-                || d.order_OrderStatus == "Delivered");
+                || d.order_OrderStatus == "Payment Received");
                 //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
-                                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_WaterPrice,
-                                          entry.order_Quantity, entry.order_ReservationDate,
-                                          entry.order_OrderStatus, entry.order_InitialAmount);
+                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount, entry.dateOrderAccepted,
+                                          entry.dateOrderDelivered, entry.datePaymentReceived, idno);
                 }
             }
             else
@@ -154,7 +134,8 @@ namespace WRS2big_Web.Admin
                 //    onlineordersDisplay();
                 //    walkinordersDisplay();
                 //}
-                if (selectedOption == "1")
+                //else 
+                if(selectedOption == "1")
                 {
                     lblOrder.Text = "LIST OF ONLINE ORDERS";
                     gridOrder.Visible = true;
@@ -172,7 +153,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Data already exist'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
             }
         }
 

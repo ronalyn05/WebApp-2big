@@ -35,23 +35,25 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
 
-            FirebaseResponse response = twoBigDB.Get("NOTIFICATION/");
-            Dictionary<string, CustomerNotification> orderlist = response.ResultAs<Dictionary<string, CustomerNotification>>();
+            FirebaseResponse response = twoBigDB.Get("ADMINNOTIFICATION/");
+            Dictionary<string, AdminNotification> orderlist = response.ResultAs<Dictionary<string, AdminNotification>>();
             //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
-            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.body == "Your order has been assigned to a driver and will be delivered soon.");
+            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.body == "You have pending order/s.");
 
 
             if (filteredList.Any())
             {
                 // If there are incoming orders, display them in a button
                 // If there are incoming orders, display them in separate buttons
-                foreach (var order in filteredList)
+                foreach (var notif in filteredList)
                 {
+                    // listNotif.Items.Add(order.body + ' ' + "with order id" + ' ' + order.orderID);
                     Button btn = new Button();
-                    btnTransaction.Text = order.body + ' ' + "with order id" + ' ' + order.orderID;
-                    btn.CommandArgument = order.orderID.ToString();
+                    btnTransaction.Text = notif.body + ' ' + "with order id" + ' ' + notif.orderID + ' ' + " on " + ' ' + notif.notificationDate;
+                    btn.CommandArgument = notif.orderID.ToString();
                     btn.Click += new EventHandler(btnTransaction_Click);
                     btnTransaction.Controls.Add(btn);
+
                 }
             }
             else

@@ -91,12 +91,15 @@
                                                                                 <li><i class="fa fa-trash close-card"></i></li>
                                                                             </ul>
                                                                         </div>
+                                                                        
                                                                           <asp:Label ID="Label1" runat="server" Text="TRANSACTION" ForeColor="Blue" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                     </div>
                                                                     <div class="card-block">
-                                                                        <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" class="btn btn-default btn-sm" runat="server" />
+                                                                         <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" Text="View Orders" class="btn btn-default btn-sm" runat="server" />
+                                                                       <%-- //<asp:ListBox ID="listNotif" runat="server" ></asp:ListBox>--%>
                                                                     </div>
                                                                     <div class="card-footer">
+                                                                        <%-- <asp:Button ID="btnTransaction" type="button" Style="font-size: 14px;" OnClick="btnTransaction_Click" Text="View Orders" class="btn btn-default btn-sm" runat="server" />--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
