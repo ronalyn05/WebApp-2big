@@ -258,12 +258,17 @@ namespace WRS2big_Web.Model
 
     public enum UserActivityType
     {
-        AcceptedOrder,
+        AcceptedOrder, 
         DeclinedOrder,
         ReceivedPayment,
         UpdateStationdetails,
         CreateStationdetails,
         AddedEmployeeRecords,
+        AddedTankSupply,
+        AddedOtherProducts,
+        AddedProductRefill,
+        AddedDeliveryDetails,
+        UpdatedEmployeeRecords
     }
 
     public class Reward
