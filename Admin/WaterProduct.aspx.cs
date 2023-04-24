@@ -546,20 +546,22 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    emp_id = existingLog.emp_id,
-                    empFullname = existingLog.empFullname,
-                    empDateAdded = existingLog.empDateAdded,
                     dateLogin = existingLog.dateLogin,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    productRefillId = existingLog.productRefillId,
-                    productrefillDateAdded = existingLog.productrefillDateAdded,
-                    other_productId = existingLog.other_productId,
-                    otherProductDateAdded = existingLog.otherProductDateAdded,
-                    tankId = data.tankId,
-                    tankSupplyDateAdded = data.dateAdded,
-                    standardAdded = existingLog.standardAdded,
-                    reservationAdded = existingLog.reservationAdded,
-                    expressAdded = existingLog.expressAdded
+                    userActivity = UserActivityType.AddedTankSupply
+                    //emp_id = existingLog.emp_id,
+                    //empFullname = existingLog.empFullname,
+                    //empDateAdded = existingLog.empDateAdded,
+                    //dateLogin = existingLog.dateLogin,
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //productRefillId = existingLog.productRefillId,
+                    //productrefillDateAdded = existingLog.productrefillDateAdded,
+                    //other_productId = existingLog.other_productId,
+                    //otherProductDateAdded = existingLog.otherProductDateAdded,
+                    //tankId = data.tankId,
+                    //tankSupplyDateAdded = data.dateAdded,
+                    //standardAdded = existingLog.standardAdded,
+                    //reservationAdded = existingLog.reservationAdded,
+                    //expressAdded = existingLog.expressAdded
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -652,17 +654,19 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    emp_id = existingLog.emp_id,
-                    empFullname = existingLog.empFullname,
-                    empDateAdded = existingLog.empDateAdded,
-                    dateLogin = existingLog.dateLogin,
-                    tankId = existingLog.tankId,
-                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    productRefillId = existingLog.productRefillId,
-                    productrefillDateAdded = existingLog.productrefillDateAdded,
-                    other_productId = data.other_productId,
-                    otherProductDateAdded = data.dateAdded,
+                    userActivity = UserActivityType.AddedOtherProducts,
+                    dateLogin = existingLog.dateLogin
+                    //emp_id = existingLog.emp_id,
+                    //empFullname = existingLog.empFullname,
+                    //empDateAdded = existingLog.empDateAdded,
+                    //dateLogin = existingLog.dateLogin,
+                    //tankId = existingLog.tankId,
+                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //productRefillId = existingLog.productRefillId,
+                    //productrefillDateAdded = existingLog.productrefillDateAdded,
+                    //other_productId = data.other_productId,
+                    //otherProductDateAdded = data.dateAdded,
 
                 };
 
@@ -750,20 +754,22 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    emp_id = existingLog.emp_id,
-                    empFullname = existingLog.empFullname,
-                    empDateAdded = existingLog.empDateAdded,
-                    dateLogin = existingLog.dateLogin,
-                    tankId = existingLog.tankId,
-                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    other_productId = existingLog.other_productId,
-                    otherProductDateAdded = existingLog.otherProductDateAdded,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    productRefillId = data.pro_refillId,
-                    productrefillDateAdded = data.dateAdded,
-                    standardAdded = existingLog.standardAdded,
-                    reservationAdded = existingLog.reservationAdded,
-                    expressAdded = existingLog.expressAdded
+                    userActivity = UserActivityType.AddedProductRefill,
+                    dateLogin = existingLog.dateLogin
+                    //emp_id = existingLog.emp_id,
+                    //empFullname = existingLog.empFullname,
+                    //empDateAdded = existingLog.empDateAdded,
+                    //dateLogin = existingLog.dateLogin,
+                    //tankId = existingLog.tankId,
+                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    //other_productId = existingLog.other_productId,
+                    //otherProductDateAdded = existingLog.otherProductDateAdded,
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //productRefillId = data.pro_refillId,
+                    //productrefillDateAdded = data.dateAdded,
+                    //standardAdded = existingLog.standardAdded,
+                    //reservationAdded = existingLog.reservationAdded,
+                    //expressAdded = existingLog.expressAdded
 
                 };
 
@@ -1251,20 +1257,22 @@ namespace WRS2big_Web.Admin
                 userIdnum = int.Parse(idno),
                 logsId = logsId,
                 userFullname = (string)Session["fullname"],
-                emp_id = existingLog.emp_id,
-                empFullname = existingLog.empFullname,
-                empDateAdded = existingLog.empDateAdded,
-                dateLogin = existingLog.dateLogin,
-                tankId = existingLog.tankId,
-                tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                other_productId = existingLog.other_productId,
-                otherProductDateAdded = existingLog.otherProductDateAdded,
-                productRefillId = existingLog.productRefillId,
-                productrefillDateAdded = existingLog.productrefillDateAdded,
-                deliveryDetailsId = delivery.deliveryId,
-                standardAdded = delivery.standardDateAdded,
-                reservationAdded = delivery.reservationdateAdded,
-                expressAdded = delivery.expressdateAdded
+                userActivity = UserActivityType.AddedDeliveryDetails,
+                dateLogin = existingLog.dateLogin
+                //emp_id = existingLog.emp_id,
+                //empFullname = existingLog.empFullname,
+                //empDateAdded = existingLog.empDateAdded,
+                //dateLogin = existingLog.dateLogin,
+                //tankId = existingLog.tankId,
+                //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                //other_productId = existingLog.other_productId,
+                //otherProductDateAdded = existingLog.otherProductDateAdded,
+                //productRefillId = existingLog.productRefillId,
+                //productrefillDateAdded = existingLog.productrefillDateAdded,
+                //deliveryDetailsId = delivery.deliveryId,
+                //standardAdded = delivery.standardDateAdded,
+                //reservationAdded = delivery.reservationdateAdded,
+                //expressAdded = delivery.expressdateAdded
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -1360,7 +1368,7 @@ namespace WRS2big_Web.Admin
             {
                 Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
-        }
+        } 
         //DISPLAY EXPRESS DETAILS
         private void expressDisplay()
         {

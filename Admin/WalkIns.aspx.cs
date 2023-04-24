@@ -46,7 +46,7 @@ namespace WRS2big_Web.Admin
 
                 // Convert input values to numerical format
                 int qty;
-                decimal price, discount, totalAmount, freeGallon;
+                decimal price, discount, totalAmount;
 
                 if (!int.TryParse(txtQty.Text, out qty))
                 {
