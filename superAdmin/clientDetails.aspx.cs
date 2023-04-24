@@ -38,7 +38,7 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
-            clientImage.ImageUrl = admin.profile_image.ToString();
+         
             clientFullName.Text = admin.fname + " " + admin.mname + " " + admin.lname ;
             //clientAddress.Text = admin.
             clientEmail.Text = admin.email;
@@ -64,9 +64,14 @@ namespace WRS2big_Web.superAdmin
                 clientValidID.ImageUrl = admin.validIDLnk.ToString();
 
             }
+            //TO CHECK IF NAAY PROFILE PIC
+            if (admin.profile_image != null)
+            {
+                clientImage.ImageUrl = admin.profile_image.ToString();
+            }
 
-           
-            
+
+
 
             adminDet = twoBigDB.Get("ADMIN/" + clientID + "/RefillingStation");
             Model.RefillingStation station = adminDet.ResultAs<Model.RefillingStation>();
