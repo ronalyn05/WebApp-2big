@@ -756,6 +756,7 @@
     <Compile Include="Model\AdminAccount.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\CUSTOMERNOTIFICATION.cs" />
+    <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\OrderData.cs" />
     <Compile Include="Model\Subscription.cs" />
     <Compile Include="Model\superAdminClients.cs" />

@@ -152,11 +152,12 @@ namespace WRS2big_Web.LandingPage
                 //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
                 int ID = rnd.Next(1, 20000);
-                var Notification = new SuperAdminNotification
+                var Notification = new Notification
                 {
-                    adminID = data.idno,
+                    admin_ID = data.idno,
                     sender = "Admin",
                     receiver = "Super Admin",
+                    title = "Client Approval",
                     body = "You have a new client! Check the details for approval ",
                     notificationDate = DateTime.Now,
                     status = "unread",
@@ -167,7 +168,7 @@ namespace WRS2big_Web.LandingPage
                 //NOTIFICATION SENT TO SUPERADMIN 
                 SetResponse notifResponse;
                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                SuperAdminNotification notif = notifResponse.ResultAs<SuperAdminNotification>();//Database Result
+                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
 
 
