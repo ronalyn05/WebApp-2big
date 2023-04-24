@@ -593,11 +593,12 @@ namespace WRS2big_Web.Admin
                 {
                     adminId = adminId,
                     other_productId = idnum,
+                    offerType = "other Product",
                     other_productName = productName.Text,
                     other_productUnit = drdprodUnit.SelectedValue,
                     other_productSize = productSize.Text,
                     other_productPrice = productPrice.Text,
-                    other_productDiscount = productDiscounts.Text,
+                    other_productDiscount = int.Parse(productDiscounts.Text),
                     other_productStock = productStock.Text,
                     other_productImage = null,
                     dateAdded = DateTime.UtcNow
@@ -689,10 +690,11 @@ namespace WRS2big_Web.Admin
                 {
                     pro_refillId = idnum,
                     adminId = adminId,
+                    offerType = "Product Refill",
                     pro_refillWaterType = refillwaterType.Text,
                     pro_Image = null,
                     pro_refillUnit = refillUnit.SelectedValue,
-                    pro_discount = productDiscounts.Text,
+                    pro_discount = int.Parse(refillDiscount.Text),
                     pro_refillSize = refillSize.Text,
                     pro_refillPrice = refillPrice.Text,
                     dateAdded = DateTime.UtcNow
@@ -1138,7 +1140,12 @@ namespace WRS2big_Web.Admin
             DeliveryDetails delivery = null;
             if (resDelivery.Body != "null")
             {
+                if (delivery.orderTypes != null)
+                {
+                    orderTypes.Enabled = false;
+                }
                 delivery = resDelivery.ResultAs<DeliveryDetails>();
+
             }
             else
             {
@@ -1149,7 +1156,8 @@ namespace WRS2big_Web.Admin
                 {
                     adminId = adminId,
                     deliveryId = adminId,
-                    
+                    orderTypes = GetSelectedValues(orderTypes)
+
                 };
                 Session["deliveryID"] = deliveryId;
             }
@@ -1177,7 +1185,7 @@ namespace WRS2big_Web.Admin
                                 delivery.stanDeliveryFee = DeliveryFee.Text;
                                 delivery.stanDeliveryTime = standardSchedFrom.Text + "AM - " + standardSchedTo.Text + "PM";
                                 delivery.standistance = FreeDelivery.Text;
-                                delivery.stanOrderType = GetSelectedValues(DeliveryType);
+                                //delivery.stanOrderType = GetSelectedValues(DeliveryType);
                                 delivery.stanOrderMethod = GetSelectedValues(OrderMethod);
                                 delivery.standardSwapOptions = GetSelectedValues(standardSwapOptions);
                             }
@@ -1198,7 +1206,7 @@ namespace WRS2big_Web.Admin
                                 delivery.resDeliveryFee = resDelFee.Text;
                                 delivery.resDistanceFree = resFreeDel.Text;
                                 delivery.resOrderMethod = GetSelectedValues(reserveOrderMethod);
-                                delivery.resOrderType = GetSelectedValues(reserveOrderType);
+                                //delivery.resOrderType = GetSelectedValues(reserveOrderType);
                                 delivery.reserveSwapOptions = GetSelectedValues(reserveSwap);
                             }
                             break;
@@ -1217,8 +1225,8 @@ namespace WRS2big_Web.Admin
                                 delivery.expressID = expressID;
                                 delivery.exDeliveryFee = expressdeliveryFee.Text;
                                 delivery.exEstimatedDelivery = estimatedTime.Text;
-                                delivery.exOrderMethod = GetSelectedValues(expressOrderMethod);
-                                delivery.exOrderType = GetSelectedValues(expressOrderType);
+                                //delivery.exOrderMethod = GetSelectedValues(expressOrderMethod);
+                                //delivery.exOrderType = GetSelectedValues(expressOrderType);
                                 delivery.expressSwapOptions = GetSelectedValues(expressSwap);
                             }
                             break;

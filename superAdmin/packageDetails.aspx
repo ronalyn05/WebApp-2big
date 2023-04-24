@@ -1,6 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WRSsuperAdmin.Master" AutoEventWireup="true" CodeBehind="clientDetails.aspx.cs" Inherits="WRS2big_Web.superAdmin.clientDetails" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WRSsuperAdmin.Master" AutoEventWireup="true" CodeBehind="packageDetails.aspx.cs" Inherits="WRS2big_Web.superAdmin.packageDetails" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-            <style>
+      <style>
         .texts{
             font-size:16px;
             color:black;
@@ -15,10 +15,9 @@
         overflow-y: auto;
          }
     </style>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<%--   <form runat="server">--%>
+<%--       <form runat="server">--%>
         <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -42,7 +41,7 @@
                                                 <a href="/superAdmin/SAdminIndex"> <i class="fa fa-home"></i> </a>
                                             </li>
                                             <li class="breadcrumb-item">
-                                                <a href="/superAdmin/ManageWRSClients">Client List</a>
+                                                <a href="/superAdmin/ManagePackagePlans">Subscription Packages</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -73,13 +72,7 @@
                                                     <!-- Row start -->
                                                     <div class="row">
                                                         <div class="col-lg-12 col-xl-12">
-                                                            <center>
-                                                          <asp:Image runat="server" ID="clientImage" class="img-200 img-radius" style="width:350px"/> <br /> <br />
-                                                             <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
-                                                            </center>
-
-                                                               <br /> <br />
+                                                               <br />
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <!-- Tab variant tab card start -->
@@ -93,49 +86,43 @@
                                                                               <div class="col-xl-6 col-md-12">
                                                                               <div class="card-block">
                                                                                           <div style="background-color:#018cff;color:white" class="card card-block">
-	                                                                                           <h7>PERSONAL INFORMATION</h7>
+	                                                                                           <h7>PACKAGE DETAILS</h7>
                                                                                            </div>
                                                                                             <div class="form-material" style="margin-left:100px">
                                                                                                     <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Firstname:</label>
-                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
-                                                                                                            <asp:Label class="form-control-round" id="firstName" runat="server"></asp:Label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE ID:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:90px">  
+                                                                                                            <asp:Label class="form-control-round" id="packageID" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Middlename:</label>
-                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
-                                                                                                            <asp:Label class="form-control-round" id="middleName" runat="server"></asp:Label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE NAME:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:90px">  
+                                                                                                            <asp:Label class="form-control-round" id="packageName" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE DESCRIPTION:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:90px">  
+                                                                                                            <asp:Label class="form-control-round" id="packageDescription" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                    <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Lastname:</label>
-                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
-                                                                                                            <asp:Label class="form-control-round" id="lastName" runat="server"></asp:Label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE PRICE:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:90px">  
+                                                                                                            <asp:Label class="form-control-round" id="packagePrice" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Birthdate:</label>
-                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
-                                                                                                            <asp:Label class="form-control-round" id="clientBirthDate" runat="server"></asp:Label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE DURATION:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:90px">  
+                                                                                                            <asp:Label class="form-control-round" id="packageDuration" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Contact number:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                          <asp:Label  class="form-control-round" id="clientPhone" runat="server"></asp:Label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Valid ID:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                          <asp:Label  class="form-control-round" id="chosenValidID" runat="server"></asp:Label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Government-issued ID:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                            <asp:Image runat="server" ID="clientValidID" class="img-500  " style="width:600px;height:600px" />
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">ORDER LIMIT:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:90px">  
+                                                                                                          <asp:Label  class="form-control-round" id="packageLimit" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
@@ -145,35 +132,16 @@
                                                                               <div class="col-xl-6 col-md-12">
                                                                               <div class="card-block">
                                                                                            <div style="background-color:#018cff;color:white" class="card card-block">
-	                                                                                           <h7>REFILLING STATION INFORMATION</h7>
+	                                                                                           <h7>PACKAGE FEATURES</h7>
                                                                                            </div>
                                                                                             <div class="form-material" style="margin-left:100px">
 
                                                                                                     <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Refilling Station Name:</label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">FEATURES:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:Label  class="form-control-round" id="clientStationName" runat="server"></asp:Label>
+                                                                                                          <asp:ListBox runat="server" ID="featuresList" style="text-align:center; font-size:18px" Height="248px" Width="421px"> </asp:ListBox>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px">Refilling Station Address:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:Label  class="form-control-round" id="clientStationAdd" runat="server"></asp:Label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px">Proof of Business:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:Label  class="form-control-round" id="chosenProof" runat="server"></asp:Label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
-                                                                                                        <asp:Label runat="server" class="col-sm-5 col-form-label" id="proofChosen" style="font-size:18px"></asp:Label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                            <asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
-                                                                                                        </div>
-                                                                                                    </div>
-
                                                                                             </div>
 
                                                                             </div>
@@ -185,11 +153,7 @@
                                                                     <!-- Tab variant tab card start -->
                                                                 </div>
                                                             </div>
-                                                            <center>
-                                                            <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
-                                                            <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
-                                                            </center>
-                                                              <asp:LinkButton runat="server" Text="View Client List" style="font-size:18px" href="ManageWRSClients.aspx"></asp:LinkButton>
+                                                              <asp:LinkButton runat="server" Text="View Packages List" style="font-size:18px" href="ManagePackagePlans.aspx"></asp:LinkButton>
 
                                                         </div>
 
@@ -200,14 +164,8 @@
                                             <!-- Tab variant tab card start -->
                                         </div>
                                     </div>
-                                        
                                           </div>
                                     </div>
-
-
-                                    <!-- page content -->
-                                    <!-- Page-body end -->
-
                                 </div>
                             </div>
                         </div>
@@ -216,6 +174,5 @@
             </div>
         </div>
     </div>
-   </div>
 <%--</form>--%>
 </asp:Content>

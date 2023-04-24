@@ -32,4 +32,31 @@ namespace WRS2big_Web.Model
         public List<string> features { get; set; } //to save the features in the db as a list
 
     }
+    public class PackagePlans
+    {
+        public int packageID { get; set; }
+        public string packageName { get; set; }
+        public string packageDescription { get; set; }
+        public int packagePrice { get; set; }
+        public string durationType { get; set; }
+        public int packageDuration { get; set; }
+
+        public int packageLimit { get; set; }
+        public List<string> features { get; set; } //to save the features in the db as a list
+
+    }
+
+    public class SuperAdminNotification
+    {
+        public int adminID { get; set; }
+        public string status { get; set; }
+        public string sender { get; set; }
+        public string receiver { get; set; }
+
+        public int notificationID { get; set; }
+        public string body { get; set; }
+        public DateTimeOffset notificationDate { get; set; }
+        
+
+    }
 }

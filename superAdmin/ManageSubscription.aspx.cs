@@ -33,6 +33,7 @@ namespace WRS2big_Web.superAdmin
             //{
             //    Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
             //}
+
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
@@ -219,6 +220,11 @@ namespace WRS2big_Web.superAdmin
             planDuration.Text = obj.planDuration.ToString();
             planAmount.Text = obj.planPrice.ToString();
 
+        }
+
+        protected void createpackagePlan_Click(object sender, EventArgs e)
+        {
+            packageContent.Style["display"] = "block";
         }
     }
 }

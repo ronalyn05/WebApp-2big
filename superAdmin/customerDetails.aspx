@@ -17,7 +17,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   <form runat="server">
+<%--   <form runat="server">--%>
         <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -125,6 +125,12 @@
                                                                                                           <asp:Label  class="form-control-round" id="clientPhone" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Home Address:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
+                                                                                                          <asp:Label  class="form-control-round" id="clientAddress" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
 
                                                                                             </div>
 
@@ -183,5 +189,5 @@
         </div>
     </div>
    </div>
-</form>
+<%--</form>--%>
 </asp:Content>

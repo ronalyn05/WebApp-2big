@@ -11,115 +11,88 @@ namespace WRS2big_Web.superAdmin
 {
 
 
-    public partial class customerDetails
+    public partial class ManagePackagePlans
     {
 
         /// <summary>
-        /// clientImage control.
+        /// packagesGridview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image clientImage;
+        protected global::System.Web.UI.WebControls.GridView packagesGridview;
 
         /// <summary>
-        /// clientFullName control.
+        /// packageName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientFullName;
+        protected global::System.Web.UI.WebControls.TextBox packageName;
 
         /// <summary>
-        /// clientEmail control.
+        /// packageDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientEmail;
+        protected global::System.Web.UI.WebControls.TextBox packageDescription;
 
         /// <summary>
-        /// cusFirstName control.
+        /// packagePrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cusFirstName;
+        protected global::System.Web.UI.WebControls.TextBox packagePrice;
 
         /// <summary>
-        /// cusmiddleName control.
+        /// durationTypeSelected control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cusmiddleName;
+        protected global::System.Web.UI.WebControls.DropDownList durationTypeSelected;
 
         /// <summary>
-        /// cuslastName control.
+        /// packageDuration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label cuslastName;
+        protected global::System.Web.UI.WebControls.TextBox packageDuration;
 
         /// <summary>
-        /// clientBirthDate control.
+        /// featuresCheckbox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientBirthDate;
+        protected global::System.Web.UI.WebControls.CheckBoxList featuresCheckbox;
 
         /// <summary>
-        /// clientPhone control.
+        /// packageOrderLimit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientPhone;
+        protected global::System.Web.UI.WebControls.TextBox packageOrderLimit;
 
         /// <summary>
-        /// clientAddress control.
+        /// createPackage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientAddress;
-
-        /// <summary>
-        /// clientValidID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image clientValidID;
-
-        /// <summary>
-        /// approveButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button approveButton;
-
-        /// <summary>
-        /// declineButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button declineButton;
+        protected global::System.Web.UI.WebControls.Button createPackage;
     }
 }

@@ -91,12 +91,13 @@ namespace WRS2big_Web.Model
     {
         public int adminId { get; set; }
         public int other_productId { get; set; }
+        public string offerType { get; set; }
         public string other_productName { get; set; }
         public string other_productUnit { get; set; }
         public string other_productSize { get; set; }
         public string other_productPrice { get; set; }
         public string other_productStock { get; set; }
-        public string other_productDiscount { get; set; }
+        public int other_productDiscount { get; set; }
         public string other_productImage { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
@@ -107,7 +108,7 @@ namespace WRS2big_Web.Model
         public int standardID { get; set; }
         public string standistance { get; set; }
         public string stanDeliveryFee { get; set; }
-
+        public string orderTypes { get; set; }
         public string stanDeliverytype { get; set; }
         public string stanDeliveryTime { get; set; }
         public string stanOrderMethod { get; set; }
@@ -183,12 +184,13 @@ namespace WRS2big_Web.Model
     {
         public int pro_refillId { get; set; }
         public int adminId { get; set; }
+        public string offerType { get; set; }
         public string pro_refillWaterType { get; set; }
         public string pro_Image { get; set; }
         public string pro_refillUnit { get; set; }
         public string pro_refillSize { get; set; }
         public string pro_refillPrice { get; set; }
-        public string pro_discount { get; set; }
+        public int pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
 

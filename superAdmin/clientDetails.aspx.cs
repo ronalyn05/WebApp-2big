@@ -10,6 +10,7 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
+using WRS2big_Web.Model;
 
 namespace WRS2big_Web.superAdmin
 {
@@ -37,7 +38,7 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
-            clientImage.ImageUrl = admin.profile_image.ToString();
+         
             clientFullName.Text = admin.fname + " " + admin.mname + " " + admin.lname ;
             //clientAddress.Text = admin.
             clientEmail.Text = admin.email;
@@ -48,6 +49,14 @@ namespace WRS2big_Web.superAdmin
             clientPhone.Text = admin.phone;
             chosenValidID.Text = admin.validID;
             chosenProof.Text = admin.businessProof;
+            proofChosen.Text = admin.businessProof + " " + "File:";
+
+            //FILE 
+            string proofLink = admin.businessProofLnk;
+            fileProofLink.NavigateUrl = proofLink;
+
+
+
 
             //TO CHECK IF NAY VALID ID AND PROOF
             if (admin.businessProofLnk != null || admin.validIDLnk != null)
@@ -55,8 +64,14 @@ namespace WRS2big_Web.superAdmin
                 clientValidID.ImageUrl = admin.validIDLnk.ToString();
 
             }
+            //TO CHECK IF NAAY PROFILE PIC
+            if (admin.profile_image != null)
+            {
+                clientImage.ImageUrl = admin.profile_image.ToString();
+            }
 
-            
+
+
 
             adminDet = twoBigDB.Get("ADMIN/" + clientID + "/RefillingStation");
             Model.RefillingStation station = adminDet.ResultAs<Model.RefillingStation>();
@@ -93,6 +108,8 @@ namespace WRS2big_Web.superAdmin
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             Response.Write("<script>alert ('successfully approved! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+
+           
 
         }
 

@@ -17,7 +17,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <form runat="server">
+<%--     <form runat="server">--%>
         <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -58,8 +58,49 @@
                                 <div class="">
                                   <div class="clearfix">
                                         <%--BUTTON to ADD--%>
-                                        <button type="button" style="font-size:14px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Create New Plan</button>
-                                       <%-- <button type="button" style="font-size:14px;margin-left:20px; background-color: #3399FF;" class="btn btn-success btn-sm" data-toggle="modal" data-target=".settings"><i class="ti-settings"></i>Settings</button>--%>
+                                        <asp:Button runat="server" ID="createpackagePlan" style="font-size:14px; background-color: #3399FF;" class="btn btn-success btn-sm" Text="Create Plan Package" Onclick="createpackagePlan_Click" />
+                                            <!--PAGE CONTENTS-->
+                                      <div id="packageContent" runat="server"  style="display:none">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <!-- Tab variant tab card start -->
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>PLAN PACKAGE</h5>
+                                                        </div>
+                                                        <div class="card-block tab-icon">
+                                                            <!-- Row start -->
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-xl-16">
+                                                                    <!-- <h6 class="sub-title">Tab With Icon</h6> -->
+                                                            
+                                                                    <!-- Nav tabs -->
+                                                                    <ul class="nav nav-tabs md-tabs " role="tablist">
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link active" data-toggle="tab" href="#AllCustomers" role="tab">All Customers</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" data-toggle="tab" href="#pendingCustomers" role="tab">Pending Customers</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" data-toggle="tab" href="#approvedCustomers" role="tab">Approved Customers</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <!-- Tab panes -->
+                                                                    </div>
+                                                        
+                                                            </div>
+                                                            <!-- Row end -->
+                                                        </div>
+                                                    </div>
+                                                    <!-- Tab variant tab card start -->
+                                                </div>
+                                            </div>
+                                     </div>
+                                      <%-- <button type="button" id="createpackagePlan" class="togglebtn btn btn-primary waves-effect text-center" style="font-size:14px; background-color: #3399FF;" onclick="packageContent()">Create Plan Package</button>   --%>
 
                                                 <!--MODAL FOR ADD NEW PLAN-->
                                            <div class="modal fade add texts" tabindex="-1" role="dialog" aria-hidden="true">
@@ -175,7 +216,6 @@
                                             <%--//</div>--%>
                                                 <br /><br />
 
-                                            <!--PAGE CONTENTS-->
 
                                               <asp:GridView runat="server" ID="GridView1" class="texts table-responsive" RowStyle-CssClass="grid-row"  style=" text-align:center;overflow-y: auto;max-height: 500px;"  BackColor="White" BorderColor="#999999" BorderStyle="None" BorderWidth="1px" CellPadding="3" HtmlEncode="false" Width="1728px" GridLines="Vertical">
                                                   <AlternatingRowStyle BackColor="#DCDCDC" />
@@ -431,5 +471,6 @@
         </div>
     </div>
             </div>
-</form>
+
+<%--</form>--%>
 </asp:Content>
