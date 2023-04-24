@@ -32,6 +32,7 @@ namespace WRS2big_Web.Admin
         };
         IFirebaseClient twoBigDB;
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -124,9 +125,9 @@ namespace WRS2big_Web.Admin
             // Get the log ID from the session 
             int logsId = (int)Session["logsId"];
 
-            // INSERT DATA TO TABLE 
-            //Random rnd = new Random();
-            //int idnum = rnd.Next(1, 10000);
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -227,18 +228,17 @@ namespace WRS2big_Web.Admin
                     int ID = rnd.Next(1, 20000);
                     var Notification = new Model.Notification
                     {
-                        admin_ID = adminId,
-                        sender = "Admin",
-                        orderID = orderID,
-                        cusId = existingOrder.cusId,
-                        receiver = "Customer",
-                        driverId = driver.emp_id,
-                        body = "Your order is now accepted and is assigned to a driver! Check the order page to view the details of your order",
-                        notificationDate = DateTime.Now,
-                        status = "unread",
-                        notificationID = ID
-
-                    };
+                        // Create a new NotificationMessage object with the fields that you want to update
+                        CustomerNotification updatedNotification = new CustomerNotification
+                        {
+                            admin_ID = existingNotification.admin_ID,
+                            driverId = existingOrder.driverId,
+                            body = "Your order has been accepted at the same time assigned to a driver and will be delivered soon",
+                            //bodyDriver = "You have a new order assigned to you.",
+                            orderID = existingOrder.orderID,
+                            cusId = existingNotification.cusId,
+                            notificationDate = DateTimeOffset.UtcNow
+                        };
 
                     SetResponse notifResponse;
                     notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
@@ -269,9 +269,9 @@ namespace WRS2big_Web.Admin
                     //    // Handle the case where the existing notification does not exist
                     //}
 
-                    // Retrieve the existing Users log object from the database
-                    //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+                   // Retrieve the existing Users log object from the database
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                     // Get the current date and time
                     //DateTime addedTime = DateTime.UtcNow;
@@ -324,7 +324,9 @@ namespace WRS2big_Web.Admin
             // int driverId = (int)Session["emp_id"];
             // Get the log ID from the session 
             int logsId = (int)Session["logsId"];
-            int tankId = (int)Session["tankId"];
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
 
             // Get the GridViewRow that contains the clicked button
@@ -444,7 +446,7 @@ namespace WRS2big_Web.Admin
             // Get the log ID from the session
             int logsId = (int)Session["logsId"];
 
-            // INSERT DATA TO TABLE = NOTIFICATION
+            //INSERT DATA TO TABLE
             Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
 

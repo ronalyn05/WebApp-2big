@@ -214,36 +214,63 @@ namespace WRS2big_Web.Model
         public string orderType { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
+
+    //public class UsersLogs
+    //{
+    //    public int logsId { get; set; }
+    //    public int userIdnum { get; set; }
+    //    public string userFullname { get; set; }
+    //    public int emp_id { get; set; }
+    //    public string empFullname { get; set; }
+    //    public DateTimeOffset empDateAdded { get; set; }
+    //    public int tankId { get; set; }
+    //    public DateTimeOffset tankSupplyDateAdded { get; set; }
+    //    public int other_productId { get; set; }
+    //    public DateTimeOffset otherProductDateAdded { get; set; }
+    //    public int productRefillId { get; set; }
+    //    public DateTimeOffset productrefillDateAdded { get; set; }
+    //    public int deliveryDetailsId { get; set; }
+    //    //public DateTimeOffset deliveryDetailsDateAdded { get; set; }
+    //    public DateTimeOffset standardAdded { get; set; }
+    //    public DateTimeOffset reservationAdded { get; set; }
+    //    public DateTimeOffset expressAdded { get; set; }
+
+    //    public int orderId { get; set; }
+    //    public DateTimeOffset datePaymentReceived { get; set; }
+    //    public DateTimeOffset dateLogin { get; set; }
+    //    // public DateTimeOffset lastLogin { get; set; }
+    //    public DateTimeOffset dateLogout { get; set; }
+    //    public int cusId { get; set; }
+    //    public DateTimeOffset dateDeclined { get; set; }
+    //    public DateTimeOffset dateOrderAccepted { get; set; }
+    //    public string userActivity { get; set; } // New property for user activity
+    //}
     public class UsersLogs
     {
-        public int logsId { get; set; }
         public int userIdnum { get; set; }
-        public string userFullname { get; set; }
-        public int emp_id { get; set; }
-        public string empFullname { get; set; }
-        public DateTimeOffset empDateAdded { get; set; }
-        public int tankId { get; set; }
-        public DateTimeOffset tankSupplyDateAdded { get; set; }
-        public int other_productId { get; set; }
-        public DateTimeOffset otherProductDateAdded { get; set; }
-        public int productRefillId { get; set; }
-        public DateTimeOffset productrefillDateAdded { get; set; }
-        public int deliveryDetailsId { get; set; }
-        //public DateTimeOffset deliveryDetailsDateAdded { get; set; }
-        public DateTimeOffset standardAdded { get; set; }
-        public DateTimeOffset reservationAdded { get; set; }
-        public DateTimeOffset expressAdded { get; set; }
-
+        public int logsId { get; set; }
         public int orderId { get; set; }
-        public DateTimeOffset datePaymentReceived { get; set; }
+        public string userFullname { get; set; }
+        public UserActivityType userActivity { get; set; }
         public DateTimeOffset dateLogin { get; set; }
-        // public DateTimeOffset lastLogin { get; set; }
         public DateTimeOffset dateLogout { get; set; }
-        public int cusId { get; set; }
-        public DateTimeOffset dateDeclined { get; set; }
-        public DateTimeOffset dateOrderAccepted { get; set; }
-        public string userActivity { get; set; } // New property for user activity
     }
+
+    public enum UserActivityType
+    {
+        AcceptedOrder, 
+        DeclinedOrder,
+        ReceivedPayment,
+        UpdateStationdetails,
+        CreateStationdetails,
+        AddedEmployeeRecords,
+        AddedTankSupply,
+        AddedOtherProducts,
+        AddedProductRefill,
+        AddedDeliveryDetails,
+        UpdatedEmployeeRecords
+    }
+
     public class Reward
     {
         public int rewardId { get; set; }

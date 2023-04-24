@@ -259,6 +259,7 @@ namespace WRS2big_Web.LandingPage
                         if (emp != null)
                         {
                             Session["emp_id"] = emp.emp_id;
+                            Session["empName"] = emp.emp_lastname + ' ' + emp.emp_firstname;
                             
                         }
 

@@ -50,6 +50,7 @@
                                          <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Employee</button>
                                          <%--VIEW BUTTON --%>
                                           &nbsp;
+                                         <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> Edit Employee Details</button>
                                           <%--<asp:Button ID="ViewID" runat="server"  style="font-size:14px;" class="btn btn-success btn-sm " Text="View List of Employee IDs" Height="41px" />--%>
                                        <%-- MODAL FOR ADD EMPLOYEE--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
@@ -106,14 +107,7 @@
                                                        <asp:ListItem Text="Male" Value="Male"></asp:ListItem>
                                                        <asp:ListItem Text="Female" Value="Female" ></asp:ListItem>
                                                    </asp:DropDownList>
-                                                   <%--<script> 
-                                                       $(function () {
-                                                           $("#drdgender option:first").prop("disabled", true);
-                                                           //alert("Invalid gender selection!");
-                                                       });
-                                                   </script>--%>
-
-                                               <%--</div>--%>
+                                                  
                                                </div>
                                               <%-- <div class="item form-group">--%> 
                                                <div class="col-md-12 col-sm-12">
@@ -197,6 +191,59 @@
                                         <%-- end add employee--%>
                                            <br />
                                          <br />
+                                          <%-- MODAL FOR UPDATE EMPLOYEE--%>
+                                       <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                            <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel2">Add Employee Records</h4>
+                                                <%--exit button--%>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="x_content">
+                                            <div class="col-md-12 col-sm-12">
+                                                    <%--emp id to edit--%>
+                                                    <strong>Employee ID:</strong>
+                                                     <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number"></asp:TextBox>
+                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                                   </div> 
+                                                <div class="col-md-12 col-sm-12">
+                                                    <%--position--%>
+                                                    <strong>Position:</strong>
+                                                   <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
+                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                       <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                                       <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
+                                                       <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
+                                                       <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
+                                                   </asp:DropDownList>
+                                                  </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <%--status--%>
+                                                    <strong>Status:</strong>
+                                                   <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
+                                                         <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
+                                                         <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
+                                                         <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
+                                                         </asp:DropDownList>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                               <%-- add data button--%>
+                                               <asp:Button ID="btnEditData" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnUpdate_Click" />
+                                               </div>
+                                               </form>
+                                             </div>
+                                            </div>
+                                      </div>
+                                        <%-- end add employee--%>
+                                           <br />
+                                         <br />
 
                                             <!--PAGE CONTENTS-->
                                          <div class="col-xl-12 col-xl-12 h-100">
@@ -214,8 +261,7 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="card-block">
-                                                    </div>
+                                              <%--   GRIDVIEW --%>
                                                     <div class="card-footer">
                                                                     <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
                                                                      --%> 
@@ -226,23 +272,22 @@
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                                   <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                                          <Columns>
+                                                                         <%-- <Columns>
                                                                             <asp:TemplateField>
                                                                               <ItemTemplate>
                                                                                  <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
                                                                                         data-target="#editModal" BorderStyle="None" ForeColor="White"/>
                                                                               </ItemTemplate>
                                                                             </asp:TemplateField>
-                                                                          </Columns>
-                                                                            <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                                            <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
-                                                                            <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                                            <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
-                                                                            <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                                            <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                                            <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                                            <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                                            <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                                          </Columns>--%>
+                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                       <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                       <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                       <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                       <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                       <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                       <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                       <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                         </asp:GridView>
                                                                     </div>
 
@@ -255,58 +300,6 @@
                                                     </div>
                                                 </div>
                                              </div> 
-
-                                           <%-- MODAL FOR UPDATE EMPLOYEE--%>
-                                      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
-                                            <div class="modal-content">
-                                            <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                            <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel1">Edit Employee Records</h4>
-                                                <%--exit button--%>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                            <div class="col-md-12 col-sm-12 ">
-                                            <div class="x_content">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <%--role--%>
-                                                    <strong>Position:</strong>
-                                                   <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
-                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                       <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
-                                                       <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
-                                                       <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
-                                                       <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
-                                                   </asp:DropDownList>
-                                                    
-                                                   <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole" ValidationGroup="a"></asp:RequiredFieldValidator>--%>
-                                                  </div>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <strong>Status:</strong>
-                                                   <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
-                                                         <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
-                                                         <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                         <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
-                                                         </asp:DropDownList>
-                                                     <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status" ValidationGroup="a"></asp:RequiredFieldValidator>--%>
-                                                  </div>
-                                                </div>
-                                                </div>
-                                              </div>
-                                                 <div class="modal-footer">
-                                               <%-- update data button--%>
-                                                     <%-- <asp:Button ID="btnUpdate" class="btn btn-primary" runat="server" CommandArgument='<%# Eval("EMPLOYEE ID") %>'
-                                                                Text="Update Data" OnClick="btnupdate_Click"/>--%>
-                                                      <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" BorderStyle="None" ForeColor="White"/>
-                                                    <%-- <asp:Button ID="btnUpdateData" class="btn btn-primary" runat="server" Text="Update" CommandArgument='<%# Eval("EMPLOYEE ID") %>' OnClick="btnupdateData_Click" />--%>
-
-                                                </div>
-                                            </div>
-                                            
-                                               </form>
-                                             </div>
-                                            </div>
                                       </div>
                                  </div>
                                </div>

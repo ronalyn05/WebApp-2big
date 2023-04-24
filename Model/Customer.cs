@@ -54,6 +54,22 @@ namespace WRS2big_Web.Model
     }
 
     // Define the notification message class
+    public class NotificationMessage
+    {
+        public int notificationID{ get; set; }
+        public string sender { get; set; }
+        public int driverId { get; set; }
+        public string body { get; set; }
+        public string receiver { get; set; }
+        public int orderID { get; set; }
+        public string status { get; set; }
+       // public string title { get; set; }
+        public int admin_ID { get; set; }
+        public int cusId { get; set; }
+        public DateTimeOffset notificationDate { get; set; }
+    }
+
+    // Define the notification message class
     public class AdminNotification
     {
         public int admin_ID { get; set; }

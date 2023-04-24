@@ -102,24 +102,9 @@ namespace WRS2big_Web.Admin
                         logsId = logsId,
                         orderId = existingLog.orderId,
                         userFullname = (string)Session["fullname"],
-                        emp_id = existingLog.emp_id,
-                        empFullname = existingLog.empFullname,
-                        empDateAdded = existingLog.empDateAdded,
                         dateLogin = existingLog.dateLogin,
-                        deliveryDetailsId = existingLog.deliveryDetailsId,
-                        standardAdded = existingLog.standardAdded,
-                        reservationAdded = existingLog.reservationAdded,
-                        expressAdded = existingLog.expressAdded,
-                        productRefillId = existingLog.productRefillId,
-                        productrefillDateAdded = existingLog.productrefillDateAdded,
-                        other_productId = existingLog.other_productId,
-                        otherProductDateAdded = existingLog.otherProductDateAdded,
-                        cusId = existingLog.cusId,
-                        tankId = existingLog.tankId,
-                        tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                        dateOrderAccepted = existingLog.dateOrderAccepted,
-                        datePaymentReceived = existingLog.datePaymentReceived,
-                      //  userActivity = activity
+
+                        //  userActivity = activity
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
