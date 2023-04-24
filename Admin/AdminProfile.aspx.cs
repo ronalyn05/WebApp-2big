@@ -321,8 +321,6 @@ namespace WRS2big_Web.Admin
         //    }
         //}
 
-
-       
         protected void btnEditProfile_Click(object sender, EventArgs e)  //UPDATE THE PROFILE INFORMATION
         {
             try
@@ -496,18 +494,21 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    emp_id = existingLog.emp_id,
-                    empFullname = existingLog.empFullname,
-                    empDateAdded = existingLog.empDateAdded,
                     dateLogin = existingLog.dateLogin,
-                    tankId = existingLog.tankId,
-                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    productRefillId = existingLog.productRefillId,
-                    productrefillDateAdded = existingLog.productrefillDateAdded,
-                    other_productId = existingLog.other_productId,
-                    otherProductDateAdded = existingLog.otherProductDateAdded,
-                    userActivity = "Update Station details"
+                    //emp_id = existingLog.emp_id,
+                    //empFullname = existingLog.empFullname,
+                    //empDateAdded = existingLog.empDateAdded,
+                    //dateLogin = existingLog.dateLogin,
+                    //tankId = existingLog.tankId,
+                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //productRefillId = existingLog.productRefillId,
+                    //productrefillDateAdded = existingLog.productrefillDateAdded,
+                    //other_productId = existingLog.other_productId,
+                    //otherProductDateAdded = existingLog.otherProductDateAdded,
+                    // userActivity = "Update Station details"
+                    userActivity = UserActivityType.UpdateStationdetails,
+
 
                 };
 
@@ -565,18 +566,20 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    emp_id = existingLog.emp_id,
-                    empFullname = existingLog.empFullname,
-                    empDateAdded = existingLog.empDateAdded,
                     dateLogin = existingLog.dateLogin,
-                    tankId = existingLog.tankId,
-                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    productRefillId = existingLog.productRefillId,
-                    productrefillDateAdded = existingLog.productrefillDateAdded,
-                    other_productId = existingLog.other_productId,
-                    otherProductDateAdded = existingLog.otherProductDateAdded,
-                    userActivity = "Create Station details"
+                    userActivity = UserActivityType.CreateStationdetails
+                    //emp_id = existingLog.emp_id,
+                    //empFullname = existingLog.empFullname,
+                    //empDateAdded = existingLog.empDateAdded,
+                    //dateLogin = existingLog.dateLogin,
+                    //tankId = existingLog.tankId,
+                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //productRefillId = existingLog.productRefillId,
+                    //productrefillDateAdded = existingLog.productrefillDateAdded,
+                    //other_productId = existingLog.other_productId,
+                    //otherProductDateAdded = existingLog.otherProductDateAdded,
+                    //userActivity = "Create Station details"
 
                 };
 

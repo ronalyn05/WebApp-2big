@@ -35,10 +35,10 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
 
-            FirebaseResponse response = twoBigDB.Get("ADMINNOTIFICATION/");
-            Dictionary<string, AdminNotification> orderlist = response.ResultAs<Dictionary<string, AdminNotification>>();
+            FirebaseResponse response = twoBigDB.Get("NOTIFICATIONTEST/");
+            Dictionary<string, NotificationMessage> orderlist = response.ResultAs<Dictionary<string, NotificationMessage>>();
             //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
-            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.body == "You have pending order/s.");
+            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.sender == "Customer"  );
 
 
             if (filteredList.Any())
