@@ -107,7 +107,27 @@ namespace WRS2big_Web.superAdmin
             admin.status = "Approved";
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
-            Response.Write("<script>alert ('successfully approved! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+            //SEND NOTIFICATION TO ADMIN 
+            Random rnd = new Random();
+            int ID = rnd.Next(1, 20000);
+            var Notification = new Notification
+            {
+                admin_ID = clientID,
+                sender = "Super Admin",
+                title = "Client Approved",
+                receiver = "Admin",
+                body = "Your application is now approved! You can now subscribe to our Subscription Packages",
+                notificationDate = DateTime.Now,
+                status = "unread",
+                notificationID = ID
+
+            };
+
+            SetResponse notifResponse;
+            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+            Response.Write("<script>alert ('Client Approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 
            
 
@@ -115,6 +135,8 @@ namespace WRS2big_Web.superAdmin
 
         protected void declineButton_Click(object sender, EventArgs e)
         {
+           
+
             int clientID = (int)Session["currentClient"];
 
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
@@ -136,6 +158,26 @@ namespace WRS2big_Web.superAdmin
 
             admin.status = "Declined";
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
+
+            //SEND NOTIFICATION TO ADMIN 
+            Random rnd = new Random();
+            int ID = rnd.Next(1, 20000);
+            var Notification = new Notification
+            {
+                admin_ID = clientID,
+                sender = "Super Admin",
+                title = "Client Declined",
+                receiver = "Admin",
+                body = "Your application is Declined! The requirements submitted doesnt meet our requirements",
+                notificationDate = DateTime.Now,
+                status = "unread",
+                notificationID = ID
+
+            };
+
+            SetResponse notifResponse;
+            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
             Response.Write("<script>alert ('You declined the application! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 

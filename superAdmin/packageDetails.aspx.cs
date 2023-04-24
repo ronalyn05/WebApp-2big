@@ -52,8 +52,9 @@ namespace WRS2big_Web.superAdmin
             packageName.Text = packageDets.packageName;
             packageDescription.Text = packageDets.packageDescription;
             packagePrice.Text = packageDets.packagePrice.ToString();
-            packageDuration.Text = packageDets.packageDuration.ToString();
+            packageDuration.Text = packageDets.packageDuration.ToString() + " " + packageDets.durationType;
             packageLimit.Text = packageDets.packageLimit.ToString();
+            numofStations.Text = packageDets.numberOfStations.ToString();
 
             FirebaseResponse featuresponse = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageDets.packageID + "/features");
             List<string> listOfFeatures = featuresponse.ResultAs<List<string>>();

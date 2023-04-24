@@ -188,9 +188,8 @@
                                                             <center>
                                                             <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
                                                             <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
-                                                            </center>
+                                                              <br /><br />
                                                               <asp:LinkButton runat="server" Text="View Client List" style="font-size:18px" href="ManageWRSClients.aspx"></asp:LinkButton>
-
                                                         </div>
 
                                                     </div>
