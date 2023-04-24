@@ -47,6 +47,7 @@ namespace WRS2big_Web.Admin
                 // Convert input values to numerical format
                 int qty;
                 decimal price, discount, totalAmount, freeGallon;
+
                 if (!int.TryParse(txtQty.Text, out qty))
                 {
                     throw new ArgumentException("Invalid quantity value");
@@ -60,21 +61,27 @@ namespace WRS2big_Web.Admin
                     // If the discount value is not a valid decimal, assume it is zero
                     discount = 0;
                 }
+                else
+                {
+                    // Convert discount from percentage to decimal
+                    discount /= 100;
+                }
 
                 // Calculate total amount only if a valid discount value is entered
                 if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
                     // Calculate free gallon if applicable
-                    freeGallon = 0;
-                    if (qty >= 5)
-                    {
-                        freeGallon = Math.Floor((decimal)qty / 5);
-                    }
-                    if (discount > 0 && freeGallon > 0)
-                    {
-                        Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
-                    }
-                    totalAmount = (qty * price) - discount + freeGallon * price;
+                    //freeGallon = 0;
+                    //if (qty >= 5)
+                    //{
+                    //    freeGallon = Math.Floor((decimal)qty / 5);
+                    //}
+                    //if (discount > 0 && freeGallon > 0)
+                    //{
+                    //    Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
+                    //}
+                    //totalAmount = (qty * price) - discount + freeGallon * price;
+                    totalAmount = (qty * price) - discount * price;
                     lblAmount.Text = totalAmount.ToString();
                 }
                 else
@@ -93,7 +100,8 @@ namespace WRS2big_Web.Admin
                     productSize = drdSize.SelectedValue,
                     productPrice = price,
                     productDiscount = discount, // Store the discount value in the database
-                    productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
+                    productQty = qty, // Adjust quantity to account for free gallon
+                    //productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
                     totalAmount = totalAmount, // Store calculated total amount as decimal
                     orderType = drdOrderType.Text,
                     dateAdded = DateTime.UtcNow

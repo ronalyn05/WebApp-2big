@@ -32,6 +32,7 @@ namespace WRS2big_Web.Admin
         };
         IFirebaseClient twoBigDB;
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -124,9 +125,9 @@ namespace WRS2big_Web.Admin
             // Get the log ID from the session 
             int logsId = (int)Session["logsId"];
 
-            // INSERT DATA TO TABLE 
-            //Random rnd = new Random();
-            //int idnum = rnd.Next(1, 10000);
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             // Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
@@ -189,47 +190,53 @@ namespace WRS2big_Web.Admin
 
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                    FirebaseResponse notificationResponse = twoBigDB.Get("ADMINNOTIFICATION/" + orderID);
-                    AdminNotification existingNotification = notificationResponse.ResultAs<AdminNotification>();
+                    FirebaseResponse notificationResponse = twoBigDB.Get("NOTIFICATION/" + orderID);
+                    NotificationMessage existingNotification = notificationResponse.ResultAs<NotificationMessage>();
 
                     if (existingNotification != null)
                     {
                         // Create a new NotificationMessage object with the fields that you want to update
-                        CustomerNotification updatedNotification = new CustomerNotification
+                        NotificationMessage updatedNotification = new NotificationMessage
                         {
+                            notificationID = idnum,
                             admin_ID = existingNotification.admin_ID,
                             driverId = existingOrder.driverId,
                             body = "Your order has been accepted at the same time assigned to a driver and will be delivered soon",
-                            //bodyDriver = "You have a new order assigned to you.",
                             orderID = existingOrder.orderID,
                             cusId = existingNotification.cusId,
+                            sender = "Admin",
+                            receiver = "Customer",
+                            //  status = 
                             notificationDate = DateTimeOffset.UtcNow
                         };
 
-                        twoBigDB.Update("CUSTOMERNOTIFICATION/" + existingNotification.orderID, updatedNotification);
+                        twoBigDB.Update("NOTIFICATION/" + existingNotification.orderID, updatedNotification);
 
                         // Create a new NotificationMessage object with the fields that you want to update
-                        DriverNotification driverNotif = new DriverNotification
+                        NotificationMessage driverNotif = new NotificationMessage
                         {
+                            notificationID = idnum,
                             admin_ID = existingNotification.admin_ID,
-                             driverId = existingOrder.driverId,
-                           // body = "Your order has been accepted at the same time assigned to a driver and will be delivered soon",
+                            driverId = existingOrder.driverId,
                             body = "You have a new order assigned to you.",
                             orderID = existingOrder.orderID,
                             cusId = existingNotification.cusId,
+                            sender = "Admin",
+                            receiver = "Driver",
+                            //  status = 
                             notificationDate = DateTimeOffset.UtcNow
                         };
 
-                        twoBigDB.Update("DRIVERNOTIFICATION/" + existingNotification.orderID, driverNotif);
+                        twoBigDB.Update("NOTIFICATION/" + existingNotification.orderID, driverNotif);
                     }
                     //else
                     //{
                     //    // Handle the case where the existing notification does not exist
                     //}
 
-                    // Retrieve the existing Users log object from the database
-                    //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+                   // Retrieve the existing Users log object from the database
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                     // Get the current date and time
                     //DateTime addedTime = DateTime.UtcNow;
@@ -241,25 +248,8 @@ namespace WRS2big_Web.Admin
                         logsId = logsId,
                         orderId = orderID,
                         userFullname = (string)Session["fullname"],
-                        userActivity = "ACCEPTED ORDER"
-                        //    emp_id = existingLog.emp_id,
-                        //    empFullname = existingLog.empFullname,
-                        //    empDateAdded = existingLog.empDateAdded,
-                        //    dateLogin = existingLog.dateLogin,
-                        //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                        //    standardAdded = existingLog.standardAdded,
-                        //    reservationAdded = existingLog.reservationAdded,
-                        //    expressAdded = existingLog.expressAdded,
-                        //    productRefillId = existingLog.productRefillId,
-                        //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                        //    other_productId = existingLog.other_productId,
-                        //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                        //    tankId = existingLog.tankId,
-                        //    cusId = existingLog.cusId,
-                        //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                        //    datePaymentReceived = existingOrder.datePaymentReceived,
-                        //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                        //    userActivity = "Accepted Order"
+                        dateLogin = existingLog.dateLogin,
+                        userActivity = UserActivityType.AcceptedOrder
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -282,7 +272,9 @@ namespace WRS2big_Web.Admin
             // int driverId = (int)Session["emp_id"];
             // Get the log ID from the session 
             int logsId = (int)Session["logsId"];
-            int tankId = (int)Session["tankId"];
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
 
             // Get the GridViewRow that contains the clicked button
@@ -328,24 +320,27 @@ namespace WRS2big_Web.Admin
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-            FirebaseResponse notificationResponse = twoBigDB.Get("ADMINNOTIFICATION/" + orderID);
-            AdminNotification existingNotification = notificationResponse.ResultAs<AdminNotification>();
+            FirebaseResponse notificationResponse = twoBigDB.Get("NOTIFICATION/" + orderID);
+            NotificationMessage existingNotification = notificationResponse.ResultAs<NotificationMessage>();
 
             if (existingNotification != null)
             {
                 // Create a new NotificationMessage object with the fields that you want to update
-                CustomerNotification updatedNotification = new CustomerNotification
+                NotificationMessage updatedNotification = new NotificationMessage
                 {
+                    notificationID = idnum,
                     admin_ID = existingNotification.admin_ID,
-                    driverId = existingOrder.driverId,
+                    // driverId = existingOrder.driverId,
                     body = "Your order has been declined",
-                   // bodyDriver = "You have a new order assigned to you.",
                     orderID = existingOrder.orderID,
                     cusId = existingNotification.cusId,
+                    sender = "Admin",
+                    receiver = "Customer",
+                    //  status = 
                     notificationDate = DateTimeOffset.UtcNow
                 };
 
-                twoBigDB.Update("CUSTOMERNOTIFICATION/" + existingNotification.orderID, updatedNotification);
+                twoBigDB.Update("NOTIFICATION/" + existingNotification.orderID, updatedNotification);
             }
 
             // Retrieve the existing Users log object from the database
@@ -363,26 +358,8 @@ namespace WRS2big_Web.Admin
                 logsId = logsId,
                 orderId = orderID,
                 userFullname = (string)Session["fullname"],
-                userActivity = "DECLINED ORDER"
-                //    emp_id = existingLog.emp_id,
-                //    empFullname = existingLog.empFullname,
-                //    empDateAdded = existingLog.empDateAdded,
-                //    dateLogin = existingLog.dateLogin,
-                //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                //    standardAdded = existingLog.standardAdded,
-                //    reservationAdded = existingLog.reservationAdded,
-                //    expressAdded = existingLog.expressAdded,
-                //    productRefillId = existingLog.productRefillId,
-                //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                //    other_productId = existingLog.other_productId,
-                //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                //    tankId = existingLog.tankId,
-                //    cusId = existingLog.cusId,
-                //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                //    datePaymentReceived = existingOrder.datePaymentReceived,
-                //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                //    userActivity = "Declined Order",
-                //    dateDeclined = DateTimeOffset.UtcNow
+                dateLogin = existingLog.dateLogin,
+                userActivity = UserActivityType.DeclinedOrder
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -398,7 +375,7 @@ namespace WRS2big_Web.Admin
             // Get the log ID from the session
             int logsId = (int)Session["logsId"];
 
-            // INSERT DATA TO TABLE = NOTIFICATION
+            //INSERT DATA TO TABLE
             Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
 
@@ -435,24 +412,28 @@ namespace WRS2big_Web.Admin
 
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                    FirebaseResponse notificationResponse = twoBigDB.Get("CUSTOMERNOTIFICATION/" + orderID);
-                    CustomerNotification existingNotification = notificationResponse.ResultAs<CustomerNotification>();
+                    FirebaseResponse notificationResponse = twoBigDB.Get("NOTIFICATION/" + orderID);
+                    NotificationMessage existingNotification = notificationResponse.ResultAs<NotificationMessage>();
 
                     if (existingNotification != null)
                     {
                         // Create a new NotificationMessage object with the fields that you want to update
-                        CustomerNotification updatedNotification = new CustomerNotification
+                        NotificationMessage updatedNotification = new NotificationMessage
                         {
+                            notificationID = idnum,
                             admin_ID = existingNotification.admin_ID,
-                            driverId = existingOrder.driverId,
+                           // driverId = existingOrder.driverId,
                             body = "Your payment has been successfully received. Thank you for using our platform.",
                             // bodyDriver = "You have a new order assigned to you.",
                             orderID = existingOrder.orderID,
                             cusId = existingNotification.cusId,
+                            sender = "Admin",
+                            receiver ="Customer", 
+                          //  status = 
                             notificationDate = DateTimeOffset.UtcNow
                         };
 
-                        twoBigDB.Update("CUSTOMERNOTIFICATION/" + existingNotification.orderID, updatedNotification);
+                        twoBigDB.Update("NOTIFICATION/" + existingNotification.orderID, updatedNotification);
 
                         // Display an error message indicating that no driver will be assigned
                         Response.Write("<script>alert ('Payment successfully received.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
@@ -471,25 +452,8 @@ namespace WRS2big_Web.Admin
                            logsId = logsId,
                            orderId = orderID,
                            userFullname = (string)Session["fullname"],
-                           userActivity = "RECEIVED PAYMENT"
-                           //    emp_id = existingLog.emp_id,
-                           //    empFullname = existingLog.empFullname,
-                           //    empDateAdded = existingLog.empDateAdded,
-                           //    dateLogin = existingLog.dateLogin,
-                           //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                           //    standardAdded = existingLog.standardAdded,
-                           //    reservationAdded = existingLog.reservationAdded,
-                           //    expressAdded = existingLog.expressAdded,
-                           //    productRefillId = existingLog.productRefillId,
-                           //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                           //    other_productId = existingLog.other_productId,
-                           //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                           //    cusId = existingLog.cusId,
-                           //    tankId = existingLog.tankId,
-                           //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                           //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                           //    datePaymentReceived = existingOrder.datePaymentReceived,
-                           //    userActivity = "Received Payment"
+                           dateLogin = existingLog.dateLogin,
+                           userActivity = UserActivityType.ReceivedPayment
                        };
 
                         twoBigDB.Update("USERSLOG/" + log.logsId, log);

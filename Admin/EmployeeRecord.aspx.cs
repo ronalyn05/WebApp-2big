@@ -173,19 +173,20 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     dateLogin = existingLog.dateLogin,
-                    deliveryDetailsId = existingLog.deliveryDetailsId,
-                    standardAdded = existingLog.standardAdded,
-                    reservationAdded = existingLog.reservationAdded,
-                    expressAdded = existingLog.expressAdded,
-                    productRefillId = existingLog.productRefillId,
-                    productrefillDateAdded = existingLog.productrefillDateAdded,
-                    other_productId = existingLog.other_productId,
-                    otherProductDateAdded = existingLog.otherProductDateAdded,
-                    tankId = existingLog.tankId,
-                    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    emp_id = employee_id,
-                    empFullname = txtfirstname.Text + " " + txtlastname.Text,
-                    empDateAdded = data.dateAdded   
+                    userActivity = UserActivityType.AddedEmployeeRecords
+                    //deliveryDetailsId = existingLog.deliveryDetailsId,
+                    //standardAdded = existingLog.standardAdded,
+                    //reservationAdded = existingLog.reservationAdded,
+                    //expressAdded = existingLog.expressAdded,
+                    //productRefillId = existingLog.productRefillId,
+                    //productrefillDateAdded = existingLog.productrefillDateAdded,
+                    //other_productId = existingLog.other_productId,
+                    //otherProductDateAdded = existingLog.otherProductDateAdded,
+                    //tankId = existingLog.tankId,
+                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
+                    //emp_id = employee_id,
+                    //empFullname = txtfirstname.Text + " " + txtlastname.Text,
+                    //empDateAdded = data.dateAdded   
                 };
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
