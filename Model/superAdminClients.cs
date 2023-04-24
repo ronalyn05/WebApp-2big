@@ -50,6 +50,8 @@ namespace WRS2big_Web.Model
     {
         public int adminID { get; set; }
         public string status { get; set; }
+        public string sender { get; set; }
+        public string receiver { get; set; }
 
         public int notificationID { get; set; }
         public string body { get; set; }

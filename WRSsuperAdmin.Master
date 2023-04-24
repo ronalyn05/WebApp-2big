@@ -60,7 +60,7 @@
 <script src="/Scripts/viewer.min.js"></script>
 </head>
 <body>
-
+    <form id="form1" runat="server">
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -111,48 +111,35 @@
 
                         <!-- NOTIFICATIONS -->
                         <ul class="nav-right">
-<%--                            <li class="header-notification">
-                                <a href="#!" class="waves-effect waves-light">
+                            <li class="header-notification">
+                                <a href="#!">
                                     <i class="ti-bell"></i>
-                                    <span class="badge bg-c-red"></span>
+                                   <%-- <span class="badge bg-c-red"></span>--%>
                                 </a>
-                                <ul class="show-notification">
-                                    <li>
-                                        <h6>Notifications</h6>
-                                        <label class="label label-danger">New</label>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="~/assets/images/avatar-2.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">John Doe</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
+                            <asp:Repeater ID="rptNotifications" runat="server">
+                                <HeaderTemplate>
+                                    <ul class="show-notification">
+                                        <li>
+                                            <h6>Notifications</h6>
+                                          <%--  <label class="label label-danger">New</label>--%>
+                                        </li>
+                                </HeaderTemplate>
+                                <ItemTemplate >
+                                        <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #D8D8D8;" : "" %>'>
+                                            <asp:LinkButton runat="server" ID="notifID" OnClick="notifMsg_Click" Text='<%# Eval("notificationID")  %>'  CommandArgument='<%# Eval("notificationID")%>'></asp:LinkButton>
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <asp:Label runat="server" style="font-size:18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg" ></asp:Label> <br />
+                                                    <asp:Label runat="server" ID="notifArrived" Text='<%# Eval("notificationDate") %>' class="notification-time"></asp:Label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="assets/images/avatar-4.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Joseph William</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="assets/images/avatar-3.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Sara Soudein</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>--%>
+                                        </li>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </ul>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                            </li>
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
                                 <a href="#!" class="waves-effect waves-light">
@@ -285,6 +272,7 @@
                                     </li>
                                 </ul>
                             </div>
+                            </div>
                     </nav>
                 </div>
         </div>
@@ -322,7 +310,7 @@
     <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
     <script type="text/javascript" src="/assets/js/script.js "></script>
      <script src="/Scripts/MyScript/Index.js"></script>
-
+</form>
 </body>
 </html>
 

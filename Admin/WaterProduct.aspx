@@ -331,7 +331,19 @@
                                                 <h5 style="color:black;font-family:Bahnschrift"> Set delivery details offered to customers here:</h5>
                                                 <h6> Note: Please check ONE 'Delivery Type' you offer to your business and fill all the informations needed <br /> You can only create a delivery type ONCE</h6>
                                                 <hr />
-                                           <%-- <div class="item form-group">--%>
+                                          
+                                                <hr />
+                                                <br />
+                                                       <!--ORDER TYPE SELECTION-->
+                                                       <div class="col-md-12 col-sm-12" id="orderTypeDiv">
+                                                
+                                                           <strong>Choose the order type you offer to customers:</strong>
+                                                                <asp:CheckBoxList ID="orderTypes" runat="server">
+                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
+                                                                    <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                       </div>
+                                                <br />
                                             <div class="col-md-12 col-sm-12 ">
                                                   <%--Delivery Type--%>
                                                   <strong>Choose the Delivery Type you provide in your business:</strong>
@@ -387,14 +399,6 @@
                                                                 </asp:CheckBoxList>
                                                       <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
                                                 </div> <br />
-                                                       <div class="col-md-12 col-sm-12">
-                                                
-                                                           <strong>Choose types of deliver type you offer to customers:</strong>
-                                                                <asp:CheckBoxList ID="DeliveryType" runat="server">
-                                                                    <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
-                                                                    <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
-                                                                </asp:CheckBoxList>
-                                                       </div>
                                                 </div>
 
                                                 <!--SCRIPT FOR STANDARD WHEN CLICKED-->
@@ -471,14 +475,14 @@
                                                                 </asp:CheckBoxList>
                                                       <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
                                                 </div>
-                                                       <div class="col-md-12 col-sm-12">
+<%--                                                       <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="reserveOrderType" runat="server">
                                                                     <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
                                                                     <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                       </div>
+                                                       </div>--%>
                                                 </div>
                                                 
 
@@ -549,14 +553,14 @@
                                                                 </asp:CheckBoxList>
                                                       <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
                                                 </div> <br />
-                                                       <div class="col-md-12 col-sm-12">
+<%--                                                       <div class="col-md-12 col-sm-12">
                                                 
                                                            <strong>Choose types of service you offer to customers:</strong>
                                                                 <asp:CheckBoxList ID="expressOrderType" runat="server">
                                                                     <asp:ListItem Text="Pick-Up" Value="PickUp"></asp:ListItem>
                                                                     <asp:ListItem Text="Delivery" Value="Delivery"></asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                       </div>
+                                                       </div>--%>
                                                 </div>
                                                 
 
@@ -608,11 +612,6 @@
 
                                                 </script>
 
-                                                <hr />
-                                                <br />
-  
-
-                                                <br />
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">

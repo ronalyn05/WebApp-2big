@@ -155,8 +155,10 @@ namespace WRS2big_Web.LandingPage
                 var Notification = new SuperAdminNotification
                 {
                     adminID = data.idno,
-                    body = "Someone created an account. Check the details for approval ",
-                    notificationDate = DateTimeOffset.UtcNow,
+                    sender = "Admin",
+                    receiver = "Super Admin",
+                    body = "You have a new client! Check the details for approval ",
+                    notificationDate = DateTime.Now,
                     status = "unread",
                     notificationID = ID
 
@@ -164,10 +166,11 @@ namespace WRS2big_Web.LandingPage
 
                 //NOTIFICATION SENT TO SUPERADMIN 
                 SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("SUPERADMIN_NOTIFICATION/" + data.idno, Notification);//Storing data to the database
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                 SuperAdminNotification notif = notifResponse.ResultAs<SuperAdminNotification>();//Database Result
 
-                
+
+
 
             }
             catch

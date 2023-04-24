@@ -213,6 +213,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSet;
 
         /// <summary>
+        /// orderTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList orderTypes;
+
+        /// <summary>
         /// radDevType control.
         /// </summary>
         /// <remarks>
@@ -312,15 +321,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList standardSwapOptions;
 
         /// <summary>
-        /// DeliveryType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList DeliveryType;
-
-        /// <summary>
         /// resFreeDel control.
         /// </summary>
         /// <remarks>
@@ -366,15 +366,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList reserveSwap;
 
         /// <summary>
-        /// reserveOrderType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderType;
-
-        /// <summary>
         /// estimatedTime control.
         /// </summary>
         /// <remarks>
@@ -418,15 +409,6 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList expressSwap;
-
-        /// <summary>
-        /// expressOrderType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList expressOrderType;
 
         /// <summary>
         /// btnDeliverydetails control.

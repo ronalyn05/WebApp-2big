@@ -10,6 +10,7 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
+using WRS2big_Web.Model;
 
 namespace WRS2big_Web.superAdmin
 {
