@@ -59,39 +59,62 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    // Check for user actions and set activity property
-                    //string activity = "";
-                    //if (!string.IsNullOrEmpty(entry.userActivity.ToString()))
+                    string activity = entry.userActivity;
+                    if (activity == "0")
+                    {
+                        activity = "";
+                    }
+                    //string activity;
+                    //if (entry.userActivity == UserActivityType.AcceptedOrder)
                     //{
-                    //    //activity += "Added product with ID " + entry.productRefillId + " on " + entry.productrefillDateAdded;
-                    //    activity += entry.userActivity;
+                    //    activity = "ACCEPTED ORDER";
                     //}
-                    //if (!string.IsNullOrEmpty(entry.tankSupplyDateAdded.ToString()))
+                    //else if (entry.userActivity == UserActivityType.DeclinedOrder)
                     //{
-                    //    //activity += "Added tank supply with ID " + entry.tankId + " on " + entry.tankSupplyDateAdded;
-                    //    activity += entry.tankId + " on " + entry.tankSupplyDateAdded;
+                    //    activity = "DECLINED ORDER";
                     //}
-                    //if (!string.IsNullOrEmpty(entry.dateOrderAccepted.ToString()))
+                    //else if (entry.userActivity == UserActivityType.ReceivedPayment)
                     //{
-                    //    activity += entry.userActivity + " of " + entry.orderId + " from customer " + entry.cusId 
-                    //                + " on " + entry.dateOrderAccepted;
+                    //    activity = "RECEIVED PAYMENT";
                     //}
-                    //if (!string.IsNullOrEmpty(entry.datePaymentReceived.ToString()))
+                    //else if (entry.userActivity == UserActivityType.AddedEmployeeRecords)
                     //{
-                    //    activity += entry.userActivity + " of " + entry.orderId + " on " + entry.datePaymentReceived;
+                    //    activity = "ADDED EMPLOYEE RECORDS";
                     //}
-                    //if (activity != "")
+                    //else if (entry.userActivity == UserActivityType.AddedTankSupply)
                     //{
-                    //    // Remove the trailing ", " from the activity string
-                    //    activity = activity.Substring(0, activity.Length - 2);
+                    //    activity = "ADDED TANK SUPPLY";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.AddedProductRefill)
+                    //{
+                    //    activity = "ADDED PRODUCT REFILL";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.AddedOtherProducts)
+                    //{
+                    //    activity = "ADDED OTHER PRODUCT";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.AddedDeliveryDetails)
+                    //{
+                    //    activity = "ADDED DELIVERY DETAILS";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.CreateStationdetails)
+                    //{
+                    //    activity = "ADDED STATION DETAILS";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.UpdatedEmployeeRecords)
+                    //{
+                    //    activity = "UPDATE EMPLOYEE RECORDS";
+                    //}
+                    //else if (entry.userActivity == UserActivityType.UpdateStationdetails)
+                    //{
+                    //    activity = "UPDATE STATION DETAILS";
+                    //}
+                    //else
+                    //{
+                    //    activity = "NO ACTIVITY";
                     //}
 
-                    //Update the user's activity in the database
-                    //entry.Activity = activity;
-                    //twoBigDB.Set("USERSLOG/" + entry.logsId, entry);
-
-
-                    // Retrieve the existing Users log object from the database
+                    //Retrieve the existing Users log object from the database
                     FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
@@ -103,15 +126,14 @@ namespace WRS2big_Web.Admin
                         orderId = existingLog.orderId,
                         userFullname = (string)Session["fullname"],
                         dateLogin = existingLog.dateLogin,
-
-                        //  userActivity = activity
+                        userActivity = activity
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
                     // Update the userLogTable with the user's activity
-                    //userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, entry.userActivity, entry.dateLogout);
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
+                  //  userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, entry.userActivity, entry.dateLogout);
                 }
 
             }
