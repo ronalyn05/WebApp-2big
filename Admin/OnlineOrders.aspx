@@ -60,32 +60,32 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                       <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
-                                               <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                               <asp:GridView runat="server" ID="GridView1" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField HeaderText="ACTION">
                                                           <ItemTemplate>
-                                                              <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Green"/>
-                                                              <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Red"/>
+                                                              <asp:Button ID="btnAccept" runat="server" Text="Accept" OnClick="btnAccept_Click" style="background-color:transparent;font-size:18px;border-color:green;border-style:solid"/>
+                                                              <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" style="background-color:transparent;font-size:18px;border-color:red;border-style:solid"/>
+                                                             <%-- <asp:Button runat="server" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> --%>
                                                          </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
                                                    <Columns>
                                                         <asp:TemplateField HeaderText="PAYMENT">
                                                           <ItemTemplate>
-                                                              <asp:Button ID="btnPaymentAccept" runat="server" Text="Payment Received" OnClick="btnPaymentAccept_Click" Font-Bold="true" BorderStyle="None" ForeColor="White" BackColor="Blue"/>
+                                                              <asp:Button ID="btnPaymentAccept" runat="server" Text="Payment Received" OnClick="btnPaymentAccept_Click"  style="background-color:transparent;font-size:18px;border-color:darkblue;border-style:solid"/>
                                                              
                                                          </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                        <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                        <HeaderStyle BackColor="#006699" Font-Bold="True" VerticalAlign="Middle" Height="50px" Width="400px" ForeColor="White" HorizontalAlign="Center" Font-Size="20px"/>
-                                                        <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                        <RowStyle Width="200px" Font-Size="16px" ForeColor="#000066" />
-                                                        <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                        <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                        <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
                                                     </asp:GridView>
                                                  </div>
                                                               </div><!--/tab-pane-->
