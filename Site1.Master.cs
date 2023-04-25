@@ -60,7 +60,7 @@ namespace WRS2big_Web
             int admin = int.Parse(adminID);
 
             // Retrieve the existing Notifications object from the database
-            FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATIONTEST");
             var data = notification.Body;
             Dictionary<string, Model.SuperAdminNotification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.SuperAdminNotification>>(data);
 
@@ -96,7 +96,7 @@ namespace WRS2big_Web
 
             int idnum = int.Parse(notificationID);
             // Retrieve the existing Notifications object from the database
-            FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATIONTEST/" + idnum);
             SuperAdminNotification notif = notification.ResultAs<SuperAdminNotification>();
 
             int adminID = notif.adminID;
@@ -115,7 +115,7 @@ namespace WRS2big_Web
                 body = notif.body,
                 adminID = notif.adminID
             };
-            notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+            notification = twoBigDB.Update("NOTIFICATIONTEST/" + idnum, updatedNotif);
             Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
 
         }
