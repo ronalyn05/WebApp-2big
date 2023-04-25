@@ -132,7 +132,7 @@
                                                                               <div class="col-xl-6 col-md-12">
                                                                               <div class="card-block">
                                                                                            <div style="background-color:#018cff;color:white" class="card card-block">
-	                                                                                           <h7>PACKAGE FEATURES</h7>
+	                                                                                           <h7>PACKAGE DETAILS</h7>
                                                                                            </div>
                                                                                             <div class="form-material" style="margin-left:100px">
 
@@ -140,6 +140,15 @@
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">FEATURES:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:ListBox runat="server" ID="featuresList" style="text-align:center; font-size:18px" Height="248px" Width="421px"> </asp:ListBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>
+                                                                                            <div class="form-material" style="margin-left:100px">
+
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">number of Manageable Stations:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:Label  class="form-control-round" id="numofStations" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>

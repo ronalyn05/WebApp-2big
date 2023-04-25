@@ -39,21 +39,22 @@ namespace WRS2big_Web
         }
         private void loadNotifications()
         {
+            //int count = 0;
             // Retrieve the existing Notifications object from the database
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
             var data = notification.Body;
-            Dictionary<string, Model.SuperAdminNotification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.SuperAdminNotification>>(data);
+            Dictionary<string, Model.Notification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(data);
 
             // Create a list to store all the notifications with the receiver as "Super Admin"
-            List<Model.SuperAdminNotification> superAdminNotifications = new List<Model.SuperAdminNotification>();
+            List<Model.Notification> superAdminNotifications = new List<Model.Notification>();
 
             // Loop through all the notifications
-            foreach (KeyValuePair<string, Model.SuperAdminNotification> entry in allNotifications)
+            foreach (KeyValuePair<string, Model.Notification> entry in allNotifications)
             {
                 // Check if the current notification has the receiver as "Super Admin"
                 if (entry.Value.receiver == "Super Admin")
                 {
-
+                    //count++;
                     // Add the current notification to the list of super admin notifications
                     superAdminNotifications.Add(entry.Value);
 

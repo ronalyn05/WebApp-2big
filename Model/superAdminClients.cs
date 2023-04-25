@@ -42,6 +42,9 @@ namespace WRS2big_Web.Model
         public int packageDuration { get; set; }
 
         public int packageLimit { get; set; }
+        public string messaging { get; set; }
+        public int numberOfStations { get; set; }
+
         public List<string> features { get; set; } //to save the features in the db as a list
 
     }
@@ -49,6 +52,8 @@ namespace WRS2big_Web.Model
     public class SuperAdminNotification
     {
         public int adminID { get; set; }
+
+        public int admin_ID { get; set; }
         public string status { get; set; }
         public string sender { get; set; }
         public string receiver { get; set; }
@@ -56,7 +61,7 @@ namespace WRS2big_Web.Model
         public int notificationID { get; set; }
         public string body { get; set; }
         public DateTimeOffset notificationDate { get; set; }
-        
-
+        public int orderID { get; set; }
+        public int cusId { get; set; }
     }
 }

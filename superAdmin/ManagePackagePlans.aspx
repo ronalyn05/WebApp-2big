@@ -151,8 +151,8 @@
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                            <asp:DropDownList class="form-control" runat="server" style="border-style: solid; border-width: thin; border-color: darkgrey;" ID="durationTypeSelected">
                                                                                                                 <asp:ListItem></asp:ListItem>
-                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Monthly">Month</asp:ListItem>
-                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Yearly">Year</asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Month">Monthly</asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Year">Yearly</asp:ListItem>
                                                                                                            </asp:DropDownList>
                                                                                                         </div>
                                                                                                     </div>
@@ -166,7 +166,7 @@
 
                                                                             </div>
                                                                          </div>
-                                                                              <div class="col-xl-6 col-md-12">
+                                                                           <div class="col-xl-6 col-md-12">
                                                                               <div class="card-block">
                                                                                            <div style="background-color:#018cff;color:white" class="card card-block">
 	                                                                                           <h7>PACKAGE DETAILS</h7>
@@ -199,6 +199,31 @@
                                                                                                         </div>
                                                                                                     </div>
 
+                                                                                            </div>
+
+                                                                            </div>
+                                                                         </div>
+                                                                           <div class="col-xl-6 col-md-12">
+                                                                              <div class="card-block">
+                                                                                           <div style="background-color:#018cff;color:white" class="card card-block">
+	                                                                                           <h7>PACKAGE SETTINGS</h7>
+                                                                                           </div>
+                                                                                            <div class="form-material" style="margin-left:50px">
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">Client to Super-Admin Messaging:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"   style="margin-left:70px;font-size:18px;color:black"> 
+                                                                                                         <asp:CheckBoxList runat="server" ID="messagingOption" Width="327px" >
+                                                                                                             <asp:ListItem Value="Allowed"> &nbsp; Allow</asp:ListItem>
+                                                                                                             <asp:ListItem  Value="Not Allowed"> &nbsp; Don't Allow</asp:ListItem>
+                                                                                                         </asp:CheckBoxList>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">Number of Refilling Stations to manage:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"   style="margin-left:70px;font-size:18px;color:black"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="numofStations" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                             </div>
 
                                                                             </div>
