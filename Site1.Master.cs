@@ -89,9 +89,16 @@ namespace WRS2big_Web
 
             int admin = int.Parse(adminID);
 
+<<<<<<< HEAD
+            // Retrieve the existing Notifications object from the database
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATIONTEST");
+            var data = notification.Body;
+            Dictionary<string, Model.SuperAdminNotification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.SuperAdminNotification>>(data);
+=======
             FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
             var adminBody = adminNotif.Body;
             Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+>>>>>>> master
 
             // Create a list to store all the notifications with the receiver as " Admin"
             List<Model.Notification> AdminNotifications = new List<Model.Notification>();
@@ -126,8 +133,16 @@ namespace WRS2big_Web
 
             int idnum = int.Parse(notificationID);
             // Retrieve the existing Notifications object from the database
+<<<<<<< HEAD
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATIONTEST/" + idnum);
+            SuperAdminNotification notif = notification.ResultAs<SuperAdminNotification>();
+
+            int adminID = notif.adminID;
+            Session["currentClient"] = adminID;
+=======
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
             Notification notif = notification.ResultAs<Notification>();
+>>>>>>> master
 
             string title = notif.title;
 
@@ -232,6 +247,7 @@ namespace WRS2big_Web
             //notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
             //Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
 
+>>>>>>> master
 
         }
         protected void btnLogout_Click(object sender, EventArgs e)

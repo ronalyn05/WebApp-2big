@@ -175,7 +175,8 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     dateLogin = existingLog.dateLogin,
-                    userActivity = UserActivityType.AddedEmployeeRecords
+                    userActivity = "ADDED EMPLOYEE DETAILS",
+                    // userActivity = UserActivityType.AddedEmployeeRecords
                     //deliveryDetailsId = existingLog.deliveryDetailsId,
                     //standardAdded = existingLog.standardAdded,
                     //reservationAdded = existingLog.reservationAdded,
@@ -289,7 +290,8 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     dateLogin = existingLog.dateLogin,
-                    userActivity = UserActivityType.UpdatedEmployeeRecords
+                    userActivity = "UPDATE EMPLOYEE DETAILS",
+                    // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
 
