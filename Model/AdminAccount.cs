@@ -251,25 +251,26 @@ namespace WRS2big_Web.Model
         public int logsId { get; set; }
         public int orderId { get; set; }
         public string userFullname { get; set; }
-        public UserActivityType userActivity { get; set; }
+        public string userActivity { get; set; }
+       // public UserActivityType userActivity { get; set; }
         public DateTimeOffset dateLogin { get; set; }
         public DateTimeOffset dateLogout { get; set; }
     }
 
-    public enum UserActivityType
-    {
-        AcceptedOrder, 
-        DeclinedOrder,
-        ReceivedPayment,
-        UpdateStationdetails,
-        CreateStationdetails,
-        AddedEmployeeRecords,
-        AddedTankSupply,
-        AddedOtherProducts,
-        AddedProductRefill,
-        AddedDeliveryDetails,
-        UpdatedEmployeeRecords
-    }
+    //public enum UserActivityType
+    //{
+    //    AcceptedOrder, 
+    //    DeclinedOrder,
+    //    ReceivedPayment,
+    //    UpdateStationdetails,
+    //    CreateStationdetails,
+    //    AddedEmployeeRecords,
+    //    AddedTankSupply,
+    //    AddedOtherProducts,
+    //    AddedProductRefill,
+    //    AddedDeliveryDetails,
+    //    UpdatedEmployeeRecords
+    //}
 
     public class Reward
     {

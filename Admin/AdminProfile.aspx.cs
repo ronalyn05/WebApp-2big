@@ -495,6 +495,7 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     dateLogin = existingLog.dateLogin,
+                    userActivity = "ADDED STATION DETAILS",
                     //emp_id = existingLog.emp_id,
                     //empFullname = existingLog.empFullname,
                     //empDateAdded = existingLog.empDateAdded,
@@ -507,7 +508,7 @@ namespace WRS2big_Web.Admin
                     //other_productId = existingLog.other_productId,
                     //otherProductDateAdded = existingLog.otherProductDateAdded,
                     // userActivity = "Update Station details"
-                    userActivity = UserActivityType.UpdateStationdetails,
+                    //  userActivity = UserActivityType.UpdateStationdetails,
 
 
                 };
@@ -567,7 +568,8 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     dateLogin = existingLog.dateLogin,
-                    userActivity = UserActivityType.CreateStationdetails
+                    userActivity = "UPDATE STATION DETAILS",
+                   // userActivity = UserActivityType.CreateStationdetails
                     //emp_id = existingLog.emp_id,
                     //empFullname = existingLog.empFullname,
                     //empDateAdded = existingLog.empDateAdded,

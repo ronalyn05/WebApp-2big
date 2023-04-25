@@ -50,50 +50,45 @@ namespace WRS2big_Web
             }
 
             loadNotifications();
+            //reminderNotification();
         }
+        //private void reminderNotification()
+        //{
+        //    string adminID = (string)Session["idno"];
+
+        //    int admin = int.Parse(adminID);
+
+        //    FirebaseResponse reminder = twoBigDB.Get("ORDERS");
+        //    var reminderBody = reminder.Body;
+        //    Dictionary<string, Model.Order> reminderNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Order>>(reminderBody);
+
+        //    // Create a list to store all the notifications with the receiver as " Admin"
+        //    List<Model.Order> AdminOrders = new List<Model.Order>();
+
+        //    // Loop through all the notifications
+        //    foreach (KeyValuePair<string, Model.Order> entry in reminderNotifications)
+        //    {
+        //        // Check if the current notification has the receiver as "Admin"
+        //        if (entry.Value.admin_ID == admin )
+        //        {
+        //            // Add the current notification to the list of admin notifications
+        //            AdminOrders.Add(entry.Value);
+
+
+        //        }
+        //    }
+
+        //}
         private void loadNotifications()
         {
-            //int adminID = (int)Session["idno"];
-
-            //string adminID = (string)Session["idno"];
-
-            //int admin = int.Parse(adminID);
-
-            //// Retrieve the existing Notifications object from the database
-            //FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
-            //var data = notification.Body;
-            //Dictionary<string, Model.Notification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(data);
-
-            //// Create a list to store all the notifications with the receiver as " Admin"
-            //List<Model.Notification> AdminNotifications = new List<Model.Notification>();
-
-            //// Loop through all the notifications
-            //foreach (KeyValuePair<string, Model.Notification> entry in allNotifications)
-            //{
-            //    // Check if the current notification has the receiver as " Admin"
-            //    if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
-            //    {
-
-            //        // Add the current notification to the list of admin notifications
-            //        AdminNotifications.Add(entry.Value);
-
-            //    }
-            //}
-
-            //// Sort the super admin notifications based on dateAdded property in descending order
-            //AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
-
-            //// Bind the list of super admin notifications to the repeater control
-            //rptNotifications.DataSource = AdminNotifications;
-            //rptNotifications.DataBind();
 
 
-
-            //TESTING ONLY FOR NOTIFICATION FROM CUSTOMER TO ADMIN
+            //NOTIFICATION FROM CUSTOMER TO ADMIN
 
             string adminID = (string)Session["idno"];
 
             int admin = int.Parse(adminID);
+
 
             FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
             var adminBody = adminNotif.Body;
@@ -127,57 +122,101 @@ namespace WRS2big_Web
         //the notificationID is clicked
         protected void notifMsg_Click(object sender, EventArgs e)
         {
-            //LinkButton clickedButton = (LinkButton)sender;
-            //string notificationID = (sender as LinkButton).CommandArgument;
-
-            //int idnum = int.Parse(notificationID);
-            //// Retrieve the existing Notifications object from the database
-            //FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
-            //Notification notif = notification.ResultAs<Notification>();
-
-            //int adminID = notif.admin_ID;
-            //Session["currentClient"] = adminID;
-
-
-
-            //var updatedNotif = new Notification
-            //{
-            //    notificationID = notif.notificationID,
-            //    notificationDate = notif.notificationDate,
-            //    receiver = notif.receiver,
-            //    sender = notif.sender,
-            //    //UPDATE THE STATUS FROM UNREAD TO READ
-            //    status = "read",
-            //    body = notif.body,
-            //    adminID = notif.admin_ID
-            //};
-            //notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-            //Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
-
             LinkButton clickedButton = (LinkButton)sender;
             string notificationID = (sender as LinkButton).CommandArgument;
 
             int idnum = int.Parse(notificationID);
             // Retrieve the existing Notifications object from the database
+
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
             Notification notif = notification.ResultAs<Notification>();
 
+            string title = notif.title;
 
-            var updatedNotif = new Notification
+            if (title == "Application Approved")
             {
-                notificationID = notif.notificationID,
-                notificationDate = notif.notificationDate,
-                receiver = notif.receiver,
-                sender = notif.sender,
-                //UPDATE THE STATUS FROM UNREAD TO READ
-                status = "read",
-                body = notif.body,
-                admin_ID = notif.admin_ID
-            };
-            notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-            Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
+                var updatedNotif = new Notification
+                {
 
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+            }
+            //NEED TO ANALYZE UNSAY BUHATON SA ADMIN IF DECLINED IYA APPLICATION
+            else if (title == "Application Declined")
+            {
+                var updatedNotif = new Notification
+                {
 
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+            }
+            else if (title == "New Order")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
+            }
+            else if (title == "Order Status")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
+            }
+            
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {
