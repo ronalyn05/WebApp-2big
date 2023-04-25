@@ -189,40 +189,6 @@ namespace WRS2big_Web.Admin
 
                     response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                    //FirebaseResponse notificationResponse = twoBigDB.Get("ADMINNOTIFICATION/" + orderID);
-                    //AdminNotification existingNotification = notificationResponse.ResultAs<AdminNotification>();
-
-                    //if (existingNotification != null)
-                    //{
-                    //    // Create a new NotificationMessage object with the fields that you want to update
-                    //    CustomerNotification updatedNotification = new CustomerNotification
-                    //    {
-                    //        admin_ID = existingNotification.admin_ID,
-                    //        driverId = existingOrder.driverId,
-                    //        body = "Your order has been accepted at the same time assigned to a driver and will be delivered soon",
-                    //        //bodyDriver = "You have a new order assigned to you.",
-                    //        orderID = existingOrder.orderID,
-                    //        cusId = existingNotification.cusId,
-                    //        notificationDate = DateTimeOffset.UtcNow
-                    //    };
-
-                    //    twoBigDB.Update("CUSTOMERNOTIFICATION/" + existingNotification.orderID, updatedNotification);
-
-                    //    // Create a new NotificationMessage object with the fields that you want to update
-                    //    DriverNotification driverNotif = new DriverNotification
-                    //    {
-                    //        admin_ID = existingNotification.admin_ID,
-                    //         driverId = existingOrder.driverId,
-                    //       // body = "Your order has been accepted at the same time assigned to a driver and will be delivered soon",
-                    //        body = "You have a new order assigned to you.",
-                    //        orderID = existingOrder.orderID,
-                    //        cusId = existingNotification.cusId,
-                    //        notificationDate = DateTimeOffset.UtcNow
-                    //    };
-
-                    //    twoBigDB.Update("DRIVERNOTIFICATION/" + existingNotification.orderID, driverNotif);
-                    //}
-
                     //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
                     //Random rnd = new Random();
                     int ID = rnd.Next(1, 20000);
@@ -285,7 +251,7 @@ namespace WRS2big_Web.Admin
                         logsId = logsId,
                         orderId = orderID,
                         userFullname = (string)Session["fullname"],
-                        userActivity = UserActivityType.AcceptedOrder
+                        //userActivity = UserActivityType.AcceptedOrder
                         //    emp_id = existingLog.emp_id,
                         //    empFullname = existingLog.empFullname,
                         //    empDateAdded = existingLog.empDateAdded,
@@ -414,7 +380,7 @@ namespace WRS2big_Web.Admin
                 logsId = logsId,
                 orderId = orderID,
                 userFullname = (string)Session["fullname"],
-                userActivity = UserActivityType.ReceivedPayment
+                //userActivity = UserActivityType.ReceivedPayment
                 //    emp_id = existingLog.emp_id,
                 //    empFullname = existingLog.empFullname,
                 //    empDateAdded = existingLog.empDateAdded,
@@ -542,7 +508,7 @@ namespace WRS2big_Web.Admin
                         logsId = logsId,
                         orderId = orderID,
                         userFullname = (string)Session["fullname"],
-                        userActivity = UserActivityType.ReceivedPayment
+                        //userActivity = UserActivityType.ReceivedPayment
                         //    emp_id = existingLog.emp_id,
                         //    empFullname = existingLog.empFullname,
                         //    empDateAdded = existingLog.empDateAdded,
