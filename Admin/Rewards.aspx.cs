@@ -136,16 +136,21 @@ namespace WRS2big_Web.Admin
                     SetResponse response;
                     response = twoBigDB.Set("REWARDS/" + data.rewardId, data);
 
-                    // Create a log entry for the user
-                    var log = new Logs
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.UtcNow;
+
+                    //Store the login information in the USERLOG table
+                    var rewardLog = new UsersLogs
                     {
-                        adminId = int.Parse(idno),
-                        timestamp = rewardsDateAdded,
-                        action = "Added reward promo: " + data.name
+                        userIdnum = int.Parse(idno),
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        activityTime = addedTime,
+                        userActivity = "ADDED REWARDS OFFERED",
                     };
 
-                    // Save the log entry to the "USER_LOGS" node
-                    twoBigDB.Update("USER_LOGS/" + idno, log);
+                    //Storing the  info
+                    response = twoBigDB.Set("USERSLOG/" + rewardLog.logsId, rewardLog);//Storing data to the database
 
                     // Show success message
                     Response.Write("<script> alert('Reward promo added successfully!'); location.reload(); window.location.href = '/Admin/Rewards.aspx'; </script>");

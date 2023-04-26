@@ -325,6 +325,10 @@ namespace WRS2big_Web.Admin
         {
             try
             {
+                //generate a random number for users logged
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
                 string idno = (string)Session["idno"];
 
                 // Retrieve the existing product data from the database
@@ -375,6 +379,25 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response;
                 response = twoBigDB.Update("ADMIN/" + idno, data);
                 Response.Write("<script>alert ('Personal info has successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow; ;
+
+
+                //Store the login information in the USERLOG table
+                var profilelog = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    userActivity = "UPDATE PROFILE",
+                    // userActivity = UserActivityType.AddedProductRefill,
+                    activityTime = addedTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("USERSLOG/" + profilelog.logsId, profilelog);//Storing data to the database
+               
             }
             catch (Exception ex)
             {
@@ -420,6 +443,10 @@ namespace WRS2big_Web.Admin
         protected void btnManageStation_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
+
+            //generate a random number for users logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             // Check if the RefillingStation object already exists in the database
             var result = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
@@ -481,39 +508,24 @@ namespace WRS2big_Web.Admin
 
                 int logsId = (int)Session["logsId"];
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+                //// Retrieve the existing Users log object from the database
+                //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
-                    dateLogin = existingLog.dateLogin,
+                    activityTime = addedTime,
                     userActivity = "ADDED STATION DETAILS",
-                    //emp_id = existingLog.emp_id,
-                    //empFullname = existingLog.empFullname,
-                    //empDateAdded = existingLog.empDateAdded,
-                    //dateLogin = existingLog.dateLogin,
-                    //tankId = existingLog.tankId,
-                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //productRefillId = existingLog.productRefillId,
-                    //productrefillDateAdded = existingLog.productrefillDateAdded,
-                    //other_productId = existingLog.other_productId,
-                    //otherProductDateAdded = existingLog.otherProductDateAdded,
-                    // userActivity = "Update Station details"
-                    //  userActivity = UserActivityType.UpdateStationdetails,
-
-
                 };
-
-                twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
             } 
             //CREATE NEW DETAILS
@@ -552,40 +564,27 @@ namespace WRS2big_Web.Admin
                 twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", newObj);
 
                 Response.Write("<script>alert ('Station details successfully added!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
-                int logsId = (int)Session["logsId"];
+               
+                //int logsId = (int)Session["logsId"];
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+                //// Retrieve the existing Users log object from the database
+                //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
-                    dateLogin = existingLog.dateLogin,
-                    userActivity = "UPDATE STATION DETAILS",
-                   // userActivity = UserActivityType.CreateStationdetails
-                    //emp_id = existingLog.emp_id,
-                    //empFullname = existingLog.empFullname,
-                    //empDateAdded = existingLog.empDateAdded,
-                    //dateLogin = existingLog.dateLogin,
-                    //tankId = existingLog.tankId,
-                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //productRefillId = existingLog.productRefillId,
-                    //productrefillDateAdded = existingLog.productrefillDateAdded,
-                    //other_productId = existingLog.other_productId,
-                    //otherProductDateAdded = existingLog.otherProductDateAdded,
-                    //userActivity = "Create Station details"
-
+                    activityTime = addedTime,
+                    userActivity = "UPDATED THE STATION DETAILS",
                 };
 
-                twoBigDB.Update("USERSLOG/Test" + log.logsId, log);
+                twoBigDB.Set("USERSLOG" + log.logsId, log);
             }
         }
 
