@@ -249,7 +249,7 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(idno),
                         logsId = logsId,
-                        orderId = orderID,
+                        //orderId = orderID,
                         userFullname = (string)Session["fullname"],
                         //userActivity = UserActivityType.AcceptedOrder
                         //    emp_id = existingLog.emp_id,
@@ -378,7 +378,7 @@ namespace WRS2big_Web.Admin
             {
                 userIdnum = int.Parse(idno),
                 logsId = logsId,
-                orderId = orderID,
+               // orderId = orderID,
                 userFullname = (string)Session["fullname"],
                 //userActivity = UserActivityType.ReceivedPayment
                 //    emp_id = existingLog.emp_id,
@@ -506,7 +506,7 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(idno),
                         logsId = logsId,
-                        orderId = orderID,
+                      //  orderId = orderID,
                         userFullname = (string)Session["fullname"],
                         //userActivity = UserActivityType.ReceivedPayment
                         //    emp_id = existingLog.emp_id,
