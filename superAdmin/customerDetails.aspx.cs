@@ -39,7 +39,7 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse adminDet = twoBigDB.Get("CUSTOMER/" + customerID);
             Model.Customer admin = adminDet.ResultAs<Model.Customer>();
 
-            clientImage.ImageUrl = admin.imageSelfie.ToString();
+            //clientImage.ImageUrl = admin.imageSelfie.ToString();
             clientFullName.Text = admin.firstName + " " + admin.middleName + " " + admin.lastName;
             //clientAddress.Text = admin.
             clientEmail.Text = admin.email;
@@ -60,6 +60,12 @@ namespace WRS2big_Web.superAdmin
             //    approveButton.Enabled = false;
             //    declineButton.Enabled = false;
             //}
+
+            //TO CHECK IF NAAY PROFILE PIC
+            if (admin.imageSelfie != null)
+            {
+                clientImage.ImageUrl = admin.imageSelfie.ToString();
+            }
 
             double lattitude = admin.lattitudeLocation;
             double longitude = admin.longitudeLocation;

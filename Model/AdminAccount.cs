@@ -105,38 +105,48 @@ namespace WRS2big_Web.Model
     {
         public int deliveryId { get; set; }
         public int adminId { get; set; }
+        public string vehicles { get; set; }
+        public string swapOptions { get; set; }
+        public string paymentMethods { get; set; }
+        public string gcashNumber { get; set; }
+        public string products { get; set; }
+        public string orderTypes { get; set; }
+
+        //STANDARD
         public int standardID { get; set; }
         public string standistance { get; set; }
         public string stanDeliveryFee { get; set; }
-        public string orderTypes { get; set; }
+
         public string stanDeliverytype { get; set; }
         public string stanDeliveryTime { get; set; }
-        public string stanOrderMethod { get; set; }
-        public string stanOrderType { get; set; }
-        public string standardSwapOptions { get; set; }
+        //public string stanOrderMethod { get; set; }
+        //public string stanOrderType { get; set; }
+        //public string standardSwapOptions { get; set; }
         public DateTimeOffset standardDateAdded { get; set; }
-        public DateTimeOffset reservationdateAdded { get; set; }
+       
+
+        //EXRPESS
         public DateTimeOffset expressdateAdded { get; set; }
-        //EXPRESS DELIVERY
         public int expressID { get; set; }
         public string exDeliveryFee { get; set; }
         public string exEstimatedDelivery { get; set; }
         public string exDeliveryType { get; set; }
-        public string exOrderMethod { get; set; }
-        public string exOrderType { get; set; }
-        public string expressSwapOptions { get; set; }
-        //public string swapOptions { get; set; }
+        //public string exOrderMethod { get; set; }
+        //public string exOrderType { get; set; }
+        //public string expressSwapOptions { get; set; }
+        
         //public DateTime dateAdded { get; set; }
+
         //RESERVATION DELIVERY
         public int reservationID { get; set; }
         public string resDistanceFree { get; set; }
         public string resDeliveryFee { get; set; }
-        public string resOrderMethod { get; set; }
-        public string resOrderType { get; set; }
+       // public string resOrderMethod { get; set; }
+        //public string resOrderType { get; set; }
         public string resDeliveryType { get; set; }
-        public string reserveSwapOptions { get; set; }
-        public string paymentMethods { get; set; }
-        public string gcashNumber { get; set; }
+        public DateTimeOffset reservationdateAdded { get; set; }
+        //public string reserveSwapOptions { get; set; }
+
         //public string swapOptions { get; set; }
         //public DateTime dateAdded { get; set; }
 

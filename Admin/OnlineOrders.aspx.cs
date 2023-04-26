@@ -269,7 +269,7 @@ namespace WRS2big_Web.Admin
                         //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                         //    datePaymentReceived = existingOrder.datePaymentReceived,
                         //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                        //    userActivity = "Accepted Order"
+                         userActivity = "Accepted Order"
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -398,7 +398,7 @@ namespace WRS2big_Web.Admin
                 //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                 //    datePaymentReceived = existingOrder.datePaymentReceived,
                 //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                //    userActivity = "Declined Order",
+                    userActivity = "Declined Order",
                 //    dateDeclined = DateTimeOffset.UtcNow
             };
 
@@ -512,7 +512,7 @@ namespace WRS2big_Web.Admin
                         //    emp_id = existingLog.emp_id,
                         //    empFullname = existingLog.empFullname,
                         //    empDateAdded = existingLog.empDateAdded,
-                        //    dateLogin = existingLog.dateLogin,
+                        dateLogin = existingLog.dateLogin,
                         //    deliveryDetailsId = existingLog.deliveryDetailsId,
                         //    standardAdded = existingLog.standardAdded,
                         //    reservationAdded = existingLog.reservationAdded,
@@ -526,7 +526,7 @@ namespace WRS2big_Web.Admin
                         //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
                         //    dateOrderAccepted = existingOrder.dateOrderAccepted,
                         //    datePaymentReceived = existingOrder.datePaymentReceived,
-                        //    userActivity = "Received Payment"
+                          userActivity = "Received Payment"
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);

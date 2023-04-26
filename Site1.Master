@@ -223,7 +223,14 @@
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Orders</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
-                                    </li>
+                                            </li>
+                                            <li>
+                                                <a href="/Admin/DeliveryDetailsPage" class="waves-effect waves-dark">
+                                                    <span class="pcoded-micon"><i class="ti-truck"></i><b>FC</b></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main"> Delivery </span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
                                             <li>
                                                 <a href="/Admin/WaterProduct" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>

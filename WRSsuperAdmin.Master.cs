@@ -77,26 +77,62 @@ namespace WRS2big_Web
             int idnum = int.Parse(notificationID);
             // Retrieve the existing Notifications object from the database
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
-            SuperAdminNotification notif = notification.ResultAs<SuperAdminNotification>();
+            Notification notif = notification.ResultAs<Notification>();
 
-            int adminID = notif.adminID;
+            int adminID = notif.admin_ID;
             Session["currentClient"] = adminID;
 
+            string title = notif.title;
 
-
-            var updatedNotif = new SuperAdminNotification
+            if (title == "New Registered User")
             {
-                notificationID = notif.notificationID,
-                notificationDate = notif.notificationDate,
-                receiver = notif.receiver,
-                sender = notif.sender,
-                //UPDATE THE STATUS FROM UNREAD TO READ
-                status = "read",
-                body = notif.body,
-                adminID = notif.adminID
-            };
-            notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-            Response.Write("<script>window.location.href = '/superAdmin/clientDetails.aspx'; </script>");
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+
+                int currentClient = notif.cusId;
+                Session["currentCustomer"] = currentClient;
+                Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
+
+            }
+            else if (title == "Client Approval")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+
+                int currentClient = notif.admin_ID;
+                Session["currentClient"] = currentClient;
+                Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
+
+            }
+
 
         }
 

@@ -7,174 +7,264 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WRS2big_Web.Admin
+namespace WRS2big_Web
 {
 
 
-    public partial class WaterProduct
+    public partial class DeliveryDetails
     {
 
         /// <summary>
-        /// drdTankUnit control.
+        /// paymentsCheckBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdTankUnit;
+        protected global::System.Web.UI.WebControls.CheckBoxList paymentsCheckBox;
 
         /// <summary>
-        /// tankSize control.
+        /// gcashPayment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tankSize;
+        protected global::System.Web.UI.WebControls.ListItem gcashPayment;
 
         /// <summary>
-        /// btnAddSupply control.
+        /// gcashnum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddSupply;
+        protected global::System.Web.UI.WebControls.TextBox gcashnum;
 
         /// <summary>
-        /// productName control.
+        /// paymentButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productName;
+        protected global::System.Web.UI.WebControls.Button paymentButton;
 
         /// <summary>
-        /// imgProduct control.
+        /// radDevType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload imgProduct;
+        protected global::System.Web.UI.WebControls.CheckBoxList radDevType;
 
         /// <summary>
-        /// drdprodUnit control.
+        /// standardRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdprodUnit;
+        protected global::System.Web.UI.WebControls.ListItem standardRadio;
 
         /// <summary>
-        /// productSize control.
+        /// reserveRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productSize;
+        protected global::System.Web.UI.WebControls.ListItem reserveRadio;
 
         /// <summary>
-        /// productPrice control.
+        /// expressRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productPrice;
+        protected global::System.Web.UI.WebControls.ListItem expressRadio;
 
         /// <summary>
-        /// productDiscounts control.
+        /// standardSchedFrom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productDiscounts;
+        protected global::System.Web.UI.WebControls.TextBox standardSchedFrom;
 
         /// <summary>
-        /// productStock control.
+        /// standardSchedTo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productStock;
+        protected global::System.Web.UI.WebControls.TextBox standardSchedTo;
 
         /// <summary>
-        /// btnAdd control.
+        /// FreeDelivery control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAdd;
+        protected global::System.Web.UI.WebControls.TextBox FreeDelivery;
 
         /// <summary>
-        /// refillwaterType control.
+        /// DeliveryFee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox refillwaterType;
+        protected global::System.Web.UI.WebControls.TextBox DeliveryFee;
 
         /// <summary>
-        /// prodImage control.
+        /// OrderMethod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload prodImage;
+        protected global::System.Web.UI.WebControls.CheckBoxList OrderMethod;
 
         /// <summary>
-        /// refillUnit control.
+        /// refillSwapOptions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList refillUnit;
+        protected global::System.Web.UI.WebControls.ListItem refillSwapOptions;
 
         /// <summary>
-        /// refillSize control.
+        /// resFreeDel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox refillSize;
+        protected global::System.Web.UI.WebControls.TextBox resFreeDel;
 
         /// <summary>
-        /// refillPrice control.
+        /// resDelFee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox refillPrice;
+        protected global::System.Web.UI.WebControls.TextBox resDelFee;
 
         /// <summary>
-        /// refillDiscount control.
+        /// reserveOrderMethod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox refillDiscount;
+        protected global::System.Web.UI.WebControls.CheckBoxList reserveOrderMethod;
 
         /// <summary>
-        /// btnSet control.
+        /// reserveSwapOptions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSet;
+        protected global::System.Web.UI.WebControls.ListItem reserveSwapOptions;
+
+        /// <summary>
+        /// estimatedTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox estimatedTime;
+
+        /// <summary>
+        /// expressdeliveryFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox expressdeliveryFee;
+
+        /// <summary>
+        /// expressOrderMethod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList expressOrderMethod;
+
+        /// <summary>
+        /// expressSwapOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem expressSwapOptions;
+
+        /// <summary>
+        /// btnDeliverydetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeliverydetails;
+
+        /// <summary>
+        /// orderTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList orderTypes;
+
+        /// <summary>
+        /// delivery control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem delivery;
+
+        /// <summary>
+        /// vehicles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList vehicles;
+
+        /// <summary>
+        /// swapOptionItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList swapOptionItems;
+
+        /// <summary>
+        /// vehicleAdded control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button vehicleAdded;
 
         /// <summary>
         /// Label1 control.
@@ -249,24 +339,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label7;
 
         /// <summary>
-        /// ddlSearchOptions control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSearchOptions;
-
-        /// <summary>
-        /// btnSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
-
-        /// <summary>
         /// lblProductData control.
         /// </summary>
         /// <remarks>
@@ -276,22 +348,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblProductData;
 
         /// <summary>
-        /// gridProductRefill control.
+        /// gridDeliveryDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridProductRefill;
+        protected global::System.Web.UI.WebControls.GridView gridDeliveryDetails;
 
         /// <summary>
-        /// gridotherProduct control.
+        /// drdDeliverytype control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridotherProduct;
+        protected global::System.Web.UI.WebControls.DropDownList drdDeliverytype;
+
+        /// <summary>
+        /// btnDeliverytype control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeliverytype;
 
         /// <summary>
         /// lblDeliveryType control.
@@ -310,5 +391,32 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label nullLabel;
+
+        /// <summary>
+        /// expressGridview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView expressGridview;
+
+        /// <summary>
+        /// standardGridview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView standardGridview;
+
+        /// <summary>
+        /// reservationGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView reservationGridView;
     }
 }
