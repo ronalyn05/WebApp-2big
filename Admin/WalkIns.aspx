@@ -67,7 +67,7 @@
                                                                             <asp:DropDownList ID="drdOrderType" runat="server" class="text-center" Height="40px" Width="364px" Font-Size="18px">
                                                                          <%--  <asp:ListItem Selected="True" Text="Select"></asp:ListItem>--%>
                                                                            <asp:ListItem Text="Refill" Value="Refill"></asp:ListItem>
-                                                                           <asp:ListItem Text="New Gallon" Value="New Gallon" ></asp:ListItem>
+                                                                         <%--  <asp:ListItem Text="New Gallon" Value="New Gallon" ></asp:ListItem>--%>
                                                                            <asp:ListItem Text="Other Products" Value="Other Products" ></asp:ListItem>
                                                                        </asp:DropDownList>
                                                                             <asp:Button ID="btnSearch" runat="server" class="btn btn-primary" Text="Search" OnClick="btnSearch_Click" />

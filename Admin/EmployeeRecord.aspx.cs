@@ -108,7 +108,7 @@ namespace WRS2big_Web.Admin
                     employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
                                          entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
                                          entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
-                                         entry.emp_emergencycontact, entry.dateAdded, idno);
+                                         entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
                 }
             }
             else
@@ -126,6 +126,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int logsId = (int)Session["logsId"];
+            string name = (string)Session["fullname"];
 
             try
             {
@@ -151,6 +152,7 @@ namespace WRS2big_Web.Admin
                     emp_emergencycontact = txtemergencycontact.Text,
                     emp_role = drdrole.Text,
                     emp_status = Drd_status.Text,
+                    addedBy = name,
                     dateAdded = DateTimeOffset.UtcNow
                 };
 
