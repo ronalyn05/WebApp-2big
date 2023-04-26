@@ -63,7 +63,13 @@ namespace WRS2big_Web.Admin
                     {
                         activity = "";
                     }
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, entry.activityTime);
+                    string timestamp = entry.activityTime.ToString();
+
+                    if (DateTimeOffset.Parse(timestamp) == DateTimeOffset.MinValue)
+                    {
+                        timestamp = " ";
+                    }
+                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
                    
                     //Retrieve the existing Users log object from the database
                     FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + entry.logsId);
@@ -97,62 +103,62 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataBind();
 
         }
-        protected void gridUserLog_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                // Get the activity column value of the current row
-                string activity = DataBinder.Eval(e.Row.DataItem, "ACTIVITY").ToString();
+        //protected void gridUserLog_RowDataBound(object sender, GridViewRowEventArgs e)
+        //{
+        //    if (e.Row.RowType == DataControlRowType.DataRow)
+        //    {
+        //        // Get the activity column value of the current row
+        //        string activity = DataBinder.Eval(e.Row.DataItem, "ACTIVITY").ToString();
 
-                // Replace any comma followed by a space with a line break
-                activity = activity.Replace(", ", "<br>");
+        //        // Replace any comma followed by a space with a line break
+        //        activity = activity.Replace(", ", "<br>");
 
-                // Set the modified activity value to the activity column of the current row
-                e.Row.Cells[3].Text = activity;
-            }
-        }
+        //        // Set the modified activity value to the activity column of the current row
+        //        e.Row.Cells[3].Text = activity;
+        //    }
+        //}
         //SEARCH
-        protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string selectedOption = ddlSearchOptions.SelectedValue;
+        //protected void btnSearch_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //       // string selectedOption = ddlSearchOptions.SelectedValue;
 
 
-                if (selectedOption == "0")
-                {
-                    //lblProductData.Text = "PRODUCT REFILL";
-                    //gridProductRefill.Visible = true;
-                    //gridotherProduct.Visible = false;
-                    //productRefillDisplay();
-                }
-                else if (selectedOption == "1")
-                {
-                    //lblProductData.Text = "OTHER PRODUCT";
-                    //gridProductRefill.Visible = false;
-                    //gridotherProduct.Visible = true;
-                    //otherProductsDisplay();
-                }
-                else if (selectedOption == "2")
-                {
-                    //lblProductData.Text = "OTHER PRODUCT";
-                    //gridProductRefill.Visible = false;
-                    //gridotherProduct.Visible = true;
-                    //otherProductsDisplay();
-                }
-                else if (selectedOption == "3")
-                {
-                    //lblProductData.Text = "DELIVERY DETAILS";
-                    //gridProductRefill.Visible = false;
-                    //gridotherProduct.Visible = false;
-                    //deliveryExpressDisplay();
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/UsersLog.aspx';" + ex.Message);
-            }
-        }
+        //        if (selectedOption == "0")
+        //        {
+        //            //lblProductData.Text = "PRODUCT REFILL";
+        //            //gridProductRefill.Visible = true;
+        //            //gridotherProduct.Visible = false;
+        //            //productRefillDisplay();
+        //        }
+        //        else if (selectedOption == "1")
+        //        {
+        //            //lblProductData.Text = "OTHER PRODUCT";
+        //            //gridProductRefill.Visible = false;
+        //            //gridotherProduct.Visible = true;
+        //            //otherProductsDisplay();
+        //        }
+        //        else if (selectedOption == "2")
+        //        {
+        //            //lblProductData.Text = "OTHER PRODUCT";
+        //            //gridProductRefill.Visible = false;
+        //            //gridotherProduct.Visible = true;
+        //            //otherProductsDisplay();
+        //        }
+        //        else if (selectedOption == "3")
+        //        {
+        //            //lblProductData.Text = "DELIVERY DETAILS";
+        //            //gridProductRefill.Visible = false;
+        //            //gridotherProduct.Visible = false;
+        //            //deliveryExpressDisplay();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/UsersLog.aspx';" + ex.Message);
+        //    }
+        //}
 
     }
 }

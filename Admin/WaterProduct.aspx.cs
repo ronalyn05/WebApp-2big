@@ -424,7 +424,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -432,23 +432,8 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
-                    dateLogin = existingLog.dateLogin,
+                    activityTime = addedTime,
                     userActivity = "ADDED TANK SUPPLY",
-                    // userActivity = UserActivityType.AddedTankSupply
-                    //emp_id = existingLog.emp_id,
-                    //empFullname = existingLog.empFullname,
-                    //empDateAdded = existingLog.empDateAdded,
-                    //dateLogin = existingLog.dateLogin,
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //productRefillId = existingLog.productRefillId,
-                    //productrefillDateAdded = existingLog.productrefillDateAdded,
-                    //other_productId = existingLog.other_productId,
-                    //otherProductDateAdded = existingLog.otherProductDateAdded,
-                    //tankId = data.tankId,
-                    //tankSupplyDateAdded = data.dateAdded,
-                    //standardAdded = existingLog.standardAdded,
-                    //reservationAdded = existingLog.reservationAdded,
-                    //expressAdded = existingLog.expressAdded
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -533,7 +518,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -542,20 +527,7 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     userActivity = "ADDED OTHER PRODUCT",
-                    //userActivity = UserActivityType.AddedOtherProducts,
-                    dateLogin = existingLog.dateLogin
-                    //emp_id = existingLog.emp_id,
-                    //empFullname = existingLog.empFullname,
-                    //empDateAdded = existingLog.empDateAdded,
-                    //dateLogin = existingLog.dateLogin,
-                    //tankId = existingLog.tankId,
-                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //productRefillId = existingLog.productRefillId,
-                    //productrefillDateAdded = existingLog.productrefillDateAdded,
-                    //other_productId = data.other_productId,
-                    //otherProductDateAdded = data.dateAdded,
-
+                    activityTime = addedTime
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -634,7 +606,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -643,23 +615,7 @@ namespace WRS2big_Web.Admin
                     logsId = logsId,
                     userFullname = (string)Session["fullname"],
                     userActivity = "ADDED PRODUCT REFILL",
-                   // userActivity = UserActivityType.AddedProductRefill,
-                    dateLogin = existingLog.dateLogin
-                    //emp_id = existingLog.emp_id,
-                    //empFullname = existingLog.empFullname,
-                    //empDateAdded = existingLog.empDateAdded,
-                    //dateLogin = existingLog.dateLogin,
-                    //tankId = existingLog.tankId,
-                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    //other_productId = existingLog.other_productId,
-                    //otherProductDateAdded = existingLog.otherProductDateAdded,
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //productRefillId = data.pro_refillId,
-                    //productrefillDateAdded = data.dateAdded,
-                    //standardAdded = existingLog.standardAdded,
-                    //reservationAdded = existingLog.reservationAdded,
-                    //expressAdded = existingLog.expressAdded
-
+                    activityTime = addedTime
                 };
 
                 twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -669,11 +625,6 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
-
-
-       
-    
-
         protected void btnSearch_Click(object sender, EventArgs e)
             {
                 try

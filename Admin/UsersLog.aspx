@@ -66,7 +66,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-                                                         <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
+                                                        <%-- <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
                                                             <asp:ListItem Selected="False" Text="---Select Role-----"></asp:ListItem>
                                                             <asp:ListItem Text="View All Logs" Value="0"></asp:ListItem>
                                                            <asp:ListItem Text="Owner/Cashier" Value="1"></asp:ListItem>
@@ -75,7 +75,7 @@
                                                         </asp:DropDownList>
 
                                                         <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px"/>
-                                                        <br />
+                                                        <br />--%>
                                                    <%-- </div>
                                                     <div class="card-footer">--%>
                                                                     <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
@@ -86,8 +86,10 @@
                                                                 <%--the gridview starts here--%>
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                                    <br />
-                                                                  <asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                   <asp:GridView runat="server" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                  <%--<asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >--%>
                                                                          <%--  <Columns>
                                                                             <asp:TemplateField HeaderText="ACTIVITY">
                                                                               <ItemTemplate>

@@ -506,27 +506,9 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(idno),
                         logsId = logsId,
-                      //  orderId = orderID,
                         userFullname = (string)Session["fullname"],
-                        //userActivity = UserActivityType.ReceivedPayment
-                        //    emp_id = existingLog.emp_id,
-                        //    empFullname = existingLog.empFullname,
-                        //    empDateAdded = existingLog.empDateAdded,
-                        dateLogin = existingLog.dateLogin,
-                        //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                        //    standardAdded = existingLog.standardAdded,
-                        //    reservationAdded = existingLog.reservationAdded,
-                        //    expressAdded = existingLog.expressAdded,
-                        //    productRefillId = existingLog.productRefillId,
-                        //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                        //    other_productId = existingLog.other_productId,
-                        //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                        //    cusId = existingLog.cusId,
-                        //    tankId = existingLog.tankId,
-                        //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                        //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                        //    datePaymentReceived = existingOrder.datePaymentReceived,
-                          userActivity = "Received Payment"
+                        userActivity = "Received Payment",
+                        activityTime = addedTime
                     };
 
                     twoBigDB.Update("USERSLOG/" + log.logsId, log);

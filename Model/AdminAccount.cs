@@ -225,7 +225,6 @@ namespace WRS2big_Web.Model
         public string userFullname { get; set; }
         public string userActivity { get; set; }
         public DateTimeOffset activityTime { get; set; }
-        public DateTimeOffset dateLogin { get; set; }
     }
 
     public class Reward
