@@ -272,7 +272,8 @@ namespace WRS2big_Web.LandingPage
                             logsId = idnum,
                             userIdnum = int.Parse(idno),
                             userFullname = (string)Session["fullName"],
-                            dateLogin = loginTime 
+                            userActivity = "LOGGED IN",
+                            activityTime = loginTime 
                         };
 
                         //Storing the  info

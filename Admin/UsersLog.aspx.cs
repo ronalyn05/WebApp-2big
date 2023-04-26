@@ -42,17 +42,15 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("USERSLOG/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno)
-                               .OrderByDescending(d => d.dateLogin);
+              var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
 
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
             userLogTable.Columns.Add("USER NAME");
-            userLogTable.Columns.Add("LOGIN TIME");
             userLogTable.Columns.Add("ACTIVITY");
-            userLogTable.Columns.Add("LOGOUT TIME");
+            userLogTable.Columns.Add("TIMESTAMP");
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
@@ -60,80 +58,31 @@ namespace WRS2big_Web.Admin
                 foreach (var entry in filteredList)
                 {
                     string activity = entry.userActivity;
+
                     if (activity == "0")
                     {
                         activity = "";
                     }
-                    //string activity;
-                    //if (entry.userActivity == UserActivityType.AcceptedOrder)
-                    //{
-                    //    activity = "ACCEPTED ORDER";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.DeclinedOrder)
-                    //{
-                    //    activity = "DECLINED ORDER";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.ReceivedPayment)
-                    //{
-                    //    activity = "RECEIVED PAYMENT";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.AddedEmployeeRecords)
-                    //{
-                    //    activity = "ADDED EMPLOYEE RECORDS";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.AddedTankSupply)
-                    //{
-                    //    activity = "ADDED TANK SUPPLY";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.AddedProductRefill)
-                    //{
-                    //    activity = "ADDED PRODUCT REFILL";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.AddedOtherProducts)
-                    //{
-                    //    activity = "ADDED OTHER PRODUCT";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.AddedDeliveryDetails)
-                    //{
-                    //    activity = "ADDED DELIVERY DETAILS";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.CreateStationdetails)
-                    //{
-                    //    activity = "ADDED STATION DETAILS";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.UpdatedEmployeeRecords)
-                    //{
-                    //    activity = "UPDATE EMPLOYEE RECORDS";
-                    //}
-                    //else if (entry.userActivity == UserActivityType.UpdateStationdetails)
-                    //{
-                    //    activity = "UPDATE STATION DETAILS";
-                    //}
-                    //else
-                    //{
-                    //    activity = "NO ACTIVITY";
-                    //}
-
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, entry.activityTime);
+                   
                     //Retrieve the existing Users log object from the database
-                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + entry.logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
 
                     // Log user activity
                     var log = new UsersLogs
                     {
                         userIdnum = int.Parse(idno),
                         logsId = logsId,
-                        orderId = existingLog.orderId,
+                       // orderId = existingLog.orderId,
                         userFullname = (string)Session["fullname"],
-                        dateLogin = existingLog.dateLogin,
+                        activityTime = existingLog.activityTime,
                         userActivity = activity
                     };
-
-                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
-
                     // Update the userLogTable with the user's activity
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, activity, entry.dateLogout);
-                  //  userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.dateLogin, entry.userActivity, entry.dateLogout);
+                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                  
                 }
 
             }

@@ -46,7 +46,7 @@ namespace WRS2big_Web.Admin
 
                 // Convert input values to numerical format
                 int qty;
-                decimal price, discount, totalAmount;
+                decimal price, discount, totalAmount, discountAmount, subtotal;
 
                 if (!int.TryParse(txtQty.Text, out qty))
                 {
@@ -70,18 +70,24 @@ namespace WRS2big_Web.Admin
                 // Calculate total amount only if a valid discount value is entered
                 if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
-                    // Calculate free gallon if applicable
-                    //freeGallon = 0;
-                    //if (qty >= 5)
-                    //{
-                    //    freeGallon = Math.Floor((decimal)qty / 5);
-                    //}
-                    //if (discount > 0 && freeGallon > 0)
-                    //{
-                    //    Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
-                    //}
-                    //totalAmount = (qty * price) - discount + freeGallon * price;
-                    totalAmount = (qty * price) - discount * price;
+                    discount /= 100; // 
+                    discountAmount = price * discount * qty; 
+                    subtotal = price * qty; 
+                    totalAmount = subtotal - discountAmount;
+                                                             // Calculate free gallon if applicable
+                                                             //freeGallon = 0;
+                                                             //if (qty >= 5)
+                                                             //{
+                                                             //    freeGallon = Math.Floor((decimal)qty / 5);
+                                                             //}
+                                                             //if (discount > 0 && freeGallon > 0)
+                                                             //{
+                                                             //    Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
+                                                             //}
+                                                             //totalAmount = (qty * price) - discount + freeGallon * price;
+                                                             //totalAmount = (qty * price) - discount;
+                                                             // totalAmount = (qty * price) - discount * price;
+                    lblDiscount.Text = discountAmount.ToString();
                     lblAmount.Text = totalAmount.ToString();
                 }
                 else
@@ -115,8 +121,33 @@ namespace WRS2big_Web.Admin
                 // Set the text of the txtTotalAmount textbox to the calculated total amount
                 lblAmount.Text = totalAmount.ToString();
 
+                //int logsId = (int)Session["logsId"];
+
+                // Retrieve the existing Users log object from the database
+                //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+               // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "CATER WALKIN ORDER",
+                };
+
+                //Storing the  info
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                //response = twoBigDB.Set("USERSLOG/" + log.logsId, log);//Storing data to the database
+                //UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
                 Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!');</script>");
                 //Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
+
             }
             catch (Exception ex)
             {

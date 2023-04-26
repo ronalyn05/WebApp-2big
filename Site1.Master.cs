@@ -237,8 +237,8 @@ namespace WRS2big_Web
                 userIdnum = int.Parse(idno),
                 logsId = logsId,
                 userFullname = (string)Session["fullname"],
-                dateLogin = existingLog.dateLogin,
-                dateLogout = addedTime
+                userActivity = "LOGGED OUT",
+                activityTime = addedTime
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);

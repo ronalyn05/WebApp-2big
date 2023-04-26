@@ -97,7 +97,7 @@ namespace WRS2big_Web.Model
         public string other_productSize { get; set; }
         public string other_productPrice { get; set; }
         public string other_productStock { get; set; }
-        public int other_productDiscount { get; set; }
+        public int? other_productDiscount { get; set; }
         public string other_productImage { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
@@ -190,16 +190,10 @@ namespace WRS2big_Web.Model
         public string pro_refillUnit { get; set; }
         public string pro_refillSize { get; set; }
         public string pro_refillPrice { get; set; }
-        public int pro_discount { get; set; }
+        public int? pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
 
-    //public class AdminNotification
-    //{
-    //    public int adminnotificationID { get; set; }
-    //    public int orderID { get; set; }
-    //    public string orderStatus { get; set; }
-    //}
     public class WalkInOrders
     {
         public int adminId { get; set; }
@@ -214,63 +208,15 @@ namespace WRS2big_Web.Model
         public string orderType { get; set; }
         public DateTimeOffset dateAdded { get; set; }
     }
-
-    //public class UsersLogs
-    //{
-    //    public int logsId { get; set; }
-    //    public int userIdnum { get; set; }
-    //    public string userFullname { get; set; }
-    //    public int emp_id { get; set; }
-    //    public string empFullname { get; set; }
-    //    public DateTimeOffset empDateAdded { get; set; }
-    //    public int tankId { get; set; }
-    //    public DateTimeOffset tankSupplyDateAdded { get; set; }
-    //    public int other_productId { get; set; }
-    //    public DateTimeOffset otherProductDateAdded { get; set; }
-    //    public int productRefillId { get; set; }
-    //    public DateTimeOffset productrefillDateAdded { get; set; }
-    //    public int deliveryDetailsId { get; set; }
-    //    //public DateTimeOffset deliveryDetailsDateAdded { get; set; }
-    //    public DateTimeOffset standardAdded { get; set; }
-    //    public DateTimeOffset reservationAdded { get; set; }
-    //    public DateTimeOffset expressAdded { get; set; }
-
-    //    public int orderId { get; set; }
-    //    public DateTimeOffset datePaymentReceived { get; set; }
-    //    public DateTimeOffset dateLogin { get; set; }
-    //    // public DateTimeOffset lastLogin { get; set; }
-    //    public DateTimeOffset dateLogout { get; set; }
-    //    public int cusId { get; set; }
-    //    public DateTimeOffset dateDeclined { get; set; }
-    //    public DateTimeOffset dateOrderAccepted { get; set; }
-    //    public string userActivity { get; set; } // New property for user activity
-    //}
     public class UsersLogs
     {
-        public int userIdnum { get; set; }
         public int logsId { get; set; }
-        public int orderId { get; set; }
+        public int userIdnum { get; set; }
         public string userFullname { get; set; }
         public string userActivity { get; set; }
-       // public UserActivityType userActivity { get; set; }
+        public DateTimeOffset activityTime { get; set; }
         public DateTimeOffset dateLogin { get; set; }
-        public DateTimeOffset dateLogout { get; set; }
     }
-
-    //public enum UserActivityType
-    //{
-    //    AcceptedOrder, 
-    //    DeclinedOrder,
-    //    ReceivedPayment,
-    //    UpdateStationdetails,
-    //    CreateStationdetails,
-    //    AddedEmployeeRecords,
-    //    AddedTankSupply,
-    //    AddedOtherProducts,
-    //    AddedProductRefill,
-    //    AddedDeliveryDetails,
-    //    UpdatedEmployeeRecords
-    //}
 
     public class Reward
     {
@@ -286,13 +232,6 @@ namespace WRS2big_Web.Model
         public DateTimeOffset rewardsDateAdded { get; set; }
     }
 
-    public class Logs
-    {
-        public int adminId { get; set; }
-        public DateTimeOffset timestamp { get; set; }
-        public string action { get; set; }
-       // public int count { get; set; }
-    }
 }
 
 

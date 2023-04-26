@@ -166,15 +166,15 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = res.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                //DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = employee_id,
                     userFullname = (string)Session["fullname"],
-                    dateLogin = existingLog.dateLogin,
+                    activityTime = addedTime,
                     userActivity = "ADDED EMPLOYEE DETAILS",
                     // userActivity = UserActivityType.AddedEmployeeRecords
                     //deliveryDetailsId = existingLog.deliveryDetailsId,
@@ -191,7 +191,7 @@ namespace WRS2big_Web.Admin
                     //empFullname = txtfirstname.Text + " " + txtlastname.Text,
                     //empDateAdded = data.dateAdded   
                 };
-                twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                 DisplayTable(); 
             }
@@ -204,6 +204,10 @@ namespace WRS2big_Web.Admin
         //UPDATE EMPLOYEE DETAILS
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
+            //generate a random number for employee logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int logsId = (int)Session["logsId"];
@@ -279,21 +283,20 @@ namespace WRS2big_Web.Admin
                 // Show success message
                 Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
 
-                // Retrieve the existing employee object from the database
-                FirebaseResponse res = twoBigDB.Get("USERSLOG/" + logsId);
-                UsersLogs existingLog = res.ResultAs<UsersLogs>();
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
 
                 // Log user activity
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
-                    dateLogin = existingLog.dateLogin,
-                    userActivity = "UPDATE EMPLOYEE DETAILS",
+                    activityTime = addedTime,
+                    userActivity = "UPDATED EMPLOYEE DETAILS",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
-                twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                 DisplayTable();
             }
