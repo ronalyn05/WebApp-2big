@@ -60,7 +60,9 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                       <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
-                                               <asp:GridView runat="server" ID="GridView1" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                               <asp:GridView runat="server" ID="GridView1" class="texts table-responsive table-hover" style=" text-align:center; overflow-y: auto; max-height: 500px; margin-left: 14px;" 
+                                                   BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" 
+                                                   ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField HeaderText="ACTION">
                                                           <ItemTemplate>

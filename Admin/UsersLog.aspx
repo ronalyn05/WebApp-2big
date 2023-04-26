@@ -67,11 +67,11 @@
                                                     </div>
                                                     <div class="card-block">
                                                         <%-- <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                            <asp:ListItem Selected="False" Text="---Select Role-----"></asp:ListItem>
-                                                            <asp:ListItem Text="View All Logs" Value="0"></asp:ListItem>
-                                                           <asp:ListItem Text="Owner/Cashier" Value="1"></asp:ListItem>
-                                                           <asp:ListItem Text="Driver" Value="2"></asp:ListItem>
-                                                           <asp:ListItem Text="Customer" Value="3"></asp:ListItem>
+                                                            <asp:ListItem Selected="False" Text="---Sort-----"></asp:ListItem>
+                                                            <asp:ListItem Text="Activity (alphabetically, A-Z)" Value="0"></asp:ListItem>
+                                                           <asp:ListItem Text="Activity (alphabetically, Z-A)" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="Date (New to Old)" Value="2"></asp:ListItem>
+                                                           <asp:ListItem Text="Date (Old to New)" Value="3"></asp:ListItem>
                                                         </asp:DropDownList>
 
                                                         <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px"/>
@@ -86,26 +86,22 @@
                                                                 <%--the gridview starts here--%>
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                                    <br />
-                                                                   <asp:GridView runat="server" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                    <asp:GridView runat="server" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                                  <%--<asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
+                                                                  <%-- <asp:GridView runat="server" ID="gridUserLog" class="texts table-responsive table-hover" style=" text-align:center; overflow-y: auto; max-height: 500px; margin-left: 14px;" 
+                                                   BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="5" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" 
+                                                   ForeColor="Black" CellSpacing="5" Font-Size="14px">--%>
+                                                                 <%-- <asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >--%>
-                                                                         <%--  <Columns>
-                                                                            <asp:TemplateField HeaderText="ACTIVITY">
-                                                                              <ItemTemplate>
-                                                                                  <asp:Button ID="btnView" runat="server" ToolTip="Click to view the details" Text="View" OnClick="btnView_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
-                                                                                        data-target="#editModal" BorderStyle="None" ForeColor="White"/>
-                                                                             </ItemTemplate>
-                                                                            </asp:TemplateField>
-                                                                          </Columns>--%>
+                                                                         
                                                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                           <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                           <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                           <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                           <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                           <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                           <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                           <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                         </asp:GridView>
                                                                     </div>
 

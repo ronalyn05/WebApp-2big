@@ -51,7 +51,8 @@ namespace WRS2big_Web.Model
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateOrderDeclined { get; set; }
         public DateTimeOffset dateOrderDelivered { get; set; }
-    }
+        public string payment_receivedBy { get; set; }
+}
 
     // Define the notification message class
     public class NotificationMessage
@@ -69,36 +70,6 @@ namespace WRS2big_Web.Model
         public DateTimeOffset notificationDate { get; set; }
     }
 
-    // Define the notification message class
-    public class AdminNotification
-    {
-        public int admin_ID { get; set; }
-        public string body { get; set; }
-        public int cusId { get; set; }
-        public int orderID { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
-        //public DateTimeOffset dateOrderAccepted { get; set; }
-        //public DateTimeOffset dateOrderDeclined { get; set; }
-        //public DateTimeOffset datePaymentReceived { get; set; }
-    }
-    public class CustomerNotification
-    {
-        public int admin_ID { get; set; }
-        public string body { get; set; }
-        public int driverId { get; set;}
-        public int cusId { get; set; }
-        public int orderID { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
-    }
-    public class DriverNotification
-    {
-        public int admin_ID { get; set; }
-        public int driverId { get; set; }
-        public string body { get; set; }
-        public int cusId { get; set; }
-        public int orderID { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
-    }
     public class StoreReview
     {
         public int orderId { get; set; }

@@ -107,8 +107,10 @@
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
                                                                  <br /> 
-
-                                                                 <asp:Label ID="lblOrder" Font-Bold="true" CssClass="text-center align-items-center"  Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                 <div style="text-align: center;">
+                                                                    <asp:Label ID="lblOrder" Font-Bold="true" CssClass="text-center align-items-center"  Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                               </div>
+                                                                 
                                                                    <br />    <br />   <%--the gridview starts here--%>
                                                            <%--   <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
                                                 <asp:GridView runat="server" ID="gridOrder" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
