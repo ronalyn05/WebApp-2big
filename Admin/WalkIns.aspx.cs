@@ -32,12 +32,12 @@ namespace WRS2big_Web.Admin
 
             
             btnSearchPrice.Visible = false;
-
         }
         //STORE DATA TO WALKINORDER TBL AND CALCULATE ITS TOTAL AMOUNT
         protected void btnPayment_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
+            string name = (string)Session["fullname"];
             try
             {
                 // INSERT DATA TO TABLE = WALKINORDERS
@@ -74,19 +74,7 @@ namespace WRS2big_Web.Admin
                     discountAmount = price * discount * qty; 
                     subtotal = price * qty; 
                     totalAmount = subtotal - discountAmount;
-                                                             // Calculate free gallon if applicable
-                                                             //freeGallon = 0;
-                                                             //if (qty >= 5)
-                                                             //{
-                                                             //    freeGallon = Math.Floor((decimal)qty / 5);
-                                                             //}
-                                                             //if (discount > 0 && freeGallon > 0)
-                                                             //{
-                                                             //    Response.Write("<script>alert ('You are eligible for a free gallon!'); </script>");
-                                                             //}
-                                                             //totalAmount = (qty * price) - discount + freeGallon * price;
-                                                             //totalAmount = (qty * price) - discount;
-                                                             // totalAmount = (qty * price) - discount * price;
+                                                            
                     lblDiscount.Text = discountAmount.ToString();
                     lblAmount.Text = totalAmount.ToString();
                 }
@@ -110,6 +98,7 @@ namespace WRS2big_Web.Admin
                     //productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
                     totalAmount = totalAmount, // Store calculated total amount as decimal
                     orderType = drdOrderType.Text,
+                    addedBy = name,
                     dateAdded = DateTime.UtcNow
                 };
 
@@ -205,12 +194,15 @@ namespace WRS2big_Web.Admin
             string selectedType = drdProdName.SelectedValue;
             string selectedUnit = drdUnit.SelectedValue;
 
+            decimal discount;
+
             if (!string.IsNullOrEmpty(selectedSize) && !string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
             {
                 // Check if the product exists in the "otherPRODUCTS" table
                 FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
                 Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
                 otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productSize == selectedSize && p.other_productName == selectedType && p.other_productUnit == selectedUnit);
+
 
                 if (otherselectedProduct != null)
                 {
@@ -223,15 +215,27 @@ namespace WRS2big_Web.Admin
                     {
                         lblprice.Text = "";
                     }
-
-                    if (otherselectedProduct.other_productDiscount != null)
+                    if (!decimal.TryParse(otherselectedProduct.other_productDiscount.ToString(), out discount))
                     {
-                        lblDiscount.Text = otherselectedProduct.other_productDiscount.ToString();
+                        // If the discount value is not a valid decimal, assume it is zero
+                        discount = 0;
+                        lblDiscount.Text = discount.ToString();
                     }
                     else
                     {
-                        lblDiscount.Text = "0"; // or some default value
+                        // Convert discount from percentage to decimal
+                        discount /= 100;
+                        lblDiscount.Text = discount.ToString();
                     }
+
+                    //if (otherselectedProduct.other_productDiscount != null)
+                    //{
+                    //    lblDiscount.Text = otherselectedProduct.other_productDiscount.ToString();
+                    //}
+                    //else
+                    //{
+                    //    lblDiscount.Text = "0"; // or some default value
+                    //}
                 }
                 else
                 {
@@ -251,15 +255,26 @@ namespace WRS2big_Web.Admin
                         {
                             lblprice.Text = "";
                         }
-
-                        if (selectedProduct.pro_discount != null)
+                        if (!decimal.TryParse(otherselectedProduct.other_productDiscount.ToString(), out discount))
                         {
-                            lblDiscount.Text = selectedProduct.pro_discount.ToString();
+                            // If the discount value is not a valid decimal, assume it is zero
+                            discount = 0;
+                            lblDiscount.Text = discount.ToString();
                         }
                         else
                         {
-                            lblDiscount.Text = "0"; // or some default value
+                            // Convert discount from percentage to decimal
+                            discount /= 100;
+                            lblDiscount.Text = discount.ToString();
                         }
+                        //if (selectedProduct.pro_discount != null)
+                        //{
+                        //    lblDiscount.Text = selectedProduct.pro_discount.ToString();
+                        //}
+                        //else
+                        //{
+                        //    lblDiscount.Text = "0"; // or some default value
+                        //}
                     }
                     else
                     {

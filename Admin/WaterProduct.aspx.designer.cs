@@ -96,13 +96,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox productDiscounts;
 
         /// <summary>
-        /// productStock control.
+        /// Label5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productStock;
+        protected global::System.Web.UI.WebControls.Label Label5;
+
+        /// <summary>
+        /// drdUnitStock control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drdUnitStock;
+
+        /// <summary>
+        /// stockQty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox stockQty;
 
         /// <summary>
         /// btnAdd control.
@@ -292,6 +310,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gridotherProduct;
+
+        /// <summary>
+        /// gridTankSupply control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridTankSupply;
 
         /// <summary>
         /// lblDeliveryType control.

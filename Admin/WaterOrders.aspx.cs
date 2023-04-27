@@ -33,6 +33,7 @@ namespace WRS2big_Web.Admin
         private void onlineordersDisplay()
         {
             string idno = (string)Session["idno"];
+            string name = (string)Session["fullname"];
             // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
@@ -60,7 +61,7 @@ namespace WRS2big_Web.Admin
                 foreach (var entry in filteredList)
                 {
                     ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount, entry.dateOrderAccepted,
-                                          entry.dateOrderDelivered, entry.datePaymentReceived, idno);
+                                          entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
                 }
             }
             else
@@ -77,6 +78,7 @@ namespace WRS2big_Web.Admin
         private void walkinordersDisplay()
         {
             string idno = (string)Session["idno"];
+          //  string name = (string)Session["fullname"];
             // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
@@ -105,7 +107,7 @@ namespace WRS2big_Web.Admin
                 {
                     walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnit, entry.productSize,
                                           entry.productPrice, entry.productQty, entry.productDiscount,
-                                          entry.totalAmount, entry.dateAdded, entry.adminId);
+                                          entry.totalAmount, entry.dateAdded, entry.addedBy);
                 }
             }
             else

@@ -242,37 +242,20 @@ namespace WRS2big_Web.Admin
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                     // Get the current date and time
-                    //DateTime addedTime = DateTime.UtcNow;
+                    DateTime addedTime = DateTime.UtcNow;
 
                     // Log user activity
                     var log = new UsersLogs
                     {
                         userIdnum = int.Parse(idno),
-                        logsId = logsId,
+                        logsId = idnum,
                         //orderId = orderID,
                         userFullname = (string)Session["fullname"],
-                        //userActivity = UserActivityType.AcceptedOrder
-                        //    emp_id = existingLog.emp_id,
-                        //    empFullname = existingLog.empFullname,
-                        //    empDateAdded = existingLog.empDateAdded,
-                        //    dateLogin = existingLog.dateLogin,
-                        //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                        //    standardAdded = existingLog.standardAdded,
-                        //    reservationAdded = existingLog.reservationAdded,
-                        //    expressAdded = existingLog.expressAdded,
-                        //    productRefillId = existingLog.productRefillId,
-                        //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                        //    other_productId = existingLog.other_productId,
-                        //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                        //    tankId = existingLog.tankId,
-                        //    cusId = existingLog.cusId,
-                        //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                        //    datePaymentReceived = existingOrder.datePaymentReceived,
-                        //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                         userActivity = "Accepted Order"
+                         userActivity = "ACCEPTED ORDER",
+                         activityTime = addedTime
                     };
 
-                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                    twoBigDB.Set("USERSLOG/" + log.logsId, log);
                     DisplayTable();
                 }
                 else
@@ -377,29 +360,10 @@ namespace WRS2big_Web.Admin
             var log = new UsersLogs
             {
                 userIdnum = int.Parse(idno),
-                logsId = logsId,
-               // orderId = orderID,
+                logsId = idnum,
                 userFullname = (string)Session["fullname"],
-                //userActivity = UserActivityType.ReceivedPayment
-                //    emp_id = existingLog.emp_id,
-                //    empFullname = existingLog.empFullname,
-                //    empDateAdded = existingLog.empDateAdded,
-                //    dateLogin = existingLog.dateLogin,
-                //    deliveryDetailsId = existingLog.deliveryDetailsId,
-                //    standardAdded = existingLog.standardAdded,
-                //    reservationAdded = existingLog.reservationAdded,
-                //    expressAdded = existingLog.expressAdded,
-                //    productRefillId = existingLog.productRefillId,
-                //    productrefillDateAdded = existingLog.productrefillDateAdded,
-                //    other_productId = existingLog.other_productId,
-                //    otherProductDateAdded = existingLog.otherProductDateAdded,
-                //    tankId = existingLog.tankId,
-                //    cusId = existingLog.cusId,
-                //    tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                //    datePaymentReceived = existingOrder.datePaymentReceived,
-                //    dateOrderAccepted = existingOrder.dateOrderAccepted,
-                    userActivity = "Declined Order",
-                //    dateDeclined = DateTimeOffset.UtcNow
+                userActivity = "DECLINED ORDER",
+                activityTime = addedTime
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
@@ -412,6 +376,7 @@ namespace WRS2big_Web.Admin
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
+            string name = (string)Session["fullname"];
             // Get the log ID from the session
             int logsId = (int)Session["logsId"];
 
@@ -446,7 +411,7 @@ namespace WRS2big_Web.Admin
                     Employee driver = allDrivers[0];
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Payment Received";
-
+                    existingOrder.payment_receivedBy = name;
                     existingOrder.datePaymentReceived = DateTimeOffset.UtcNow;
                     //existingOrder.datePaymentReceived = DateTimeOffset.Parse("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
@@ -505,13 +470,13 @@ namespace WRS2big_Web.Admin
                     var log = new UsersLogs
                     {
                         userIdnum = int.Parse(idno),
-                        logsId = logsId,
+                        logsId = idnum,
                         userFullname = (string)Session["fullname"],
-                        userActivity = "Received Payment",
+                        userActivity = "RECEIVED PAYMENT",
                         activityTime = addedTime
                     };
 
-                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                    twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                     DisplayTable();
                 }
