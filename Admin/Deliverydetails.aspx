@@ -407,7 +407,7 @@
                                                             stanfields.style.display = "block";
                                                             
                                                         }
-                                                    }
+                                                    }   
                                                 </script>
                                                 <br />
                                                 <div id="swapOptions"> 
@@ -427,7 +427,7 @@
                                                            <strong> Pick-up:</strong> <br /> The customer will pick-up their order in the station. <br />
                                                            <strong> Delivery:</strong> <br /> The order of the customer will be delivered to their delivery address. <br />
                                                            <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
-                                                           <strong> Swap with Condition:</strong> <br />Lets the customers leave their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill. <br />
+                                                           <strong> Swap with Condition:</strong> <br />Let the customers give their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill. <br />
                                                            <strong> Swap without Condition:</strong> <br /> Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill. <br />
                                                             <strong>Request Gallon Pick-up:</strong> <br /> Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped. <br />
                                                            <strong> per Gallon Fee: </strong> <br /> 
@@ -466,46 +466,7 @@
                                         <br /><br />
                                     <%--PAGE CONTENTS FOR LISTBOX--%> 
                                                <div class="row">
-                                                   <div class="col-xl-3 col-md-12">
-                                                    <div class="card ">
-                                                        <div class="card-header">
-                                                            <div class="card-header-right">
-                                                                <ul class="list-unstyled card-option">
-                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                    <li><i class="fa fa-trash close-card"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                            <%--<h5> Tank Supply:</h5>--%>
-                                                            <asp:Label ID="Label1" runat="server" Text="Tank Supply" Font-Bold="true" Font-Size="Large" Width="364px"></asp:Label>
-                                                            <%--<button type="button" style="font-size:14px; width: 154px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addSupply"><i class="fa fa-plus"></i> Add Tank Supply</button>--%>
-
-                                                        </div>
-                                                        <%-- TANK SUPPLY STARTS HERE --%>
-                                              <div class="col-xl-3 col-md-6">
-                                                <div class="card">
-                                                    <div class="card-block">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-8">
-                                                                <asp:Label ID="label2" Font-Bold="true" runat="server" Text="Date:" Font-Size="Large" Width="349px"></asp:Label>
-                                                                  <asp:Label ID="lblDate" runat="server" CssClass="text-c-blue" Font-Bold="true" Font-Size="18px" Width="349px"></asp:Label>
-                                                                <br />
-                                                                <asp:Label ID="label4" Font-Bold="true" runat="server" Text="Tank Supply of the day:" Font-Size="Large" Width="349px"></asp:Label>
-                                                                  <asp:Label ID="lbltankSupply" runat="server" CssClass="text-c-blue" Font-Bold="true" Font-Size="18px" Width="349px"></asp:Label>
-                                                                 <br />
-                                                                <asp:Label ID="label3" Font-Bold="true" runat="server" Text="Remaining Supply:" Font-Size="Large" Width="349px"></asp:Label>
-                                                                <asp:Label ID="lblremainingSupply" Font-Bold="true" runat="server" CssClass="text-c-blue" Font-Size="18px" Width="349px"></asp:Label>
-                                                            
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div><%-- TANK SUPPLY ENDS HERE --%>
-                                               </div>
-                                              </div>
-                                            <div class="col-xl-9 col-md-12">
+                                            <div class="col-lg-12 col-xl-16">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         
@@ -533,24 +494,23 @@
 
                                                                 <%-- DELIVERY DETAILS NI DIRI--%>
 
-                                                <asp:GridView runat="server" ID="gridDeliveryDetails" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                      <Columns>
-                                                        <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                          <asp:Button runat="server"  ID="viewButton" OnClick="viewButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
-                                                          </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>
-                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
-                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                      <RowStyle Width="200px" ForeColor="#000066" />
-                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
-                                                    </asp:GridView>
+                                                                    <asp:GridView runat="server" ID="gridDeliveryDetails"  class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                          <Columns>
+                                                                            <asp:TemplateField>
+                                                                              <ItemTemplate>
+                                                                              <asp:Button runat="server"  ID="viewButton" OnClick="viewButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
+                                                                              </ItemTemplate>
+                                                                            </asp:TemplateField>
+                                                                          </Columns>
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
 
                                             
                                                 <%--Gridview ends here--%>
@@ -582,7 +542,7 @@
                                                              <br /> <br />
 
                                             <%--GRIDVIEW FOR EXPRESS--%>
-                                               <asp:GridView runat="server" ID="expressGridview" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                               <asp:GridView runat="server" ID="expressGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -591,20 +551,19 @@
                                                           </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
-                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                      <RowStyle Width="200px" ForeColor="#000066" />
-                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
                                                     </asp:GridView>
 
                                                
                                                     <%--GRIDVIEW FOR STANDARD--%>
-                                                <asp:GridView runat="server" ID="standardGridview" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                <asp:GridView runat="server" ID="standardGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -613,20 +572,19 @@
                                                           </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
-                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                      <RowStyle Width="200px" ForeColor="#000066" />
-                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
                                                     </asp:GridView>
                                                             
 
                                             <%--GRIDVIEW FOR RESERVATION--%>
-                                                <asp:GridView runat="server" ID="reservationGridView" CellPadding="3" Width="975px" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                <asp:GridView runat="server" ID="reservationGridView" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
@@ -635,15 +593,14 @@
                                                           </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
-                                                      <FooterStyle BackColor="White" ForeColor="#000066" />
-                                                      <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" HorizontalAlign="Center" />
-                                                      <PagerStyle ForeColor="#000066" HorizontalAlign="Left" BackColor="White" />
-                                                      <RowStyle Width="200px" ForeColor="#000066" />
-                                                      <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
-                                                      <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                                                      <SortedAscendingHeaderStyle BackColor="#007DBB" />
-                                                      <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                                                      <SortedDescendingHeaderStyle BackColor="#00547E" />
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
                                                     </asp:GridView>
 
                                             
