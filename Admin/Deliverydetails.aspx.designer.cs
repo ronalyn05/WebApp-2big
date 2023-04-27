@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WRS2big_Web
+namespace WRS2big_Web.Admin
 {
 
 
-    public partial class DeliveryDetails
+    public partial class Deliverydetails
     {
 
         /// <summary>
@@ -240,13 +240,76 @@ namespace WRS2big_Web
         protected global::System.Web.UI.WebControls.ListItem delivery;
 
         /// <summary>
-        /// vehicles control.
+        /// vehicle1Name control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList vehicles;
+        protected global::System.Web.UI.WebControls.TextBox vehicle1Name;
+
+        /// <summary>
+        /// vehicle1Fee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle1Fee;
+
+        /// <summary>
+        /// vehicle2Name control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle2Name;
+
+        /// <summary>
+        /// vehicle2Fee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle2Fee;
+
+        /// <summary>
+        /// vehicle3Name control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle3Name;
+
+        /// <summary>
+        /// vehicle3Fee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle3Fee;
+
+        /// <summary>
+        /// vehicle4Name control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle4Name;
+
+        /// <summary>
+        /// vehicle4Fee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle4Fee;
 
         /// <summary>
         /// swapOptionItems control.
@@ -256,6 +319,24 @@ namespace WRS2big_Web
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList swapOptionItems;
+
+        /// <summary>
+        /// pickupPerGallon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem pickupPerGallon;
+
+        /// <summary>
+        /// perGallonFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox perGallonFee;
 
         /// <summary>
         /// vehicleAdded control.

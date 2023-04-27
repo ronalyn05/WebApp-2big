@@ -216,6 +216,26 @@ namespace WRS2big_Web
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
             }
+            else if (title == "Welcome to 2BiG!")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+            }
             
         }
         protected void btnLogout_Click(object sender, EventArgs e)

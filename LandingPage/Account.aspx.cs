@@ -151,13 +151,14 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
+                //NOTIFICATION SENT TO SUPERADMIN FOR ACCOUNT APPROVAL
                 int ID = rnd.Next(1, 20000);
                 var Notification = new Notification
                 {
                     admin_ID = data.idno,
                     sender = "Admin",
                     receiver = "Super Admin",
-                    title = "Client Approval",
+                    title = "New Client",
                     body = "You have a new client! Check the details for approval ",
                     notificationDate = DateTime.Now,
                     status = "unread",
@@ -165,11 +166,29 @@ namespace WRS2big_Web.LandingPage
 
                 };
 
-                //NOTIFICATION SENT TO SUPERADMIN 
                 SetResponse notifResponse;
                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                 Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
+
+                //NOTIFICATION SENT TO ADMIN FOR ACCOUNT BEING PENDING
+                int notifID = rnd.Next(1, 30000);
+                var adminNotification = new Notification
+                {
+                    admin_ID = data.idno,
+                    sender = "Admin",
+                    receiver = "Admin",
+                    title = "Welcome to 2BiG!",
+                    body = " Thankyou for signing up! Currently, your account is under review. You will receive a new notification once your account is approved",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = notifID
+
+                };
+
+                SetResponse adminResponse;
+                adminResponse = twoBigDB.Set("NOTIFICATION/" + notifID, adminNotification);//Storing data to the database
+                Notification adminNotif = adminResponse.ResultAs<Notification>();//Database Result
 
 
 
@@ -309,14 +328,14 @@ namespace WRS2big_Web.LandingPage
 
                         // Retrieve the existing subscribed admin from the database
 
-                        if (clientStat == "pending") //NOT APPROVED BY SUPERADMIN
+                        if (clientStat == "pending") //NOT APPROVED YET, BY THE SUPERADMIN
                         {
-                            Response.Write("<script>alert ('Account is under review. Please wait for account confirmation'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+                            Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
 
-                        } 
+                        }
                         else if (clientStat == "Approved" && subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
                         {
-                            Response.Write("<script>alert ('Your account is APPROVED! Please proceed to the Subscription Page to continue using the system'); location.reload(); window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+                            Response.Write("<script> window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
 
                         }
                         else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
@@ -324,11 +343,6 @@ namespace WRS2big_Web.LandingPage
                             Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");
 
                         }
-                        else
-                        {
-                            Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx';</script>");
-                        }
-
 
                     }
                     else

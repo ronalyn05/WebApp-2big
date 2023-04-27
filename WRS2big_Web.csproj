@@ -288,6 +288,7 @@
     <Content Include="Admin\AdminIndex.aspx" />
     <Content Include="Admin\AdminProfile.aspx" />
     <Content Include="Admin\CustomerRecord.aspx" />
+    <Content Include="Admin\Deliverydetails.aspx" />
     <Content Include="Admin\EmployeeRecord.aspx" />
     <Content Include="Admin\ListGraph.aspx" />
     <Content Include="Admin\UsersLog.aspx" />
@@ -463,7 +464,6 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Admin\DeliveryDetailsPage.aspx" />
     <Content Include="images\BasicPlan.png" />
     <Content Include="images\gallon.png" />
     <Content Include="images\PremiumPlan.png" />
@@ -625,6 +625,13 @@
     <Compile Include="Admin\CustomerRecord.aspx.designer.cs">
       <DependentUpon>CustomerRecord.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Deliverydetails.aspx.cs">
+      <DependentUpon>Deliverydetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Deliverydetails.aspx.designer.cs">
+      <DependentUpon>Deliverydetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\EmployeeRecord.aspx.cs">
       <DependentUpon>EmployeeRecord.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -711,13 +718,6 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Admin\DeliveryDetailsPage.aspx.cs">
-      <DependentUpon>DeliveryDetailsPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\DeliveryDetailsPage.aspx.designer.cs">
-      <DependentUpon>DeliveryDetailsPage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="LandingPage\Account.aspx.cs">
       <DependentUpon>Account.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
