@@ -221,6 +221,7 @@ namespace WRS2big_Web.Admin
                         cusId = existingOrder.cusId,
                         driverId = driver.emp_id,
                         sender = "Admin",
+                        title = "New Assigned Order",
                         receiver = "Driver",
                         body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order",
                         notificationDate = DateTime.Now,
