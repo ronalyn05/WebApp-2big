@@ -194,111 +194,111 @@ namespace WRS2big_Web.Admin
             }
         }
         //UPDATE EMPLOYEE DETAILS
-        protected void btnUpdateEmpRecord_Click(object sender, EventArgs e)
-        {
-            //  generate a random number for employee logged
-            Random rnd = new Random();
-            int idnum = rnd.Next(1, 10000);
+        //protected void btnUpdateEmpRecord_Click(object sender, EventArgs e)
+        //{
+        //    //  generate a random number for employee logged
+        //    Random rnd = new Random();
+        //    int idnum = rnd.Next(1, 10000);
 
-            // Get the admin ID from the session
-            string idno = (string)Session["idno"];
-            int logsId = (int)Session["logsId"];
-            //  int adminId = int.Parse(idno);
-            try
-            {
-                string empID = txtempId.Text.Trim();
+        //    // Get the admin ID from the session
+        //    string idno = (string)Session["idno"];
+        //    int logsId = (int)Session["logsId"];
+        //    //  int adminId = int.Parse(idno);
+        //    try
+        //    {
+        //        string empID = txtempId.Text.Trim();
 
-                // Check if the employee ID is valid
-                if (string.IsNullOrEmpty(empID))
-                {
-                    Response.Write("<script>alert ('Please enter a valid employee ID!');</script>");
-                    return;
-                }
-                // Retrieve the existing employee object from the database using the empID entered
-                FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
-                Employee existingEmp = response.ResultAs<Employee>();
+        //        // Check if the employee ID is valid
+        //        if (string.IsNullOrEmpty(empID))
+        //        {
+        //            Response.Write("<script>alert ('Please enter a valid employee ID!');</script>");
+        //            return;
+        //        }
+        //        // Retrieve the existing employee object from the database using the empID entered
+        //        FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
+        //        Employee existingEmp = response.ResultAs<Employee>();
 
-                if (existingEmp == null)
-                {
-                    // Show error message if the empID entered is invalid
-                    Response.Write("<script>alert ('Invalid employee ID!');</script>");
-                    return;
-                }
+        //        if (existingEmp == null)
+        //        {
+        //            // Show error message if the empID entered is invalid
+        //            Response.Write("<script>alert ('Invalid employee ID!');</script>");
+        //            return;
+        //        }
 
-                // Check if the current user has permission to edit the employee data
-                if (existingEmp.adminId != int.Parse(idno))
-                {
-                    // Show error message if the user does not have permission to edit the employee data
-                    Response.Write("<script>alert ('You do not have permission to edit this employee data!');</script>");
-                    return;
-                }
+        //        // Check if the current user has permission to edit the employee data
+        //        if (existingEmp.adminId != int.Parse(idno))
+        //        {
+        //            // Show error message if the user does not have permission to edit the employee data
+        //            Response.Write("<script>alert ('You do not have permission to edit this employee data!');</script>");
+        //            return;
+        //        }
 
-                // Get the new status and position from the DropDownList in the modal popup
-                string newPosition = drd_empPosition.SelectedValue;
-                string newStatus = drd_empStatus.SelectedValue;
+        //        // Get the new status and position from the DropDownList in the modal popup
+        //        string newPosition = drd_empPosition.SelectedValue;
+        //        string newStatus = drd_empStatus.SelectedValue;
 
-                // Create a new employee object with the updated data
-                Employee updatedEmp = new Employee
-                {
-                    adminId = existingEmp.adminId,
-                    emp_id = existingEmp.emp_id,
-                    emp_firstname = existingEmp.emp_firstname,
-                    emp_midname = existingEmp.emp_midname,
-                    emp_lastname = existingEmp.emp_lastname,
-                    emp_gender = existingEmp.emp_gender,
-                    emp_email = existingEmp.emp_email,
-                    emp_birthdate = existingEmp.emp_birthdate,
-                    emp_contactnum = existingEmp.emp_contactnum,
-                    emp_emergencycontact = existingEmp.emp_emergencycontact,
-                    emp_dateHired = existingEmp.emp_dateHired,
-                    dateAdded = existingEmp.dateAdded,
-                    emp_address = existingEmp.emp_address,
-                    emp_pass = existingEmp.emp_pass,
-                    emp_role = existingEmp.emp_role,
-                    emp_status = existingEmp.emp_status,
-                    addedBy = existingEmp.addedBy,
-                    emp_availability = existingEmp.emp_availability
-                };
+        //        // Create a new employee object with the updated data
+        //        Employee updatedEmp = new Employee
+        //        {
+        //            adminId = existingEmp.adminId,
+        //            emp_id = existingEmp.emp_id,
+        //            emp_firstname = existingEmp.emp_firstname,
+        //            emp_midname = existingEmp.emp_midname,
+        //            emp_lastname = existingEmp.emp_lastname,
+        //            emp_gender = existingEmp.emp_gender,
+        //            emp_email = existingEmp.emp_email,
+        //            emp_birthdate = existingEmp.emp_birthdate,
+        //            emp_contactnum = existingEmp.emp_contactnum,
+        //            emp_emergencycontact = existingEmp.emp_emergencycontact,
+        //            emp_dateHired = existingEmp.emp_dateHired,
+        //            dateAdded = existingEmp.dateAdded,
+        //            emp_address = existingEmp.emp_address,
+        //            emp_pass = existingEmp.emp_pass,
+        //            emp_role = existingEmp.emp_role,
+        //            emp_status = existingEmp.emp_status,
+        //            addedBy = existingEmp.addedBy,
+        //            emp_availability = existingEmp.emp_availability
+        //        };
 
-                // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
-                {
-                    updatedEmp.emp_role = newPosition;
-                }
-                if (!string.IsNullOrEmpty(newStatus) && newStatus != existingEmp.emp_status)
-                {
-                    updatedEmp.emp_status = newStatus;
-                }
+        //        // Update the fields that have changed
+        //        if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
+        //        {
+        //            updatedEmp.emp_role = newPosition;
+        //        }
+        //        if (!string.IsNullOrEmpty(newStatus) && newStatus != existingEmp.emp_status)
+        //        {
+        //            updatedEmp.emp_status = newStatus;
+        //        }
 
-                // Update the existing employee object in the database
-                response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
+        //        // Update the existing employee object in the database
+        //        response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
 
-                // Show success message
-                Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
+        //        // Show success message
+        //        Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
 
-                // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+        //        // Get the current date and time
+        //        DateTime addedTime = DateTime.UtcNow;
 
-                // Log user activity
-                var log = new UsersLogs
-                {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    activityTime = addedTime,
-                    userActivity = "UPDATED EMPLOYEE DETAILS",
-                    // userActivity = UserActivityType.UpdatedEmployeeRecords
-                };
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+        //        // Log user activity
+        //        var log = new UsersLogs
+        //        {
+        //            userIdnum = int.Parse(idno),
+        //            logsId = idnum,
+        //            userFullname = (string)Session["fullname"],
+        //            activityTime = addedTime,
+        //            userActivity = "UPDATED EMPLOYEE DETAILS",
+        //            // userActivity = UserActivityType.UpdatedEmployeeRecords
+        //        };
+        //        twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
-                DisplayTable();
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<pre>" + ex.ToString() + "</pre>");
+        //        DisplayTable();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
 
-            }
-        }
+        //    }
+        //}
 
     }
 }

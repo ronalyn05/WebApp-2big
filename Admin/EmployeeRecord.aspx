@@ -53,8 +53,8 @@
                                         <%-- add employee button--%>
                                  <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add">
                                     <i class="fa fa-plus"></i> Add Employee</button>
-                                  <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit">
-                                    <i class="fa fa-edit"></i> Edit Employee Details</button>
+                                 <%-- <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit">
+                                    <i class="fa fa-edit"></i> Edit Employee Details</button>--%>
                                           &nbsp;
                                        <%-- MODAL FOR ADD EMPLOYEE--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
@@ -194,13 +194,12 @@
                                              </div>
                                            </div>
                                 <%-- MODAL FOR UPDATE RECORDS --%>
-                                <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                               <%-- <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
                                   <div class="modal-dialog modal-dialog-centered modal-md">
                                   <div class="modal-content">
                                   <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                   <div class="modal-header">
                                   <h4 class="modal-title" id="myModalLabel3">Edit employee records using their id number here: </h4>
-                                  <%--exit button--%>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                   </div>
                                   <div class="modal-body">
@@ -234,15 +233,13 @@
                                   </div>
 
                                   <div class="modal-footer">
-                                  <%--  BUTTON UPDATE RECORD HERE--%>
                                   <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" ValidationGroup="a" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click"/>
                                   </div>
                                   
                                   </div>
-                                  <%--  </form>--%>
                                   </div>
                                   </div>
-                               </div>
+                               </div>--%>
                                 <!--PAGE CONTENTS-->
                                 <div class="col-xl-12 col-xl-12 h-100">
                                              <div class="card">
