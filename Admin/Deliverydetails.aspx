@@ -1,22 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="DeliveryDetailsPage.aspx.cs" Inherits="WRS2big_Web.DeliveryDetails" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Deliverydetails.aspx.cs" Inherits="WRS2big_Web.Admin.Deliverydetails" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        <!-- Include jQuery and the Timepicker plugin -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js" integrity="sha512-7QDFvrSg50P7i5/lCZ/IM5ozmavhK26X7l3qy/Z3wsSaLKhjGwDd7QPNdlZmepnJVPl0bzmmPqj3qBwtJ1h9cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-            <style>
-                texts{
-                    font-size:16px;
-
-                }
-            </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
+    
       <div id="pcoded" class="pcoded">
-        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-overlay-box">ELIVER</div>
         <div class="pcoded-container navbar-wrapper">
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
@@ -47,14 +35,14 @@
                         </div>
                            <div class="pcoded-inner-content">
                             <!-- Main-body start -->
-                            <div class="main-body">
+                            <div class="main-body" style="font-size:16px">
                              <div class="page-wrapper">
                               <!-- page content -->
                                <div class="right_col" role="main">
                                 <div class="">
                                   <div class="clearfix">
                                        <%-- add product button--%>
-                                      <h5> MANAGEMENT SECTION</h5> <br />
+                                    <br />
                                         <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managedetails"><i class="fa fa-plus"></i> Delivery Details</button> 
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Add Delivery Types</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managePayment"><i class="fa fa-plus"></i> Add Payment Methods</button> 
@@ -171,12 +159,17 @@
                                                                 <strong>Distance in km for FREE Delivery:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
-                                                         </div>
+                                                         </div> <br />
                                                         <div class="col-md-12 col-sm-12 ">
                                                                 <strong>Delivery FEE:</strong> <br />
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="DeliveryFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                         </div>
+                                                         </div> <br />
+<%--                                                        <div class="col-md-12 col-sm-12 " id="deliveryTypesPanel">
+                                                                <strong>Vehicle Types:</strong> <br />
+                                                                <asp:Label ID="vehicleTypes" style="font-size:16px" runat="server"></asp:Label>
+                                                                <asp:TextBox ID="vehicleFee" Width="364px" TextMode="Number" Placeholder="Fee:" runat="server"></asp:TextBox>
+                                                         </div>--%>
                                                     <br />
                                                        <div class="col-md-12 col-sm-12">
                                                   
@@ -379,15 +372,26 @@
                                                 <!--OPTIONS FOR DELIVERY WHEN CLICKED-->
                                                 <div ID="deliveryChecked" style="display:none">
                                                        <div class="col-md-12 col-sm-12" >
-                                                           <strong>Choose the vehicle types you use for the delivery:</strong>
-                                                                <asp:CheckBoxList ID="vehicles" runat="server">
-                                                                    <asp:ListItem  Value="2-Wheels Bicycle"> &nbsp; 2-Wheels Bicycle </asp:ListItem>
-                                                                    <asp:ListItem Value="2-Wheels Motorcyle">&nbsp; 2-Wheels Motorcyle</asp:ListItem>
-                                                                    <asp:ListItem Value="3-Wheels Tricycle">&nbsp; 3-Wheels Tricycle</asp:ListItem>
-                                                                    <asp:ListItem  Value="4-Wheels">&nbsp; 4-Wheels</asp:ListItem>
-                                                                </asp:CheckBoxList>
+                                                           <strong>Manage the vehicle types you use for the delivery:</strong> <br /> <br />
+                                                         
+                                                           <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" style="margin-left:50px"></asp:TextBox>
+                                                           <br /> <br />
+                                                            <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server" ></asp:TextBox>
+                                                                <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" style="margin-left:50px;"></asp:TextBox>
+                                                               <br /> <br />
+                                                               <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server" ></asp:TextBox>
+                                                                <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" style="margin-left:50px;"></asp:TextBox>
+                                                               <br /> <br />
+                                                                <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" style="margin-left:50px;"></asp:TextBox>
+                                                               <br />
                                                        </div>
                                                  </div>
+                                                           <div ID="anothervehicle" style="display:none">
+                                                               
+                                                           </div>
+
                                                 <hr />
                                                 <!--SCRIPT FOR DELIVERY WHEN CLICKED-->
                                                 <script>
@@ -409,18 +413,50 @@
                                                 <div id="swapOptions"> 
                                                     <strong> Swap Gallon Options</strong>
                                                     <h6> Note: This will give your customers an option on how you can swap their gallons for the REFILL</h6>
-                                                    <h8>Checking this option gives the customer an option to swap their gallons with no conditions</h8>
                                                                 <asp:CheckBoxList ID="swapOptionItems" runat="server">
                                                                      <asp:ListItem Value="Swap Without Conditions">  &nbsp; Swap with no Conditions</asp:ListItem>
                                                                     <asp:ListItem Value="Swap With Conditions"> &nbsp; Swap with Conditions</asp:ListItem>
+                                                                   <asp:ListItem Value="Request Pick-up" ID="pickupPerGallon" onclick="perGallonFee();"> &nbsp; Request Gallon Pickup</asp:ListItem>
                                                                 </asp:CheckBoxList>
-                                                      <h8>Checking this option gives the customer an option to swap their gallons with conditions</h8>
-                                                </div> <br />
+                                                <div id="perGallon" style="display:none">
+                                                    <h8 style="margin-left:50px;">per Gallon Fee:</h8><br />
+                                                     <asp:TextBox ID="perGallonFee"  Width="250px" Height="40px" TextMode="Number" runat="server" style="margin-left:80px;"></asp:TextBox>
+                                                </div>
+                                                    <br /><hr />
+                                                       <h8> <strong >LEGEND:</strong> <br /> 
+                                                           <strong> Pick-up:</strong> <br /> The customer will pick-up their order in the station. <br />
+                                                           <strong> Delivery:</strong> <br /> The order of the customer will be delivered to their delivery address. <br />
+                                                           <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
+                                                           <strong> Swap with Condition:</strong> <br />Lets the customers leave their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill. <br />
+                                                           <strong> Swap without Condition:</strong> <br /> Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill. <br />
+                                                            <strong>Request Gallon Pick-up:</strong> <br /> Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped. <br />
+                                                           <strong> per Gallon Fee: </strong> <br /> 
+                                                           </h8>
+
+                                                </div>
+<br />
+
+                                                <!--SCRIPT FOR REQUEST PICK-UP WHEN CLICKED-->
+                                                <script>
+                                                    function perGallonFee() {
+                                                        var delivery = document.getElementById("pickupPerGallon");
+                                                        var stanfields = document.getElementById("perGallon");
+
+                                                        if (delivery.checked) {
+                                                            stanfields.style.display = "none";
+
+                                                        } else {
+
+                                                            stanfields.style.display = "block";
+
+                                                        }
+                                                    }
+                                                </script>
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- set data button--%>
-                                               <asp:Button ID="vehicleAdded" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="vehicleAdded_Click" AutoPostBack="false" />
+                                               <asp:Button ID="vehicleAdded" runat="server" Text="Submit" class="btn btn-primary btn-sm" Onclick="vehicleAdded_Click" AutoPostBack="false" />
                                                 </div>
                                               </div>
                                             </div>
@@ -473,7 +509,7 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         
-                                                        <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="PRODUCTS DATA"></asp:Label>
+                                                        <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="DELIVERY DETAILS"></asp:Label>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -485,13 +521,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-<%--                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                           <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
-                                                           <asp:ListItem Text="other Product" Value="2"></asp:ListItem>
-                                                           <asp:ListItem Text="Delivery Details" Value="3"></asp:ListItem>
-                                                        </asp:DropDownList>--%>
-
-                                                      <%--  <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px"/>--%>
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
@@ -508,8 +537,7 @@
                                                       <Columns>
                                                         <asp:TemplateField>
                                                           <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
-                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          <asp:Button runat="server"  ID="viewButton" OnClick="viewButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                           </ItemTemplate>
                                                         </asp:TemplateField>
                                                       </Columns>
@@ -644,5 +672,4 @@
                          </div>
                        </div>
 
- </asp:Content>
-
+</asp:Content>
