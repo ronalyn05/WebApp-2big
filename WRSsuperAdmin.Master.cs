@@ -79,9 +79,7 @@ namespace WRS2big_Web
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + idnum);
             Notification notif = notification.ResultAs<Notification>();
 
-            int adminID = notif.admin_ID;
-            Session["currentClient"] = adminID;
-
+          
             string title = notif.title;
 
             if (title == "New Registered User")
@@ -108,7 +106,7 @@ namespace WRS2big_Web
                 Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
 
             }
-            else if (title == "Client Approval")
+            else if (title == "New Client")
             {
                 var updatedNotif = new Notification
                 {
@@ -129,7 +127,7 @@ namespace WRS2big_Web
 
                 int currentClient = notif.admin_ID;
                 Session["currentClient"] = currentClient;
-                Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
+                Response.Write("<script>window.location.href = '/superAdmin/clientDetails.aspx'; </script>");
 
             }
 
