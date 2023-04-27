@@ -397,7 +397,9 @@ namespace WRS2big_Web.Admin
 
                 //Storing the  info
                 response = twoBigDB.Set("USERSLOG/" + profilelog.logsId, profilelog);//Storing data to the database
-               
+
+                // Display the image on the profile page
+                ImageButton_new.ImageUrl = (string)Session["profile_image"];
             }
             catch (Exception ex)
             {
@@ -585,6 +587,9 @@ namespace WRS2big_Web.Admin
                 };
 
                 twoBigDB.Set("USERSLOG" + log.logsId, log);
+
+                // Display the image on the profile page
+                ImageButton_new.ImageUrl = (string)Session["profile_image"];
             }
         }
 

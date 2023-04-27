@@ -123,7 +123,7 @@ namespace WRS2big_Web.Admin
                     {
                         rewardId = idnum,
                         adminId = int.Parse(idno),
-                        name = txtrewardname.Text,
+                        rewardType = txtrewardname.Text,
                         description = txtdescription.Text,
                         points_required = pointsRequired,
                         rewardsDateAdded = rewardsDateAdded,

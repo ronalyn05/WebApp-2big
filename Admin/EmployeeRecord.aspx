@@ -1,8 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="EmployeeRecord.aspx.cs" Inherits="WRS2big_Web.Admin.Employees" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style type="text/css">
-        .auto-style1 {
-            margin-left: 29px;
+    <!-- Include jQuery and the Timepicker plugin -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
+    <style>
+        texts{
+            font-size:16px;
+
         }
     </style>
 </asp:Content>
@@ -13,7 +18,6 @@
         <div class="pcoded-container navbar-wrapper">
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">
- 
                     <div class="pcoded-content">
                         <!-- Page-header start -->
                         <div class="page-header"> 
@@ -47,40 +51,39 @@
                                     <div class="">
                                      <div class="clearfix">
                                         <%-- add employee button--%>
-                                         <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Employee</button>
-                                         <%--VIEW BUTTON --%>
+                                 <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add">
+                                    <i class="fa fa-plus"></i> Add Employee</button>
+                                  <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit">
+                                    <i class="fa fa-edit"></i> Edit Employee Details</button>
                                           &nbsp;
-                                         <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> Edit Employee Details</button>
-                                          <%--<asp:Button ID="ViewID" runat="server"  style="font-size:14px;" class="btn btn-success btn-sm " Text="View List of Employee IDs" Height="41px" />--%>
                                        <%-- MODAL FOR ADD EMPLOYEE--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-md">
                                             <div class="modal-content">
                                             <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel">Add Employee Records</h4>
+                                            <h4 class="modal-title" id="myModalLabel">Add Employee Record</h4>
                                                 <%--exit button--%>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
                                             <div class="modal-body">
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
-                                           <%-- <div class="item form-group">--%>
-                                            <div class="col-md-12 col-sm-12 ">
-                                               <%-- input lastname--%>
-                                            <strong>Lastname:</strong>
-                                            <asp:TextBox ID="txtlastname" runat="server" class="form-control" placeholder="Employees' Lastname"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                            </div>
-                                            <%--</div>--%>
-                                            <%--<div class="item form-group">--%>
-                                             <div class="col-md-12 col-sm-12">
+                                                 <div class="col-md-12 col-sm-12 ">
+                                  <%-- input lastname--%>
+                                 <strong>Lastname:</strong>
+                                 <asp:TextBox ID="txtlastname" runat="server" class="form-control" placeholder="Employees' Lastname"></asp:TextBox>
+                                 <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                 </div>
+                                  <%--</div>--%>
+                                  <%--<div class="item form-group">--%>
+                                  <div class="col-md-12 col-sm-12">
                                                  <%--firstname--%>
-                                             <strong>Firstname:</strong>
-                                              <asp:TextBox ID="txtfirstname" runat="server" class="form-control" placeholder="Employees' Firstname"></asp:TextBox>
-                                                 <asp:RequiredFieldValidator ID="reqfname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                              </div>
-                                              <%--</div>--%>
+                                  <strong>Firstname:</strong>
+                                  <asp:TextBox ID="txtfirstname" runat="server" class="form-control" placeholder="Employees' Firstname"></asp:TextBox>
+                                  <asp:RequiredFieldValidator ID="reqfname" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                  </div>
+                                  <%--</div>--%>
                                                 <%--<div class="item form-group">--%>
                                              <div class="col-md-12 col-sm-12">
                                                  <%--middlename--%>
@@ -177,76 +180,71 @@
                                                          </asp:DropDownList>
                                                      <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status" ValidationGroup="a"></asp:RequiredFieldValidator>
                                                   </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                               <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Add Data" ValidationGroup="a" OnClick="btnAdd_Click" />
-                                               </div>
-                                               </form>
-                                             </div>
-                                            </div>
-                                      </div>
-                                        <%-- end add employee--%>
-                                           <br />
-                                         <br />
-                                          <%-- MODAL FOR UPDATE EMPLOYEE--%>
-                                       <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
-                                            <div class="modal-content">
-                                            <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                            <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel2">Add Employee Records</h4>
-                                                <%--exit button--%>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                            <div class="col-md-12 col-sm-12 ">
-                                            <div class="x_content">
-                                            <div class="col-md-12 col-sm-12">
-                                                    <%--emp id to edit--%>
-                                                    <strong>Employee ID:</strong>
-                                                     <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number"></asp:TextBox>
-                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                                   </div> 
-                                                <div class="col-md-12 col-sm-12">
-                                                    <%--position--%>
-                                                    <strong>Position:</strong>
-                                                   <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
-                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                       <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
-                                                       <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
-                                                       <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
-                                                       <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
-                                                   </asp:DropDownList>
-                                                  </div>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <%--status--%>
-                                                    <strong>Status:</strong>
-                                                   <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
-                                                         <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
-                                                         <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                         <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
-                                                         </asp:DropDownList>
+                                                   <br />
                                                   </div>
                                                 </div>
-                                              </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <%--  BUTTON ADD EMPLOYEE HERE--%>
+                                               <asp:Button ID="btnAdd" runat="server" Text="Add Data" ValidationGroup="a" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="false"/>
                                             </div>
-                                            <div class="modal-footer">
-                                               <%-- add data button--%>
-                                               <asp:Button ID="btnEditData" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnUpdate_Click" />
-                                               </div>
-                                               </form>
+                                              
+                                            </div>
+                                             <%--  </form>--%>
                                              </div>
-                                            </div>
-                                      </div>
-                                        <%-- end add employee--%>
-                                           <br />
-                                         <br />
+                                           </div>
+                                <%-- MODAL FOR UPDATE RECORDS --%>
+                                <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered modal-md">
+                                  <div class="modal-content">
+                                  <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                  <div class="modal-header">
+                                  <h4 class="modal-title" id="myModalLabel3">Edit employee records using their id number here: </h4>
+                                  <%--exit button--%>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                  </div>
+                                  <div class="modal-body">
+                                  <div class="col-md-12 col-sm-12 ">
+                                  <div class="x_content">
+                                  <div class="col-md-12 col-sm-12">
+                                  <strong>Employee ID:</strong>
+                                  <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number"></asp:TextBox>
+                                  <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                  </div> 
+                                  <div class="col-md-12 col-sm-12">
+                                  <strong>Position:</strong>
+                                  <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
+                                  <asp:ListItem Selected="False" > ------ Update Employee Position ------ </asp:ListItem>
+                                  <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                  <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
+                                  <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
+                                  <asp:ListItem Text="WRS Helper" Value="WRS Helper" ></asp:ListItem>
+                                  </asp:DropDownList>
+                                  </div>
+                                  <div class="col-md-12 col-sm-12">
+                                  <strong>Status:</strong>
+                                  <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
+                                  <asp:ListItem Selected="False" > ------ Update Employee Status ------ </asp:ListItem>
+                                  <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
+                                  <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
+                                  </asp:DropDownList>
+                                  </div>
+                                  <br />
+                                  </div>
+                                  </div>
 
-                                            <!--PAGE CONTENTS-->
-                                         <div class="col-xl-12 col-xl-12 h-100">
+                                  <div class="modal-footer">
+                                  <%--  BUTTON UPDATE RECORD HERE--%>
+                                  <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" ValidationGroup="a" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click"/>
+                                  </div>
+                                  
+                                  </div>
+                                  <%--  </form>--%>
+                                  </div>
+                                  </div>
+                               </div>
+                                <!--PAGE CONTENTS-->
+                                <div class="col-xl-12 col-xl-12 h-100">
                                              <div class="card">
                                                 <%--<div class="card" style="background-color:#f2e2ff">--%>
                                                     <div class="card-header">
@@ -300,17 +298,17 @@
                                                     </div>
                                                 </div>
                                              </div> 
-                                      </div>
-                                 </div>
-                               </div>
-                            </div>
-                               </div>
-                              </div>
-                               </div>
-                                 </div>
-                            </div>
-                            </div>
-                              </div>
-                             </div>                             
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                  </div>
+                </div>
+             </div>
+           </div>
+        </div>
+     </div>
+</div>                             
 </asp:Content>
 

@@ -242,7 +242,8 @@ namespace WRS2big_Web.Model
     {
         public int rewardId { get; set; }
         public int adminId { get; set; }
-        public string name { get; set; }
+        public string rewardType { get; set; }
+        public int rewardValue { get; set; }
         public string description { get; set; }
         public string cusEarnPoints { get; set; }
         public int points_required { get; set; }

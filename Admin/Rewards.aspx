@@ -46,10 +46,15 @@
                                             </div> 
                                             <div class="card-body">
                                                 <div class="row">
+                                                     <div class="col-md-12 col-sm-12 ">
+                                            <h5>Promo Type:</h5>
+                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            </div>
                                                    <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Name:</h5>
-                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: 10% OFF or 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <h5>Promo Value:</h5>
+                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo value"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardValue" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Description:</h5>
