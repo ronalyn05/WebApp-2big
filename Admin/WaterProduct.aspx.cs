@@ -72,7 +72,7 @@ namespace WRS2big_Web.Admin
 
                     if (filteredSupply != null)
                     {
-                        lblDate.Text = filteredSupply.dateAdded.ToString("MM/dd/yyyy hh:mm:ss tt");
+                        lblDate.Text = filteredSupply.dateAdded.ToString("MMMM/dd/yyyy hh:mm:ss tt");
                         lbltankSupply.Text = filteredSupply.tankVolume.ToString() + ' ' + filteredSupply.tankUnit.ToString();
 
                         // Retrieve all orders from the ORDERS table
@@ -212,13 +212,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
             }
         }
-       
-
         //RADIO BUTTON SELECTION FOT DELIVERY TYPE
-
-
-
-
         //RETRIEVE PRODUCTREFILL DATA
         private void productRefillDisplay()
         {
