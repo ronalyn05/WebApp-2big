@@ -93,7 +93,7 @@ namespace WRS2big_Web.Admin
             employeesTable.Columns.Add("CONTACT NUMBER");
             employeesTable.Columns.Add("EMAIL ADDRESS");
             employeesTable.Columns.Add("DATE HIRED");
-            employeesTable.Columns.Add("AVAILABILITY");
+           // employeesTable.Columns.Add("AVAILABILITY");
             employeesTable.Columns.Add("ADDRESS");
             employeesTable.Columns.Add("EMERGENCY CONTACT");
             employeesTable.Columns.Add("DATE ADDED");
@@ -104,11 +104,15 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-
                     employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
-                                         entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
-                                         entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
-                                         entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
+                                       entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
+                                       entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_address,
+                                       entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
+
+                    //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
+                    //                     entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
+                    //                     entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
+                    //                     entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
                 }
             }
             else
@@ -177,21 +181,7 @@ namespace WRS2big_Web.Admin
                     logsId = employee_id,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "ADDED EMPLOYEE DETAILS",
-                    // userActivity = UserActivityType.AddedEmployeeRecords
-                    //deliveryDetailsId = existingLog.deliveryDetailsId,
-                    //standardAdded = existingLog.standardAdded,
-                    //reservationAdded = existingLog.reservationAdded,
-                    //expressAdded = existingLog.expressAdded,
-                    //productRefillId = existingLog.productRefillId,
-                    //productrefillDateAdded = existingLog.productrefillDateAdded,
-                    //other_productId = existingLog.other_productId,
-                    //otherProductDateAdded = existingLog.otherProductDateAdded,
-                    //tankId = existingLog.tankId,
-                    //tankSupplyDateAdded = existingLog.tankSupplyDateAdded,
-                    //emp_id = employee_id,
-                    //empFullname = txtfirstname.Text + " " + txtlastname.Text,
-                    //empDateAdded = data.dateAdded   
+                    userActivity = "ADDED EMPLOYEE DETAILS"
                 };
                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
@@ -204,9 +194,9 @@ namespace WRS2big_Web.Admin
             }
         }
         //UPDATE EMPLOYEE DETAILS
-        protected void btnUpdate_Click(object sender, EventArgs e)
+        protected void btnUpdateEmpRecord_Click(object sender, EventArgs e)
         {
-            //generate a random number for employee logged
+            //  generate a random number for employee logged
             Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
 
@@ -266,6 +256,7 @@ namespace WRS2big_Web.Admin
                     emp_pass = existingEmp.emp_pass,
                     emp_role = existingEmp.emp_role,
                     emp_status = existingEmp.emp_status,
+                    addedBy = existingEmp.addedBy,
                     emp_availability = existingEmp.emp_availability
                 };
 
@@ -309,415 +300,5 @@ namespace WRS2big_Web.Admin
             }
         }
 
-
-        //UPDATING THE EMPLOYEE DATA
-        //protected void btnUpdate_Click(object sender, EventArgs e)
-        //{
-
-        //    // Show the modal popup
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#editModal').modal();", true);
-
-        //    // Get the admin ID from the session
-        //    string idno = (string)Session["idno"];
-        //    int adminId = int.Parse(idno);
-
-        //    // Get the GridViewRow that contains the clicked button
-        //    Button btn = (Button)sender;
-        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-        //    // Get the employee ID from the first cell in the row
-        //    int empID = int.Parse(row.Cells[2].Text);
-        //    string status = row.Cells[1].Text;
-        //    string position = row.Cells[5].Text;
-        //    // Store the employee ID in Session for later use
-        //    Session["emp_id"] = empID;
-        //    //and existing status/position in Session
-        //    Session["emp_status"] = status;
-        //    Session["emp_position"] = position;
-
-        //    // updateEmployee();
-        //    // Get the employee status and position from the second cell and sixth cell in the row
-        //    drd_empPosition.SelectedValue = (string)Session["emp_position"];
-        //    drd_empStatus.SelectedValue = (string)Session["emp_status"];
-
-        //}
-        //protected void btnupdateData_Click(object sender, EventArgs e)
-        //{
-        //    // Show the modal popup
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#editModal').modal();", true);
-
-        //    // Get the admin ID from the session
-        //    string idno = (string)Session["idno"];
-        //    int adminId = int.Parse(idno);
-
-        //    // Get the GridViewRow that contains the clicked button
-        //    Button btn = (Button)sender;
-        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-        //    // Get the employee ID from the first cell in the row
-        //    int empID = int.Parse(row.Cells[2].Text);
-        //    string status = row.Cells[1].Text;
-        //    string position = row.Cells[5].Text;
-        //    // Store the employee ID in Session for later use
-        //    Session["emp_id"] = empID;
-        //    //and existing status/position in Session
-        //    Session["emp_status"] = status;
-        //    Session["emp_position"] = position;
-
-        //    // updateEmployee();
-        //    // Get the employee status and position from the second cell and sixth cell in the row
-        //    drd_empStatus.Text = (string)Session["emp_position"];
-        //    drd_empStatus.SelectedValue = (string)Session["emp_status"];
-
-        //    // Get the new status and position from the DropDownList in the modal popup
-        //    string newPosition = drd_empPosition.SelectedValue;
-        //    string newStatus = drd_empStatus.SelectedValue;
-
-        //    // Retrieve the existing employee object from the database
-        //    FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
-        //    Employee existingEmp = response.ResultAs<Employee>();
-
-        //    // Create a new employee object with the updated data
-        //    Employee updatedEmp = new Employee
-        //    {
-        //        adminId = existingEmp.adminId,
-        //        emp_id = existingEmp.emp_id,
-        //        emp_firstname = existingEmp.emp_firstname,
-        //        emp_midname = existingEmp.emp_midname,
-        //        emp_lastname = existingEmp.emp_lastname,
-        //        emp_gender = existingEmp.emp_gender,
-        //        emp_email = existingEmp.emp_email,
-        //        emp_birthdate = existingEmp.emp_birthdate,
-        //        emp_contactnum = existingEmp.emp_contactnum,
-        //        emp_emergencycontact = existingEmp.emp_emergencycontact,
-        //        emp_dateHired = existingEmp.emp_dateHired,
-        //        dateAdded = existingEmp.dateAdded,
-        //        emp_address = existingEmp.emp_address,
-        //        emp_pass = existingEmp.emp_pass,
-        //        emp_role = existingEmp.emp_role,
-        //        emp_status = existingEmp.emp_status,
-        //        //dateUpdated = DateTime.UtcNow
-        //    };
-
-        //    // Update the fields that have changed
-        //    if (!string.IsNullOrEmpty(newPosition))
-        //    {
-        //        updatedEmp.emp_role = newPosition;
-        //    }
-        //    if (!string.IsNullOrEmpty(newStatus))
-        //    {
-        //        updatedEmp.emp_status = newStatus;
-        //    }
-
-        //    // Update the existing employee object in the database
-        //    response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
-
-        //    // Rebind the GridView
-        //    //DisplayTable();
-
-        //    // Show success message
-        //    Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');  location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
-
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
-        //}
-
-        //    private void updateEmployee()
-        //{
-        //    // Get the employee ID from SessionState
-        //    int empID = (int)Session["emp_id"];
-        //    // Get the employee status and position from the second cell and sixth cell in the row
-        //    drd_empPosition.SelectedValue = (string)Session["emp_position"];
-        //    drd_empStatus.SelectedValue = (string)Session["emp_status"];
-
-        //    // Get the new status and position from the DropDownList in the modal popup
-        //    string newPosition = drd_empPosition.SelectedValue;
-        //    string newStatus = drd_empStatus.SelectedValue;
-
-        //    // Retrieve the existing employee object from the database
-        //    FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
-        //    Employee existingEmp = response.ResultAs<Employee>();
-
-        //    // Create a new employee object with the updated data
-        //    Employee updatedEmp = new Employee
-        //    {
-        //        adminId = existingEmp.adminId,
-        //        emp_id = existingEmp.emp_id,
-        //        emp_firstname = existingEmp.emp_firstname,
-        //        emp_midname = existingEmp.emp_midname,
-        //        emp_lastname = existingEmp.emp_lastname,
-        //        emp_gender = existingEmp.emp_gender,
-        //        emp_email = existingEmp.emp_email,
-        //        emp_birthdate = existingEmp.emp_birthdate,
-        //        emp_contactnum = existingEmp.emp_contactnum,
-        //        emp_emergencycontact = existingEmp.emp_emergencycontact,
-        //        emp_dateHired = existingEmp.emp_dateHired,
-        //        dateAdded = existingEmp.dateAdded,
-        //        emp_address = existingEmp.emp_address,
-        //        emp_pass = existingEmp.emp_pass,
-        //        emp_role = existingEmp.emp_role,
-        //        emp_status = existingEmp.emp_status,
-        //        dateUpdated = DateTime.UtcNow
-        //    };
-
-        //    // Update the fields that have changed
-        //    if (!string.IsNullOrEmpty(newPosition))
-        //    {
-        //        updatedEmp.emp_role = newPosition;
-        //    }
-        //    if (!string.IsNullOrEmpty(newStatus))
-        //    {
-        //        updatedEmp.emp_status = newStatus;
-        //    }
-
-        //    // Update the existing employee object in the database
-        //    response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
-
-        //    // Rebind the GridView
-        //    DisplayTable();
-
-        //    // Show success message
-        //    Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');</script>");
-
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
-        //}
-
-
-        //protected void btnupdateData_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        // Get the employee ID from SessionState
-        //        int empID = (int)Session["emp_id"];
-
-        //        //// Get the GridViewRow that contains the clicked button
-        //        //Button btn = (Button)sender;
-        //        //GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-        //        //// Get the employee ID from the first cell in the row
-        //        // empID = int.Parse(row.Cells[2].Text);
-
-        //        // Get the employee status and position from the second cell and sixth cell in the row
-        //        drd_empPosition.SelectedValue = (string)Session["emp_status"];
-        //        drd_empStatus.SelectedValue = (string)Session["emp_position"];
-
-        //        // Get the new status and position from the DropDownList in the modal popup
-        //        string newPosition = drd_empPosition.SelectedValue;
-        //        string newStatus = drd_empStatus.SelectedValue;
-
-        //        // Retrieve the existing employee object from the database
-        //        FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
-        //        Employee existingEmp = response.ResultAs<Employee>();
-
-        //        // Create a new employee object with the updated data
-        //        Employee updatedEmp = new Employee
-        //        {
-        //            adminId = existingEmp.adminId,
-        //            emp_id = existingEmp.emp_id,
-        //            emp_firstname = existingEmp.emp_firstname,
-        //            emp_midname = existingEmp.emp_midname,
-        //            emp_lastname = existingEmp.emp_lastname,
-        //            emp_gender = existingEmp.emp_gender,
-        //            emp_email = existingEmp.emp_email,
-        //            emp_birthdate = existingEmp.emp_birthdate,
-        //            emp_contactnum = existingEmp.emp_contactnum,
-        //            emp_emergencycontact = existingEmp.emp_emergencycontact,
-        //            emp_dateHired = existingEmp.emp_dateHired,
-        //            dateAdded = existingEmp.dateAdded,
-        //            emp_address = existingEmp.emp_address,
-        //            emp_pass = existingEmp.emp_pass,
-        //            emp_role = existingEmp.emp_role,
-        //            emp_status = existingEmp.emp_status,
-        //            dateUpdated = DateTime.UtcNow
-        //        };
-
-        //        // Update the fields that have changed
-        //        if (!string.IsNullOrEmpty(newPosition))
-        //        {
-        //            updatedEmp.emp_role = newPosition;
-        //        }
-        //        if (!string.IsNullOrEmpty(newStatus))
-        //        {
-        //            updatedEmp.emp_status = newStatus;
-        //        }
-
-        //        // Update the existing employee object in the database
-        //        response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
-
-        //        // Rebind the GridView
-        //        DisplayTable();
-
-        //        // Show success message
-        //        Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');</script>");
-
-        //        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
-        //}
-
-
-        //protected void btnupdateData_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        int idno = (int)Session["idno"];
-        //        // Get the employee ID from the session
-        //        // int empId = (int)Session["emp_id"];
-        //        // Get the employee ID from ViewState
-        //        int empID = (int)Session["emp_id"];
-
-        //        // Reconstruct the GridViewRow object using the index stored in ViewState
-        //        //int index = (int)ViewState["SelectedRowIndex"];
-        //        //employee_id = (int)GridView1.DataKeys[row.RowIndex]["employee_id"];
-        //        //GridViewRow row = .Rows[index];
-
-        //        //int index = (int)ViewState["SelectedRowIndex"];
-        //        //GridViewRow row = GridView1.Rows[index];
-        //        //int employeeId = (int)GridView1.DataKeys[row.RowIndex]["EMPLOYEE ID"];
-
-        //        // Get the employee ID from the CommandArgument property of the button
-        //        //   Button btn = (Button)sender;
-        //        //int empID = Convert.ToInt32(btn.CommandArgument.Trim());
-        //        //int empID = GridView1.SelectedRow.Cells[1].Text;
-        //        // Get the order ID and selected row from ViewState
-        //        //int empID = (int)ViewState["emp_id"];
-        //        //GridViewRow row = (GridViewRow)ViewState["SelectedRow"];
-
-        //        // Get the new status from the DropDownList in the modal popup
-        //        string newPosition = drd_empPosition.SelectedValue;
-        //        string newStatus = drd_empStatus.SelectedValue;
-
-        //        // Retrieve the existing employee object from the database
-        //        FirebaseResponse response = twoBigDB.Get("EMPLOYEES/" + empID);
-        //        Employee existingEmp = response.ResultAs<Employee>();
-
-        //        // Get the updated status and position values from the form
-        //        //string status = drd_empStatus.SelectedValue;
-        //        //string position = drd_empPosition.SelectedValue;
-
-        //        //  ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal('" + status + "', '" + position + "');", true);
-
-        //        // Create a new employee object with the updated data
-        //        Employee updatedEmp = new Employee
-        //        {
-        //            adminId = existingEmp.adminId,
-        //            emp_id = existingEmp.emp_id,
-        //            emp_firstname = existingEmp.emp_firstname,
-        //            emp_midname = existingEmp.emp_midname,
-        //            emp_lastname = existingEmp.emp_lastname,
-        //            emp_gender = existingEmp.emp_gender,
-        //            emp_email = existingEmp.emp_email,
-        //            emp_birthdate = existingEmp.emp_birthdate,
-        //            emp_contactnum = existingEmp.emp_contactnum,
-        //            emp_emergencycontact = existingEmp.emp_emergencycontact,
-        //            emp_dateHired = existingEmp.emp_dateHired,
-        //            dateAdded = existingEmp.dateAdded,
-        //            emp_address = existingEmp.emp_address,
-        //            emp_pass = existingEmp.emp_pass,
-        //            emp_role = existingEmp.emp_role,
-        //            emp_status = existingEmp.emp_status,
-        //            dateUpdated = DateTime.UtcNow
-        //        };
-
-        //        // Update the fields that have changed
-        //        if (!string.IsNullOrEmpty(newPosition))
-        //        {
-        //            updatedEmp.emp_role = newPosition;
-        //        }
-        //        if (!string.IsNullOrEmpty(newStatus))
-        //        {
-        //            updatedEmp.emp_status = newStatus;
-        //        }
-
-        //        // Update the existing employee object in the database
-        //        response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
-
-        //        // Rebind the GridView
-        //        DisplayTable();
-
-        //        // Show success message
-        //        Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!');</script>");
-
-        //        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "hideModal", "$('#editModal').modal('hide');", true);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
-        //}
-
-        //protected void btnupdate_Click(object sender, EventArgs e)
-        //{
-        //    // int empId = (int)Session["emp_id"];
-        //    string position = drd_empPosition.SelectedValue;
-        //    string status = drd_empStatus.SelectedValue;
-        //    try
-        //    {
-
-        //        // Get the admin ID from the session
-        //        string idno = (string)Session["idno"];
-        //        int adminId = int.Parse(idno);
-
-        //        // Get the employee ID from the CommandArgument property of the button
-        //        //Button btn = (Button)sender;
-        //        //string empID = Convert.ToString(btn.CommandArgument.Trim());
-
-        //        // Retrieve the existing employee object from the database
-        //        FirebaseResponse response = twoBigDB.Get("EMPLOYEES/");
-        //        Employee existingEmp = response.ResultAs<Employee>();
-
-        //        Session["emp_id"] = existingEmp.emp_id;
-
-        //        int empId = (int)Session["emp_id"];
-
-        //        // Create a new employee object with the updated data
-        //        Employee updatedEmp = new Employee
-        //        {
-        //            adminId = adminId,
-        //            emp_id = existingEmp.emp_id,
-        //            emp_firstname = existingEmp.emp_firstname,
-        //            emp_midname = existingEmp.emp_midname,
-        //            emp_lastname = existingEmp.emp_lastname,
-        //            emp_gender = existingEmp.emp_gender,
-        //            emp_email = existingEmp.emp_email,
-        //            emp_birthdate = existingEmp.emp_birthdate,
-        //            emp_contactnum = existingEmp.emp_contactnum,
-        //            emp_emergencycontact = existingEmp.emp_emergencycontact,
-        //            emp_dateHired = existingEmp.emp_dateHired,
-        //            dateAdded = existingEmp.dateAdded,
-        //            emp_address = existingEmp.emp_address,
-        //            emp_pass = existingEmp.emp_pass,
-        //            emp_role = existingEmp.emp_role,
-        //            emp_status = existingEmp.emp_status
-        //        };
-
-        //        // Update the fields that have changed
-        //        if (!string.IsNullOrEmpty(position))
-        //        {
-        //            updatedEmp.emp_status = drd_empStatus.SelectedValue;
-        //        }
-        //        if (!string.IsNullOrEmpty(status))
-        //        {
-        //            updatedEmp.emp_role = drd_empPosition.SelectedValue;
-        //        }
-
-        //        updatedEmp.dateUpdated = DateTime.UtcNow;
-
-        //        // Update the existing employee object in the database
-        //        response = twoBigDB.Update("EMPLOYEES/" + empId, updatedEmp);
-
-        //        // Rebind the GridView
-        //        DisplayTable();
-
-        //        Response.Write("<script>alert ('Employee " + empId + " has been successfully updated!');</script>");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
-        //}
     }
 }
