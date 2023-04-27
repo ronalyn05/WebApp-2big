@@ -35,79 +35,93 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            //deliveryDetailsGrid();
+            deliveryDetailsGrid();
+            
 
 
         }
         private void deliveryDetailsGrid()
         {
-            string idno = (string)Session["idno"];
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2");
+            Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
 
-            //string empId = (string)Session["emp_id"];
-            // int adminId = int.Parse(idno);
-
-            // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
-            Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
-            var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
-
-            // Create the DataTable to hold the orders
-            //sa pag create sa table
-            DataTable expressTable = new DataTable();
-            expressTable.Columns.Add("DELIVERY TYPE ID");
-            expressTable.Columns.Add("DELIVERY TYPE");
-            expressTable.Columns.Add("DATE ADDED");
-            expressTable.Columns.Add("ADDED BY");
-
-            if (response != null && response.ResultAs<Delivery>() != null)
+            if (details != null)
             {
-                foreach (var entry in filteredList)
+
+                string idno = (string)Session["idno"];
+
+                // Retrieve all data from the DELIVERY_DETAILS table
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+                Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
+                var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+                // Create the DataTable to hold the orders
+                //sa pag create sa table
+                DataTable expressTable = new DataTable();
+                expressTable.Columns.Add("DELIVERY TYPE ID");
+                expressTable.Columns.Add("DELIVERY TYPE");
+                expressTable.Columns.Add("DATE ADDED");
+                expressTable.Columns.Add("ADDED BY");
+
+                if (response != null && response.ResultAs<Delivery>() != null)
                 {
-                    if (entry.resDeliveryType == "Reservation")
+                    foreach (var entry in filteredList)
                     {
-                        //ROW FOR THE RESERVATION
-                        expressTable.Rows.Add(entry.reservationID, entry.resDeliveryType,
-                                                entry.reservationdateAdded, entry.adminId);
-                    }
-                    else
-                    {
+                        if (entry.resDeliveryType == "Reservation")
+                        {
+                            //ROW FOR THE RESERVATION
+                            expressTable.Rows.Add(entry.reservationID, entry.resDeliveryType,
+                                                    entry.reservationdateAdded, entry.adminId);
+                        }
+                        else
+                        {
+
+                        }
+                        if (entry.stanDeliverytype == "Standard")
+                        {
+                            //ROW FOR THE STANDARD
+                            expressTable.Rows.Add(entry.standardID, entry.stanDeliverytype,
+                                entry.standardDateAdded, entry.adminId);
+                        }
+                        else
+                        {
+
+                        }
+                        if (entry.exDeliveryType == "Express")
+                        {
+                            //ROW FOR THE EXPRESS
+                            expressTable.Rows.Add(entry.expressID, entry.exDeliveryType,
+                                entry.expressdateAdded, entry.adminId);
+                        }
+                        else
+                        {
+
+                        }
 
                     }
-                    if (entry.stanDeliverytype == "Standard")
-                    {
-                        //ROW FOR THE STANDARD
-                        expressTable.Rows.Add(entry.standardID, entry.stanDeliverytype,
-                            entry.standardDateAdded, entry.adminId);
-                    }
-                    else
-                    {
-
-                    }
-                    if (entry.exDeliveryType == "Express")
-                    {
-                        //ROW FOR THE EXPRESS
-                        expressTable.Rows.Add(entry.expressID, entry.exDeliveryType,
-                            entry.expressdateAdded, entry.adminId);
-                    }
-                    else
-                    {
-
-                    }
-
                 }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+                }
+
+                // Bind the DataTable to the GridView
+                gridDeliveryDetails.DataSource = expressTable;
+                gridDeliveryDetails.DataBind();
+
+                drdDeliverytype.Visible = true;
+                btnDeliverytype.Visible = true;
             }
             else
             {
-                // Handle null response or invalid selected value
-                expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+                //hide the dropdown for deliveryDetails
+                btnDeliverytype.Visible = false;
+                drdDeliverytype.Visible = false;
             }
 
-            // Bind the DataTable to the GridView
-            gridDeliveryDetails.DataSource = expressTable;
-            gridDeliveryDetails.DataBind();
 
-            drdDeliverytype.Visible = true;
-            btnDeliverytype.Visible = true;
+
         }
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {

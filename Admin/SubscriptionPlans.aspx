@@ -117,10 +117,12 @@
                         <section class="cell medium-8 padding-vertical-4">
                             <a name="subscription"> </a>
                             <div>
-                                <h1 class="h3 text-center">
-                                    <br> SUBSCRIPTION PLANS <br>
+                                <h1 class="h3 text-center" style="color:black">
+                                    <br>Pick the Best plan<br>
                                 </h1>
-                                <h2 class="texts text-center " style="font-size:20px;">Pick the best plan and start growing your business NOW !</h2><br />
+                                <h2 class="texts text-center " style="font-size:20px;">
+                                    Take your desired plan to be able to use our platform, and start growing your business now!
+                                </h2><br />
 
                             </div>
                             <br>
@@ -128,12 +130,12 @@
                                 <div class="row">
                                     <div class="col-sm-3" style="background-color: transparent;">
                                     </div>
-
-                                    <div class="col-sm-3 card" style="background-color: transparent;">
+                                    <asp:Repeater ID="rtpPackages" runat="server">
+                                        
+                                    </asp:Repeater>
+                                    <div class="col-sm-3 card" style="background-color: white;">
                                         <div class="">
-                                            <div class="text-center">
-                                                <img src="/images/BasicPlan.PNG" style="width:100%">
-                                            </div>
+                                            <br /> <br /> <br />
                                             <p class="texts text-center">
                                                 <asp:Label runat="server" ID="basinplanLabel">
 
@@ -172,15 +174,13 @@
                                                 </div> <br />
 
                                         </div>
-                                    </div>
+                                    </div> 
 
 
 
-                                    <div class="col-sm-3 card" style="background-color: transparent;">
+                                    <div class="col-sm-3 card" style="background-color: white;">
                                         <div class="service-item second-service">
-                                            <div class="text-center">
-                                                <img src="/images/PremiumPlan.PNG" style="width:100%">
-                                            </div>
+                                            <br /> <br /> <br />
                                             <p class="texts text-center">
                                                 <asp:Label runat="server" ID="premiumplanLabel">
 
