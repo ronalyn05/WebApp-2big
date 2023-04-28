@@ -38,59 +38,63 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("ORDERS");
             Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-            // Filter the list of orders by the owner's ID and the order status and delivery type
-            List<Order> filteredList = orderlist.Values
-                .Where(d => d.admin_ID.ToString() == idno)
-                .ToList();
-
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-            Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-            // Filter the list of orders by the owner's ID and the order status and delivery type
-            List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-            if (walkinOrderlist != null)
+            if (orderlist != null)
             {
-                filteredordersList = walkinOrderlist.Values
-                    .Where(d => d.adminId.ToString() == idno)
+                // Filter the list of orders by the owner's ID and the order status and delivery type
+                List<Order> filteredList = orderlist.Values
+                    .Where(d => d.admin_ID.ToString() == idno)
                     .ToList();
-            }
 
-            // Compute the total number of orders today
-            int totalOrdersToday = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-                                                       || d.order_OrderStatus == "Accepted");
-            int totalWalkInOrder = filteredordersList.Count();
-            int CombinedOrder = totalOrdersToday + totalWalkInOrder;
-            // Compute the total amount of all orders
-            //decimal totalOrderAmount = filteredList.Count();
-            decimal totalOrderAmount = 0;
-            decimal overAllSales = 0;
-            decimal totalWalkInAmount = 0;
-            // Compute the total number of delivery orders
-            int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
-            // Compute the total number of reservation orders
-            int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
 
-            foreach (Order order in filteredList)
-            {
-                if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery" 
-                    && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
+                // Filter the list of orders by the owner's ID and the order status and delivery type
+                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+                if (walkinOrderlist != null)
                 {
-                    totalOrderAmount += order.order_InitialAmount;
+                    filteredordersList = walkinOrderlist.Values
+                        .Where(d => d.adminId.ToString() == idno)
+                        .ToList();
                 }
-            }
-            foreach (WalkInOrders order in filteredordersList)
-            {
-                totalWalkInAmount += order.totalAmount;
-            }
 
-            overAllSales = totalOrderAmount + totalWalkInAmount;
+                // Compute the total number of orders today
+                int totalOrdersToday = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
+                                                           || d.order_OrderStatus == "Accepted");
+                int totalWalkInOrder = filteredordersList.Count();
+                int CombinedOrder = totalOrdersToday + totalWalkInOrder;
+                // Compute the total amount of all orders
+                //decimal totalOrderAmount = filteredList.Count();
+                decimal totalOrderAmount = 0;
+                decimal overAllSales = 0;
+                decimal totalWalkInAmount = 0;
+                // Compute the total number of delivery orders
+                int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
+                // Compute the total number of reservation orders
+                int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
 
-            // Display the total amount of all orders
-            lblTotalSales.Text = overAllSales.ToString();
-            lblDeliveries.Text = totalDeliveryOrders.ToString();// Display the total of deliveries
-            lblOrders.Text = CombinedOrder.ToString();// Display the total of all orders
-            lblReservations.Text = totalReservationOrders.ToString();// Display the total reservations
+                foreach (Order order in filteredList)
+                {
+                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
+                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
+                    {
+                        totalOrderAmount += order.order_InitialAmount;
+                    }
+                }
+                foreach (WalkInOrders order in filteredordersList)
+                {
+                    totalWalkInAmount += order.totalAmount;
+                }
+
+                overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                // Display the total amount of all orders
+                lblTotalSales.Text = overAllSales.ToString();
+                lblDeliveries.Text = totalDeliveryOrders.ToString();// Display the total of deliveries
+                lblOrders.Text = CombinedOrder.ToString();// Display the total of all orders
+                lblReservations.Text = totalReservationOrders.ToString();// Display the total reservations
+            }
+           
 
             //displayTankSupply();
         }
