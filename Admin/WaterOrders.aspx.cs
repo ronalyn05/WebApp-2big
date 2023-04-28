@@ -54,32 +54,35 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Order>() != null)
             {
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Received"
-                || d.order_OrderStatus == "Payment Received");
+                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
+                (d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received"));
+
                 //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount, entry.dateOrderAccepted,
-                                          entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
+                    string dateAccepted = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDelivered = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string datePayment = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount, 
+                        dateAccepted, dateDelivered, datePayment, entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
                 }
             }
             else
             {
                 // Handle null response or invalid selected value
-                ordersTable.Rows.Add("No orders found", "", "", "", "", "", "", "", "", "", "", "");
+                lblMessage.Text = "No data found";
             }
 
             // Bind the DataTable to the GridView
             gridOrder.DataSource = ordersTable;
             gridOrder.DataBind();
         }
-
+        //DISPLAY WALKIN ORDERS
         private void walkinordersDisplay()
         {
             string idno = (string)Session["idno"];
-          //  string name = (string)Session["fullname"];
-            // int adminId = int.Parse(idno);
 
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
@@ -90,8 +93,7 @@ namespace WRS2big_Web.Admin
             walkInordersTable.Columns.Add("ORDER ID");
             walkInordersTable.Columns.Add("ORDER TYPE");
             walkInordersTable.Columns.Add("PRODUCT NAME");
-            walkInordersTable.Columns.Add("PRODUCT UNIT");
-            walkInordersTable.Columns.Add("PRODUCT SIZE");
+            walkInordersTable.Columns.Add("PRODUCT UNIT & SIZE");
             walkInordersTable.Columns.Add("PRICE");
             walkInordersTable.Columns.Add("QUANTITY");
             walkInordersTable.Columns.Add("DISCOUNT");
@@ -99,21 +101,41 @@ namespace WRS2big_Web.Admin
             walkInordersTable.Columns.Add("DATE");
             walkInordersTable.Columns.Add("ADDED BY");
 
+            // Get the selected date range from the dropdown list
+            string dateRange = ddlDateRange.SelectedValue;
+
             if (response != null && response.ResultAs<Order>() != null)
             {
                 var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
-                // Loop through the orders and add them to the DataTable
+
+                // Filter the orders based on the selected date range
+                switch (dateRange)
+                {
+                    case "day":
+                        filteredList = filteredList.Where(d => d.dateAdded.Date == DateTime.Now.Date);
+                        break;
+                    case "week":
+                        filteredList = filteredList.Where(d => d.dateAdded.Date >= DateTime.Now.AddDays(-7).Date);
+                        break;
+                    case "month":
+                        filteredList = filteredList.Where(d => d.dateAdded.Date.Month == DateTime.Now.Month && d.dateAdded.Date.Year == DateTime.Now.Year);
+                        break;
+                }
+
+                // Loop through the filtered orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnit, entry.productSize,
-                                          entry.productPrice, entry.productQty, entry.productDiscount,
-                                          entry.totalAmount, entry.dateAdded, entry.addedBy);
+                    string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+                                         entry.productPrice, entry.productQty, entry.productDiscount,
+                                         entry.totalAmount, dateAdded, entry.addedBy);
                 }
             }
             else
             {
                 // Handle null response or invalid selected value
-                walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+                lblMessage.Text = "No data found";
             }
 
             // Bind the DataTable to the GridView
@@ -121,6 +143,211 @@ namespace WRS2big_Web.Admin
             gridWalkIn.DataBind();
         }
 
+        //private void walkinordersDisplay()
+        //{
+        //    string idno = (string)Session["idno"];
+        //  //  string name = (string)Session["fullname"];
+        //    // int adminId = int.Parse(idno);
+
+        //    // Retrieve all orders from the ORDERS table
+        //    FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
+        //    Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
+
+        //    // Create the DataTable to hold the orders
+        //    DataTable walkInordersTable = new DataTable();
+        //    walkInordersTable.Columns.Add("ORDER ID");
+        //    walkInordersTable.Columns.Add("ORDER TYPE");
+        //    walkInordersTable.Columns.Add("PRODUCT NAME");
+        //    walkInordersTable.Columns.Add("PRODUCT UNIT & SIZE");
+        //   // walkInordersTable.Columns.Add("PRODUCT SIZE");
+        //    walkInordersTable.Columns.Add("PRICE");
+        //    walkInordersTable.Columns.Add("QUANTITY");
+        //    walkInordersTable.Columns.Add("DISCOUNT");
+        //    walkInordersTable.Columns.Add("TOTAL AMOUNT");
+        //    walkInordersTable.Columns.Add("DATE");
+        //    walkInordersTable.Columns.Add("ADDED BY");
+
+        //    if (response != null && response.ResultAs<Order>() != null)
+        //    {
+        //        var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+        //        // Loop through the orders and add them to the DataTable
+        //        foreach (var entry in filteredList)
+        //        {
+        //            string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+        //            walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+        //                                 entry.productPrice, entry.productQty, entry.productDiscount,
+        //                                 entry.totalAmount, dateAdded, entry.addedBy);
+        //            //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnit, entry.productSize,
+        //            //                      entry.productPrice, entry.productQty, entry.productDiscount,
+        //            //                      entry.totalAmount, entry.dateAdded, entry.addedBy);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Handle null response or invalid selected value
+        //        walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+        //    }
+
+        //    // Bind the DataTable to the GridView
+        //    gridWalkIn.DataSource = walkInordersTable;
+        //    gridWalkIn.DataBind();
+        //}
+
+
+        //SEARCH ORDER TO VIEW
+        protected void btnSearchOrder_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string ordernum = txtSearch.Text;
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
+                Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                //// Create the DataTable to hold the orders
+                //DataTable walkInordersTable = new DataTable();
+                //walkInordersTable.Columns.Add("ORDER ID");
+                //walkInordersTable.Columns.Add("ORDER TYPE");
+                //walkInordersTable.Columns.Add("PRODUCT NAME");
+                //walkInordersTable.Columns.Add("PRODUCT UNIT & SIZE");
+                //// walkInordersTable.Columns.Add("PRODUCT SIZE");
+                //walkInordersTable.Columns.Add("PRICE");
+                //walkInordersTable.Columns.Add("QUANTITY");
+                //walkInordersTable.Columns.Add("DISCOUNT");
+                //walkInordersTable.Columns.Add("TOTAL AMOUNT");
+                //walkInordersTable.Columns.Add("DATE");
+                //walkInordersTable.Columns.Add("ADDED BY");
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+                //// Create the DataTable to hold the orders
+                //DataTable ordersTable = new DataTable();
+                //ordersTable.Columns.Add("ORDER ID");
+                //ordersTable.Columns.Add("CUSTOMER ID");
+                //ordersTable.Columns.Add("DRIVER ID");
+                //ordersTable.Columns.Add("STORE NAME");
+                //ordersTable.Columns.Add("TOTAL AMOUNT");
+                //ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
+                //ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
+                //ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
+                //ordersTable.Columns.Add("PAYMENT RECEIVED BY");
+
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        //hiding some label
+                        Label12.Visible = false;
+                        Label13.Visible = false;
+                        Label14.Visible = false;
+                        Label15.Visible = false;
+                        Label16.Visible = false;
+                        Label18.Visible = false;
+                        Label19.Visible = false;
+                        Label20.Visible = false;
+
+                        if (ordernum == entry.orderNo.ToString())
+                        {
+                            string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+                            //                     entry.productPrice, entry.productQty, entry.productDiscount,
+                            //                     entry.totalAmount, dateAdded, entry.addedBy);
+
+                            lblOrder_id.Text = entry.orderNo.ToString();
+                            lblorderType.Text = entry.orderType.ToString();
+                            lblproductname.Text = entry.productName.ToString();
+                            lblproductSizeUnit.Text = entry.productUnitSize.ToString();
+                            lblprice.Text = entry.productPrice.ToString();
+                            lblqty.Text = entry.productQty.ToString();
+                            lbldiscount.Text = entry.productDiscount.ToString();
+                            lbltotalamount.Text = entry.totalAmount.ToString();
+                            lbldate.Text = entry.dateAdded.ToString();
+                            lblAddedby.Text = dateAdded;
+
+                            txtSearch.Text = "";
+                        }
+
+                    }
+                }
+                else if(responselist != null && responselist.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
+                    (d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received"));
+
+                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        //hiding some label
+                        Label1.Visible = false;
+                        Label2.Visible = false;
+                        Label3.Visible = false;
+                        Label4.Visible = false;
+                        Label5.Visible = false;
+                        Label6.Visible = false;
+                        Label8.Visible = false;
+                        Label9.Visible = false;
+                        Label10.Visible = false;
+                        Label11.Visible = false;
+
+                        if (ordernum == entry.orderID.ToString())
+                        {
+                            string dateAccepted = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateDelivered = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string datePayment = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            Lbl_orderId.Text = entry.orderID.ToString();
+                            Lbl_cusId.Text = entry.cusId.ToString();
+                            Lbl_driverId.Text = entry.driverId.ToString();
+                            Lbl_totalAmount.Text = entry.order_TotalAmount.ToString();
+                            Lbl_dateAccepted.Text = dateAccepted;
+                            Lbl_dateDelivered.Text = dateDelivered;
+                            Lbl_datePayment.Text = datePayment;
+                            Lbl_payment.Text = entry.payment_receivedBy.ToString();
+                            //ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount,
+                            //    dateAccepted, dateDelivered, datePayment, entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
+
+                            txtSearch.Text = "";
+
+                        }
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    //walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+                }
+
+                // Bind the DataTable to the GridView
+                //gridViewRecord.DataSource = walkInordersTable;
+                //gridViewRecord.DataBind();
+
+                lblOrderId.Text = ordernum;
+
+              //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+            }
+        }
+
+
+
+        //SSEARCH CATEGORY ORDERS
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             try

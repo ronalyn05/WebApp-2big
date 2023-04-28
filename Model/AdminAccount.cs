@@ -104,6 +104,8 @@ namespace WRS2big_Web.Model
         public string other_productImage { get; set; }
         public string addedBy { get; set; }
         public DateTimeOffset dateAdded { get; set; }
+        public DateTimeOffset dateUpdated { get; set; }
+        public string updatedBy { get; set; }
     }
     public class Delivery
     {
@@ -219,7 +221,9 @@ namespace WRS2big_Web.Model
         public string pro_refillPrice { get; set; }
         public int? pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
+        public DateTimeOffset dateUpdated { get; set; }
         public string addedBy { get; set; }
+        public string updatedBy { get; set; }
     }
 
     public class WalkInOrders
@@ -230,6 +234,7 @@ namespace WRS2big_Web.Model
         public string productUnit { get; set; }
         public string productSize { get; set; }
         public int productQty { get; set; }
+        public string productUnitSize { get; set; }
         public decimal productPrice { get; set; }
         public decimal productDiscount { get; set; }
         public decimal totalAmount { get; set; }

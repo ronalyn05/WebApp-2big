@@ -62,16 +62,15 @@ namespace WRS2big_Web.Admin
                     discount = 0;
                 }
                 else
-                {
-                    // Convert discount from percentage to decimal
-                    discount /= 100;
+                { 
+                    discount = decimal.Parse(lblDiscount.Text);
                 }
 
                 // Calculate total amount only if a valid discount value is entered
                 if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
-                    discount /= 100; // 
-                    discountAmount = price * discount * qty; 
+                    //discount /= 100; // 
+                    discountAmount = price * discount * qty;
                     subtotal = price * qty; 
                     totalAmount = subtotal - discountAmount;
                                                             
@@ -90,8 +89,8 @@ namespace WRS2big_Web.Admin
                     adminId = int.Parse(idno),
                     orderNo = idnum,
                     productName = drdProdName.SelectedValue,
-                    productUnit = drdUnit.SelectedValue,
-                    productSize = drdSize.SelectedValue,
+                    productUnitSize = drdUnit_Size.SelectedValue,
+                   // productSize = drdSize.SelectedValue,
                     productPrice = price,
                     productDiscount = discount, // Store the discount value in the database
                     productQty = qty, // Adjust quantity to account for free gallon
@@ -153,8 +152,8 @@ namespace WRS2big_Web.Admin
             string selectedOption = drdOrderType.SelectedValue;
 
             drdProdName.Items.Clear();
-            drdUnit.Items.Clear();
-            drdSize.Items.Clear();
+            drdUnit_Size.Items.Clear();
+            //drdSize.Items.Clear();
 
             if (selectedOption == "Refill" || selectedOption == "New Gallon")
             {
@@ -163,9 +162,14 @@ namespace WRS2big_Web.Admin
 
                 foreach (var product in products.Values)
                 {
-                    drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
-                    drdUnit.Items.Add(new ListItem(product.pro_refillUnit));
-                    drdSize.Items.Add(new ListItem(product.pro_refillSize));
+                    if (product.adminId.ToString() == idno) // check if the product belongs to the current user
+                    {
+                        drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
+                        drdUnit_Size.Items.Add(new ListItem(product.pro_refillSize + " " + product.pro_refillUnit));
+                    }
+                    //drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
+                    //drdUnit_Size.Items.Add(new ListItem(product.pro_refillSize + " " + product.pro_refillUnit));
+                   // drdSize.Items.Add(new ListItem(product.pro_refillSize));
                 }
 
 
@@ -177,9 +181,12 @@ namespace WRS2big_Web.Admin
 
                 foreach (var otherproduct in otherproducts.Values)
                 {
-                    drdProdName.Items.Add(new ListItem(otherproduct.other_productName));
-                    drdUnit.Items.Add(new ListItem(otherproduct.other_productUnit));
-                    drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
+                    if (otherproduct.adminId.ToString() == idno) // check if the product belongs to the current user
+                    {
+                        drdProdName.Items.Add(new ListItem(otherproduct.other_productName));
+                        drdUnit_Size.Items.Add(new ListItem(otherproduct.other_productSize + " " + otherproduct.other_productUnit));
+                        // drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
+                    }
                 }
                
             }
@@ -190,18 +197,19 @@ namespace WRS2big_Web.Admin
         //RETRIEVING THE PRICE AND DISCOUNT 
         protected void btnSearchPrice_Click(object sender, EventArgs e)
         {
-            string selectedSize = drdSize.SelectedValue;
-            string selectedType = drdProdName.SelectedValue;
-            string selectedUnit = drdUnit.SelectedValue;
+            //string selectedSize = drdSize.SelectedValue;
+             string selectedType = drdProdName.SelectedValue;
+            //string selectedUnit_Size = drdUnit_Size.SelectedValue;
 
             decimal discount;
 
-            if (!string.IsNullOrEmpty(selectedSize) && !string.IsNullOrEmpty(selectedType) && !string.IsNullOrEmpty(selectedUnit))
+            //if (!string.IsNullOrEmpty(selectedUnit_Size) && !string.IsNullOrEmpty(selectedType))
+            if (!string.IsNullOrEmpty(selectedType))
             {
                 // Check if the product exists in the "otherPRODUCTS" table
                 FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
                 Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
-                otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productSize == selectedSize && p.other_productName == selectedType && p.other_productUnit == selectedUnit);
+                otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productName == selectedType);
 
 
                 if (otherselectedProduct != null)
@@ -242,7 +250,9 @@ namespace WRS2big_Web.Admin
                     // Check if the product exists in the "PRODUCTREFILL" table
                     response = twoBigDB.Get("PRODUCTREFILL/");
                     Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
-                    ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillSize == selectedSize && p.pro_refillWaterType == selectedType && p.pro_refillUnit == selectedUnit);
+                    ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedType);
+
+                    //ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillSize == selectedSize && p.pro_refillWaterType == selectedType && p.pro_refillUnit == selectedUnit);
 
                     if (selectedProduct != null)
                     {
@@ -255,7 +265,7 @@ namespace WRS2big_Web.Admin
                         {
                             lblprice.Text = "";
                         }
-                        if (!decimal.TryParse(otherselectedProduct.other_productDiscount.ToString(), out discount))
+                        if (!decimal.TryParse(selectedProduct.pro_discount.ToString(), out discount))
                         {
                             // If the discount value is not a valid decimal, assume it is zero
                             discount = 0;
@@ -267,14 +277,6 @@ namespace WRS2big_Web.Admin
                             discount /= 100;
                             lblDiscount.Text = discount.ToString();
                         }
-                        //if (selectedProduct.pro_discount != null)
-                        //{
-                        //    lblDiscount.Text = selectedProduct.pro_discount.ToString();
-                        //}
-                        //else
-                        //{
-                        //    lblDiscount.Text = "0"; // or some default value
-                        //}
                     }
                     else
                     {

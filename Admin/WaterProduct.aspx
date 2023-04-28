@@ -56,7 +56,7 @@
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
                                      <%--  <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>--%>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i> Add Tank Supply</button>
-<%--                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managePayment"><i class="fa fa-plus"></i> Manage Payment Methods</button> --%>
+                                       <button type="button" style="font-size:14px; float:right" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> Edit Product Details</button> 
                                          <%--VIEW BUTTON --%>
                                           &nbsp;
                                        <%-- MODAL FOR TANK SUPPLY --%>
@@ -265,7 +265,152 @@
                                              </div>
                                             </div>
                                         <%-- end set product refill --%>
-
+                                      <%-- MODAL FOR update product details --%>
+                                       <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                            <form id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                            <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel4">Edit product details here:</h4>
+                                                <%--exit button--%>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <div class="col-md-12 col-sm-12 ">
+                                            <div class="x_content">
+                                                <div class="col-md-12 col-sm-12 ">
+                                                        <strong>Product Id:</strong> <br />
+                                                        <asp:TextBox ID="txt_productId" Width="364px" TextMode="Number" Placeholder="Enter product id you want to update" runat="server"></asp:TextBox>
+                                                     </div>
+                                                <br />
+                                                  <div class="col-md-12 col-sm-12 ">
+                                                        <strong>Price:</strong>
+                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                        <asp:TextBox ID="txt_price" Width="364px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
+                                                     </div>
+                                                <br />
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                        <strong>Discounts</strong> <br />
+                                                         <h7>Please enter the discount percentage (%) you offer for this product</h7>
+                                                        <asp:TextBox ID="txt_discount" Width="364px" TextMode="Number" Placeholder="Enter discount offered you want to update" runat="server"></asp:TextBox>
+                                                     </div>
+                                                <br />
+                                                  </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <%--  BUTTON PrODUCT EDIT HERE--%>
+                                                    <div style="float:right;"> 
+                                                     <asp:Button ID="btnUpdateDetails" runat="server" Text="Update other product details" class="btn btn-primary btn-sm" OnClick="btnUpdateOtherProductDetails_Click"/>
+                                               <asp:Button ID="btnEditDetails" runat="server" Text="Update product refill details" class="btn btn-primary btn-sm" OnClick="btnEditProductDetails_Click"/>
+                                                        </div>
+                                            </div>
+                                              </div>
+                                            </div>
+                                             <%--  </form>--%>
+                                             </div>
+                                           </div><%-- END FOR MODAL UPDATE--%>
+                                       <%-- MODAL TO VIEW CERTAIN RECORDS --%>
+                                                    <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                          <form id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel5"> PRODUCT DETAILS: # 
+                                <asp:Label ID="lblProductId" runat="server" Font-Underline="true" ForeColor="#0066ff"/>
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="col-xl-12 col-xl-12 ">
+                                <div class="x_content">
+                                   <%-- OTHER PRODUCT REPORTS--%>
+                                    <div class="row">
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="Label6" Text="Product ID:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblProduct_id" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label8" Text="Product Type:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblproductType" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                            </div>
+                                            <%--<div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label9" Text="Product Name:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblproductname" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                                </div>--%>
+                                       <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label10" Text=" Unit and Size:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblproductSizeUnit" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label11" Text="Price:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblprice" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label12" Text="Discount:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblDiscount" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label13" Text="Date Added:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblDateAdded" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label14" Text="Added By:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblAddedBy" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label15" Text="Date Updated:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="lblDateUpdated" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                   <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label17" Text="Added By:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                       <asp:Label ID="lblUpdatedby" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
 
                                         <br /><br />
                                     <%--PAGE CONTENTS FOR LISTBOX--%> 
@@ -314,6 +459,10 @@
                                                     <div class="card-header">
                                                         
                                                         <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="PRODUCTS DATA"></asp:Label>
+                                                        <div style="float:right;"> 
+                                                            <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter order id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
+                                                         <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>
+                                                        </div>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -398,16 +547,9 @@
                                                             <SortedDescendingHeaderStyle BackColor="#242121" />
                                                     </asp:GridView>
                                                                 <%--Gridview ends here--%>
-                                                                 <asp:GridView runat="server" ID="gridTankSupply" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  
+                                                                 <asp:GridView runat="server" ID="gridTankSupply" class="texts table-responsive table-hover"  style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;"  
                                                     BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px" >
-                                                    <%--  <Columns>
-                                                        <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
-                                                               <%-- <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>--%>
-                                                         <%-- </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>--%>
+                                                 
                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                             <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                             <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
@@ -470,5 +612,4 @@
                           </div>
                          </div>
                        </div>
-
  </asp:Content>
