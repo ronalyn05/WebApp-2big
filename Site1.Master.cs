@@ -94,28 +94,32 @@ namespace WRS2big_Web
             var adminBody = adminNotif.Body;
             Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
 
-            // Create a list to store all the notifications with the receiver as " Admin"
-            List<Model.Notification> AdminNotifications = new List<Model.Notification>();
-
-            // Loop through all the notifications
-            foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+            if (adminAllNotifs != null)
             {
-                // Check if the current notification has the receiver as "Admin"
-                if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+                // Create a list to store all the notifications with the receiver as " Admin"
+                List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+
+                // Loop through all the notifications
+                foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
                 {
+                    // Check if the current notification has the receiver as "Admin"
+                    if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+                    {
 
-                    // Add the current notification to the list of admin notifications
-                    AdminNotifications.Add(entry.Value);
+                        // Add the current notification to the list of admin notifications
+                        AdminNotifications.Add(entry.Value);
 
+                    }
                 }
+
+                // Sort the super admin notifications based on dateAdded property in descending order
+                AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
+
+                // Bind the list of super admin notifications to the repeater control
+                rptNotifications.DataSource = AdminNotifications;
+                rptNotifications.DataBind();
             }
-
-            // Sort the super admin notifications based on dateAdded property in descending order
-            AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
-
-            // Bind the list of super admin notifications to the repeater control
-            rptNotifications.DataSource = AdminNotifications;
-            rptNotifications.DataBind();
+           
 
         }
 
@@ -152,7 +156,7 @@ namespace WRS2big_Web
                     admin_ID = notif.admin_ID
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-                Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+                Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx'; </script>");
             }
             //NEED TO ANALYZE UNSAY BUHATON SA ADMIN IF DECLINED IYA APPLICATION
             else if (title == "Application Declined")

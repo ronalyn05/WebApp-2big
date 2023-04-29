@@ -53,48 +53,48 @@
 
 <%--                                      MODAL FOR PAYMENT METHOD--%>
                                        <div class="modal fade managePayment" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
-                                            <div class="modal-content">
-                                            <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                            <div class="modal-header">
-                                            <h4 class="modal-title" id="paymentModal"></h4>
-                                                <%--exit button--%>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                            </div>
-                                            <div class="modal-body">
-                                            <div class="col-md-12 col-sm-12 ">
-                                            <div class="x_content">
-                                           <%-- <div class="item form-group">--%>
-                                                <h4 style="color:black;font-family:Bahnschrift"> PAYMENT METHODS</h4>
+                                               <div class="modal-dialog modal-dialog-centered modal-md">
+                                                    <div class="modal-content">
+                                                        <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                            <div class="modal-header">
+                                                            <h4 class="modal-title" id="paymentModal"></h4>
+                                                                <%--exit button--%>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                            </div>
+                                                        <div class="modal-body">
+                                                            <div class="col-md-12 col-sm-12 ">
+                                                                <div class="x_content">
+                                                               <%-- <div class="item form-group">--%>
+                                                                        <h4 style="color:black;font-family:Bahnschrift"> PAYMENT METHODS</h4>
 
-                                                 <div class="col-md-12 col-sm-12" style="font-size:20px">
-                                                    <h4 style="font-size:16px;color:black"> Please choose the Payment Methods you want to use for the Orders</h4>
-                                                    <p style="font-size:16px;color:black;">"These payment methods are applicable to all orders made in your station regardless of its Delivery Type"</p> <hr />
-                                                        <asp:CheckBoxList ID="paymentsCheckBox" runat="server" Height="40px" Width="300px" >
-                                                       <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                       <asp:ListItem style="font-size:20px;color:black" Text="Cash on Delivery" Value="CashOnDelivery"></asp:ListItem>
-                                                       <asp:ListItem style="font-size:20px;color:black" Text="Gcash" Value="Gcash" onclick="gcashPayment();" id="gcashPayment"></asp:ListItem>
-                                                       <asp:ListItem style="font-size:20px;color:black" Text="Reward Points" Value="Points" ></asp:ListItem>
-                                                   </asp:CheckBoxList>
+                                                                     <div class="col-md-12 col-sm-12" style="font-size:20px">
+                                                                            <h4 style="font-size:16px;color:black"> Please choose the Payment Methods you want to use for the Orders</h4>
+                                                                            <p style="font-size:16px;color:black;">"These payment methods are applicable to all orders made in your station regardless of its Delivery Type"</p> <hr />
+                                                                               <asp:CheckBoxList ID="paymentsCheckBox" runat="server" Height="40px" Width="300px" >
+                                                                                   <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                                                   <asp:ListItem style="font-size:20px;color:black" Text="Cash on Delivery" Value="CashOnDelivery"></asp:ListItem>
+                                                                                   <asp:ListItem style="font-size:20px;color:black" Text="Gcash" Value="Gcash" onclick="gcashPayment();" id="gcashPayment"></asp:ListItem>
+                                                                                   <asp:ListItem style="font-size:20px;color:black" Text="Reward Points" Value="Points" ></asp:ListItem>
+                                                                               </asp:CheckBoxList>
 
-                                               </div><br />
-                                                 <div class="col-md-12 col-sm-12" id="gcashChecked" style="font-size:20px;display:none">
-                                                    <h4 style="font-size:16px;color:black">Please enter your GCASH Registered number:</h4>
-                                                   <h4 style="font-size:16px;color:black"> Reminder: This will be the number where the customer can send their payments</h4>
-                                                         <asp:TextBox ID="gcashnum" runat="server" TextMode="Number" Placeholder="09123456789" Width="364px"></asp:TextBox>
+                                                                   </div><br />
+                                                                     <div class="col-md-12 col-sm-12" id="gcashChecked" style="font-size:20px;display:none">
+                                                                        <h4 style="font-size:16px;color:black">Please enter your GCASH Registered number:</h4>
+                                                                       <h4 style="font-size:16px;color:black"> Reminder: This will be the number where the customer can send their payments</h4>
+                                                                             <asp:TextBox ID="gcashnum" runat="server" TextMode="Number" Placeholder="09123456789" Width="364px"></asp:TextBox>
 
-                                               </div><br />
+                                                                   </div><br />
                                               
-                                                  </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                <%--  BUTTON ADD PAYMENT METHOD--%>
-                                               <asp:Button ID="paymentButton" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="paymentButton_Click"/>
-                                            </div>
-                                              </div>
-                                            </div>
-                                             <%--  </form>--%>
-                                             </div>
+                                                                      </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <%--  BUTTON ADD PAYMENT METHOD--%>
+                                                                   <asp:Button ID="paymentButton" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="paymentButton_Click"/>
+                                                                </div>
+                                                          </div>
+                                                        </div>
+                                                   </div>
+                                                 </div>
                                            </div>
                                     <%--  SCRIPT FOR GCASH NUMBER TEXTBOX--%>
                                                 <script>
@@ -414,11 +414,21 @@
                                                     <strong> Swap Gallon Options</strong>
                                                     <h6> Note: This will give your customers an option on how you can swap their gallons for the REFILL</h6>
                                                                 <asp:CheckBoxList ID="swapOptionItems" runat="server">
-                                                                     <asp:ListItem Value="Swap Without Conditions">  &nbsp; Swap with no Conditions</asp:ListItem>
-                                                                    <asp:ListItem Value="Swap With Conditions"> &nbsp; Swap with Conditions</asp:ListItem>
-                                                                   <asp:ListItem Value="Request Pick-up" ID="pickupPerGallon" onclick="perGallonFee();"> &nbsp; Request Gallon Pickup</asp:ListItem>
+                                                                     <asp:ListItem Value="Swap Without Conditions">  &nbsp; Swap with no Conditions 
+
+                                                                     </asp:ListItem>
+                                                                     <asp:ListItem Value="Swap With Conditions"> &nbsp; Swap with Conditions</asp:ListItem>
+                                                                    <asp:ListItem Value="Gallon Drop-by" ID="gallonDropby"> &nbsp; Gallon Drop-by</asp:ListItem>
+                                                                     <asp:ListItem Value="Request Pick-up" ID="pickupPerGallon" onclick="perGallonFee();"> &nbsp; Request Gallon Pickup</asp:ListItem>
+                                                                     
                                                                 </asp:CheckBoxList>
-                                                <div id="perGallon" style="display:none">
+                                                <div id="perGallon" style="display:none;margin-left:15px">
+                                                    <asp:CheckBoxList ID="perGallonOptions" runat="server">
+                                                                     <asp:ListItem Value="by Gallons" ID="byGallonFee" onclick="byGallons();">  &nbsp; by Gallons </asp:ListItem>
+<%--                                                                     <asp:ListItem Value="by "> &nbsp; Swap with Conditions</asp:ListItem>--%>
+                                                                </asp:CheckBoxList>
+                                                </div>
+                                                <div id="byGallonsFee" style="display:none">
                                                     <h8 style="margin-left:50px;">per Gallon Fee:</h8><br />
                                                      <asp:TextBox ID="perGallonFee"  Width="250px" Height="40px" TextMode="Number" runat="server" style="margin-left:80px;"></asp:TextBox>
                                                 </div>
@@ -452,6 +462,22 @@
                                                         }
                                                     }
                                                 </script>
+                                                                                                
+                                                <script>
+                                                    function byGallons() {
+                                                        var delivery = document.getElementById("byGallonFee");
+                                                        var stanfields = document.getElementById("byGallonsFee");
+
+                                                        if (delivery.checked) {
+                                                            stanfields.style.display = "none";
+
+                                                        } else {
+
+                                                            stanfields.style.display = "block";
+
+                                                        }
+                                                    }
+                                                </script>
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -464,13 +490,13 @@
                                              </div>
                                             </div>
                                         <br /><br />
-                                    <%--PAGE CONTENTS FOR LISTBOX--%> 
-                                               <div class="row">
+                                    <%--PAGE CONTENTS FOR DELIVERY DETAILS--%> 
+                                          <div class="row">
                                             <div class="col-lg-12 col-xl-16">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         
-                                                        <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="DELIVERY DETAILS"></asp:Label>
+                                                        <asp:Label ID="Label1" runat="server" Text="DELIVERY DETAILS" style="color:black;font-size:20px;"></asp:Label>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -485,25 +511,74 @@
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
                                                             <div class="tab-pane active">
-                                                                <hr />
-                                                            
-                                                             
+                                                                <asp:Label ID="Label2" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                           
+                                                             <br />
+                                                                    <asp:GridView runat="server" ID="orderTypesGrid"  class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="Black" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="150px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px" >
+                                                                          <Columns>
+                                                                            <asp:TemplateField>
+                                                                            </asp:TemplateField>
+                                                                          </Columns>
+                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" BorderColor="Black"/>
+                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+
+                                            
+                                                <%--Gridview ends here--%>
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                                    <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
+                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
+                                                    </div>
+                                                </div>
+                                               </div> 
+                                             </div>
+                                        <%--PAGE CONTENTS FOR DELIVERY TYPES--%> 
+                                          <div class="row">
+                                            <div class="col-lg-12 col-xl-16">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        
+                                                        <asp:Label ID="Label7" runat="server" Text="DELIVERY TYPES" style="color:black;font-size:20px;"></asp:Label>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                <li><i class="fa fa-trash close-card"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
                                                                 <asp:Label ID="lblProductData" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
                                                            
                                                              <br />
 
                                                                 <%-- DELIVERY DETAILS NI DIRI--%>
-
+                                                                    
                                                                     <asp:GridView runat="server" ID="gridDeliveryDetails"  class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                           <Columns>
                                                                             <asp:TemplateField>
                                                                               <ItemTemplate>
-                                                                              <asp:Button runat="server"  ID="viewButton" OnClick="viewButton_Click" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> 
                                                                               </ItemTemplate>
                                                                             </asp:TemplateField>
                                                                           </Columns>
                                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black"/>
                                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
                                                                                                 <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
                                                                                                 <SortedAscendingCellStyle BackColor="#F7F7F7" />
