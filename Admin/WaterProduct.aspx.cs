@@ -69,6 +69,8 @@ namespace WRS2big_Web.Admin
                 { 
                     // Filter the list of orders by the owner's ID and the order status and delivery type
                     var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+                    
+
 
                     if (filteredSupply != null)
                     {
@@ -100,9 +102,11 @@ namespace WRS2big_Web.Admin
                         double totalOrderedGallons = 0;
                         if (orders != null)
                         {
-
-                            var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
-                                                || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
+                            var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno &&
+                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending") 
+                                                && (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
+                            //var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
+                            //                    || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
 
                             foreach (Order order in filteredOrders)
                             {
@@ -235,6 +239,8 @@ namespace WRS2big_Web.Admin
             productRefillTable.Columns.Add("PRODUCT DISCOUNT");
             productRefillTable.Columns.Add("DATE ADDED");
             productRefillTable.Columns.Add("ADDED BY");
+            productRefillTable.Columns.Add("DATE UPDATED");
+            productRefillTable.Columns.Add("UPDATED BY");
 
             if (response != null && response.ResultAs<ProductRefill>() != null)
             {
@@ -251,10 +257,18 @@ namespace WRS2big_Web.Admin
                         // Convert discount from percentage to decimal
                         discount /= 100;
                     }
+                    //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    //string dateUpdated = entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    // Convert the dates to strings using a standard format
+                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+
+
 
                     productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType,
                                          entry.pro_refillUnit, entry.pro_refillSize, entry.pro_refillPrice,
-                                         discount, entry.dateAdded, entry.addedBy);
+                                         discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
             }
             else
@@ -294,11 +308,13 @@ namespace WRS2big_Web.Admin
             otherProductTable.Columns.Add("PRODUCT DISCOUNT");
             otherProductTable.Columns.Add("DATE ADDED");
             otherProductTable.Columns.Add("ADDED BY");
+            otherProductTable.Columns.Add("DATE UPDATED");
+            otherProductTable.Columns.Add("UPDATED BY");
 
             if (response != null && response.ResultAs<otherProducts>() != null)
             {
                 // Loop through the orders and add them to the DataTable
-                foreach (var entry in filteredList)
+                foreach(var entry in filteredList)
                 {
                     if (!decimal.TryParse(entry.other_productDiscount.ToString(), out discount))
                     {
@@ -310,11 +326,16 @@ namespace WRS2big_Web.Admin
                         // Convert discount from percentage to decimal
                         discount /= 100;
                     }
+                    //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    //string dateUpdated = entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     otherProductTable.Rows.Add(entry.other_productId, entry.other_productName, entry.other_productUnit,
                                                entry.other_productSize, entry.other_productPrice,
                                                entry.other_qtyStock + " " + entry.other_unitStock, 
-                                               discount, entry.dateAdded, entry.addedBy);
+                                               discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
             }
             else
@@ -343,6 +364,7 @@ namespace WRS2big_Web.Admin
             tankSupplyTable.Columns.Add("TANK ID");
             tankSupplyTable.Columns.Add("TANK SUPPLY");
             tankSupplyTable.Columns.Add("TANK BALANCE");
+            tankSupplyTable.Columns.Add("DATE ADDED");
             tankSupplyTable.Columns.Add("ADDED BY");
 
             if (response != null && response.ResultAs<TankSupply>() != null)
@@ -350,8 +372,15 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
+                    string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    tankSupplyTable.Rows.Add(entry.tankId, entry.tankVolume + " " + entry.tankUnit, entry.tankBalance, entry.addedBy);
+                    if (DateTimeOffset.Parse(dateAdded) == DateTimeOffset.MinValue)
+                    {
+                        dateAdded = " ";
+                    }
+                   
+
+                    tankSupplyTable.Rows.Add(entry.tankId, entry.tankVolume + " " + entry.tankUnit, entry.tankBalance, dateAdded, entry.addedBy);
                 }
             }
             else
@@ -440,6 +469,7 @@ namespace WRS2big_Web.Admin
                 // Display the tank supply result here
                 lblDate.Text = data.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                 lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
+
             }
 
             catch (Exception ex)
@@ -628,6 +658,232 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
+        //UPDATE EMPLOYEE DETAILS
+        protected void btnEditProductDetails_Click(object sender, EventArgs e)
+        {
+            //  generate a random number for employee logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            // Get the admin ID from the session
+            string idno = (string)Session["idno"];
+            int logsId = (int)Session["logsId"];
+            string name = (string)Session["fullname"];
+            //  int adminId = int.Parse(idno);
+            try
+            {
+                string productID = txt_productId.Text.Trim();
+
+                // Check if the employee ID is valid
+                if (string.IsNullOrEmpty(productID))
+                {
+                    Response.Write("<script>alert ('Please enter a valid product ID!');</script>");
+                    return;
+                }
+                // Retrieve the existing product object from the database using the empID entered
+                FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/" + productID);
+                ProductRefill existingProduct = response.ResultAs<ProductRefill>();
+
+                if (existingProduct == null)
+                {
+                    // Show error message if the empID entered is invalid
+                    Response.Write("<script>alert ('Invalid product ID!');</script>");
+                    return;
+                }
+
+                // Check if the current user has permission to edit the employee data
+                if (existingProduct.adminId != int.Parse(idno))
+                {
+                    // Show error message if the user does not have permission to edit the employee data
+                    Response.Write("<script>alert ('You do not have permission to edit this product data!');</script>");
+                    return;
+                }
+
+                // Get the new status and position from the DropDownList in the modal popup
+                string newPrice = txt_price.Text;
+                string newDiscount = txt_discount.Text;
+
+                // Create a new employee object with the updated data
+                ProductRefill updatedProduct = new ProductRefill
+                {
+                    adminId = existingProduct.adminId,
+                    pro_discount = existingProduct.pro_discount,
+                    pro_Image = existingProduct.pro_Image,
+                    pro_refillId = existingProduct.pro_refillId,
+                    pro_refillPrice = existingProduct.pro_refillPrice,
+                    pro_refillSize = existingProduct.pro_refillSize,
+                    pro_refillUnit = existingProduct.pro_refillUnit,
+                    pro_refillWaterType = existingProduct.pro_refillWaterType,
+                    dateAdded = existingProduct.dateAdded,
+                    offerType = existingProduct.offerType,
+                    addedBy = existingProduct.addedBy
+                };
+
+                // Update the fields that have changed
+                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.pro_refillPrice)
+                {
+                    updatedProduct.pro_refillPrice = newPrice;
+                }
+                //if (!string.IsNullOrEmpty(newDiscount) && int.TryParse(newDiscount, out int discountValue) && discountValue != updatedProduct.pro_discount)
+                //{
+                //    updatedProduct.pro_discount = discountValue;
+                //}
+
+                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.pro_discount.ToString())
+                {
+                    int discountValue;
+                    if (int.TryParse(newDiscount, out discountValue))
+                    {
+                        updatedProduct.pro_discount = discountValue;
+                    }
+                        
+                }
+                updatedProduct.updatedBy = name;
+                updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
+
+                // Update the existing employee object in the database
+                response = twoBigDB.Update("PRODUCTREFILL/" + productID, updatedProduct);
+
+                // Show success message
+                Response.Write("<script>alert ('Product Refill " + productID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "UPDATED PRODUCT REFILL DETAILS",
+                    // userActivity = UserActivityType.UpdatedEmployeeRecords
+                };
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+
+                productRefillDisplay();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
+
+            }
+        }
+        protected void btnUpdateOtherProductDetails_Click(object sender, EventArgs e)
+        {
+            //  generate a random number for employee logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            // Get the admin ID from the session
+            string idno = (string)Session["idno"];
+            int logsId = (int)Session["logsId"];
+            string name = (string)Session["fullname"];
+            //  int adminId = int.Parse(idno);
+            try
+            {
+                string productID = txt_productId.Text.Trim();
+
+                // Check if the employee ID is valid
+                if (string.IsNullOrEmpty(productID))
+                {
+                    Response.Write("<script>alert ('Please enter a valid product ID!');</script>");
+                    return;
+                }
+                // Retrieve the existing product object from the database using the empID entered
+                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/" + productID);
+                otherProducts existingProduct = response.ResultAs<otherProducts>();
+
+                if (existingProduct == null)
+                {
+                    // Show error message if the empID entered is invalid
+                    Response.Write("<script>alert ('Invalid product ID!');</script>");
+                    return;
+                }
+
+                // Check if the current user has permission to edit the employee data
+                if (existingProduct.adminId != int.Parse(idno))
+                {
+                    // Show error message if the user does not have permission to edit the employee data
+                    Response.Write("<script>alert ('You do not have permission to edit this product data!');</script>");
+                    return;
+                }
+
+                // Get the new status and position from the DropDownList in the modal popup
+                string newPrice = txt_price.Text;
+                string newDiscount = txt_discount.Text;
+
+                // Create a new employee object with the updated data
+                otherProducts updatedProduct = new otherProducts
+                {
+                    adminId = existingProduct.adminId,
+                    other_productDiscount = existingProduct.other_productDiscount,
+                    other_productId = existingProduct.other_productId,
+                    other_productImage = existingProduct.other_productImage,
+                    other_productName = existingProduct.other_productName,
+                    other_productPrice = existingProduct.other_productPrice,
+                    other_productSize = existingProduct.other_productSize,
+                    other_productUnit = existingProduct.other_productUnit,
+                    other_qtyStock = existingProduct.other_qtyStock,
+                    other_unitStock = existingProduct.other_unitStock,
+                    offerType = existingProduct.offerType,
+                    dateAdded = existingProduct.dateAdded,
+                    addedBy = existingProduct.addedBy
+
+                };
+
+                // Update the fields that have changed
+                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.other_productPrice)
+                {
+                    updatedProduct.other_productPrice = newPrice;
+                }
+                //if (!string.IsNullOrEmpty(newDiscount) && int.TryParse(newDiscount, out int discountValue) && discountValue != updatedProduct.pro_discount)
+                //{
+                //    updatedProduct.pro_discount = discountValue;
+                //}
+
+                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.other_productDiscount.ToString())
+                {
+                    int discountValue;
+                    if (int.TryParse(newDiscount, out discountValue))
+                    {
+                        updatedProduct.other_productDiscount = discountValue;
+                    }
+                }
+                updatedProduct.updatedBy = name;
+                updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
+
+                // Update the existing employee object in the database
+                response = twoBigDB.Update("otherPRODUCTS/" + productID, updatedProduct);
+
+                // Show success message
+                Response.Write("<script>alert ('Other Product " + productID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "UPDATED OTHER PRODUCT DETAILS",
+                    // userActivity = UserActivityType.UpdatedEmployeeRecords
+                };
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+
+                otherProductsDisplay();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
+
+            }
+        }
+
         //SEARCH PRODUCT REPORT
         protected void btnSearch_Click(object sender, EventArgs e)
             {
@@ -666,5 +922,135 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
                 }
             }
+
+        protected void btnSearchOrder_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string productnum = txtSearch.Text;
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
+                Dictionary<string, ProductRefill> productsList = response.ResultAs<Dictionary<string, ProductRefill>>();
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("otherPRODUCTS");
+                Dictionary<string, otherProducts> otherProductlist = response.ResultAs<Dictionary<string, otherProducts>>();
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responseTankSupply = twoBigDB.Get("TANKSUPPLY");
+                Dictionary<string, TankSupply> Supplylist = response.ResultAs<Dictionary<string, TankSupply>>();
+
+
+
+                if (response != null && response.ResultAs<ProductRefill>() != null)
+                {
+                    var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        //hiding some label
+                        //Label12.Visible = false;
+                        //Label13.Visible = false;
+                        //Label14.Visible = false;
+                        //Label15.Visible = false;
+                        //Label16.Visible = false;
+                        //Label18.Visible = false;
+                        //Label19.Visible = false;
+                        //Label20.Visible = false;
+
+                        if (productnum == entry.pro_refillId.ToString())
+                        {
+                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+                            //                     entry.productPrice, entry.productQty, entry.productDiscount,
+                            //                     entry.totalAmount, dateAdded, entry.addedBy);
+
+                            lblProduct_id.Text = entry.pro_refillId.ToString();
+                            lblproductType.Text = entry.pro_refillWaterType.ToString();
+                         //   lblproductname.Text = entry.productName.ToString();
+                            lblproductSizeUnit.Text = entry.pro_refillSize.ToString() + "" + entry.pro_refillUnit.ToString();
+                            lblprice.Text = entry.pro_refillPrice.ToString();
+                            lblAddedBy.Text = dateAdded;
+                            lblDiscount.Text = entry.pro_discount.ToString();
+                            lblDateAdded.Text = entry.dateAdded.ToString();
+                            lblDateUpdated.Text = dateUpdated;
+                            lblUpdatedby.Text = entry.updatedBy.ToString();
+
+                            txtSearch.Text = "";
+                        }
+
+                    }
+                }
+                //else if (responselist != null && responselist.ResultAs<Order>() != null)
+                //{
+                //    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
+                //    (d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received"));
+
+                //    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
+                //    // Loop through the orders and add them to the DataTable
+                //    foreach (var entry in filteredList)
+                //    {
+                //        //hiding some label
+                //        Label1.Visible = false;
+                //        Label2.Visible = false;
+                //        Label3.Visible = false;
+                //        Label4.Visible = false;
+                //        Label5.Visible = false;
+                //        Label6.Visible = false;
+                //        Label8.Visible = false;
+                //        Label9.Visible = false;
+                //        Label10.Visible = false;
+                //        Label11.Visible = false;
+
+                //        if (ordernum == entry.orderID.ToString())
+                //        {
+                //            string dateAccepted = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                //            string dateDelivered = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                //            string datePayment = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                //            Lbl_orderId.Text = entry.orderID.ToString();
+                //            Lbl_cusId.Text = entry.cusId.ToString();
+                //            Lbl_driverId.Text = entry.driverId.ToString();
+                //            Lbl_totalAmount.Text = entry.order_TotalAmount.ToString();
+                //            Lbl_dateAccepted.Text = dateAccepted;
+                //            Lbl_dateDelivered.Text = dateDelivered;
+                //            Lbl_datePayment.Text = datePayment;
+                //            Lbl_payment.Text = entry.payment_receivedBy.ToString();
+                //            //ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount,
+                //            //    dateAccepted, dateDelivered, datePayment, entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
+
+                //            txtSearch.Text = "";
+
+                //        }
+                //    }
+                //}
+                else
+                {
+                    // Handle null response or invalid selected value
+                    //walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+                }
+
+                // Bind the DataTable to the GridView
+                //gridViewRecord.DataSource = walkInordersTable;
+                //gridViewRecord.DataBind();
+
+                lblProductId.Text = productnum;
+
+                //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+            }
+        }
     }
 }

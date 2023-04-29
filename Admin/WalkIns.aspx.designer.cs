@@ -51,15 +51,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblDescription;
 
         /// <summary>
-        /// btnSearchPrice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearchPrice;
-
-        /// <summary>
         /// drdProdName control.
         /// </summary>
         /// <remarks>
@@ -69,22 +60,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.DropDownList drdProdName;
 
         /// <summary>
-        /// drdUnit control.
+        /// drdUnit_Size control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdUnit;
-
-        /// <summary>
-        /// drdSize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdSize;
+        protected global::System.Web.UI.WebControls.DropDownList drdUnit_Size;
 
         /// <summary>
         /// lblprice control.
@@ -94,6 +76,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblprice;
+
+        /// <summary>
+        /// btnSearchPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchPrice;
 
         /// <summary>
         /// lblDiscount control.

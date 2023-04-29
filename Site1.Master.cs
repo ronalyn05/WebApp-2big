@@ -99,6 +99,10 @@ namespace WRS2big_Web
                 // Create a list to store all the notifications with the receiver as " Admin"
                 List<Model.Notification> AdminNotifications = new List<Model.Notification>();
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
                 // Loop through all the notifications
                 foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
                 {
@@ -110,6 +114,22 @@ namespace WRS2big_Web
                         AdminNotifications.Add(entry.Value);
 
                     }
+<<<<<<< HEAD
+            }
+
+                // Sort the super admin notifications based on dateAdded property in descending order
+                AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
+
+                // Bind the list of super admin notifications to the repeater control
+                rptNotifications.DataSource = AdminNotifications;
+                rptNotifications.DataBind();
+            }
+            else
+            {
+                // handle the case where orderlist is null
+
+            }
+=======
                 }
 
                 // Sort the super admin notifications based on dateAdded property in descending order
@@ -120,6 +140,7 @@ namespace WRS2big_Web
                 rptNotifications.DataBind();
             }
            
+>>>>>>> master
 
         }
 
