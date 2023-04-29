@@ -58,7 +58,7 @@
                                                                             </div>
                                                                          <!-- cancel button -->
                                                                            <div class="container pt-4 px-0 text-center" >
-                                                                           <asp:LinkButton ID="LinkButton1" href="SubscriptionPlans.aspx" runat="server" style="font-size:18px;"> View Subscription Plans </asp:LinkButton>
+                                                                           <asp:LinkButton ID="LinkButton1" href="SubscriptionPackages.aspx" runat="server" style="font-size:18px;"> View Subscription Plans </asp:LinkButton>
                                                                         </div>
                                                                         </div>
                                                                     </div>

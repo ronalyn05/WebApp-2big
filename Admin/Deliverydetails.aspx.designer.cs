@@ -321,6 +321,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList swapOptionItems;
 
         /// <summary>
+        /// gallonDropby control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem gallonDropby;
+
+        /// <summary>
         /// pickupPerGallon control.
         /// </summary>
         /// <remarks>
@@ -328,6 +337,24 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListItem pickupPerGallon;
+
+        /// <summary>
+        /// perGallonOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList perGallonOptions;
+
+        /// <summary>
+        /// byGallonFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem byGallonFee;
 
         /// <summary>
         /// perGallonFee control.
@@ -357,58 +384,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// label2 control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label2;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// lblDate control.
+        /// orderTypesGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDate;
-
-        /// <summary>
-        /// label4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label4;
-
-        /// <summary>
-        /// lbltankSupply control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbltankSupply;
-
-        /// <summary>
-        /// label3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label3;
-
-        /// <summary>
-        /// lblremainingSupply control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblremainingSupply;
+        protected global::System.Web.UI.WebControls.GridView orderTypesGrid;
 
         /// <summary>
         /// Label7 control.

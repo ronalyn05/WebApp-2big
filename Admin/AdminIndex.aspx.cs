@@ -38,6 +38,7 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("ORDERS");
             Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+<<<<<<< HEAD
             // Filter the list of orders by the owner's ID and the order status and delivery type
             //List<Order> filteredList = new List<Order>();
             //if (orderlist != null)
@@ -52,6 +53,14 @@ namespace WRS2big_Web.Admin
                 List<Order> filteredList = orderlist.Values
                 .Where(d => d.admin_ID.ToString() == idno)
                 .ToList();
+=======
+            if (orderlist != null)
+            {
+                // Filter the list of orders by the owner's ID and the order status and delivery type
+                List<Order> filteredList = orderlist.Values
+                    .Where(d => d.admin_ID.ToString() == idno)
+                    .ToList();
+>>>>>>> master
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
@@ -101,6 +110,7 @@ namespace WRS2big_Web.Admin
                 lblDeliveries.Text = totalDeliveryOrders.ToString();// Display the total of deliveries
                 lblOrders.Text = CombinedOrder.ToString();// Display the total of all orders
                 lblReservations.Text = totalReservationOrders.ToString();// Display the total reservations
+<<<<<<< HEAD
 
                 //displayTankSupply();
             }
@@ -113,6 +123,12 @@ namespace WRS2big_Web.Admin
                 lblReservations.Text = "Reservation not found";
 
             }
+=======
+            }
+           
+
+            //displayTankSupply();
+>>>>>>> master
         }
 
         //THIS DISPLAY THE TANK SUPPLY

@@ -35,79 +35,147 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            //deliveryDetailsGrid();
+            deliveryTypesGrid();
+            detailsGridView();
+            
 
 
         }
-        private void deliveryDetailsGrid()
+        private void detailsGridView()
         {
-            string idno = (string)Session["idno"];
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2");
+            Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
 
-            //string empId = (string)Session["emp_id"];
-            // int adminId = int.Parse(idno);
-
-            // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
-            Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
-            var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
-
-            // Create the DataTable to hold the orders
-            //sa pag create sa table
-            DataTable expressTable = new DataTable();
-            expressTable.Columns.Add("DELIVERY TYPE ID");
-            expressTable.Columns.Add("DELIVERY TYPE");
-            expressTable.Columns.Add("DATE ADDED");
-            expressTable.Columns.Add("ADDED BY");
-
-            if (response != null && response.ResultAs<Delivery>() != null)
+            if (details != null)
             {
-                foreach (var entry in filteredList)
+
+                string idno = (string)Session["idno"];
+
+                // Retrieve all data from the DELIVERY_DETAILS table
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+                Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
+                var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+                // Create the DataTable to hold the orders
+                //sa pag create sa table
+                DataTable detailsTable = new DataTable();
+                detailsTable.Columns.Add("ORDER TYPES");
+                //detailsTable.Columns.Add("SWAP OPTIONS");
+                //detailsTable.Columns.Add("VEHICLE TYPES");
+
+                if (response != null && response.ResultAs<Delivery>() != null)
                 {
-                    if (entry.resDeliveryType == "Reservation")
+                    foreach (var entry in filteredList)
                     {
-                        //ROW FOR THE RESERVATION
-                        expressTable.Rows.Add(entry.reservationID, entry.resDeliveryType,
-                                                entry.reservationdateAdded, entry.adminId);
+                        detailsTable.Rows.Add(entry.orderTypes);
+                        //detailsTable.Rows.Add(entry.orderTypes, entry.swapOptions, entry.vehicle1Name + " " + entry.vehicle2Name + " " + entry.vehicle3Name + " " + entry.vehicle4Name);
                     }
-                    else
-                    {
-
-                    }
-                    if (entry.stanDeliverytype == "Standard")
-                    {
-                        //ROW FOR THE STANDARD
-                        expressTable.Rows.Add(entry.standardID, entry.stanDeliverytype,
-                            entry.standardDateAdded, entry.adminId);
-                    }
-                    else
-                    {
-
-                    }
-                    if (entry.exDeliveryType == "Express")
-                    {
-                        //ROW FOR THE EXPRESS
-                        expressTable.Rows.Add(entry.expressID, entry.exDeliveryType,
-                            entry.expressdateAdded, entry.adminId);
-                    }
-                    else
-                    {
-
-                    }
-
                 }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    detailsTable.Rows.Add("No data found", "", "", "", "", "", "");
+                }
+
+                // Bind the DataTable to the GridView
+                orderTypesGrid.DataSource = detailsTable;
+                orderTypesGrid.DataBind();
             }
             else
             {
-                // Handle null response or invalid selected value
-                expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+                //hide the dropdown for deliveryDetails
+                btnDeliverytype.Visible = false;
+                drdDeliverytype.Visible = false;
+            }
+        }
+        private void deliveryTypesGrid()
+        {
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2");
+            Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
+
+            if (details != null)
+            {
+
+                string idno = (string)Session["idno"];
+
+                // Retrieve all data from the DELIVERY_DETAILS table
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+                Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
+                var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+                // Create the DataTable to hold the orders
+                //sa pag create sa table
+                DataTable expressTable = new DataTable();
+                expressTable.Columns.Add("DELIVERY TYPE ID");
+                expressTable.Columns.Add("DELIVERY TYPE");
+                expressTable.Columns.Add("DATE ADDED");
+                expressTable.Columns.Add("ADDED BY");
+
+                if (response != null && response.ResultAs<Delivery>() != null)
+                {
+                    foreach (var entry in filteredList)
+                    {
+                        if (entry.resDeliveryType == "Reservation")
+                        {
+                            response = twoBigDB.Get("ADMIN/" + idno);
+                            AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                            //ROW FOR THE RESERVATION
+                            expressTable.Rows.Add(entry.reservationID, entry.resDeliveryType,
+                                                    entry.reservationdateAdded, adminDetail.fname + " " + adminDetail.lname);
+                        }
+                        else
+                        {
+
+                        }
+                        if (entry.stanDeliverytype == "Standard")
+                        {
+                            response = twoBigDB.Get("ADMIN/" + idno);
+                            AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                            //ROW FOR THE STANDARD
+                            expressTable.Rows.Add(entry.standardID, entry.stanDeliverytype,
+                                entry.standardDateAdded, adminDetail.fname + " " + adminDetail.lname);
+                        }
+                        else
+                        {
+
+                        }
+                        if (entry.exDeliveryType == "Express")
+                        {
+                            response = twoBigDB.Get("ADMIN/" + idno);
+                            AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                            //ROW FOR THE EXPRESS
+                            expressTable.Rows.Add(entry.expressID, entry.exDeliveryType,
+                                entry.expressdateAdded, adminDetail.fname + " " + adminDetail.lname);
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    expressTable.Rows.Add("No data found", "", "", "", "", "", "");
+                }
+
+                // Bind the DataTable to the GridView
+                gridDeliveryDetails.DataSource = expressTable;
+                gridDeliveryDetails.DataBind();
+
+                drdDeliverytype.Visible = true;
+                btnDeliverytype.Visible = true;
+            }
+            else
+            {
+                //hide the dropdown for deliveryDetails
+                btnDeliverytype.Visible = false;
+                drdDeliverytype.Visible = false;
             }
 
-            // Bind the DataTable to the GridView
-            gridDeliveryDetails.DataSource = expressTable;
-            gridDeliveryDetails.DataBind();
 
-            drdDeliverytype.Visible = true;
-            btnDeliverytype.Visible = true;
+
         }
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
@@ -331,11 +399,8 @@ namespace WRS2big_Web.Admin
             expressTable.Columns.Add("EXPRESS ID");
             expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
             expressTable.Columns.Add("DELIVERY FEE");
-            expressTable.Columns.Add("REFILL SWAP OPTIONS");
-            expressTable.Columns.Add("ORDER TYPE");
-            expressTable.Columns.Add("ORDER METHOD");
+            expressTable.Columns.Add("EXPRESS PRODUCTS");
             expressTable.Columns.Add("DATE ADDED");
-            expressTable.Columns.Add("PAYMENT METHOD");
             expressTable.Columns.Add("ADDED BY");
 
             if (response != null && response.ResultAs<Delivery>() != null)
@@ -344,7 +409,9 @@ namespace WRS2big_Web.Admin
                 {
                     if (entry.exDeliveryType == "Express")
                     {
-                        expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressdateAdded, entry.paymentMethods, entry.adminId);
+                        response = twoBigDB.Get("ADMIN/" + idno);
+                        AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                        expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressProducts,  entry.expressdateAdded,adminDetail.fname + " " + adminDetail.lname);
                     }
                     else
                     {
@@ -386,11 +453,8 @@ namespace WRS2big_Web.Admin
             standardTable.Columns.Add("TIME SCHEDULE FOR DELIVERY");
             standardTable.Columns.Add("DISTANCE FOR FREE DELIVERY ");
             standardTable.Columns.Add("DELIVERY FEE");
-            standardTable.Columns.Add("REFILL SWAP OPTIONS");
-            standardTable.Columns.Add("ORDER TYPE");
-            standardTable.Columns.Add("ORDER METHOD");
+            standardTable.Columns.Add("STANDARD PRODUCTS");
             standardTable.Columns.Add("DATE ADDED");
-            standardTable.Columns.Add("PAYMENT METHOD");
             standardTable.Columns.Add("ADDED BY");
 
             if (response != null && response.ResultAs<Delivery>() != null)
@@ -399,10 +463,10 @@ namespace WRS2big_Web.Admin
                 {
                     if (entry.stanDeliverytype == "Standard")
                     {
-                        // standardTable.Rows.Add(entry.standardID, entry.stanDeliveryTime, entry.standistance, entry.stanDeliveryFee,
-                        //entry.standardSwapOptions, entry.stanOrderType, entry.stanOrderMethod, entry.standardDateAdded, entry.paymentMethods, entry.adminId);
-                        standardTable.Rows.Add(entry.standardID, entry.stanDeliveryTime, entry.standistance, entry.stanDeliveryFee,
-                        entry.standardDateAdded, entry.paymentMethods, entry.adminId);
+                        response = twoBigDB.Get("ADMIN/" + idno);
+                        AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                        standardTable.Rows.Add(entry.standardID, entry.stanDeliveryTime, entry.standistance, entry.stanDeliveryFee, entry.standardProducts,
+                        entry.standardDateAdded, adminDetail.fname + " " + adminDetail.lname);
                     }
                     else
                     {
@@ -443,11 +507,8 @@ namespace WRS2big_Web.Admin
             reservationTable.Columns.Add("RESERVATION ID");
             reservationTable.Columns.Add("DISTANCE FOR FREE DELIVERY");
             reservationTable.Columns.Add("DELIVERY FEE");
-            reservationTable.Columns.Add("REFILL SWAP OPTIONS");
-            reservationTable.Columns.Add("ORDER TYPE");
-            reservationTable.Columns.Add("ORDER METHOD");
+            reservationTable.Columns.Add("RESERVATION PRODUCTS");
             reservationTable.Columns.Add("DATE ADDED");
-            reservationTable.Columns.Add("PAYMENT METHOD");
             reservationTable.Columns.Add("ADDED BY");
 
             if (response != null && response.ResultAs<Delivery>() != null)
@@ -456,9 +517,9 @@ namespace WRS2big_Web.Admin
                 {
                     if (entry.resDeliveryType == "Reservation")
                     {
-                        //reservationTable.Rows.Add(entry.reservationID, entry.resDistanceFree, entry.resDeliveryFee, entry.reserveSwapOptions,
-                        //                      entry.resOrderType, entry.resOrderMethod, entry.reservationdateAdded, entry.paymentMethods, entry.adminId);
-                        reservationTable.Rows.Add(entry.reservationID, entry.resDistanceFree, entry.resDeliveryFee, entry.reservationdateAdded, entry.paymentMethods, entry.adminId);
+                        response = twoBigDB.Get("ADMIN/" + idno);
+                        AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                        reservationTable.Rows.Add(entry.reservationID, entry.resDistanceFree, entry.resDeliveryFee, entry.reserveProducts,entry.reservationdateAdded, adminDetail.fname + " " + adminDetail.lname);
                     }
                     else
                     {

@@ -99,7 +99,10 @@ namespace WRS2big_Web
                 // Create a list to store all the notifications with the receiver as " Admin"
                 List<Model.Notification> AdminNotifications = new List<Model.Notification>();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
                 // Loop through all the notifications
                 foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
                 {
@@ -111,6 +114,7 @@ namespace WRS2big_Web
                         AdminNotifications.Add(entry.Value);
 
                     }
+<<<<<<< HEAD
             }
 
                 // Sort the super admin notifications based on dateAdded property in descending order
@@ -125,6 +129,18 @@ namespace WRS2big_Web
                 // handle the case where orderlist is null
 
             }
+=======
+                }
+
+                // Sort the super admin notifications based on dateAdded property in descending order
+                AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
+
+                // Bind the list of super admin notifications to the repeater control
+                rptNotifications.DataSource = AdminNotifications;
+                rptNotifications.DataBind();
+            }
+           
+>>>>>>> master
 
         }
 
@@ -161,7 +177,7 @@ namespace WRS2big_Web
                     admin_ID = notif.admin_ID
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-                Response.Write("<script>window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+                Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx'; </script>");
             }
             //NEED TO ANALYZE UNSAY BUHATON SA ADMIN IF DECLINED IYA APPLICATION
             else if (title == "Application Declined")

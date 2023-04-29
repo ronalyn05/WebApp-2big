@@ -94,8 +94,8 @@
                         </ul>
 
                         <!-- NOTIFICATIONS -->
-                        <ul class="nav-right">
-                            <li class="header-notification">
+                        <ul class="nav-right" >
+                            <li class="header-notification" >
                                 <a href="#!">
                                     <i class="ti-bell"></i>
                                    <%-- <span class="badge bg-c-red"></span>--%>
@@ -105,7 +105,7 @@
                                     <ul class="show-notification">
                                         <li>
                                             <h6>Notifications</h6>
-                                          <%--  <label class="label label-danger">New</label>--%>
+                                        
                                         </li>
                                 </HeaderTemplate>
                                 <ItemTemplate >
@@ -126,19 +126,12 @@
                                     </ul>
                                 </FooterTemplate>
                             </asp:Repeater>
-                            </li>
+                                
+                            </li> 
                             <!-- NOTIFICATIONS END -->
                             <li class="user-profile header-notification">
                                 <a href="#!" class="waves-effect waves-light">
-                                    <%--ADMIN PROFILE IMAGE--%>
-                                    <%--<asp:Image ID="Image1" runat="server" />--%>
-                                    <%--<asp:ImageButton ID="ImageButton" class="img-100 img-radius" style="width:200px" runat="server" />--%>
-                                    <%--<img src="/images/rhea.png" class="img-radius" alt="User-Profile-Image">--%>
-                                    <%--LABEL NAME--%>
                                     <asp:Label ID="lblWRSname" runat="server"></asp:Label>
-                                   <%-- <span>ADMIN 1</span>--%>
-                                    <%--ADMIN  LABEL NI DIRI--%>
-                                    <%--<asp:Label ID="lblAdmin" runat="server" Text=""></asp:Label>--%>
                                     <i class="ti-angle-down"></i>
                                 </a>
                                 <ul class="show-notification profile-notification">
