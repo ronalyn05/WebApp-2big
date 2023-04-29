@@ -84,7 +84,7 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("PRODUCT SIZE");
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
-            ordersTable.Columns.Add("ORDER METHOD");
+            ordersTable.Columns.Add("PAYMENT METHOD");
             ordersTable.Columns.Add("GALLON SWAP OPTION");
             ordersTable.Columns.Add("PRICE");
             ordersTable.Columns.Add("QUANTITY");
@@ -95,14 +95,52 @@ namespace WRS2big_Web.Admin
             if (response != null && response.ResultAs<Order>() != null)
             {
                 // Loop through the orders and add them to the DataTable
-                foreach (var entry in filteredList)
+                //foreach (var entry in filteredList)
+                //{
+                //    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
+                //                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
+                //                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_choosenSwapOption, entry.order_WaterPrice,
+                //                          entry.order_Quantity, entry.order_ReservationDate,
+                //                          entry.order_OrderStatus, entry.order_TotalAmount);
+                //}
+                foreach (var order in filteredList)
                 {
-                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
-                                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_choosenSwapOption, entry.order_WaterPrice,
-                                          entry.order_Quantity, entry.order_ReservationDate,
-                                          entry.order_OrderStatus, entry.order_TotalAmount);
+                    if (order.order_Products != null)
+                    {
+                        string productNames = "";
+                        string productSizes = "";
+                        string productUnits = "";
+                        foreach (var product in order.order_Products)
+                        {
+                            // Concatenate the product name, size, and unit
+                            productNames += product.productName + " , ";
+                            productSizes += product.productSize + " , ";
+                            productUnits += product.productUnit + " , ";
+                        }
+                        // Add a new row for the order and concatenate the product names, sizes, and units
+                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productNames,
+                                              productUnits, productSizes, order.order_DeliveryTypeValue,
+                                              order.order_OrderTypeValue, order.orderPaymentMethod, order.order_choosenSwapOption, order.order_WaterPrice,
+                                              order.order_Quantity, order.order_ReservationDate,
+                                              order.order_OrderStatus, order.order_TotalAmount);
+                    }
                 }
+
+                //foreach (var order in filteredList)
+                //{
+                //    if (order.order_Products != null)
+                //    {
+                //        foreach (var product in order.order_Products)
+                //        {
+                //            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, product.productName,
+                //                                  product.productUnit, product.productSize, order.order_DeliveryTypeValue,
+                //                                  order.order_OrderTypeValue, order.orderPaymentMethod, order.order_choosenSwapOption, order.order_WaterPrice,
+                //                                  order.order_Quantity, order.order_ReservationDate,
+                //                                  order.order_OrderStatus, order.order_TotalAmount);
+                //        }
+                //    }
+                //}
+
             }
             else
             {
@@ -294,7 +332,8 @@ namespace WRS2big_Web.Admin
 
             // Retrieve the quantity and unit of the declined order from the existingOrder object
             double quantity = existingOrder.order_Quantity;
-            string unit = existingOrder.order_unit;
+            //string unit = existingOrder.productUnit;
+            string unit = existingOrder.order_Products[0].productUnit;
 
             // Retrieve the tank object from the database
             FirebaseResponse tankResponse = twoBigDB.Get("TANKSUPPLY/");

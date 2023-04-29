@@ -96,6 +96,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.ListItem otherproductRadio;
 
         /// <summary>
+        /// chUnitSizes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes;
+
+        /// <summary>
         /// check_cusEarnPoints control.
         /// </summary>
         /// <remarks>

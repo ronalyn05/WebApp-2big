@@ -103,28 +103,42 @@ namespace WRS2big_Web.Admin
                         if (orders != null)
                         {
                             var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno &&
-                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending") 
-                                                && (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
+                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending"));
+                                                //&& (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
                             //var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
                             //                    || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
 
                             foreach (Order order in filteredOrders)
                             {
                                 double orderedGallons = 0;
-                                if (order.order_unit == "gallon/s")
+                                if (order.order_Products[0].productUnit == "gallon/s")
                                 {
-                                    orderedGallons = Double.Parse(order.order_size);
+                                    orderedGallons = Double.Parse(order.order_Products[0].productSize);
                                 }
-                                else if (order.order_unit == "L" || order.order_unit == "liter/s")
+                                else if (order.order_Products[0].productUnit == "L" || order.order_Products[0].productUnit == "liter/s")
                                 {
                                     double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                    orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+                                    orderedGallons = Double.Parse(order.order_Products[0].productSize) * gallonsPerLiter;
                                 }
-                                else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+                                else if (order.order_Products[0].productUnit == "mL" || order.order_Products[0].productUnit == "ML" || order.order_Products[0].productUnit == "milliliters")
                                 {
                                     double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
-                                    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+                                    orderedGallons = Double.Parse(order.order_Products[0].productSize) / gallonsPerML;
                                 }
+                                //if (order.order_unit == "gallon/s")
+                                //{
+                                //    orderedGallons = Double.Parse(order.order_size);
+                                //}
+                                //else if (order.order_unit == "L" || order.order_unit == "liter/s")
+                                //{
+                                //    double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
+                                //    orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
+                                //}
+                                //else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
+                                //{
+                                //    double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
+                                //    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
+                                //}
                                 //Get the total of ordered gallons 
                                 totalOrderedGallons += orderedGallons * order.order_Quantity;
                             }
@@ -635,7 +649,7 @@ namespace WRS2big_Web.Admin
                 //Response.Write("<script>alert ('Delivery details successfully added!');</script>");
 
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                 FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -658,7 +672,7 @@ namespace WRS2big_Web.Admin
                 Response.Write(ex.Message);
             }
         }
-        //UPDATE EMPLOYEE DETAILS
+        //UPDATE PRODUCT REFILL DETAILS
         protected void btnEditProductDetails_Click(object sender, EventArgs e)
         {
             //  generate a random number for employee logged
@@ -770,6 +784,7 @@ namespace WRS2big_Web.Admin
 
             }
         }
+        //UPDATE OTHER PRODUCT DETAILS
         protected void btnUpdateOtherProductDetails_Click(object sender, EventArgs e)
         {
             //  generate a random number for employee logged
@@ -938,31 +953,83 @@ namespace WRS2big_Web.Admin
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse responselist = twoBigDB.Get("otherPRODUCTS");
-                Dictionary<string, otherProducts> otherProductlist = response.ResultAs<Dictionary<string, otherProducts>>();
-
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse responseTankSupply = twoBigDB.Get("TANKSUPPLY");
-                Dictionary<string, TankSupply> Supplylist = response.ResultAs<Dictionary<string, TankSupply>>();
-
+                Dictionary<string, otherProducts> otherProductlist = responselist.ResultAs<Dictionary<string, otherProducts>>();
 
 
                 if (response != null && response.ResultAs<ProductRefill>() != null)
                 {
                     var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
+
+                  
+                        // Loop through the orders and add them to the DataTable
+                        foreach (var entry in filteredList)
+                        {
+                            //hiding some label
+                            Label9.Visible = false;
+                            Label18.Visible = false;
+                            Label20.Visible = false;
+                            Label22.Visible = false;
+                            Label24.Visible = false;
+                            Label16.Visible = false;
+                            Label26.Visible = false;
+                            Label28.Visible = false;
+                            Label30.Visible = false;
+                            Label32.Visible = false;
+                            
+
+                            if (productnum == entry.pro_refillId.ToString())
+                            {
+                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            
+                            // Set labels to display empty string or placeholder text if the corresponding value is null
+                            lblProduct_id.Text = entry.pro_refillId.ToString();
+                            lblproductType.Text = entry.pro_refillWaterType.ToString();
+                            lblproductSizeUnit.Text = entry.pro_refillSize.ToString() + "" + entry.pro_refillUnit.ToString();
+                            lblprice.Text = entry.pro_refillPrice.ToString();
+                            lblAddedBy.Text = dateAdded;
+                            lblDiscount.Text = entry.pro_discount.ToString();
+                            lblDateAdded.Text = entry.dateAdded.ToString();
+                            lblDateUpdated.Text = dateUpdated;
+                            
+                            if (entry.updatedBy == null)
+                            {
+                                lblUpdatedby.Text = "";
+                            }
+                            else
+                            {
+                                lblUpdatedby.Text = entry.updatedBy.ToString();
+                            }
+
+
+                            txtSearch.Text = "";
+                            }
+
+                       
+
+                        }
+                }
+                else if (responselist != null && responselist.ResultAs<otherProducts>() != null)
+                {
+                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno);
+
+                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
                         //hiding some label
-                        //Label12.Visible = false;
-                        //Label13.Visible = false;
-                        //Label14.Visible = false;
-                        //Label15.Visible = false;
-                        //Label16.Visible = false;
-                        //Label18.Visible = false;
-                        //Label19.Visible = false;
-                        //Label20.Visible = false;
 
-                        if (productnum == entry.pro_refillId.ToString())
+                        Label6.Visible = false;
+                        Label8.Visible = false;
+                            Label10.Visible = false;
+                            Label11.Visible = false;
+                            Label12.Visible = false;
+                            Label13.Visible = false;
+                            Label14.Visible = false;
+                            Label15.Visible = false;
+                            Label17.Visible = false;
+
+                        if (productnum == entry.other_productId.ToString())
                         {
                             string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                             string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
@@ -973,65 +1040,22 @@ namespace WRS2big_Web.Admin
                             //                     entry.productPrice, entry.productQty, entry.productDiscount,
                             //                     entry.totalAmount, dateAdded, entry.addedBy);
 
-                            lblProduct_id.Text = entry.pro_refillId.ToString();
-                            lblproductType.Text = entry.pro_refillWaterType.ToString();
-                         //   lblproductname.Text = entry.productName.ToString();
-                            lblproductSizeUnit.Text = entry.pro_refillSize.ToString() + "" + entry.pro_refillUnit.ToString();
-                            lblprice.Text = entry.pro_refillPrice.ToString();
-                            lblAddedBy.Text = dateAdded;
-                            lblDiscount.Text = entry.pro_discount.ToString();
-                            lblDateAdded.Text = entry.dateAdded.ToString();
-                            lblDateUpdated.Text = dateUpdated;
-                            lblUpdatedby.Text = entry.updatedBy.ToString();
+                            productId.Text = entry.other_productId.ToString();
+                            productType.Text = entry.other_productName.ToString();
+                            productUnit_Size.Text = entry.other_productSize.ToString() + "" + entry.other_productUnit.ToString();
+                            productPrice.Text = entry.other_productPrice.ToString();
+                            productDiscounts.Text = entry.other_productDiscount.ToString();
+                            productStock.Text = entry.other_qtyStock.ToString() + "" + entry.other_unitStock.ToString();
+                            productDateadded.Text = dateAdded;
+                            productAddedby.Text = entry.dateAdded.ToString();
+                            productUpdated.Text = dateUpdated;
+                            productUpdatedBy.Text = entry.updatedBy.ToString();
 
                             txtSearch.Text = "";
-                        }
 
+                        }
                     }
                 }
-                //else if (responselist != null && responselist.ResultAs<Order>() != null)
-                //{
-                //    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
-                //    (d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received"));
-
-                //    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
-                //    // Loop through the orders and add them to the DataTable
-                //    foreach (var entry in filteredList)
-                //    {
-                //        //hiding some label
-                //        Label1.Visible = false;
-                //        Label2.Visible = false;
-                //        Label3.Visible = false;
-                //        Label4.Visible = false;
-                //        Label5.Visible = false;
-                //        Label6.Visible = false;
-                //        Label8.Visible = false;
-                //        Label9.Visible = false;
-                //        Label10.Visible = false;
-                //        Label11.Visible = false;
-
-                //        if (ordernum == entry.orderID.ToString())
-                //        {
-                //            string dateAccepted = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                //            string dateDelivered = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                //            string datePayment = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                //            Lbl_orderId.Text = entry.orderID.ToString();
-                //            Lbl_cusId.Text = entry.cusId.ToString();
-                //            Lbl_driverId.Text = entry.driverId.ToString();
-                //            Lbl_totalAmount.Text = entry.order_TotalAmount.ToString();
-                //            Lbl_dateAccepted.Text = dateAccepted;
-                //            Lbl_dateDelivered.Text = dateDelivered;
-                //            Lbl_datePayment.Text = datePayment;
-                //            Lbl_payment.Text = entry.payment_receivedBy.ToString();
-                //            //ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount,
-                //            //    dateAccepted, dateDelivered, datePayment, entry.dateOrderDelivered, entry.datePaymentReceived, entry.payment_receivedBy);
-
-                //            txtSearch.Text = "";
-
-                //        }
-                //    }
-                //}
                 else
                 {
                     // Handle null response or invalid selected value

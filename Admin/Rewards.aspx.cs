@@ -30,6 +30,60 @@ namespace WRS2big_Web.Admin
         {
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
+
+            string currentUserId = (string)Session["idno"];
+
+            var responseRefill = twoBigDB.Get("PRODUCTREFILL");
+            Dictionary<string, ProductRefill> refillProducts = responseRefill.ResultAs<Dictionary<string, ProductRefill>>();
+            var filteredRefillList = refillProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
+
+            var responseOther = twoBigDB.Get("otherPRODUCTS");
+            Dictionary<string, otherProducts> otherProducts = responseOther.ResultAs<Dictionary<string, otherProducts>>();
+            var filteredOtherList = otherProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
+
+            // Add the unit and sizes data of refill products to the CheckBoxList
+            List<string> refillUnitSizesList = new List<string>();
+            foreach (var product in filteredRefillList)
+            {
+                string unit = product.pro_refillUnit;
+                string size = product.pro_refillSize;
+                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                {
+                    string unitSizes = size + "  " + unit;
+                    if (!refillUnitSizesList.Contains(unitSizes))
+                    {
+                        refillUnitSizesList.Add(unitSizes);
+                    }
+                }
+            }
+
+            foreach (string unitSizes in refillUnitSizesList)
+            {
+                chUnitSizes.Items.Add(new ListItem(unitSizes));
+            }
+
+            // Add the unit and sizes data of other products to the CheckBoxList
+            List<string> otherUnitSizesList = new List<string>();
+            foreach (var product in filteredOtherList)
+            {
+                string unit = product.other_productUnit;
+                string size = product.other_productSize;
+                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                {
+                    string unitSizes = size + "  " + unit;
+                    if (!otherUnitSizesList.Contains(unitSizes))
+                    {
+                        otherUnitSizesList.Add(unitSizes);
+                    }
+                }
+            }
+
+            foreach (string unitSizes in otherUnitSizesList)
+            {
+                chUnitSizes.Items.Add(new ListItem(unitSizes));
+            }
+
+
         }
         protected void btnAddReward_Click(object sender, EventArgs e)
         {
@@ -94,14 +148,31 @@ namespace WRS2big_Web.Admin
                         if (item.Selected)
                         {
                             selectedValues += item.Value + ",";
+
                         }
                     }
-
                     // Remove the trailing comma if there are any selected values
                     if (!string.IsNullOrEmpty(selectedValues))
                     {
                         selectedValues = selectedValues.TrimEnd(',');
                     }
+                    // Get the selected values from the CheckBoxList
+                    string selectedUnitSizes = "";
+                    foreach (ListItem item in chUnitSizes.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            selectedUnitSizes += item.Value + ",";
+
+                        }
+                    }
+                    // Remove the trailing comma if there are any selected values
+                    if (!string.IsNullOrEmpty(selectedUnitSizes))
+                    {
+                        selectedUnitSizes = selectedUnitSizes.TrimEnd(',');
+                    }
+
+
                     // Get the selected values from the CheckBoxList
                     string cusEarnPoints_selectedValues = "";
                     foreach (ListItem item in check_cusEarnPoints.Items)
@@ -124,13 +195,15 @@ namespace WRS2big_Web.Admin
                         rewardId = idnum,
                         adminId = int.Parse(idno),
                         rewardType = txtrewardname.Text,
+                        rewardValue = int.Parse(txtrewardValue.Text),
                         description = txtdescription.Text,
                         points_required = pointsRequired,
                         rewardsDateAdded = rewardsDateAdded,
                         productOffered = selectedValues,
                         cusEarnPoints = cusEarnPoints_selectedValues,
                         promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
-                        promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text)
+                        promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
+                        promoAppliedToUnitSizes = selectedUnitSizes
                     };
 
                     SetResponse response;
