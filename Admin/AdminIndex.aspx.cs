@@ -26,150 +26,90 @@ namespace WRS2big_Web.Admin
         };
         IFirebaseClient twoBigDB;
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            // Connection to database 
-            twoBigDB = new FireSharp.FirebaseClient(config);
-
-            // Get the ID of the currently logged-in owner from session state
-            string idno = (string)Session["idno"];
-
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("ORDERS");
-            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-
-<<<<<<< HEAD
-            // Filter the list of orders by the owner's ID and the order status and delivery type
-            //List<Order> filteredList = new List<Order>();
-            //if (orderlist != null)
-            //{
-            //    filteredList = orderlist.Values
-            //        .Where(d => d.admin_ID.ToString() == idno)
-            //        .ToList();
-            //}
-            if (orderlist != null)
-            {
-
-                List<Order> filteredList = orderlist.Values
-                .Where(d => d.admin_ID.ToString() == idno)
-                .ToList();
-=======
-            if (orderlist != null)
-            {
-                // Filter the list of orders by the owner's ID and the order status and delivery type
-                List<Order> filteredList = orderlist.Values
-                    .Where(d => d.admin_ID.ToString() == idno)
-                    .ToList();
->>>>>>> master
-
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-                // Filter the list of orders by the owner's ID and the order status and delivery type
-                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-                if (walkinOrderlist != null)
-                {
-                    filteredordersList = walkinOrderlist.Values
-                        .Where(d => d.adminId.ToString() == idno)
-                        .ToList();
-                }
-
-                // Compute the total number of orders today
-                int totalOrdersToday = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-                                                           || d.order_OrderStatus == "Accepted");
-                int totalWalkInOrder = filteredordersList.Count();
-                int CombinedOrder = totalOrdersToday + totalWalkInOrder;
-                // Compute the total amount of all orders
-                //decimal totalOrderAmount = filteredList.Count();
-                decimal totalOrderAmount = 0;
-                decimal overAllSales = 0;
-                decimal totalWalkInAmount = 0;
-                // Compute the total number of delivery orders
-                int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
-                // Compute the total number of reservation orders
-                int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
-
-                foreach (Order order in filteredList)
-                {
-                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-                    {
-                        totalOrderAmount += order.order_InitialAmount;
-                    }
-                }
-                foreach (WalkInOrders order in filteredordersList)
-                {
-                    totalWalkInAmount += order.totalAmount;
-                }
-
-                overAllSales = totalOrderAmount + totalWalkInAmount;
-
-                // Display the total amount of all orders
-                lblTotalSales.Text = overAllSales.ToString();
-                lblDeliveries.Text = totalDeliveryOrders.ToString();// Display the total of deliveries
-                lblOrders.Text = CombinedOrder.ToString();// Display the total of all orders
-                lblReservations.Text = totalReservationOrders.ToString();// Display the total reservations
-<<<<<<< HEAD
-
-                //displayTankSupply();
-            }
-            else
-            {
-                // handle the case where orderlist is null
-                lblTotalSales.Text = "Sales not found";
-                lblDeliveries.Text = "Deliveries not found";
-                lblOrders.Text = "Orders not found";
-                lblReservations.Text = "Reservation not found";
-
-            }
-=======
-            }
-           
-
-            //displayTankSupply();
->>>>>>> master
-        }
-
-        //THIS DISPLAY THE TANK SUPPLY
-        //private void displayTankSupply()
+        //protected void Page_Load(object sender, EventArgs e)
         //{
-        //    try
+        //    // Connection to database 
+        //    twoBigDB = new FireSharp.FirebaseClient(config);
+
+        //    // Get the ID of the currently logged-in owner from session state
+        //    string idno = (string)Session["idno"];
+
+        //    // Retrieve all orders from the ORDERS table
+        //    FirebaseResponse response = twoBigDB.Get("ORDERS");
+        //    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+        //    if (orderlist != null)
         //    {
-        //        // Get the ID of the currently logged-in owner from session state
-        //        string idno = (string)Session["idno"];
+        //        // Filter the list of orders by the owner's ID and the order status and delivery type
+        //        List<Order> filteredList = orderlist.Values
+        //            .Where(d => d.admin_ID.ToString() == idno)
+        //            .ToList();
 
         //        // Retrieve all orders from the ORDERS table
-        //        FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
-        //        Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
+        //        FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+        //        Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
 
-        //        if (supply != null) // Add this null check
+        //        // Filter the list of orders by the owner's ID and the order status and delivery type
+        //        List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+        //        if (walkinOrderlist != null)
         //        {
-        //            // Filter the list of orders by the owner's ID and the order status and delivery type
-        //            var filteredList = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno || d.dateUpdated.Date == DateTime.UtcNow.Date);
+        //            filteredordersList = walkinOrderlist.Values
+        //                .Where(d => d.adminId.ToString() == idno)
+        //                .ToList();
+        //        }
 
-        //            if (filteredList != null)
+        //        // Compute the total number of orders today
+        //        int totalOrdersToday = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
+        //                                                   || d.order_OrderStatus == "Accepted");
+        //        int totalWalkInOrder = filteredordersList.Count();
+        //        int CombinedOrder = totalOrdersToday + totalWalkInOrder;
+        //        // Compute the total amount of all orders
+        //        //decimal totalOrderAmount = filteredList.Count();
+        //        decimal totalOrderAmount = 0;
+        //        decimal overAllSales = 0;
+        //        decimal totalWalkInAmount = 0;
+        //        // Compute the total number of delivery orders
+        //        int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
+        //        // Compute the total number of reservation orders
+        //        int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
+
+        //        foreach (Order order in filteredList)
+        //        {
+        //            if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
+        //                && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
         //            {
-        //                lblDate.Text = filteredList.dateAdded.ToString(("MM/dd/yyyy hh:mm:ss tt"));
-        //                lblRemainingsupply.Text = filteredList.tankBalance.ToString();
-        //            }
-        //            else
-        //            {
-        //                lblDate.Text = "No supply found for today.";
-        //                lblRemainingsupply.Text = "";
+        //                totalOrderAmount += order.order_TotalAmount;
         //            }
         //        }
-        //        else
+        //        foreach (WalkInOrders order in filteredordersList)
         //        {
-        //            lblDate.Text = "No tank supply records found.";
-        //            lblRemainingsupply.Text = "";
+        //            totalWalkInAmount += order.totalAmount;
         //        }
+
+        //        overAllSales = totalOrderAmount + totalWalkInAmount;
+
+        //        // Display the total amount of all orders
+        //        lblTotalSales.Text = overAllSales.ToString();
+        //        lblDeliveries.Text = totalDeliveryOrders.ToString();// Display the total of deliveries
+        //        lblOrders.Text = CombinedOrder.ToString();// Display the total of all orders
+        //        lblReservations.Text = totalReservationOrders.ToString();// Display the total reservations
+
+
+        //        //displayTankSupply();
         //    }
-        //    catch (Exception ex)
+        //    else
         //    {
-        //        Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+        //        // handle the case where orderlist is null
+        //        lblTotalSales.Text = "Sales not found";
+        //        lblDeliveries.Text = "Deliveries not found";
+        //        lblOrders.Text = "Orders not found";
+        //        lblReservations.Text = "Reservation not found";
+
         //    }
         //}
+           
+
+         
 
         //LOGOUT
         protected void btnLogout_Click(object sender, EventArgs e)

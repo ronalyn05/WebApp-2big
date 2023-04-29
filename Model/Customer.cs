@@ -33,26 +33,61 @@ namespace WRS2big_Web.Model
         public int admin_ID { get; set; }
         public int cusId { get; set; }
         public int driverId { get; set; }
+        public string orderPaymentMethod { get; set; }
         public string order_DeliveryTypeValue { get; set; }
-        public decimal order_InitialAmount { get; set; }
         public string order_OrderStatus { get; set; }
         public string order_OrderTypeValue { get; set; }
-        public string order_ProductName { get; set; }
+        public List<OrderProduct> order_Products { get; set; }
         public int order_Quantity { get; set; }
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
-        public string order_OrderMethod { get; set; }
+        public decimal order_TotalAmount { get; set; }
         public string order_WaterPrice { get; set; }
-        public string order_unit { get; set; }
-        public string order_size { get; set; }
+        public string order_newDeliveryAddressOption { get; set; }
         public string order_choosenSwapOption { get; set; }
-        public string order_TotalAmount { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateOrderDeclined { get; set; }
         public DateTimeOffset dateOrderDelivered { get; set; }
         public string payment_receivedBy { get; set; }
-}
+    }
+
+    public class OrderProduct
+    {
+        public int productItemOneID { get; set; }
+        public int productItemTwoID { get; set; }
+        public string productName { get; set; }
+        public string productSize { get; set; }
+        public string productUnit { get; set; }
+    }
+
+    //    public class Order
+    //    {
+    //        public int orderID { get; set; }
+    //        public int admin_ID { get; set; }
+    //        public int cusId { get; set; }
+    //        public int driverId { get; set; }
+    //        public string order_DeliveryTypeValue { get; set; }
+    //        public decimal order_InitialAmount { get; set; }
+    //        public string order_OrderStatus { get; set; }
+    //        public string order_OrderTypeValue { get; set; }
+    //        public string order_ProductName { get; set; }
+    //        public int order_Quantity { get; set; }
+    //        public string order_ReservationDate { get; set; }
+    //        public string order_StoreName { get; set; }
+    //        public string order_OrderMethod { get; set; }
+    //        public string order_WaterPrice { get; set; }
+    //        public string order_unit { get; set; }
+    //        public string order_size { get; set; }
+    //        public string order_choosenSwapOption { get; set; }
+    //        public string order_TotalAmount { get; set; }
+    //        public DateTimeOffset dateOrderAccepted { get; set; }
+    //        public DateTimeOffset datePaymentReceived { get; set; }
+    //        public DateTimeOffset dateOrderDeclined { get; set; }
+    //        public DateTimeOffset dateOrderDelivered { get; set; }
+    //        public string payment_receivedBy { get; set; }
+    //}
+
 
     // Define the notification message class
     public class NotificationMessage

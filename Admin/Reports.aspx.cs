@@ -74,7 +74,7 @@ namespace WRS2big_Web.Admin
             {
                 if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery" && order.order_OrderStatus == "Delivered")
                 {
-                    totalOrderAmount += order.order_InitialAmount;
+                    totalOrderAmount += order.order_TotalAmount;
                 }
             }
             foreach (WalkInOrders order in filteredordersList)

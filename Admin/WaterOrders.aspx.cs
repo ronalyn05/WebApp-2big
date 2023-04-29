@@ -225,7 +225,7 @@ namespace WRS2big_Web.Admin
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse responselist = twoBigDB.Get("ORDERS");
-                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+                Dictionary<string, Order> orderlist = responselist.ResultAs<Dictionary<string, Order>>();
 
                 //// Create the DataTable to hold the orders
                 //DataTable ordersTable = new DataTable();

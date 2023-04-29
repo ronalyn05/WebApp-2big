@@ -258,6 +258,7 @@ namespace WRS2big_Web.Model
         public int adminId { get; set; }
         public string rewardType { get; set; }
         public int rewardValue { get; set; }
+        public string promoAppliedToUnitSizes { get; set; }
         public string description { get; set; }
         public string cusEarnPoints { get; set; }
         public int points_required { get; set; }

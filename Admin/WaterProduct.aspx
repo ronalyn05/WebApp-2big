@@ -323,7 +323,7 @@
                             <div class="modal-body">
                               <div class="col-xl-12 col-xl-12 ">
                                 <div class="x_content">
-                                   <%-- OTHER PRODUCT REPORTS--%>
+                                   <%-- PRODUCT REFILL REPORTS--%>
                                     <div class="row">
                                       <div class="col-xl-6">
                                         <asp:Label ID="Label6" Text="Product ID:" runat="server" Width="364px"></asp:Label>
@@ -340,14 +340,6 @@
                                         <asp:Label ID="lblproductType" runat="server" Width="364px"></asp:Label>
                                       </div>
                                             </div>
-                                            <%--<div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label9" Text="Product Name:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblproductname" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                                </div>--%>
                                        <div class="row">
                                         <div class="col-xl-6">
                                         <asp:Label ID="Label10" Text=" Unit and Size:" runat="server" Width="364px"></asp:Label>
@@ -398,10 +390,91 @@
                                     </div>
                                    <div class="row">
                                         <div class="col-xl-6">
-                                         <asp:Label ID="Label17" Text="Added By:" runat="server" Width="364px"></asp:Label>
+                                         <asp:Label ID="Label17" Text="Updated By:" runat="server" Width="364px"></asp:Label>
                                       </div>
                                       <div class="col-xl-6">
                                        <asp:Label ID="lblUpdatedby" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                   <%-- OTHER PRODUCT REPORTS--%> 
+                                    <div class="row">
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="Label9" Text="Product ID:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productId" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label18" Text="Product Type:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productType" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                            </div>
+                                       <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label20" Text=" Unit and Size:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productUnit_Size" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label22" Text="Price:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="prodPrice" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label24" Text="Discount:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="prodDiscount" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label16" Text="Product Stock:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productStock" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label26" Text="Date Added:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productDateadded" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label28" Text="Added By:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productAddedby" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                        <asp:Label ID="Label30" Text="Date Updated:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                        <asp:Label ID="productUpdated" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                    </div>
+                                   <div class="row">
+                                        <div class="col-xl-6">
+                                         <asp:Label ID="Label32" Text="Added By:" runat="server" Width="364px"></asp:Label>
+                                      </div>
+                                      <div class="col-xl-6">
+                                       <asp:Label ID="productUpdatedBy" runat="server" Width="364px"></asp:Label>
                                       </div>
                                     </div>
                                 </div>

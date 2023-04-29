@@ -48,12 +48,12 @@
                                                 <div class="row">
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Type:</h5>
-                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
+                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: discount coupon or buy 1 take 1" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                    <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Value:</h5>
-                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo value"></asp:TextBox>
+                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo value in percentage or in number"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardValue" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
@@ -66,6 +66,12 @@
                                                     <asp:CheckBoxList ID="checkPromoOffered" runat="server" AutoPostBack="false">
                                                         <asp:ListItem Text="Product Refill" Value="Product Refill" ID="pro_refillRadio" ></asp:ListItem>
                                                         <asp:ListItem Text="other Product" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
+                                                    </asp:CheckBoxList>
+                                            </div>
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any unit and sizes offers that applies to the promo you offered:</h5>
+                                                    <asp:CheckBoxList ID="chUnitSizes" runat="server">
+                                                        <%--<asp:ListItem Text=""  ID="proUnitSizes" ></asp:ListItem>--%>
                                                     </asp:CheckBoxList>
                                             </div>
                                                     <div class="col-md-12 col-sm-12 ">
@@ -97,7 +103,7 @@
 
                                              <div class="col-md-12 col-sm-12 ">
                                             <h5>Points Required:</h5>
-                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required "></asp:TextBox>
+                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required per transaction or per amount"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
@@ -114,7 +120,7 @@
                                                  <br />
                                                  <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" />
+                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" />
                                                      <input type="hidden" id="confirm_add" name="confirm_add" value="" />
                                                </div>
                                                <script type="text/javascript">
