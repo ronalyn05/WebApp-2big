@@ -38,13 +38,11 @@ namespace WRS2big_Web.Model
         public string order_OrderStatus { get; set; }
         public string order_OrderTypeValue { get; set; }
         public List<OrderProduct> order_Products { get; set; }
-        public int order_Quantity { get; set; }
+        public int order_OverallQuantities { get; set; }
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
         public decimal order_TotalAmount { get; set; }
-        public string order_WaterPrice { get; set; }
-        public string order_newDeliveryAddressOption { get; set; }
-        public string order_choosenSwapOption { get; set; }
+        public string order_RefllSelectedOption { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateOrderDeclined { get; set; }
@@ -54,11 +52,11 @@ namespace WRS2big_Web.Model
 
     public class OrderProduct
     {
-        public int productItemOneID { get; set; }
-        public int productItemTwoID { get; set; }
-        public string productName { get; set; }
-        public string productSize { get; set; }
-        public string productUnit { get; set; }
+        public int order_ProductId { get; set; }
+        public string order_ProductName { get; set; }
+        public decimal order_ProductPrice { get; set; }
+        public int order_size { get; set; }
+        public string order_unit { get; set; }
     }
 
     //    public class Order

@@ -257,11 +257,13 @@ namespace WRS2big_Web.Model
         public int rewardId { get; set; }
         public int adminId { get; set; }
         public string rewardType { get; set; }
-        public int rewardValue { get; set; }
+        public int rewardPercentageValue { get; set; }
         public string promoAppliedToUnitSizes { get; set; }
-        public string description { get; set; }
+        public string reward_description { get; set; }
         public string cusEarnPoints { get; set; }
-        public int points_required { get; set; }
+        public int points_requiredToClaim { get; set; }
+        public int range_perAmount { get; set; }
+        public decimal pointsPerTxnOrAmount { get; set; }
         public string productOffered { get; set; }
         public DateTimeOffset promoExpirationFrom { get; set; }
         public DateTimeOffset promoExpirationTo { get; set; }

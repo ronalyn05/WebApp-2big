@@ -79,7 +79,15 @@
                                                              
                                                          </ItemTemplate>
                                                         </asp:TemplateField>
-                                                      </Columns>
+                                                    
+                                            </Columns>
+                                                  <%-- <Columns>
+                                                   <asp:TemplateField HeaderText="Product Order">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblproductOrder" runat="server" Text='<%# Eval(" order_ProductName ") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                        </Columns>--%>
                                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                             <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                             <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
