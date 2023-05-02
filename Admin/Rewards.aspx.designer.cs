@@ -105,22 +105,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes;
 
         /// <summary>
-        /// check_cusEarnPoints control.
+        /// radioCusEarnPoints control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList check_cusEarnPoints;
+        protected global::System.Web.UI.WebControls.RadioButtonList radioCusEarnPoints;
 
         /// <summary>
-        /// txtpoints control.
+        /// txtpointsPerTxnOrAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtpoints;
+        protected global::System.Web.UI.WebControls.TextBox txtpointsPerTxnOrAmount;
+
+        /// <summary>
+        /// txtrange_perAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtrange_perAmount;
 
         /// <summary>
         /// txtpointsrequired control.

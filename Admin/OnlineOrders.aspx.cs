@@ -66,92 +66,141 @@ namespace WRS2big_Web.Admin
         private void DisplayTable()
         {
             string idno = (string)Session["idno"];
-            // int adminId = int.Parse(idno);
-
-            // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ORDERS");
             Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
             var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
 
-            // Create the DataTable to hold the orders
             DataTable ordersTable = new DataTable();
             ordersTable.Columns.Add("ORDER ID");
             ordersTable.Columns.Add("CUSTOMER ID");
             ordersTable.Columns.Add("DRIVER ID");
             ordersTable.Columns.Add("STORE NAME");
-            ordersTable.Columns.Add("PRODUCT NAME");
-            ordersTable.Columns.Add("PRODUCT UNIT");
-            ordersTable.Columns.Add("PRODUCT SIZE");
+            ordersTable.Columns.Add("PRODUCT ORDER");
+            ordersTable.Columns.Add("ORDER QUANTITY");
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
             ordersTable.Columns.Add("PAYMENT METHOD");
-            ordersTable.Columns.Add("GALLON SWAP OPTION");
-            ordersTable.Columns.Add("PRICE");
-            ordersTable.Columns.Add("QUANTITY");
+            ordersTable.Columns.Add("REFILL SELECTED OPTION");
             ordersTable.Columns.Add("RESERVATION DATE");
             ordersTable.Columns.Add("STATUS");
             ordersTable.Columns.Add("TOTAL AMOUNT");
+            
 
             if (response != null && response.ResultAs<Order>() != null)
             {
-                // Loop through the orders and add them to the DataTable
-                //foreach (var entry in filteredList)
-                //{
-                //    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
-                //                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
-                //                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_choosenSwapOption, entry.order_WaterPrice,
-                //                          entry.order_Quantity, entry.order_ReservationDate,
-                //                          entry.order_OrderStatus, entry.order_TotalAmount);
-                //}
                 foreach (var order in filteredList)
                 {
                     if (order.order_Products != null)
                     {
-                        string productNames = "";
-                        string productSizes = "";
-                        string productUnits = "";
+                        string product_order = "";
+
                         foreach (var product in order.order_Products)
                         {
-                            // Concatenate the product name, size, and unit
-                            productNames += product.productName + " , ";
-                            productSizes += product.productSize + " , ";
-                            productUnits += product.productUnit + " , ";
+                            product_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " " ;
+
                         }
-                        // Add a new row for the order and concatenate the product names, sizes, and units
-                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productNames,
-                                              productUnits, productSizes, order.order_DeliveryTypeValue,
-                                              order.order_OrderTypeValue, order.orderPaymentMethod, order.order_choosenSwapOption, order.order_WaterPrice,
-                                              order.order_Quantity, order.order_ReservationDate,
-                                              order.order_OrderStatus, order.order_TotalAmount);
+
+                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, product_order,
+                            order.order_OverallQuantities, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
+                            order.order_RefllSelectedOption, order.order_ReservationDate, order.order_OrderStatus,
+                            order.order_TotalAmount);
                     }
                 }
-
-                //foreach (var order in filteredList)
-                //{
-                //    if (order.order_Products != null)
-                //    {
-                //        foreach (var product in order.order_Products)
-                //        {
-                //            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, product.productName,
-                //                                  product.productUnit, product.productSize, order.order_DeliveryTypeValue,
-                //                                  order.order_OrderTypeValue, order.orderPaymentMethod, order.order_choosenSwapOption, order.order_WaterPrice,
-                //                                  order.order_Quantity, order.order_ReservationDate,
-                //                                  order.order_OrderStatus, order.order_TotalAmount);
-                //        }
-                //    }
-                //}
-
             }
             else
             {
-                // Handle null response or invalid selected value
                 ordersTable.Rows.Add("No orders found", "", "", "", "", "", "", "", "", "", "", "");
             }
 
-            // Bind the DataTable to the GridView
             GridView1.DataSource = ordersTable;
             GridView1.DataBind();
         }
+
+
+        //private void DisplayTable()
+        //{
+        //    string idno = (string)Session["idno"];
+        //    // int adminId = int.Parse(idno);
+
+        //    // Retrieve all orders from the ORDERS table
+        //    FirebaseResponse response = twoBigDB.Get("ORDERS");
+        //    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+        //    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno);
+
+        //    // Create the DataTable to hold the orders
+        //    DataTable ordersTable = new DataTable();
+        //    ordersTable.Columns.Add("ORDER ID");
+        //    ordersTable.Columns.Add("CUSTOMER ID");
+        //    ordersTable.Columns.Add("DRIVER ID");
+        //    ordersTable.Columns.Add("STORE NAME");
+        //    ordersTable.Columns.Add("PRODUCT ORDER");
+        //    ordersTable.Columns.Add("DELIVERY TYPE");
+        //    ordersTable.Columns.Add("ORDER TYPE");
+        //    ordersTable.Columns.Add("PAYMENT METHOD");
+        //    ordersTable.Columns.Add("REFILL SELECTED OPTION");
+        //    ordersTable.Columns.Add("RESERVATION DATE");
+        //    ordersTable.Columns.Add("STATUS");
+        //    ordersTable.Columns.Add("TOTAL AMOUNT");
+
+
+        //    if (response != null && response.ResultAs<Order>() != null)
+        //    {
+        //        // Loop through the orders and add them to the DataTable
+        //        //foreach (var entry in filteredList)
+        //        //{
+        //        //    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_ProductName,
+        //        //                          entry.order_unit, entry.order_size, entry.order_DeliveryTypeValue,
+        //        //                          entry.order_OrderTypeValue, entry.order_OrderMethod, entry.order_choosenSwapOption, entry.order_WaterPrice,
+        //        //                          entry.order_Quantity, entry.order_ReservationDate,
+        //        //                          entry.order_OrderStatus, entry.order_TotalAmount);
+        //        //}
+        //        foreach (var order in filteredList)
+        //        {
+        //            if (order.order_Products != null)
+        //            {
+        //                string product_order = "";
+
+        //                foreach (var product in order.order_Products)
+        //                {
+
+        //                    // Concatenate the product name, size, and unit
+        //                    product_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + "<br/>";
+
+        //                }
+        //                // Add a new row for the order and concatenate the product names, sizes, and units
+        //                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, product_order,
+        //                                        order.order_OverallQuantities, order.order_DeliveryTypeValue,
+        //                                      order.order_OrderTypeValue, order.orderPaymentMethod, order.order_RefllSelectedOption,
+        //                                       order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount);
+        //            }
+        //        }
+
+        //        //foreach (var order in filteredList)
+        //        //{
+        //        //    if (order.order_Products != null)
+        //        //    {
+        //        //        foreach (var product in order.order_Products)
+        //        //        {
+        //        //            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, product.productName,
+        //        //                                  product.productUnit, product.productSize, order.order_DeliveryTypeValue,
+        //        //                                  order.order_OrderTypeValue, order.orderPaymentMethod, order.order_choosenSwapOption, order.order_WaterPrice,
+        //        //                                  order.order_Quantity, order.order_ReservationDate,
+        //        //                                  order.order_OrderStatus, order.order_TotalAmount);
+        //        //        }
+        //        //    }
+        //        //}
+
+        //    }
+        //    else
+        //    {
+        //        // Handle null response or invalid selected value
+        //        ordersTable.Rows.Add("No orders found", "", "", "", "", "", "", "", "", "", "", "");
+        //    }
+
+        //    // Bind the DataTable to the GridView
+        //    GridView1.DataSource = ordersTable;
+        //    GridView1.DataBind();
+        //}
 
         //UPDATING THE ORDERS
         // trigger the appropriate notifications based on the customer's order status
@@ -331,9 +380,9 @@ namespace WRS2big_Web.Admin
             Order existingOrder = response.ResultAs<Order>();
 
             // Retrieve the quantity and unit of the declined order from the existingOrder object
-            double quantity = existingOrder.order_Quantity;
+            double quantity = existingOrder.order_OverallQuantities;
             //string unit = existingOrder.productUnit;
-            string unit = existingOrder.order_Products[0].productUnit;
+            string unit = existingOrder.order_Products[0].order_unit;
 
             // Retrieve the tank object from the database
             FirebaseResponse tankResponse = twoBigDB.Get("TANKSUPPLY/");
