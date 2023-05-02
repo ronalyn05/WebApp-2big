@@ -51,8 +51,8 @@ namespace WRS2big_Web.Admin
                         packageAName.Text = entry.Value.packageName;
                         packageAdescription.Text = entry.Value.packageDescription;
                         packageAPrice.Text = entry.Value.packagePrice.ToString();
-                        durationA.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
-                        orderLimit.Text = entry.Value.packageLimit.ToString();
+                        durationA.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType + " " + "only";
+
 
                         features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
@@ -71,7 +71,7 @@ namespace WRS2big_Web.Admin
                         packageCdescription.Text = entry.Value.packageDescription;
                         packageCPrice.Text = price.ToString();
                         durationC.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
-                        manageStations.Text = entry.Value.numberOfStations + " " + "Refilling Stations";
+                        //manageStations.Text = entry.Value.numberOfStations + " " + "Refilling Stations";
 
                         features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);

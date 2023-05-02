@@ -114,7 +114,7 @@ namespace WRS2big_Web.superAdmin
             {
                 admin_ID = clientID,
                 sender = "Super Admin",
-                title = "Client Approved",
+                title = "Application Approved",
                 receiver = "Admin",
                 body = "Your application is now approved! You can now subscribe to our Subscription Packages",
                 notificationDate = DateTime.Now,
@@ -126,6 +126,8 @@ namespace WRS2big_Web.superAdmin
             SetResponse notifResponse;
             notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+
 
             Response.Write("<script>alert ('Client Approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 

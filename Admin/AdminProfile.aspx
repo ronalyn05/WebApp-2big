@@ -84,9 +84,9 @@
                                         <div class="modal-footer">
                                            <%-- renew subscription button--%>
                                            
-                                           <asp:LinkButton ID="subscribeBTN" href="SubscriptionPlans.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> Subscribe now </asp:LinkButton>
-                                            <asp:LinkButton ID="renewBTN" href="PremiumSubSuccess.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;">Renew </asp:LinkButton>
-                                            <asp:LinkButton ID="cancelBTN" href="PremiumSubSuccess.aspx" class="active btn btn-danger waves-effect text-right" runat="server" style="font-size:18px;">Cancel Subscription </asp:LinkButton>
+                                           <asp:LinkButton ID="subscribeBTN" href="SubscriptionPackages.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> Subscribe now </asp:LinkButton>
+                                            <asp:LinkButton ID="renewBTN" href="SubscriptionPackages.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;">Renew </asp:LinkButton>
+                                            <%--<asp:LinkButton ID="cancelBTN" href="PremiumSubSuccess.aspx" class="active btn btn-danger waves-effect text-right" runat="server" style="font-size:18px;">Cancel Subscription </asp:LinkButton>--%>
 
                                            <%--<asp:Button ID="btnSubscription" class="active btn btn-primary waves-effect text-right" runat="server" Text="Renew" style="font-size:18px;" OnClick="btnSubscription_Click"/>--%>
                                             

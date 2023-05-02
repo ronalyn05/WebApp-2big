@@ -72,34 +72,38 @@ namespace WRS2big_Web.Admin
                 lastname.Attributes["placeholder"] = admin.lname;
                 contactnum.Attributes["placeholder"] = admin.phone;
                 email.Attributes["placeholder"] = admin.email;
-                birthdate.Text = admin.bdate;
+                //birthdate.Text = admin.bdate;
 
                 //to GET the subscription details
                 string subStatus = admin.subStatus;
                 //check if naka subscribe na ba ang admin 
                 if (subStatus == "Subscribed")
                 {
-                    FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPlan/");
-                    Model.SubscribedPlan subscription = subDetails.ResultAs<Model.SubscribedPlan>();
+                    FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
+                    Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
 
-                    string subscribedPlan = subscription.subPlan;
-                    DateTimeOffset start = subscription.subStart;
-                    DateTimeOffset end = subscription.subEnd;
+                    if (subscription != null)
+                    {
+                        string subscribedPlan = subscription.packageName;
+                        DateTimeOffset start = subscription.subStart;
+                        DateTimeOffset end = subscription.expiration;
 
-                    //populate the textboxes for the subscription details
-                    LblSubPlan.Text = subscribedPlan;
+                        //populate the textboxes for the subscription details
+                        LblSubPlan.Text = subscribedPlan;
 
-                    DateTimeOffset subscriptionStart = start;
-                    LblDateStarted.Text = subscriptionStart.ToString();
-                    DateTimeOffset subscriptionEnd = end;
-                    LblSubEnd.Text = subscriptionEnd.ToString();
+                        DateTimeOffset subscriptionStart = start;
+                        LblDateStarted.Text = subscriptionStart.ToString();
+                        DateTimeOffset subscriptionEnd = end;
+                        LblSubEnd.Text = subscriptionEnd.ToString();
+                    }
+
 
 
                 }
                 else if (subStatus == "notSubscribed")
                 {
 
-                    Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
+                    //Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
                 }
             }
             else
@@ -378,6 +382,28 @@ namespace WRS2big_Web.Admin
 
                 FirebaseResponse response;
                 response = twoBigDB.Update("ADMIN/" + idno, data);
+
+                //SEND NOTIFICATION TO ADMIN 
+                
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Notification
+                {
+                    admin_ID = int.Parse(idno),
+                    sender = "Super Admin",
+                    title = "Profile Set-up",
+                    receiver = "Admin",
+                    body = "You have completed your personal information set-up. Please proceed in setting-up your Refilling Station details",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+
                 Response.Write("<script>alert ('Personal info has successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
 
                 // Get the current date and time
@@ -506,6 +532,27 @@ namespace WRS2big_Web.Admin
                 // Pass the updated object to the Update method
                 FirebaseResponse response;
                 response = twoBigDB.Update("ADMIN/" + idno + "/RefillingStation/", station);
+                //SEND NOTIFICATION TO ADMIN 
+
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Notification
+                {
+                    admin_ID = int.Parse(idno),
+                    sender = "Super Admin",
+                    title = "Station update",
+                    receiver = "Admin",
+                    body = "You updated your Refilling Station details.",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+
                 Response.Write("<script>alert ('Station details successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
 
                 int logsId = (int)Session["logsId"];
@@ -564,6 +611,27 @@ namespace WRS2big_Web.Admin
 
                 // Save the new object to the database
                 twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", newObj);
+
+                //SEND NOTIFICATION TO ADMIN 
+
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Notification
+                {
+                    admin_ID = int.Parse(idno),
+                    sender = "Super Admin",
+                    title = "Refiling Station Set-up",
+                    receiver = "Admin",
+                    body = "You have completed your Refilling Station set-up! You can now add your products! Please proceed to Products page.",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
 
                 Response.Write("<script>alert ('Station details successfully added!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
                

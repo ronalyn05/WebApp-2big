@@ -120,7 +120,7 @@ namespace WRS2big_Web.superAdmin
             admin.cus_status = "Approved";
             adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 
-            Response.Write("<script>alert ('successfully approved! Notify the client ');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+            Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             //DIRI I-INSERT ANG PAGSAVE SA NOTIFICATION INTO DATABASE
         }
 

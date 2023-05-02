@@ -82,6 +82,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=109.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>packages\RestSharp.109.0.1\lib\net471\RestSharp.dll</HintPath>
     </Reference>
@@ -287,6 +290,7 @@
   <ItemGroup>
     <Content Include="Admin\AdminIndex.aspx" />
     <Content Include="Admin\AdminProfile.aspx" />
+    <Content Include="Admin\ContactDeveloper.aspx" />
     <Content Include="Admin\CustomerRecord.aspx" />
     <Content Include="Admin\Deliverydetails.aspx" />
     <Content Include="Admin\EmployeeRecord.aspx" />
@@ -302,7 +306,6 @@
     <Content Include="Admin\Reports.aspx" />
     <Content Include="Admin\Reviews.aspx" />
     <Content Include="Admin\Rewards.aspx" />
-    <Content Include="Admin\SubscriptionPlans.aspx" />
     <Content Include="Admin\WaterOrders.aspx" />
     <Content Include="Admin\WaterProduct.aspx" />
     <Content Include="assets\css\animate.css\css\animate.css" />
@@ -474,11 +477,10 @@
     <Content Include="images\sales.png" />
     <Content Include="images\water.png" />
     <Content Include="LandingPage\Account.aspx" />
-    <Content Include="Admin\BasicSubSuccess.aspx" />
+    <Content Include="Admin\SubscriptionSuccess.aspx" />
     <Content Include="LandingPage\Index.aspx" />
     <Content Include="Admin\BasicPlanSub.aspx" />
     <Content Include="Admin\PremiumPlanSub.aspx" />
-    <Content Include="Admin\PremiumSubSuccess.aspx" />
     <Content Include="LandingPage\Terms.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -598,6 +600,7 @@
     <Content Include="superAdmin\ManageWRSClients.aspx" />
     <Content Include="superAdmin\Notifications.aspx" />
     <Content Include="superAdmin\packageDetails.aspx" />
+    <Content Include="superAdmin\Reports.aspx" />
     <Content Include="superAdmin\SAdminIndex.aspx" />
     <Content Include="superAdmin\SubscriptionReports.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -621,6 +624,13 @@
     </Compile>
     <Compile Include="Admin\AdminProfile.aspx.designer.cs">
       <DependentUpon>AdminProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ContactDeveloper.aspx.cs">
+      <DependentUpon>ContactDeveloper.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ContactDeveloper.aspx.designer.cs">
+      <DependentUpon>ContactDeveloper.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\CustomerRecord.aspx.cs">
       <DependentUpon>CustomerRecord.aspx</DependentUpon>
@@ -727,13 +737,6 @@
     <Compile Include="Admin\Rewards.aspx.designer.cs">
       <DependentUpon>Rewards.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\SubscriptionPlans.aspx.cs">
-      <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\SubscriptionPlans.aspx.designer.cs">
-      <DependentUpon>SubscriptionPlans.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\WaterOrders.aspx.cs">
       <DependentUpon>WaterOrders.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -757,12 +760,12 @@
     <Compile Include="LandingPage\Account.aspx.designer.cs">
       <DependentUpon>Account.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\BasicSubSuccess.aspx.cs">
-      <DependentUpon>BasicSubSuccess.aspx</DependentUpon>
+    <Compile Include="Admin\SubscriptionSuccess.aspx.cs">
+      <DependentUpon>SubscriptionSuccess.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\BasicSubSuccess.aspx.designer.cs">
-      <DependentUpon>BasicSubSuccess.aspx</DependentUpon>
+    <Compile Include="Admin\SubscriptionSuccess.aspx.designer.cs">
+      <DependentUpon>SubscriptionSuccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="LandingPage\FirebaseStorageClient.cs" />
     <Compile Include="LandingPage\Index.aspx.cs">
@@ -785,13 +788,6 @@
     </Compile>
     <Compile Include="Admin\PremiumPlanSub.aspx.designer.cs">
       <DependentUpon>PremiumPlanSub.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\PremiumSubSuccess.aspx.cs">
-      <DependentUpon>PremiumSubSuccess.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\PremiumSubSuccess.aspx.designer.cs">
-      <DependentUpon>PremiumSubSuccess.aspx</DependentUpon>
     </Compile>
     <Compile Include="Model\AdminAccount.cs" />
     <Compile Include="Model\Customer.cs" />
@@ -908,6 +904,13 @@
     </Compile>
     <Compile Include="superAdmin\packageDetails.aspx.designer.cs">
       <DependentUpon>packageDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
     </Compile>
     <Compile Include="superAdmin\SAdminIndex.aspx.cs">
       <DependentUpon>SAdminIndex.aspx</DependentUpon>

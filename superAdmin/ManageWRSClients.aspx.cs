@@ -174,6 +174,86 @@ namespace WRS2big_Web.superAdmin
 
         }
 
+        protected void approveButton_Click(object sender, EventArgs e)
+        {
+            List<int> customerIDs = new List<int>();
+
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("select");
+                if (chk != null && chk.Checked)
+                {
+                    int customerID = int.Parse(row.Cells[1].Text);
+                    customerIDs.Add(customerID);
+                }
+            }
+
+            if (customerIDs.Count == 0)
+            {
+                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                return;
+            }
+
+            foreach (int customerID in customerIDs)
+            {
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
+                Model.AdminAccount customerDetails = response.ResultAs<Model.AdminAccount>();
+
+
+                customerDetails.status = "Approved";
+                response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
+
+                //SEND NOTIFICATION
+
+                Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+            }
+        }
+        protected void selectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox selectAll = (CheckBox)sender;
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox select = (CheckBox)row.FindControl("select");
+                select.Checked = selectAll.Checked;
+            }
+        }
+
+
+        protected void declineButton_Click(object sender, EventArgs e)
+        {
+            List<int> customerIDs = new List<int>();
+
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("select");
+                if (chk != null && chk.Checked)
+                {
+                    int customerID = int.Parse(row.Cells[1].Text);
+                    customerIDs.Add(customerID);
+                }
+            }
+
+            if (customerIDs.Count == 0)
+            {
+                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                return;
+            }
+
+            foreach (int customerID in customerIDs)
+            {
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
+                Model.AdminAccount customerDetails = response.ResultAs<Model.AdminAccount>();
+
+
+                customerDetails.status = "Declined";
+                response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
+
+                //SEND NOTIFICATION
+
+                Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+            }
+        }
+
         //protected void btnAccept_Click(object sender, EventArgs e)
         //{
 

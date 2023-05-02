@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using System.Web.Http;
 using System.Web.SessionState;
+using WRS2big_Web.Admin;
 
 namespace WRS2big_Web
 {
@@ -16,6 +18,8 @@ namespace WRS2big_Web
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            
         }
     }
 }

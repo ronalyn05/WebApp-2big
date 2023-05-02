@@ -4,7 +4,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using FireSharp;
@@ -35,6 +38,8 @@ namespace WRS2big_Web.Admin
 
             loadFeatures();
         }
+
+
         private void loadFeatures()
         {
             FirebaseResponse features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
@@ -52,8 +57,13 @@ namespace WRS2big_Web.Admin
                         packageAName.Text = entry.Value.packageName;
                         packageAdescription.Text = entry.Value.packageDescription;
                         packageAPrice.Text = entry.Value.packagePrice.ToString();
-                        durationA.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
+                        durationA.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType + " " + "only";
                         orderLimit.Text = entry.Value.packageLimit.ToString();
+
+
+                        //save the package ID into session 
+                        Session["currentPackage"] = packageID;
+
 
                         features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);

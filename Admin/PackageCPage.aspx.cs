@@ -60,13 +60,33 @@ namespace WRS2big_Web.Admin
                         features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
 
+                        //save the package ID into session 
+                        Session["currentPackage"] = packageID;
+
                         // Bind featuresList to your repeater control
                         featuresPackageC.DataSource = featuresList;
                         featuresPackageC.DataBind();
+
+                        
                     }
+                   
                 }
 
             }
+        }
+
+        protected void btnContact_Click(object sender, EventArgs e)
+        {
+            int packageID = (int)Session["currentPackage"];
+
+            FirebaseResponse packageC = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID);
+            Model.PackagePlans package = packageC.ResultAs<Model.PackagePlans>();
+
+            if (package.messaging == "Allowed")
+            {
+
+            }
+
         }
     }
 }
