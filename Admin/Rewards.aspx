@@ -42,24 +42,24 @@
                                     <div class="container">
                                       <%--  <h1 class="mt-5 mb-5">Review & Rating </h1>--%>
                                         <div class="card">
-                                            <div class="card-header"><h4>SET YOUR REWARD OFFERED HERE</h4>
+                                            <div class="card-header"><h4>SET YOUR PROMO OFFERED HERE</h4>
                                             </div> 
                                             <div class="card-body">
                                                 <div class="row">
                                                      <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Type:</h5>
-                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: discount coupon or buy 1 take 1" class="form-control" placeholder="Enter reward promo offered (Ex: 10% discount coupon)"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <h5>Promo Name:</h5>
+                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex:10% discount coupon )"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                    <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Value:</h5>
-                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo value in percentage or in number"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardValue" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <h5>Promo Discount Value :</h5>
+                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo percentage in number base on the promo type you offered"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardValue" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Description:</h5>
                                             <asp:TextBox ID="txtdescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdescription" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdescription" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any product offers that applies to the promo you offered:</h5>
@@ -71,39 +71,53 @@
                                                     <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any unit and sizes offers that applies to the promo you offered:</h5>
                                                     <asp:CheckBoxList ID="chUnitSizes" runat="server">
-                                                        <%--<asp:ListItem Text=""  ID="proUnitSizes" ></asp:ListItem>--%>
                                                     </asp:CheckBoxList>
                                             </div>
-                                                    <div class="col-md-12 col-sm-12 ">
-                                                  <h5>How would you like your customer to earn points?</h5>
-                                                    <asp:CheckBoxList ID="check_cusEarnPoints" runat="server" AutoPostBack="false">
-                                                        <asp:ListItem Text="per transaction" Value="per transaction" ></asp:ListItem>
-                                                        <asp:ListItem Text="per amount" Value="other Product" ></asp:ListItem>
-                                                    </asp:CheckBoxList>
-                                                         <div id="pointsInput" style="display: none;">
-                                                        <label for="points">Points:</label>
-                                                         <asp:TextBox ID="txtpoints" runat="server" class="form-control" placeholder="Enter points"></asp:TextBox>
-                                                      </div>
+                                                    <div class="col-md-12 col-sm-12">
+                                              <h5>How would you like your customer to earn points?</h5>
+                                              <asp:RadioButtonList ID="radioCusEarnPoints" runat="server" RepeatDirection="Horizontal">
+                                                <asp:ListItem Text="Per transaction" Value="per_transaction" />
+                                                <asp:ListItem Text="Per amount" Value="per_amount" />
+                                              </asp:RadioButtonList>
+                                              <div id="pointsInput">
+                                                  <h5>Points to earn:</h5>
+                                                <%--<label for="points">Points:</labe>l>--%>
+                                                <asp:TextBox ID="txtpointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter points to earn by the customer per transaction or per amount"></asp:TextBox>
+                                              </div>
+                                                  <div>
+                                                  <h5>Minimum range amount (applies for per amount only):</h5>
+                                                <%--<label for="points">Points:</labe>l>--%>
+                                                <asp:TextBox ID="txtrange_perAmount" runat="server" CssClass="form-control" TextMode="Number" placeholder="Enter the minimum range amount"></asp:TextBox>
+                                              </div>
                                             </div>
-                                                    <script>
-                                                        var checkBoxList = document.getElementById("check_cusEarnPoints");
-                                                        var pointsInput = document.getElementById("pointsInput");
-                                                        var pointsInputField = document.getElementById("points");
 
-                                                        checkBoxList.addEventListener("change", function () {
-                                                            if (checkBoxList.value === "per transaction" || checkBoxList.value === "per amount") {
-                                                                pointsInput.style.display = "block";
-                                                                pointsInputField.required = true;
-                                                            } else {
-                                                                pointsInput.style.display = "none";
-                                                                pointsInputField.required = false;
-                                                            }
-                                                        });
-                                                    </script>
+                                            <script>
+                                                // Get the relevant elements from the DOM
+                                                var radioCusEarnPoints = document.getElementById("radioCusEarnPoints");
+                                                var pointsInput = document.getElementById("pointsInput");
+                                                var pointsInputField = document.getElementById("txtpointsPerTxnOrAmount");
+                                                var rangeAmountField = document.getElementById("txtrange_perAmount");
+
+                                                // Add a change event listener to the RadioButtonList
+                                                radioCusEarnPoints.addEventListener("change", function () {
+                                                    if (radioCusEarnPoints.value === "per_transaction") {
+                                                        // If per transaction is selected, show the points input and make it required
+                                                        pointsInput.style.display = "block";
+                                                        pointsInputField.required = true;
+                                                        rangeAmountField.setAttribute("disabled", "disabled");
+                                                       // rangeAmountField.disabled = true; // Disable the range amount field
+                                                    } else {
+                                                        // If per amount is selected, hide the points input and make it not required
+                                                        pointsInput.style.display = "block";
+                                                        pointsInputField.required = false;
+                                                        rangeAmountField.disabled = false; // Enable the range amount field
+                                                    }
+                                                });
+                                            </script>
 
                                              <div class="col-md-12 col-sm-12 ">
-                                            <h5>Points Required:</h5>
-                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required per transaction or per amount"></asp:TextBox>
+                                            <h5>Points required to claim the reward:</h5>
+                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the reward"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
@@ -120,59 +134,18 @@
                                                  <br />
                                                  <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" />
-                                                     <input type="hidden" id="confirm_add" name="confirm_add" value="" />
-                                               </div>
-                                               <script type="text/javascript">
-                                                        function confirmAdd() {
-                                                            var confirmValue = confirm("Are you sure you want to add the data? Make sure your promo is final and no further changes as you can only set your promo once until the expiration");
-                                                            document.getElementById('confirm_add').value = confirmValue ? 'Yes' : 'No';
-                                                        }
-                                               </script>
+                                                     <script>
+                                                         function disableButton() {
+                                                             document.getElementById("btnAdd").disabled = true;
+                                                         }
+                                                     </script>
 
-                                                  
+                                                    <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" OnClientClick="disableButton()" />
 
+                                                    <%-- <asp:Button ID="btnAdd" class="btn btn-primary" runat="server" Text="Submit" ValidationGroup="a" OnClick="btnAddReward_Click" />--%>
                                                 </div>
                                             </div>
                                         </div>
-                                       <%-- <div class="mt-5"></div>--%>
-                                  <%--  sa pag set sa discount ni here --%>
-                                   <%-- <div class="container">
-                                     <div class="card">
-                                            <div class="card-header"><h4>SET DISCOUNT OFFERED HERE</h4>
-                                            </div> 
-                                            <div class="card-body">
-                                                <div class="row">
-                                                      <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any product offers that applies to the discount you offered:</h5>
-                                                    <asp:CheckBoxList ID="chckdiscountOffered" runat="server" AutoPostBack="false">
-                                                        <asp:ListItem Text="Product Refill" Value="Product Refill" ></asp:ListItem>
-                                                        <asp:ListItem Text="other Product" Value="other Product" ></asp:ListItem>
-                                                    </asp:CheckBoxList>
-                                            </div>
-                                                     <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any unit below that applies to the discount you offered:</h5>
-                                                    <asp:CheckBoxList ID="chckunitOffered" runat="server" AutoPostBack="false">
-                                                        <asp:ListItem Text="gallon" Value="gallon" ></asp:ListItem>
-                                                        <asp:ListItem Text="liter" Value="liter" ></asp:ListItem>
-                                                        <asp:ListItem Text="mL" Value="mL" ></asp:ListItem>
-                                                    </asp:CheckBoxList>
-                                            </div>
-                                                   <div class="col-md-12 col-sm-12 ">
-                                            <h5>Discount:</h5>
-                                            <asp:TextBox ID="txtdiscount" runat="server" TextMode="Number" ToolTip="Note: must enter discount in percentage (%)" class="form-control" placeholder="Enter discount offered"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                            </div>
-                                                    
-                                                     </div> 
-                                                 <br />
-                                                 <div class="modal-footer">
-                                               <asp:Button ID="Button1" class="btn btn-primary" runat="server" OnClientClick="confirmAdd();" AutoPostback="False" Text="Submit" ValidationGroup="a" OnClick="btnAddDiscount_Click" />
-                                                     <input type="hidden" id="confirm_add2" name="confirm_add2" value="" />
-                                               </div>
-                                                </div>
-                                            </div>
-                                         </div>--%>
                                     </div>
                                 </div>
                             </div>

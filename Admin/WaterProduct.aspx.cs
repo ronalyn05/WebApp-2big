@@ -111,19 +111,19 @@ namespace WRS2big_Web.Admin
                             foreach (Order order in filteredOrders)
                             {
                                 double orderedGallons = 0;
-                                if (order.order_Products[0].productUnit == "gallon/s")
+                                if (order.order_Products[0].order_unit == "gallon/s")
                                 {
-                                    orderedGallons = Double.Parse(order.order_Products[0].productSize);
+                                    orderedGallons = order.order_Products[0].order_size;
                                 }
-                                else if (order.order_Products[0].productUnit == "L" || order.order_Products[0].productUnit == "liter/s")
+                                else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
                                 {
                                     double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                    orderedGallons = Double.Parse(order.order_Products[0].productSize) * gallonsPerLiter;
+                                    orderedGallons = order.order_Products[0].order_size * gallonsPerLiter;
                                 }
-                                else if (order.order_Products[0].productUnit == "mL" || order.order_Products[0].productUnit == "ML" || order.order_Products[0].productUnit == "milliliters")
+                                else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
                                 {
                                     double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
-                                    orderedGallons = Double.Parse(order.order_Products[0].productSize) / gallonsPerML;
+                                    orderedGallons = order.order_Products[0].order_size / gallonsPerML;
                                 }
                                 //if (order.order_unit == "gallon/s")
                                 //{
@@ -140,7 +140,7 @@ namespace WRS2big_Web.Admin
                                 //    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
                                 //}
                                 //Get the total of ordered gallons 
-                                totalOrderedGallons += orderedGallons * order.order_Quantity;
+                                totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
                             }
                         }
 
