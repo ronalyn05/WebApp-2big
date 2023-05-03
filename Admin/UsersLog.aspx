@@ -55,6 +55,10 @@
                                                 <%--<div class="card" style="background-color:#f2e2ff">--%>
                                                     <div class="card-header">
                                                          <asp:Label ID="Label1" runat="server" Text="USER ACTIVITY LOG" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                        <div style="float:right;"> 
+                                                            <asp:TextBox ID="txtSearch" Placeholder="search activity (must be in capital letters)...." ToolTip="enter activity to search in capital letters and with space in between each word" Width ="364px" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
+                                                         <asp:Button ID="btnSearchLogs" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchLogs_Click"/>
+                                                        </div>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">
                                                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -65,6 +69,56 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+                                                   <%-- MODAL TO VIEW CERTAIN RECORDS --%>
+                                                    <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                          <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel3"> ACTIVITY DETAILS: 
+                                <asp:Label ID="lbluserId" runat="server" Font-Underline="true" ForeColor="#0066ff"/>
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="col-xl-12 col-xl-12 ">
+                                <div class="x_content">
+                                   <%-- USERS LOG REPORTS--%>
+                                     <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                <%--the gridview starts here--%>
+                                                               <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
+                                                                   <br />
+                                                                    <asp:GridView runat="server" ID="GridLogs" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                  
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                    </div>
+
+                                                               <%--Gridview ends here--%>
+
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                            <%--TAB end --%>
+                                                        </div>
+                                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
                                                     <div class="card-block">
                                                         <%-- <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
                                                             <asp:ListItem Selected="False" Text="---Sort-----"></asp:ListItem>

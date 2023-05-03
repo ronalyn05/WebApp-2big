@@ -246,7 +246,7 @@ namespace WRS2big_Web.Admin
             //sa pag create sa table
             DataTable productRefillTable = new DataTable();
             productRefillTable.Columns.Add("PRODUCT ID");
-            productRefillTable.Columns.Add("PRODUCT TYPE");
+            productRefillTable.Columns.Add("PRODUCT NAME");
             productRefillTable.Columns.Add("PRODUCT UNIT");
             productRefillTable.Columns.Add("PRODUCT SIZE");
             productRefillTable.Columns.Add("PRODUCT PRICE");
@@ -314,7 +314,7 @@ namespace WRS2big_Web.Admin
             //sa pag create sa table
             DataTable otherProductTable = new DataTable();
             otherProductTable.Columns.Add("PRODUCT ID");
-            otherProductTable.Columns.Add("PRODUCT TYPE");
+            otherProductTable.Columns.Add("PRODUCT NAME");
             otherProductTable.Columns.Add("PRODUCT UNIT");
             otherProductTable.Columns.Add("PRODUCT SIZE");
             otherProductTable.Columns.Add("PRODUCT PRICE");
@@ -901,7 +901,7 @@ namespace WRS2big_Web.Admin
 
         //SEARCH PRODUCT REPORT
         protected void btnSearch_Click(object sender, EventArgs e)
-            {
+        {
                 try
                 {
                     string selectedOption = ddlSearchOptions.SelectedValue;
@@ -934,11 +934,11 @@ namespace WRS2big_Web.Admin
                 }
                 catch (Exception ex)
                 {
-                    Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+                    Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
                 }
             }
-
-        protected void btnSearchOrder_Click(object sender, EventArgs e)
+        //SEARCH CERTAIN PRODUCT REPORT
+        protected void btnSearchProduct_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
@@ -946,6 +946,7 @@ namespace WRS2big_Web.Admin
             try
             {
                 string productnum = txtSearch.Text;
+                decimal discount;
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
@@ -955,126 +956,273 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse responselist = twoBigDB.Get("otherPRODUCTS");
                 Dictionary<string, otherProducts> otherProductlist = responselist.ResultAs<Dictionary<string, otherProducts>>();
 
+                // Create the DataTable to hold the orders
+                DataTable productRefillTable = new DataTable();
+                productRefillTable.Columns.Add("PRODUCT ID");
+                productRefillTable.Columns.Add("PRODUCT NAME");
+                productRefillTable.Columns.Add("PRODUCT UNIT & SIZE");
+                productRefillTable.Columns.Add("PRODUCT PRICE");
+                productRefillTable.Columns.Add("PRODUCT DISCOUNT");
+                productRefillTable.Columns.Add("DATE ADDED");
+                productRefillTable.Columns.Add("ADDED BY");
+                productRefillTable.Columns.Add("DATE UPDATED");
+                productRefillTable.Columns.Add("UPDATED BY");
 
+                // Create the DataTable to hold the orders
+                DataTable otherProductTable = new DataTable();
+                otherProductTable.Columns.Add("PRODUCT ID");
+                otherProductTable.Columns.Add("PRODUCT NAME");
+                otherProductTable.Columns.Add("PRODUCT UNIT & SIZE");
+                otherProductTable.Columns.Add("PRODUCT PRICE");
+                otherProductTable.Columns.Add("PRODUCT DISCOUNT");
+                otherProductTable.Columns.Add("PRODUCT STOCK");
+                otherProductTable.Columns.Add("DATE ADDED");
+                otherProductTable.Columns.Add("ADDED BY");
+                otherProductTable.Columns.Add("DATE UPDATED");
+                otherProductTable.Columns.Add("UPDATED BY");
+
+                //condition to fetch the product refill data
                 if (response != null && response.ResultAs<ProductRefill>() != null)
                 {
+                    //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
                     var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
 
-                  
-                        // Loop through the orders and add them to the DataTable
-                        foreach (var entry in filteredList)
-                        {
-                            //hiding some label
-                            Label9.Visible = false;
-                            Label18.Visible = false;
-                            Label20.Visible = false;
-                            Label22.Visible = false;
-                            Label24.Visible = false;
-                            Label16.Visible = false;
-                            Label26.Visible = false;
-                            Label28.Visible = false;
-                            Label30.Visible = false;
-                            Label32.Visible = false;
-                            
+                    //if (filteredList.Count() == 0)
+                    //{
+                    //    //Response.Write("<script>alert('No product data found for the id number.');</script>");
+                    //    lblMessage.Text = "No product data found for the product with id number" + productnum;
+                    //}
+                    //else
+                    //{
 
-                            if (productnum == entry.pro_refillId.ToString())
-                            {
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            
-                            // Set labels to display empty string or placeholder text if the corresponding value is null
-                            lblProduct_id.Text = entry.pro_refillId.ToString();
-                            lblproductType.Text = entry.pro_refillWaterType.ToString();
-                            lblproductSizeUnit.Text = entry.pro_refillSize.ToString() + "" + entry.pro_refillUnit.ToString();
-                            lblprice.Text = entry.pro_refillPrice.ToString();
-                            lblAddedBy.Text = dateAdded;
-                            lblDiscount.Text = entry.pro_discount.ToString();
-                            lblDateAdded.Text = entry.dateAdded.ToString();
-                            lblDateUpdated.Text = dateUpdated;
-                            
-                            if (entry.updatedBy == null)
-                            {
-                                lblUpdatedby.Text = "";
-                            }
-                            else
-                            {
-                                lblUpdatedby.Text = entry.updatedBy.ToString();
-                            }
-
-
-                            txtSearch.Text = "";
-                            }
-
-                       
-
-                        }
-                }
-                else if (responselist != null && responselist.ResultAs<otherProducts>() != null)
-                {
-                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno);
-
-                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
-                    // Loop through the orders and add them to the DataTable
+                    // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        //hiding some label
-
-                        Label6.Visible = false;
-                        Label8.Visible = false;
-                            Label10.Visible = false;
-                            Label11.Visible = false;
-                            Label12.Visible = false;
-                            Label13.Visible = false;
-                            Label14.Visible = false;
-                            Label15.Visible = false;
-                            Label17.Visible = false;
-
-                        if (productnum == entry.other_productId.ToString())
-                        {
+                            if (productnum == entry.pro_refillId.ToString())
+                            {
+                                if (!decimal.TryParse(entry.pro_discount.ToString(), out discount))
+                                {
+                                    // If the discount value is not a valid decimal, assume it is zero
+                                    discount = 0;
+                                }
+                                else
+                                {
+                                    // Convert discount from percentage to decimal
+                                    discount /= 100;
+                                }
                             string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
-                            //                     entry.productPrice, entry.productQty, entry.productDiscount,
-                            //                     entry.totalAmount, dateAdded, entry.addedBy);
-
-                            productId.Text = entry.other_productId.ToString();
-                            productType.Text = entry.other_productName.ToString();
-                            productUnit_Size.Text = entry.other_productSize.ToString() + "" + entry.other_productUnit.ToString();
-                            productPrice.Text = entry.other_productPrice.ToString();
-                            productDiscounts.Text = entry.other_productDiscount.ToString();
-                            productStock.Text = entry.other_qtyStock.ToString() + "" + entry.other_unitStock.ToString();
-                            productDateadded.Text = dateAdded;
-                            productAddedby.Text = entry.dateAdded.ToString();
-                            productUpdated.Text = dateUpdated;
-                            productUpdatedBy.Text = entry.updatedBy.ToString();
-
-                            txtSearch.Text = "";
-
-                        }
+                                productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillSize + " " + entry.pro_refillUnit, 
+                                    entry.pro_refillPrice, discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                            }
                     }
+                   
                 }
                 else
                 {
-                    // Handle null response or invalid selected value
-                    //walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
+                    lblMessage.Text = "No data found for product with id number" + productnum;
+                }
+                //condition to fetch the other product data
+                if (responselist != null && responselist.ResultAs<otherProducts>() != null)
+                {
+                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno && (d.other_productId.ToString() == productnum));
+
+                    //if (filteredList.Count() == 0)
+                    //{
+                    //    //Response.Write("<script>alert('No product data found for the id number.');</script>");
+                    //    lblMessage.Text = "No product data found for the product with id number" +  productnum;
+                    //}
+                    //else
+                    //{
+                        // Loop through the entries and add them to the DataTable
+                        foreach (var entry in filteredList)
+                        {
+                            if (productnum == entry.other_productId.ToString())
+                            {
+                                if (!decimal.TryParse(entry.other_productDiscount.ToString(), out discount))
+                                {
+                                    // If the discount value is not a valid decimal, assume it is zero
+                                    discount = 0;
+                                }
+                                else
+                                {
+                                    // Convert discount from percentage to decimal
+                                    discount /= 100;
+                                }
+
+                                string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                otherProductTable.Rows.Add(entry.other_productId, entry.other_productName, entry.other_productSize + " " + entry.other_productUnit, 
+                                     entry.other_productPrice, discount, entry.other_qtyStock + " " + entry.other_unitStock, dateAdded, 
+                                     entry.addedBy, dateUpdated, entry.updatedBy);
+                            }
+                        }
+                }
+                else
+                {
+                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
+                    lblMessage.Text = "No data found for product with id number" + productnum;
                 }
 
                 // Bind the DataTable to the GridView
-                //gridViewRecord.DataSource = walkInordersTable;
-                //gridViewRecord.DataBind();
+                GridPro_Details.DataSource = productRefillTable;
+                GridPro_Details.DataBind();
 
-                lblProductId.Text = productnum;
+                GridotherProduct_Details.DataSource = otherProductTable;
+                GridotherProduct_Details.DataBind();
+                // lblProductId.Text = productnum;
 
                 //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+                txtSearch.Text = null;
 
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>" + ex.Message);
             }
         }
+       
+
+        //protected void btnSearchOrder_Click(object sender, EventArgs e)
+        //{
+        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+        //    string idno = (string)Session["idno"];
+        //    try
+        //    {
+        //        string productnum = txtSearch.Text;
+
+        //        // Retrieve all orders from the ORDERS table
+        //        FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
+        //        Dictionary<string, ProductRefill> productsList = response.ResultAs<Dictionary<string, ProductRefill>>();
+
+        //        // Retrieve all orders from the ORDERS table
+        //        FirebaseResponse responselist = twoBigDB.Get("otherPRODUCTS");
+        //        Dictionary<string, otherProducts> otherProductlist = responselist.ResultAs<Dictionary<string, otherProducts>>();
+
+
+        //        if (response != null && response.ResultAs<ProductRefill>() != null)
+        //        {
+        //            var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
+
+
+        //                // Loop through the orders and add them to the DataTable
+        //                foreach (var entry in filteredList)
+        //                {
+        //                    //hiding some label
+        //                    Label9.Visible = false;
+        //                    Label18.Visible = false;
+        //                    Label20.Visible = false;
+        //                    Label22.Visible = false;
+        //                    Label24.Visible = false;
+        //                    Label16.Visible = false;
+        //                    Label26.Visible = false;
+        //                    Label28.Visible = false;
+        //                    Label30.Visible = false;
+        //                    Label32.Visible = false;
+
+
+        //                    if (productnum == entry.pro_refillId.ToString())
+        //                    {
+        //                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+        //                    // Set labels to display empty string or placeholder text if the corresponding value is null
+        //                    lblProduct_id.Text = entry.pro_refillId.ToString();
+        //                    lblproductType.Text = entry.pro_refillWaterType.ToString();
+        //                    lblproductSizeUnit.Text = entry.pro_refillSize.ToString() + "" + entry.pro_refillUnit.ToString();
+        //                    lblprice.Text = entry.pro_refillPrice.ToString();
+        //                    lblAddedBy.Text = dateAdded;
+        //                    lblDiscount.Text = entry.pro_discount.ToString();
+        //                    lblDateAdded.Text = entry.dateAdded.ToString();
+        //                    lblDateUpdated.Text = dateUpdated;
+
+        //                    if (entry.updatedBy == null)
+        //                    {
+        //                        lblUpdatedby.Text = "";
+        //                    }
+        //                    else
+        //                    {
+        //                        lblUpdatedby.Text = entry.updatedBy.ToString();
+        //                    }
+
+
+        //                    txtSearch.Text = "";
+        //                    }
+
+
+
+        //                }
+        //        }
+        //        else if (responselist != null && responselist.ResultAs<otherProducts>() != null)
+        //        {
+        //            var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno);
+
+        //            //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
+        //            // Loop through the orders and add them to the DataTable
+        //            foreach (var entry in filteredList)
+        //            {
+        //                //hiding some label
+
+        //                Label6.Visible = false;
+        //                Label8.Visible = false;
+        //                    Label10.Visible = false;
+        //                    Label11.Visible = false;
+        //                    Label12.Visible = false;
+        //                    Label13.Visible = false;
+        //                    Label14.Visible = false;
+        //                    Label15.Visible = false;
+        //                    Label17.Visible = false;
+
+        //                if (productnum == entry.other_productId.ToString())
+        //                {
+        //                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                    //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                    //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+        //                    //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+        //                    //                     entry.productPrice, entry.productQty, entry.productDiscount,
+        //                    //                     entry.totalAmount, dateAdded, entry.addedBy);
+
+        //                    productId.Text = entry.other_productId.ToString();
+        //                    productType.Text = entry.other_productName.ToString();
+        //                    productUnit_Size.Text = entry.other_productSize.ToString() + "" + entry.other_productUnit.ToString();
+        //                    productPrice.Text = entry.other_productPrice.ToString();
+        //                    productDiscounts.Text = entry.other_productDiscount.ToString();
+        //                    productStock.Text = entry.other_qtyStock.ToString() + "" + entry.other_unitStock.ToString();
+        //                    productDateadded.Text = dateAdded;
+        //                    productAddedby.Text = entry.dateAdded.ToString();
+        //                    productUpdated.Text = dateUpdated;
+        //                    productUpdatedBy.Text = entry.updatedBy.ToString();
+
+        //                    txtSearch.Text = "";
+
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Handle null response or invalid selected value
+        //            //walkInordersTable.Rows.Add("No data found", "", "", "", "", "", "");
+        //        }
+
+        //        // Bind the DataTable to the GridView
+        //        //gridViewRecord.DataSource = walkInordersTable;
+        //        //gridViewRecord.DataBind();
+
+        //        lblProductId.Text = productnum;
+
+        //        //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+        //    }
+        //}
     }
 }
