@@ -106,6 +106,70 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataBind();
 
         }
+
+        //SEARCH ACTIVITY
+        protected void btnSearchLogs_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string activity = txtSearch.Text;
+
+              
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("USERSLOG");
+                Dictionary<string, UsersLogs> loglist = responselist.ResultAs<Dictionary<string, UsersLogs>>();
+
+                // Create the DataTable to hold the orders
+                DataTable userLogsTable = new DataTable();
+                userLogsTable.Columns.Add("LOG ID");
+                userLogsTable.Columns.Add("USER ID");
+                userLogsTable.Columns.Add("USER NAME");
+                userLogsTable.Columns.Add("ACTIVITY");
+                // walkInordersTable.Columns.Add("PRODUCT SIZE");
+                userLogsTable.Columns.Add("TIMESTAMP");
+
+
+                if (responselist != null && responselist.ResultAs<UsersLogs>() != null)
+                {
+                    var filteredList = loglist.Values.Where(d => d.userIdnum.ToString() == idno && d.userActivity.ToString() == activity);
+
+                    if (filteredList.Count() == 0)
+                    {
+                        Response.Write("<script>alert('No logs found for the entered activity. Search activity in capital letters and with space in between each word.');</script>");
+                    }
+                    else
+                    {
+                        // Loop through the entries and add them to the DataTable
+                        foreach (var entry in filteredList)
+                        {
+                            string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, dateAdded);
+                        }
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('Error retrieving logs.');</script>");
+                }
+
+                // Bind the DataTable to the GridView
+                GridLogs.DataSource = userLogsTable;
+                GridLogs.DataBind();
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
+            }
+        }
+
         //protected void gridUserLog_RowDataBound(object sender, GridViewRowEventArgs e)
         //{
         //    if (e.Row.RowType == DataControlRowType.DataRow)

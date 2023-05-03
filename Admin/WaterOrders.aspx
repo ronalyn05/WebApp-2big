@@ -85,8 +85,10 @@
                                                         
                                                         <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="LIST OF SUCCESSFUL ORDERS"></asp:Label>
                                                         <div style="float:right;"> 
-                                                            <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter order id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
-                                                         <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>
+                                                             <asp:TextBox ID="txtSearch" Width="364px" Placeholder="enter order id...." ToolTip="enter order id number to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                            <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchOrder_Click" CssClass="btn-primary" Height="40px"/>
+                                                           <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter order id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
+                                                         <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
                                                         </div>
                                                         
                                                         <div class="card-header-right">
@@ -101,202 +103,89 @@
                                                     </div>
 
                                                     <%-- MODAL TO VIEW CERTAIN RECORDS --%>
-                                                    <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
+                                                     <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                         <div class="modal-content">
-                          <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                          <form id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                             <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel3"> ORDER DETAILS: 
-                                <asp:Label ID="lblOrderId" runat="server" Font-Underline="true" ForeColor="#0066ff"/>
+                              <h4 class="modal-title" id="myModalLabel5"> ORDER DETAILS
+                                
                               </h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                             </div>
                             <div class="modal-body">
                               <div class="col-xl-12 col-xl-12 ">
                                 <div class="x_content">
-                                   <%-- WALKIN ORDERS REPORTS--%>
-                                    <div class="row">
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="Label1" Text="Order ID:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblOrder_id" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="col-xl-6">
-                                        <asp:Label ID="Label2" Text="Order Type:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblorderType" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                            </div>
-                                            <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label3" Text="Product Name:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblproductname" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                                </div>
-                                       <div class="row">
-                                        <div class="col-xl-6">
-                                        <asp:Label ID="Label4" Text="Product Unit and Size:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblproductSizeUnit" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label5" Text="Price:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblprice" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label6" Text="Quantity:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lblqty" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                        <asp:Label ID="Label8" Text="Discount:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lbldiscount" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label9" Text="Total Amount:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lbltotalamount" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                        <asp:Label ID="Label10" Text="Date Added:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                        <asp:Label ID="lbldate" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                   <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label11" Text="Added By:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                       <asp:Label ID="lblAddedby" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    
-                                    <%-- ONLINE ORDERS REPORTS--%>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                          <asp:Label ID="Label12" Text="Order ID:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                      <asp:Label ID="Lbl_orderId" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                          <asp:Label ID="Label13" Text="Customer ID:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_cusId" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                           <asp:Label ID="Label14" Text="Driver Id:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_driverId" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                          <asp:Label ID="Label15" Text="Total Amount:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_totalAmount" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label16" Text="Date of order accepted::" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_dateAccepted" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label18" Text="Date of order delivered:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_dateDelivered" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                     <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label19" Text="Date of payment received:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_datePayment" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                         <asp:Label ID="Label20" Text="Payment Received By:" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                      <div class="col-xl-6">
-                                     <asp:Label ID="Lbl_payment" runat="server" Width="364px"></asp:Label>
-                                      </div>
-                                    </div>
-                                  <%--<asp:GridView runat="server" ID="gridViewRecord" CellPadding="3" CssClass="auto-style1" SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                  </asp:GridView>--%>
+                                   <%-- ORDER DETAILS REPORTS--%>
+                                     <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                <%--the gridview starts here--%>
+                                                               <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
+                                                                   <asp:Label ID="lblError_Message" runat="server" Font-Underline="true" ForeColor="red"/>
+                                                                   <br />
+                                                                    <asp:GridView runat="server" ID="gridOnline_Order" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                  
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                   <asp:GridView runat="server" ID="gridWalkin_Order" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                  
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                    </div>
+
+                                                               <%--Gridview ends here--%>
+
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                            <%--TAB end --%>
+                                                        </div>
+                                                    </div>
                                 </div>
                               </div>
                             </div>
                           </form>
                         </div>
                       </div>
-                    </div>
+                    </div><%-- end for modal view--%>
+
             <%-- SEARCH, DISPLAY --%>
               <div class="card-block">
-                                                       <div>
-                                                        <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                            <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
-                                                            <asp:ListItem Text="------- Select one category ----" Selected="False"></asp:ListItem>
-                                                            <asp:ListItem Text="Online Order" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="Walkin Order" Value="2"></asp:ListItem>
-                                                        </asp:DropDownList>
+                <div>
+                <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
+               <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+                <asp:ListItem Text="------- Select one category ----" Selected="False"></asp:ListItem>
+                <asp:ListItem Text="Online Order" Value="1"></asp:ListItem>
+                <asp:ListItem Text="Walkin Order" Value="2"></asp:ListItem>
+                </asp:DropDownList>
 
                                                         <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px" Width="150px"/>
 
-                                                        <asp:DropDownList ID="ddlDateRange" runat="server" CssClass="text-center" Height="40px" Width="150px" style="float:right;">
-                                                            <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+<%--                                                        <asp:DropDownList ID="ddlDateRange" runat="server" CssClass="text-center" Height="40px" Width="150px" style="float:right;">
+                                                           
                                                             <asp:ListItem Text="------- View list by: ----" Selected="False"></asp:ListItem>
                                                             <asp:ListItem Text="Day" Value="day"></asp:ListItem>
                                                             <asp:ListItem Text="Week" Value="week"></asp:ListItem>
                                                             <asp:ListItem Text="Month" Value="month"></asp:ListItem>
-                                                        </asp:DropDownList>
+                                                             <asp:ListItem Text="Year" Value="year"></asp:ListItem>
+                                                        </asp:DropDownList>--%>
                                                     </div>
 
                                                         <div class="table-responsive">
