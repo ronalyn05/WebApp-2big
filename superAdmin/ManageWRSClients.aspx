@@ -64,29 +64,39 @@
                                                     <div class="card">
                                                         <div class="card-header">
                                                             <h5>CLIENT APPROVAL</h5>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+
+                                                                </ul>
+
+                                                            </div>
+                                                            <div class="header-search">
+                                                                <div class="input-group">
+                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by station name"> </asp:TextBox>
+                                                                    <asp:Button runat="server" ID="searchButton" class="btn btn-primary" Height="40" Text="search" OnClick="searchButton_Click" />
+
+                                                                    <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
+                                                                        <asp:ListItem Value="All"> All </asp:ListItem>
+                                                                        <asp:ListItem Value="Pending Clients"> Pending Clients </asp:ListItem>
+                                                                        <asp:ListItem Value="Approved Clients"> Approved Clients </asp:ListItem>
+                                                                        <asp:ListItem Value="Declined Clients"> Declined Clients </asp:ListItem>
+
+                                                                    </asp:DropDownList>
+                                                                    <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view"  OnClick="viewSorted_Click"/>
+                                                                </div>
+
+
+                                                            </div>
+
                                                         </div>
                                                         <div class="card-block tab-icon">
                                                             <!-- Row start -->
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-xl-16">
-                                                                    <!-- <h6 class="sub-title">Tab With Icon</h6> -->
-                                                                    <!-- Nav tabs -->
-                                                                    <ul class="nav nav-tabs md-tabs " role="tablist">
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" data-toggle="tab" href="#AllClients" role="tab">All Clients</a>
-                                                                            <div class="slide"></div>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link active " data-toggle="tab" href="#pendingClients" role="tab">Pending Clients</a>
-
-                                                                            <div class="slide"></div>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link " data-toggle="tab" href="#approvedClients" role="tab">Approved Clients</a>
-
-                                                                            <div class="slide"></div>
-                                                                        </li>
-                                                                    </ul>
                                                                     <!-- Tab panes -->
                                                                     <div class="tab-content card-block">
                                                                         <div class="tab-pane" id="AllClients" role="tabpanel">

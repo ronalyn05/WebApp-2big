@@ -127,6 +127,20 @@ namespace WRS2big_Web.superAdmin
             notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
+            //var client = new AdminAccount
+            //{
+            //    idno = admin.idno,
+            //    fname = admin.fname,
+            //    lname = admin.lname,
+            //    phone = admin.phone,
+            //    email = admin.email,
+            //    dateApproved = DateTime.Now,
+            //    dateRegistered = admin.dateRegistered,
+            //    userRole = admin.userRole
+            //};
+            //SetResponse userResponse;
+            //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + admin.idno, client);//Storing data to the database
+            //AdminAccount user = userResponse.ResultAs<AdminAccount>();//Database Result
 
 
             Response.Write("<script>alert ('Client Approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");

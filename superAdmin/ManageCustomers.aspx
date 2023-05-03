@@ -64,6 +64,25 @@
                                                     <div class="card">
                                                         <div class="card-header">
                                                             <h5>CUSTOMER APPROVAL</h5>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+
+                                                                </ul>
+
+                                                            </div>
+                                                            <div class="header-search">
+                                                                <div class="input-group">
+                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by customer name"> </asp:TextBox>
+                                                                    <asp:Button runat="server" ID="searchButton" class="btn btn-primary" Height="40" Text="search" Onclick="searchButton_Click"/>
+                                                                </div>
+
+
+                                                            </div>
+
                                                         </div>
                                                         <div class="card-block tab-icon">
                                                             <!-- Row start -->

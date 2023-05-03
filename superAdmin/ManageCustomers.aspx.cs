@@ -177,6 +177,23 @@ namespace WRS2big_Web.superAdmin
                 customerDetails.cus_status = "Approved";
                 response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
 
+                ////SAVE TO SUPERADMIN 
+                //var client = new Model.Customer
+                //{
+                //    cusId = customerDetails.cusId,
+                //    firstName = customerDetails.firstName,
+                //    lastName = customerDetails.lastName,
+                //    phoneNumber = customerDetails.phoneNumber,
+                //    email = customerDetails.email,
+                //    dateApproved = DateTime.Now,
+                //    dateRegistered = customerDetails.dateRegistered,
+                //    userRole = customerDetails.userRole
+                //};
+                //SetResponse userResponse;
+                //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + customerDetails.cusId, client);//Storing data to the database
+                //Model.Customer user = userResponse.ResultAs<Model.Customer>();//Database Result
+
+
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }
         }
@@ -222,6 +239,51 @@ namespace WRS2big_Web.superAdmin
 
                 Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }
+        }
+
+        protected void searchButton_Click(object sender, EventArgs e)
+        {
+            string searched = search.Text;
+
+
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer all = response.ResultAs<Model.Customer>();
+            var data = response.Body;
+            Dictionary<string, Model.Customer> Allclients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+
+            //creating the columns of the gridview
+            DataTable clientsTable = new DataTable();
+            clientsTable.Columns.Add("CUSTOMER ID");
+            clientsTable.Columns.Add("CUSTOMER NAME");
+            clientsTable.Columns.Add("EMAIL");
+            clientsTable.Columns.Add("CONTACT #");
+            clientsTable.Columns.Add("STATUS");
+
+
+            foreach (KeyValuePair<string, Model.Customer> entry in Allclients)
+            {
+                if (searched == entry.Value.firstName || searched == entry.Value.lastName)
+                {
+                    clientsTable.Rows.Add(
+                        entry.Value.cusId, 
+                        entry.Value.firstName + " " + entry.Value.lastName, 
+                        entry.Value.email, 
+                        entry.Value.phoneNumber, 
+                        entry.Value.cus_status);
+
+                }
+
+
+            }
+
+
+            // Bind DataTable to GridView control
+            AllGridview.DataSource = clientsTable;
+            AllGridview.DataBind();
+            //pendingGridView.DataSource = clientsTable;
+            //pendingGridView.DataBind();
+            //approvedGridView.DataSource = clientsTable;
+            //approvedGridView.DataBind();
         }
     }
 }

@@ -272,6 +272,7 @@ namespace WRS2big_Web.Admin
                             {
                                 int expressID = new Random().Next(1, 10000);
                                 delivery.exDeliveryType = "Express";
+                                delivery.expressDistance = int.Parse(expressDistance.Text);
                                 delivery.expressdateAdded = DateTimeOffset.UtcNow;
                                 delivery.expressID = expressID;
                                 delivery.exDeliveryFee = expressdeliveryFee.Text;
