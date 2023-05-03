@@ -176,7 +176,7 @@ namespace WRS2big_Web.LandingPage
                 var adminNotification = new Notification
                 {
                     admin_ID = data.idno,
-                    sender = "Admin",
+                    sender = "Super Admin",
                     receiver = "Admin",
                     title = "Welcome to 2BiG!",
                     body = " Thankyou for signing up! Currently, your account is under review. You will receive a new notification once your account is approved",
@@ -308,7 +308,7 @@ namespace WRS2big_Web.LandingPage
                             Session["logsId"] = existingLog.logsId;
                         }
 
-                      
+
                         // Login successful, redirect to admin homepage
                         Response.Write("<script>alert ('Login Successfull!');</script>");
                         //Response.Redirect("/Admin/AdminIndex.aspx");
@@ -335,7 +335,7 @@ namespace WRS2big_Web.LandingPage
                         }
                         else if (clientStat == "Approved" && subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
                         {
-                            Response.Write("<script> window.location.href = '/Admin/SubscriptionPlans.aspx'; </script>");
+                            Response.Write("<script> window.location.href = '/Admin/AdminIndex.aspx'; </script>");
 
                         }
                         else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED

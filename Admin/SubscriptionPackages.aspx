@@ -117,7 +117,7 @@
 </head>
 
 <body class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
-    <div data-turbo-body class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
+    <div class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
         <div class="position-relative js-header-wrapper ">
             <a href="#start-of-content"
                 class="p-3 color-bg-accent-emphasis color-fg-on-emphasis show-on-focus js-skip-to-content">Skip to content
@@ -158,7 +158,7 @@
                         <img src="/images/2ndLogo.png" style="width: 500px" alt="logo.png">
                     </div>
                     <div class="p-responsive container-xl text-center mt-7 mt-md-8 mt-lg-9 mb-5 mb-lg-9">
-                        <h6 class="h4-mktg">Take your desired plan <br /> and start growing your business now!</h6>
+                        <h6 class="h4-mktg">Take your desired package <br /> and start growing your business now!</h6>
                     </div>
                     
                     <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center">
@@ -209,12 +209,6 @@
                                                 </div>
                                             </ItemTemplate>
                                         </asp:Repeater>
-                                        <h4 class="f5 text-uppercase text-gradient-mint-blue mt-4">CONS</h4> <br />
-                                        <div>
-                                             <asp:Image ID="Image2" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
-                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black">Order Transaction Limit: &nbsp; </asp:Label>
-                                              <asp:Label runat="server" class="js-computed-value" ID="orderLimit" style="font-size: 17px; color: black"></asp:Label>
-                                        </div>
                                         <div class="mt-2">
                                             <a class="btn-mktg d-block btn-muted-mktg" href="PackageAPage.aspx">View Package details
                                             </a>
@@ -325,14 +319,6 @@
                                                 </div>
                                             </ItemTemplate>
                                         </asp:Repeater>
-
-                                          <h4 class="f5 text-uppercase text-gradient-mint-blue mt-4">EXCLUSIVE Add-ons</h4>
-                                        <br />
-                                        <div>
-                                             <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
-                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black">Manage up to </asp:Label>
-                                              <asp:Label runat="server" class="js-computed-value" ID="manageStations" style="font-size: 17px; color: black"></asp:Label>
-                                        </div>
                                         <!--BUTTON-->
                                         <div class="mt-2">
                                             <a class="btn-mktg d-block btn-muted-mktg" href="PackageCPage.aspx">View Package details

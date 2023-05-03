@@ -117,7 +117,7 @@
 </head>
 
 <body class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
-    <div data-turbo-body class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
+    <div class="logged-in env-production page-responsive header-white" style="word-wrap: break-word;">
         <div class="position-relative js-header-wrapper ">
             <a href="#start-of-content"
                 class="p-3 color-bg-accent-emphasis color-fg-on-emphasis show-on-focus js-skip-to-content">Skip to content
@@ -209,7 +209,37 @@
                                                 </div>
                                             </ItemTemplate>
                                         </asp:Repeater>
+                                          <h4 class="f5 text-uppercase text-gradient-mint-blue mt-4">EXCLUSIVE Add-ons</h4>
+                                        <br />
+                                        <div>
+                                             <asp:Image ID="Image4" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black"> Access ALL Features </asp:Label> 
+                                        </div> <br />
+                                        <div>
+                                             <asp:Image ID="Image3" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black">Unlimited Transactions </asp:Label>
+                                              
+                                        </div> <br />
+                                        <div>
+                                             <asp:Image ID="Image5" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black">Unlimited Products </asp:Label>
+                                              
+                                        </div> <br />
+
+                                        <div>
+                                             <asp:Image ID="Image2" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                            <asp:Label runat="server" class="js-computed-value" style="font-size: 17px; color: black">Monthly Renewal </asp:Label>
+                                              
+                                        </div>
+
                                     </div>
+                                        <br />
+ <!--PAYPAL BUTTON-->
+
+                                        <div class="mt-2">
+                                            <div class="btn-mktg d-block btn-muted-mktg" id="paypal-button-container-packageB" >
+                                            </div>
+                                        </div> <br />
                                 </div>
                             </div>
                         </div>
@@ -225,8 +255,49 @@
 
 
         </main>
+<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
+    </script>
+                    <script>
+                        var name = '<%= Session["Lname"] %>';
+                        var lname = '<%= Session["Fname"] %>';
 
+
+                        paypal.Buttons({
+                            createOrder: function (data, actions) {
+                                return actions.order.create({
+                                    payee: {    
+                                        name: {
+                                            given_name: '<%= Session["Fname"] %>',
+                            surname: '<%= Session["Lname"] %>'
+                        },
+                        phone: {
+                            phone_type: "MOBILE",
+                            phone_num: '<%= Session["Phone"] %>'
+                        },
+                        email: '<%= Session["Email"] %>',
+                        },
+                        purchase_units: [{
+                            amount: {
+                                value: '3000'
+
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        console.log(details)
+                        sessionStorage.setItem("plan", "Package B");
+                        window.location.replace("SubscriptionSuccess.aspx");
+                    });
+                },
+                onCancel: function (data) {
+                    window.location.replace("SubscriptionPackages.aspx");
+                }
+                        }).render("#paypal-button-container-packageB");
+                    </script>
     </div>
+     <script src="/Scripts/MyScript/Index.js"></script>
     <style>
         .user-mention[href$="/RheaMaeRMT"] {
             color: var(--color-user-mention-fg);

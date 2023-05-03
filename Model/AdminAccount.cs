@@ -18,7 +18,8 @@ namespace WRS2big_Web.Model
         public string pass { get; set; }
         public string profile_image { get; set; }
         public string status { get; set; }
-        public string subStatus { get; set; }
+        public string subStatus { get; set; } //subscribed or unsubscribed
+        public string currentSubscription { get; set; } //Active or Expired/Inactive
         public string businessProof { get; set; }
         public string validID { get; set; }
         public string businessProofLnk { get; set; }

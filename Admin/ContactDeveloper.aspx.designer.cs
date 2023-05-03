@@ -11,25 +11,34 @@ namespace WRS2big_Web.Admin
 {
 
 
-    public partial class BasicSubSuccess
+    public partial class ContactDeveloper
     {
 
         /// <summary>
-        /// form1 control.
+        /// messagesrepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Repeater messagesrepeater;
 
         /// <summary>
-        /// btnContinue control.
+        /// enterMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnContinue;
+        protected global::System.Web.UI.WebControls.TextBox enterMessage;
+
+        /// <summary>
+        /// sendMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button sendMessage;
     }
 }

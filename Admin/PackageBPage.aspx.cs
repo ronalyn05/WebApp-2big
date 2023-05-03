@@ -57,6 +57,9 @@ namespace WRS2big_Web.Admin
                         features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
 
+                        //save the package ID into session 
+                        Session["currentPackage"] = packageID;
+
                         // Bind featuresList to your repeater control
                         featuresPackageB.DataSource = featuresList;
                         featuresPackageB.DataBind();

@@ -63,7 +63,7 @@ namespace WRS2big_Web.superAdmin
             }
             pendingClients.Text = pendingCount.ToString();
 
-            response = twoBigDB.Get("SUPERADMIN/SUBSCRIBING_CLIENTS");
+            response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
             Dictionary<string, superAdminClients> subscribed = response.ResultAs<Dictionary<string, superAdminClients>>();
 
             double totalSale = 0;

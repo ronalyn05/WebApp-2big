@@ -109,7 +109,7 @@
                                         </li>
                                 </HeaderTemplate>
                                 <ItemTemplate >
-                                        <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #D8D8D8;" : "" %>' >
+                                        <li style='<%# Eval("status").ToString() == "unread" ? "background-color: whitesmoke;" : "" %>' >
                                             
                                             <div class="media">
                                                 <div class="media-body">

@@ -1,5 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Deliverydetails.aspx.cs" Inherits="WRS2big_Web.Admin.Deliverydetails" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style type="text/css">
+        .auto-style1 {
+            margin-right: 0px;
+            margin-left: 318px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     
@@ -570,7 +576,7 @@
 
                                                                 <%-- DELIVERY DETAILS NI DIRI--%>
                                                                     
-                                                                    <asp:GridView runat="server" ID="gridDeliveryDetails"  class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                    <asp:GridView runat="server" ID="gridDeliveryDetails"  class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                           <Columns>
                                                                             <asp:TemplateField>
                                                                               <ItemTemplate>
@@ -617,13 +623,13 @@
                                                              <br /> <br />
 
                                             <%--GRIDVIEW FOR EXPRESS--%>
-                                               <asp:GridView runat="server" ID="expressGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                               <asp:GridView runat="server" ID="expressGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+<%--                                                          <ItemTemplate>
+                                                       
                                                                 <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>
+                                                          </ItemTemplate>--%>
                                                         </asp:TemplateField>
                                                       </Columns>
                                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -638,13 +644,13 @@
 
                                                
                                                     <%--GRIDVIEW FOR STANDARD--%>
-                                                <asp:GridView runat="server" ID="standardGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                <asp:GridView runat="server" ID="standardGridview" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+<%--                                                          <ItemTemplate>
+                                                          
                                                                 <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>
+                                                          </ItemTemplate>--%>
                                                         </asp:TemplateField>
                                                       </Columns>
                                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -659,13 +665,13 @@
                                                             
 
                                             <%--GRIDVIEW FOR RESERVATION--%>
-                                                <asp:GridView runat="server" ID="reservationGridView" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                <asp:GridView runat="server" ID="reservationGridView" class="texts table-responsive table-hover"  style=" text-align:center;overflow-y: auto;max-height: 500px; margin-left: 14px;"  BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                       <Columns>
                                                         <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
+<%--                                                          <ItemTemplate>
+                                                         
                                                                 <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>
+                                                          </ItemTemplate>--%>
                                                         </asp:TemplateField>
                                                       </Columns>
                                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />

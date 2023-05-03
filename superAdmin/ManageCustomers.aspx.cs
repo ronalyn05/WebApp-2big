@@ -147,5 +147,81 @@ namespace WRS2big_Web.superAdmin
             Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
 
         }
+
+        protected void approveButton_Click(object sender, EventArgs e)
+        {
+            List<int> customerIDs = new List<int>();
+
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("select");
+                if (chk != null && chk.Checked)
+                {
+                    int customerID = int.Parse(row.Cells[1].Text);
+                    customerIDs.Add(customerID);
+                }
+            }
+
+            if (customerIDs.Count == 0)
+            {
+                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                return;
+            }
+
+            foreach (int customerID in customerIDs)
+            {
+                FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
+                Model.Customer customerDetails = response.ResultAs<Model.Customer>();
+
+
+                customerDetails.cus_status = "Approved";
+                response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
+
+                Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+            }
+        }
+        protected void selectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox selectAll = (CheckBox)sender;
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox select = (CheckBox)row.FindControl("select");
+                select.Checked = selectAll.Checked;
+            }
+        }
+
+
+        protected void declineButton_Click(object sender, EventArgs e)
+        {
+            List<int> customerIDs = new List<int>();
+
+            foreach (GridViewRow row in pendingGridView.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("select");
+                if (chk != null && chk.Checked)
+                {
+                    int customerID = int.Parse(row.Cells[1].Text);
+                    customerIDs.Add(customerID);
+                }
+            }
+
+            if (customerIDs.Count == 0)
+            {
+                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                return;
+            }
+
+            foreach (int customerID in customerIDs)
+            {
+                FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
+                Model.Customer customerDetails = response.ResultAs<Model.Customer>();
+
+
+                customerDetails.cus_status = "Declined";
+                response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
+
+                Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+            }
+        }
     }
 }
