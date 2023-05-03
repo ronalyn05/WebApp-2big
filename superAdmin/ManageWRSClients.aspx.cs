@@ -61,6 +61,7 @@ namespace WRS2big_Web.superAdmin
             clientsTable.Columns.Add("STATION NAME");
             clientsTable.Columns.Add("STATION ADDRESS");
             clientsTable.Columns.Add("STATUS");
+            clientsTable.Columns.Add("DATE REGISTERED");
 
 
 
@@ -71,7 +72,15 @@ namespace WRS2big_Web.superAdmin
                 FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                 Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
                
-                clientsTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+                clientsTable.Rows.Add(
+                    entry.Value.idno, 
+                    entry.Value.fname + " " + entry.Value.lname, 
+                    entry.Value.email, 
+                    entry.Value.phone, 
+                    station.stationName, 
+                    station.stationAddress, 
+                    entry.Value.status,
+                    entry.Value.dateRegistered);
 
             }
 
@@ -98,6 +107,7 @@ namespace WRS2big_Web.superAdmin
             pendingTable.Columns.Add("STATION NAME");
             pendingTable.Columns.Add("STATION ADDRESS");
             pendingTable.Columns.Add("STATUS");
+            pendingTable.Columns.Add("DATE REGISTERED");
 
             foreach (KeyValuePair<string, Model.AdminAccount> entry in pendingClients)
             {
@@ -105,7 +115,15 @@ namespace WRS2big_Web.superAdmin
                 {
                     FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                     Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
-                    pendingTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+                    pendingTable.Rows.Add(
+                        entry.Value.idno, 
+                        entry.Value.fname + " " + entry.Value.lname, 
+                        entry.Value.email, 
+                        entry.Value.phone, 
+                        station.stationName, 
+                        station.stationAddress, 
+                        entry.Value.status,
+                        entry.Value.dateRegistered);
 
                 }
 
@@ -130,6 +148,7 @@ namespace WRS2big_Web.superAdmin
             approvedTable.Columns.Add("STATION NAME");
             approvedTable.Columns.Add("STATION ADDRESS");
             approvedTable.Columns.Add("STATUS");
+            approvedTable.Columns.Add("DATE REGISTERED");
 
             foreach (KeyValuePair<string, Model.AdminAccount> entry in pendingClients)
             {
@@ -137,7 +156,15 @@ namespace WRS2big_Web.superAdmin
                 {
                     FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                     Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
-                    approvedTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname, entry.Value.email, entry.Value.phone, station.stationName, station.stationAddress, entry.Value.status);
+                    approvedTable.Rows.Add(
+                        entry.Value.idno, 
+                        entry.Value.fname + " " + entry.Value.lname, 
+                        entry.Value.email, 
+                        entry.Value.phone, 
+                        station.stationName, 
+                        station.stationAddress, 
+                        entry.Value.status,
+                        entry.Value.dateRegistered);
 
                 }
 
@@ -197,13 +224,30 @@ namespace WRS2big_Web.superAdmin
             foreach (int customerID in customerIDs)
             {
                 FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
-                Model.AdminAccount customerDetails = response.ResultAs<Model.AdminAccount>();
+                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
 
 
-                customerDetails.status = "Approved";
-                response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
+                admin.status = "Approved";
+                admin.dateApproved = DateTime.Now;
+                response = twoBigDB.Update("ADMIN/" + customerID, admin);
 
-                //SEND NOTIFICATION
+                //ADD NOTIFICATION HERE
+
+                //var client = new Model.AdminAccount
+                //{
+                //    idno = admin.idno,
+                //    fname = admin.fname,
+                //    lname = admin.lname,
+                //    phone = admin.phone,
+                //    email = admin.email,
+                //    dateApproved = DateTime.Now,
+                //    dateRegistered = admin.dateRegistered,
+                //    userRole = admin.userRole
+                //};
+                //SetResponse userResponse;
+                //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + admin.idno, client);//Storing data to the database
+                //Model.AdminAccount user = userResponse.ResultAs<Model.AdminAccount>();//Database Result
+
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
             }
@@ -235,7 +279,7 @@ namespace WRS2big_Web.superAdmin
 
             if (customerIDs.Count == 0)
             {
-                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                Response.Write("<script>alert ('Please select at least one client to decline'); </script>");
                 return;
             }
 
@@ -251,6 +295,121 @@ namespace WRS2big_Web.superAdmin
                 //SEND NOTIFICATION
 
                 Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+            }
+        }
+
+        protected void searchButton_Click(object sender, EventArgs e)
+        {
+            string searched = search.Text;
+
+            //FETCH THE CLIENTS
+            FirebaseResponse clientsResponse = twoBigDB.Get("ADMIN");
+            Model.AdminAccount admin = clientsResponse.ResultAs<Model.AdminAccount>();
+            var clientData = clientsResponse.Body;
+            Dictionary<string, Model.AdminAccount> clientAdmin = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(clientData);
+
+            DataTable approvedTable = new DataTable();
+            approvedTable.Columns.Add("CLIENT ID");
+            approvedTable.Columns.Add("CLIENT NAME");
+            approvedTable.Columns.Add("EMAIL");
+            approvedTable.Columns.Add("CONTACT #");
+            approvedTable.Columns.Add("STATION NAME");
+            approvedTable.Columns.Add("STATION ADDRESS");
+            approvedTable.Columns.Add("STATUS");
+            approvedTable.Columns.Add("DATE REGISTERED");
+
+            foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clientAdmin)
+            {
+                FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
+                Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+
+                
+
+                if (searched == station.stationName)
+                {
+                    approvedTable.Rows.Add(
+                  //entry.Value.profile_image,
+                  adminEntry.Value.idno,
+                   adminEntry.Value.fname + " " + adminEntry.Value.lname,
+                   adminEntry.Value.email,
+                   adminEntry.Value.phone,
+                   station.stationName,
+                   station.stationAddress,
+                   adminEntry.Value.status,
+                   adminEntry.Value.dateRegistered
+
+
+                  );
+
+                }
+            }
+            // Bind DataTable to GridView control
+            AllGridview.DataSource = approvedTable;
+            AllGridview.DataBind();
+
+
+        }
+
+        protected void viewSorted_Click(object sender, EventArgs e)
+        {
+            string selectedValue = sortDropdown.SelectedValue;
+
+            if (selectedValue == "All")
+            {
+                AllGridview.Visible = true;
+               
+            }
+            else if (selectedValue == "Pending Clients")
+            {
+                pendingGridView.Visible = true;
+               
+            }
+            else if (selectedValue == "Approved Clients")
+            {
+                approvedGridView.Visible = false;
+            }
+            else if (selectedValue == "Declined Clients")
+            {
+
+                pendingGridView.Visible = false;
+                approvedGridView.Visible = false;
+
+                FirebaseResponse response = twoBigDB.Get("ADMIN");
+                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+                var data = response.Body;
+                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+                DataTable approvedTable = new DataTable();
+                approvedTable.Columns.Add("CLIENT ID");
+                approvedTable.Columns.Add("CLIENT NAME");
+                approvedTable.Columns.Add("EMAIL");
+                approvedTable.Columns.Add("CONTACT #");
+                approvedTable.Columns.Add("STATION NAME");
+                approvedTable.Columns.Add("STATION ADDRESS");
+                approvedTable.Columns.Add("STATUS");
+                approvedTable.Columns.Add("DATE REGISTERED");
+
+                foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clients)
+                {
+                    FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
+                    Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+
+                    if (adminEntry.Value.status == "Declined")
+                    {
+                        approvedTable.Rows.Add(
+                  //entry.Value.profile_image,
+                  adminEntry.Value.idno,
+                   adminEntry.Value.fname + " " + adminEntry.Value.lname,
+                   adminEntry.Value.email,
+                   adminEntry.Value.phone,
+                   station.stationName,
+                   station.stationAddress,
+                   adminEntry.Value.status,
+                   adminEntry.Value.dateRegistered);
+                    }
+                }
+                AllGridview.DataSource = approvedTable;
+                AllGridview.DataBind();
             }
         }
 

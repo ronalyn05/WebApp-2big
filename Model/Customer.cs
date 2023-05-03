@@ -22,7 +22,10 @@ namespace WRS2big_Web.Model
         public string imageSelfie { get; set; }
         public double lattitudeLocation { get; set; }
         public double longitudeLocation { get; set; }
-
+        public DateTime dateApproved { get; set; }
+        public DateTime dateDeclined { get; set; }
+        public DateTime dateRegistered { get; set; }
+        public string userRole { get; set; }
        // public string CusSecurityQuestion { get; set; }
 
 

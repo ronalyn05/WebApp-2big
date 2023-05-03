@@ -218,21 +218,21 @@
                                     </li>--%>
                                     <li>
                                         <a href="/superAdmin/ManageWRSClients" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-home"></i><b>FC</b></span>
+                                            <span class="pcoded-micon"><i class="ti-user"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/superAdmin/ManagePackagePlans" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-notepad"></i><b></b></span>
+                                            <span class="pcoded-micon"><i class="ti-credit-card"></i><b></b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Packages</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/superAdmin/ManageCustomers" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-notepad"></i><b></b></span>
+                                            <span class="pcoded-micon"><i class="ti-user"></i><b></b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
@@ -241,22 +241,15 @@
                                 <div class="pcoded-navigation-label pcoded-hasmenu" data-i18n="nav.category.forms">REPORTS</div>
                                 <ul class="pcoded-item pcoded-left-item ">
                                     <li>
-                                        <a href="/superAdmin/ClientReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Clients</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="/superAdmin/CustomerReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers </span>
+                                            <span class="pcoded-micon"><i class="ti-agenda"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Users </span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="/superAdmin/SubscriptionReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
+                                            <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>

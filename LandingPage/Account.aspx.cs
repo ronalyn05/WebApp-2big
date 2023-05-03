@@ -78,9 +78,10 @@ namespace WRS2big_Web.LandingPage
                     status = "pending",
                     businessProofLnk = null,
                     validIDLnk = null,
-                    subStatus = "notSubscribed"
-                    
-                    
+                    subStatus = "notSubscribed",
+                    dateRegistered = DateTime.Now,
+                    userRole = "Admin",
+                    address = address
                 };
                 var list = new RefillingStation
                 {

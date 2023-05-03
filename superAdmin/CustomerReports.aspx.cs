@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Data;
 using System.Diagnostics;
-
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace WRS2big_Web.superAdmin
 {
@@ -30,8 +31,61 @@ namespace WRS2big_Web.superAdmin
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            displayCustomers();
+           displayCustomers();
+           displayClients();
+
+            if (!IsPostBack)
+            {
+                //BindData("");
+            }
+
         }
+        protected void displayClients()
+        {
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+           
+
+            DataTable customerTable = new DataTable();
+            //customerTable.Columns.Add("PROFILE");
+            customerTable.Columns.Add("USER ID");
+            customerTable.Columns.Add("FIRST NAME");
+            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("EMAIL");
+            customerTable.Columns.Add("ADDRESS");
+            customerTable.Columns.Add("PHONE #");
+            customerTable.Columns.Add("DATE APPROVED");
+            customerTable.Columns.Add("DATE REGISTERED");
+
+
+
+          
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+            {
+                //clientProfile.ImageUrl = entry.Value.profile_image;
+
+                FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
+                Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
+                customerTable.Rows.Add(
+                   //entry.Value.profile_image,
+                   entry.Value.idno,
+                    entry.Value.fname,
+                    entry.Value.lname,
+                    entry.Value.email,
+                   stations.stationAddress,
+                    entry.Value.phone,
+                    entry.Value.dateApproved,
+                    entry.Value.dateRegistered);
+                    
+            }
+            // Bind DataTable to GridView control
+            clientReports.DataSource = customerTable;
+            clientReports.DataBind();
+        }
+
 
         protected void displayCustomers()
         {
@@ -43,7 +97,74 @@ namespace WRS2big_Web.superAdmin
 
 
             DataTable customerTable = new DataTable();
-            customerTable.Columns.Add("CUSTOMER ID");
+            customerTable.Columns.Add("USER ID");
+            customerTable.Columns.Add("FIRST NAME");
+            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("EMAIL");
+            customerTable.Columns.Add("ADDRESS");
+            customerTable.Columns.Add("PHONE #");
+            
+
+
+
+            foreach (KeyValuePair<string, Model.Customer> entry in clients)
+            {
+                double lattitude = entry.Value.lattitudeLocation;
+                double longitude = entry.Value.longitudeLocation;
+                string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+
+                string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
+
+                //customerProfile.ImageUrl = entry.Value.imageProof;
+
+                customerTable.Rows.Add(
+                    //entry.Value.imageProof,
+                    entry.Value.cusId,
+                    entry.Value.firstName,
+                    entry.Value.lastName,
+                    entry.Value.email,
+                    address,
+                    entry.Value.phoneNumber);
+
+            }
+            // Bind DataTable to GridView control
+            customerReports.DataSource = customerTable;
+            customerReports.DataBind();
+
+        }
+
+
+        //TO REVERSE THE COORDINATES INTO ADDRESS
+        public static string GetAddressFromLatLong(double latitude, double longitude, string apiKey)
+        {
+            string url = string.Format("https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&key={2}", latitude, longitude, apiKey);
+            string result = string.Empty;
+
+            using (var client = new WebClient())
+            {
+                result = client.DownloadString(url);
+            }
+
+            JObject json = JObject.Parse(result);
+            string address = json["results"][0]["formatted_address"].ToString();
+
+            return address;
+        }
+
+        protected void searchButton_Click(object sender, EventArgs e)
+        {
+            string searched = search.Text;
+
+
+            //FETCH IN CUSTOMERS
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer plan = response.ResultAs<Model.Customer>();
+            var data = response.Body;
+            Dictionary<string, Model.Customer> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+
+           
+            DataTable customerTable = new DataTable();
+            customerTable.Columns.Add("USER ID");
             customerTable.Columns.Add("FIRST NAME");
             customerTable.Columns.Add("LAST NAME");
             customerTable.Columns.Add("EMAIL");
@@ -51,20 +172,273 @@ namespace WRS2big_Web.superAdmin
             customerTable.Columns.Add("PHONE #");
 
 
-
             foreach (KeyValuePair<string, Model.Customer> entry in clients)
             {
-                customerTable.Rows.Add(entry.Value.cusId,
+                if (searched == entry.Value.firstName)
+                {
+                    double lattitude = entry.Value.lattitudeLocation;
+                    double longitude = entry.Value.longitudeLocation;
+                    string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+
+                    string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
+
+                    customerTable.Rows.Add(
+                    //entry.Value.imageProof,
+                    entry.Value.cusId,
                     entry.Value.firstName,
                     entry.Value.lastName,
                     entry.Value.email,
-                    entry.Value.address,
+                    address,
                     entry.Value.phoneNumber);
+
+                    customerReports.Visible = true;
+                    clientReports.Visible = false;
+                    clientsLabel.Visible = false;
+                    customersLabel.Visible = true;
+                }
+                else
+                {
+                    checkClient();
+                }
             }
+
             // Bind DataTable to GridView control
             customerReports.DataSource = customerTable;
             customerReports.DataBind();
         }
+       
+        private void checkClient()
+        {
+            string searched = search.Text;
 
-   }
+            //FETCH THE CLIENTS
+            FirebaseResponse clientsResponse = twoBigDB.Get("ADMIN");
+            Model.AdminAccount admin = clientsResponse.ResultAs<Model.AdminAccount>();
+            var clientData = clientsResponse.Body;
+            Dictionary<string, Model.AdminAccount> clientAdmin = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(clientData);
+
+            DataTable customerTable = new DataTable();
+            customerTable.Columns.Add("USER ID");
+            customerTable.Columns.Add("FIRST NAME");
+            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("EMAIL");
+            customerTable.Columns.Add("ADDRESS");
+            customerTable.Columns.Add("PHONE #");
+
+            foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clientAdmin)
+            {
+                if (searched == adminEntry.Value.fname)
+                {
+                    customerTable.Rows.Add(
+                  //entry.Value.profile_image,
+                  adminEntry.Value.idno,
+                   adminEntry.Value.fname,
+                   adminEntry.Value.lname,
+                   adminEntry.Value.email,
+                   adminEntry.Value.address,
+                  adminEntry.Value.phone
+                  );
+
+                    customerReports.Visible = false;
+                    clientReports.Visible = true;
+                    clientsLabel.Visible = true;
+                    customersLabel.Visible = false;
+                }
+            }
+            // Bind DataTable to GridView control
+            clientReports.DataSource = customerTable;
+            clientReports.DataBind();
+        }
+
+        protected void viewSorted_Click(object sender, EventArgs e)
+        {
+            string selectedValue = sortDropdown.SelectedValue;
+          
+            if (selectedValue == "All")
+            {
+                customerReports.Visible = true;
+                clientReports.Visible = true;
+                clientsLabel.Visible = true;   
+                customersLabel.Visible = true;
+            }
+            else if (selectedValue == "Registered Customers")
+            {
+                customerReports.Visible = true;
+                clientReports.Visible = false;
+                clientsLabel.Visible = false;
+                customersLabel.Visible = true;
+            }
+            else if (selectedValue == "Registered Clients")
+            {
+                customerReports.Visible = false;
+                clientsLabel.Visible = true;
+                customersLabel.Visible = false;
+                clientReports.Visible = true;
+            }
+            else if (selectedValue == "Subscribed Clients")
+            {
+                //hide other grids
+                customerReports.Visible = false;
+                customersLabel.Visible = false;
+
+                FirebaseResponse response = twoBigDB.Get("ADMIN");
+                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+                var data = response.Body;
+                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+
+
+                DataTable customerTable = new DataTable();
+                //customerTable.Columns.Add("PROFILE");
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("FIRST NAME");
+                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE REGISTERED");
+                customerTable.Columns.Add("DATE SUBSCRIBED");
+                customerTable.Columns.Add("PACKAGE");
+
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+                {
+                    //clientProfile.ImageUrl = entry.Value.profile_image;
+                    if (entry.Value.subStatus == "Subscribed")
+                    {
+                        FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
+                        Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
+
+                        station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/Subscribed_Package");
+                        Model.Subscribed_Package package = station.ResultAs<Model.Subscribed_Package>();
+
+
+                        customerTable.Rows.Add(
+                           //entry.Value.profile_image,
+                           entry.Value.idno,
+                            entry.Value.fname,
+                            entry.Value.lname,
+                            entry.Value.email,
+                           stations.stationAddress,
+                            entry.Value.phone,
+                            entry.Value.dateRegistered,
+                            package.subStart,
+                            package.packageName);
+                    }
+
+                }
+                // Bind DataTable to GridView control
+                clientReports.DataSource = customerTable;
+                clientReports.DataBind();
+            }
+            else if (selectedValue == "Declined Customers")
+            {
+                //hide other grids
+                clientReports.Visible = false;
+                clientsLabel.Visible = false;
+
+                FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+                Model.Customer plan = response.ResultAs<Model.Customer>();
+                var data = response.Body;
+                Dictionary<string, Model.Customer> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+
+
+                DataTable customerTable = new DataTable();
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("FIRST NAME");
+                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("USER STATUS");
+
+
+
+                foreach (KeyValuePair<string, Model.Customer> entry in clients)
+                {
+                    if (entry.Value.cus_status == "Declined")
+                    {
+                        double lattitude = entry.Value.lattitudeLocation;
+                        double longitude = entry.Value.longitudeLocation;
+                        string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+
+                        string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
+
+                        //customerProfile.ImageUrl = entry.Value.imageProof;
+
+                        customerTable.Rows.Add(
+                            //entry.Value.imageProof,
+                            entry.Value.cusId,
+                            entry.Value.firstName,
+                            entry.Value.lastName,
+                            entry.Value.email,
+                            address,
+                            entry.Value.phoneNumber,
+                            entry.Value.cus_status);
+
+                    }
+
+                }
+                // Bind DataTable to GridView control
+                customerReports.DataSource = customerTable;
+                customerReports.DataBind();
+            }
+            else if (selectedValue == "Declined Clients")
+            {
+                //hide other grids
+                customerReports.Visible = false;
+                customersLabel.Visible = false;
+
+                FirebaseResponse response = twoBigDB.Get("ADMIN");
+                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+                var data = response.Body;
+                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+
+
+                DataTable customerTable = new DataTable();
+                //customerTable.Columns.Add("PROFILE");
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("FIRST NAME");
+                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE REGISTERED");
+                customerTable.Columns.Add("USER STATUS");
+                
+
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+                {
+                    //clientProfile.ImageUrl = entry.Value.profile_image;
+                    if (entry.Value.status == "Declined")
+                    {
+                        FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
+                        Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
+
+                        
+
+                        customerTable.Rows.Add(
+                           //entry.Value.profile_image,
+                           entry.Value.idno,
+                            entry.Value.fname,
+                            entry.Value.lname,
+                            entry.Value.email,
+                           stations.stationAddress,
+                            entry.Value.phone,
+                            entry.Value.dateRegistered,
+                            entry.Value.status
+                            );
+                    }
+
+                }
+                // Bind DataTable to GridView control
+                clientReports.DataSource = customerTable;
+                clientReports.DataBind();
+            }
+
+
+        }
+    }
 }
