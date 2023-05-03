@@ -75,6 +75,8 @@ namespace WRS2big_Web.Model
         public string emp_availability { get; set; }
         public string addedBy { get; set; }
         public DateTimeOffset dateAdded { get; set; }
+        public string updatedBy { get; set; }
+        public DateTimeOffset dateUpdated { get; set; }
     }
     public class TankSupply
     {
