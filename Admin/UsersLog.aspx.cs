@@ -67,13 +67,15 @@ namespace WRS2big_Web.Admin
                     {
                         activity = "";
                     }
-                    string timestamp = entry.activityTime.ToString();
+                    //string timestamp = entry.activityTime.ToString();
 
-                    if (DateTimeOffset.Parse(timestamp) == DateTimeOffset.MinValue)
-                    {
-                        timestamp = " ";
-                    }
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
+                    //if (DateTimeOffset.Parse(timestamp) == DateTimeOffset.MinValue)
+                    //{
+                    //    timestamp = " ";
+                    //}
+                    string timestamp = entry.activityTime == DateTimeOffset.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
                    
                     //Retrieve the existing Users log object from the database
                     FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + entry.logsId);
@@ -146,9 +148,10 @@ namespace WRS2big_Web.Admin
                         // Loop through the entries and add them to the DataTable
                         foreach (var entry in filteredList)
                         {
-                            string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string timestamp = entry.activityTime == DateTimeOffset.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                           // string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, dateAdded);
+                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, timestamp);
                         }
                     }
                 }
@@ -161,7 +164,7 @@ namespace WRS2big_Web.Admin
                 GridLogs.DataSource = userLogsTable;
                 GridLogs.DataBind();
 
-
+                txtSearch.Text = null;
 
             }
             catch (Exception ex)

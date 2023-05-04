@@ -305,6 +305,13 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
+                                            <li>
+                                        <a href="/Admin/Reviews" class="waves-effect waves-dark active">
+                                            <span class="pcoded-micon"><i class="ti-star"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reviews and Ratings</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
                                            <%-- <li class="">
                                                 <a href="/Admin/WaterRefill" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
@@ -316,7 +323,7 @@
                                             </li>--%>
 
                                         </ul>
-                                <div class="pcoded-navigation-label" data-i18n="nav.category.forms">CUSTOMER REPORTS</div>
+                               <%-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">CUSTOMER REPORTS</div>
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li>
                                         <a href="/Admin/Reviews" class="waves-effect waves-dark active">
@@ -332,14 +339,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <%-- <li class="">
-                                                <a href="/Admin/CustomerRecord" class="waves-effect waves-dark">
-                                                     <span class="pcoded-micon"><i class="ti-files"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Customer Record </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>--%>
-                                </ul>
+                                </ul>--%>
                             </div>
                     </nav>
                 </div>

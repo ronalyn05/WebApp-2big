@@ -48,7 +48,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
             Dictionary<string, Employee> employeelist = response.ResultAs<Dictionary<string, Employee>>();
-            var filteredList = employeelist.Values.Where(d => d.adminId.ToString() == idno);
+            var filteredList = employeelist.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
 
             // Create the DataTable to hold the orders
             //sa pag create sa table
