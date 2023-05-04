@@ -41,7 +41,7 @@ namespace WRS2big_Web.superAdmin
 
         private void DisplayClients()
         {
-            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIBING_CLIENTS");
+            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
             Model.superAdminClients wrsClients = response.ResultAs<Model.superAdminClients>();
             var data = response.Body;
             Dictionary<string, Model.superAdminClients> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);

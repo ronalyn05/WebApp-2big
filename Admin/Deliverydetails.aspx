@@ -279,6 +279,11 @@
                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                 <asp:TextBox ID="expressdeliveryFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
                                                          </div> <br />
+                                                        <div class="col-md-12 col-sm-12 ">
+                                                                <strong>Distance in km for Delivery:</strong> <br />
+                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                <asp:TextBox ID="expressDistance" Width="364px" Placeholder="Set the maximum distance for your delivery" runat="server"></asp:TextBox>
+                                                         </div> <br />
                                                        <div class="col-md-12 col-sm-12">
                                                   
                                                            <strong>What products do you offer for the EXPRESS delivery?</strong>

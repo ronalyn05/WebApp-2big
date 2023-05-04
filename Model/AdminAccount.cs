@@ -24,6 +24,12 @@ namespace WRS2big_Web.Model
         public string validID { get; set; }
         public string businessProofLnk { get; set; }
         public string validIDLnk { get; set; }
+        public string address { get; set; }
+        public DateTime dateApproved { get; set; }
+        public DateTime dateRegistered { get; set; }
+        public DateTime dateDeclined { get; set; }
+        public string userRole { get; set; }
+
 
     }
 
@@ -150,6 +156,7 @@ namespace WRS2big_Web.Model
         public string exDeliveryFee { get; set; }
         public string exEstimatedDelivery { get; set; }
         public string exDeliveryType { get; set; }
+        public int expressDistance { get; set; }
         public string expressProducts { get; set; }
         //public string exOrderType { get; set; }
         //public string expressSwapOptions { get; set; }
