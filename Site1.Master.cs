@@ -61,32 +61,33 @@ namespace WRS2big_Web
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
             Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
 
-            if (expiration.expiration < DateTime.Now)
-            {
-                //SEND NOTIFICATION TO ADMIN 
-                Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Notification
-                {
-                    admin_ID = int.Parse(adminID),
-                    sender = "Super Admin",
-                    title = "Subscription Expired",
-                    receiver = "Admin",
-                    body = "Your subscription has Expired! Subscribe again to continue using the platform",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
+            
+            //if (expiration.expiration < DateTime.Now)
+            //{
+            //    //SEND NOTIFICATION TO ADMIN 
+            //    Random rnd = new Random();
+            //    int ID = rnd.Next(1, 20000);
+            //    var Notification = new Notification
+            //    {
+            //        admin_ID = int.Parse(adminID),
+            //        sender = "Super Admin",
+            //        title = "Subscription Expired",
+            //        receiver = "Admin",
+            //        body = "Your subscription has Expired! Subscribe again to continue using the platform",
+            //        notificationDate = DateTime.Now,
+            //        status = "unread",
+            //        notificationID = ID
 
-                };
+            //    };
 
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+            //    SetResponse notifResponse;
+            //    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            //    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
                
-            }
-            Debug.WriteLine($"NOW: {DateTime.Now}");
-            Debug.WriteLine($"DATE: {expiration.expiration}");
+            //}
+            //Debug.WriteLine($"NOW: {DateTime.Now}");
+            //Debug.WriteLine($"DATE: {expiration.expiration}");
         }
         private void loadNotifications()
         {

@@ -255,22 +255,29 @@ namespace WRS2big_Web.Model
 
     }
 
-    public class Reward
+    public class RewardSystem
     {
         public int rewardId { get; set; }
         public int adminId { get; set; }
-        public string rewardType { get; set; }
-        public int rewardPercentageValue { get; set; }
+        public string rewardWaysToEarn { get; set; }
+        public decimal rewardPointsToEarn { get; set; }
+        public decimal reward_minRange_perAmount { get; set; }
+        public decimal reward_maxRange_perAmount { get; set; }
+        public DateTimeOffset rewardsDateAdded { get; set; }
+        public string addedBy { get; set; }
+    }
+    public class PromoOffered
+    {
+        public int promoId { get; set; }
+        public int adminId { get; set; }
+        public string promoName { get; set; }
+        public int promoDiscountValue { get; set; }
+        public string promoDescription { get; set; }
+        public string promoAppliedToProductOffers { get; set; }
         public string promoAppliedToUnitSizes { get; set; }
-        public string reward_description { get; set; }
-        public string cusEarnPoints { get; set; }
-        public int points_requiredToClaim { get; set; }
-        public int range_perAmount { get; set; }
-        public decimal pointsPerTxnOrAmount { get; set; }
-        public string productOffered { get; set; }
         public DateTimeOffset promoExpirationFrom { get; set; }
         public DateTimeOffset promoExpirationTo { get; set; }
-        public DateTimeOffset rewardsDateAdded { get; set; }
+        public DateTimeOffset promoDateAdded { get; set; }
         public string addedBy { get; set; }
     }
 
