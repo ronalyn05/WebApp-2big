@@ -59,60 +59,82 @@
                                                 <h4 style="color:black;font-family:Bahnschrift"> Set your reward system here:</h4>
                                                 <hr />
                                                 <div class="col-md-12 col-sm-12">
-                                              <h5>How would you like your customer to earn points?</h5>
-                                              <asp:RadioButtonList ID="radioCusEarnPoints" runat="server" RepeatDirection="Horizontal">
-                                                <asp:ListItem Text="Per transaction" Value="per_transaction" />
-                                                <asp:ListItem Text="Per amount" Value="per_amount" />
+                                              <h5>How would you like your customer to earn their reward points?</h5>
+                                                    <asp:RadioButtonList ID="radioWaysToEarnPoints" runat="server" RepeatDirection="Horizontal" onchange="disableMinMaxRange()">
+                                                <asp:ListItem Text="Per transaction" Value="per transaction" />
+                                                <asp:ListItem Text="Per amount" Value="per amount" />
                                               </asp:RadioButtonList>
                                                     </div>
                                               <div id="pointsInput" class="col-md-12 col-sm-12">
                                                   <h5>Points to earn:</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
-                                                <asp:TextBox ID="txtpointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter points to earn by the customer per transaction or per amount"></asp:TextBox>
+                                                <asp:TextBox ID="txtrewardspointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the reward points to earn by the customer per transaction or per amount"></asp:TextBox>
                                               </div>
                                                   <div class="col-md-12 col-sm-12">
-                                                  <h5>Minimum range amount (applies for per amount only):</h5>
+                                                  <h5>Minimum range per amount (applies for per amount only):</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
-                                                <asp:TextBox ID="txtrange_perAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the minimum range amount"></asp:TextBox>
+                                                <asp:TextBox ID="txtminRange_perAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the minimum range amount"></asp:TextBox>
+                                              </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                  <h5>Maximum range per amount (applies for per amount only):</h5>
+                                                <%--<label for="points">Points:</labe>l>--%>
+                                                <asp:TextBox ID="txtmaxRange_perAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the maximum range amount"></asp:TextBox>
                                               </div>
                                             </div>
+                                                 <script type="text/javascript">
+                                                     function disableMinMaxRange() {
+                                                         var radioWaysToEarnPoints = document.getElementById('<%= radioWaysToEarnPoints.ClientID %>');
+                                                        var txtminRange_perAmount = document.getElementById('<%= txtminRange_perAmount.ClientID %>');
+                                                        var txtmaxRange_perAmount = document.getElementById('<%= txtmaxRange_perAmount.ClientID %>');
 
-                                            <script>
+                                                         if (radioWaysToEarnPoints.value == "per transaction") {
+                                                             txtminRange_perAmount.disabled = true;
+                                                             txtmaxRange_perAmount.disabled = true;
+                                                         }
+                                                         else {
+                                                             txtminRange_perAmount.disabled = false;
+                                                             txtmaxRange_perAmount.disabled = false;
+                                                         }
+                                                     }
+                                                 </script>
+
+
+<%--                                            <script>
                                                 // Get the relevant elements from the DOM
-                                                var radioCusEarnPoints = document.getElementById("radioCusEarnPoints");
+                                                var radioCusEarnPoints = document.getElementById("radioWaysToEarnPoints");
                                                 var pointsInput = document.getElementById("pointsInput");
                                                 var pointsInputField = document.getElementById("txtpointsPerTxnOrAmount");
-                                                var rangeAmountField = document.getElementById("txtrange_perAmount");
+                                               
 
                                                 // Add a change event listener to the RadioButtonList
-                                                radioCusEarnPoints.addEventListener("change", function () {
-                                                    if (radioCusEarnPoints.value === "per_transaction") {
+                                                radioWaysToEarnPoints.addEventListener("change", function () {
+                                                    if (radioWaysToEarnPoints.value === "per_transaction") {
                                                         // If per transaction is selected, show the points input and make it required
                                                         pointsInput.style.display = "block";
                                                         pointsInputField.required = true;
-                                                        rangeAmountField.setAttribute("disabled", "disabled");
-                                                        // rangeAmountField.disabled = true; // Disable the range amount field
+                                                       
                                                     } else {
                                                         // If per amount is selected, hide the points input and make it not required
                                                         pointsInput.style.display = "block";
                                                         pointsInputField.required = false;
-                                                        rangeAmountField.disabled = false; // Enable the range amount field
+                                                       
                                                     }
                                                 });
-                                            </script>
+                                            </script>--%>
 
                                             
                                                      </div> 
                                                  <br />
                                                  <div class="modal-footer">
                                                <%-- add data button--%>
-                                                     <script>
+                                                     <%--<script>
                                                          function disableButton() {
                                                              document.getElementById("btnSet").disabled = true;
                                                          }
-                                                     </script>
+                                                     </script>--%>
                                                       <%-- set data button--%>
-                                               <asp:Button ID="btnSet" runat="server" Text="Add Reward" OnClientClick="disableButton()" class="btn btn-primary btn-sm" OnClick="btnAddReward_Click"/>
+                                                     <asp:Button ID="btnSet" runat="server" Text="Add Reward" class="btn btn-primary btn-sm" OnClick="btnAddReward_Click" />
+                                               <%--<asp:Button ID="btnSet" runat="server" Text="Add Reward" OnClientClick="disableButton()" class="btn btn-primary btn-sm" OnClick="btnAddReward_Click" AutoPostBack="false"/>--%>
                                                 <br />
                                                   </div>
                                                 </div>
@@ -142,35 +164,40 @@
                                                 <hr />
                                                  <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Name:</h5>
-                                            <asp:TextBox ID="txtrewardname" runat="server" ToolTip="eg: 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex:10% discount coupon )"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardname" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <asp:TextBox ID="txtpromoname" runat="server" ToolTip="eg: 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex:10% discount coupon )"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                    <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Discount Value :</h5>
-                                            <asp:TextBox ID="txtrewardValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo percentage in number base on the promo type you offered"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtrewardValue" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <asp:TextBox ID="txtpromoDiscountValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo percentage in number base on the promo type you offered"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoDiscountValue" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
-                                            <h5>Description:</h5>
-                                            <asp:TextBox ID="txtdescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdescription" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <h5>Promo Description:</h5>
+                                            <asp:TextBox ID="txtpromodescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromodescription" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any product offers that applies to the promo you offered:</h5>
-                                                    <asp:CheckBoxList ID="checkPromoOffered" runat="server" AutoPostBack="false">
+                                                    <asp:CheckBoxList ID="checkPromo_productOffered" runat="server" RepeatDirection="Horizontal" AutoPostBack="false">
                                                         <asp:ListItem Text="Product Refill" Value="Product Refill" ID="pro_refillRadio" ></asp:ListItem>
                                                         <asp:ListItem Text="other Product" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
                                                     </asp:CheckBoxList>
                                             </div>
                                                     <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any unit and sizes offers that applies to the promo you offered:</h5>
-                                                    <asp:CheckBoxList ID="chUnitSizes" runat="server">
+                                                  <h5>Choose any unit and sizes of product refill offers that applies to the promo you offered:</h5>
+                                                    <asp:CheckBoxList ID="chUnitSizes_proRefill" runat="server">
+                                                    </asp:CheckBoxList>
+                                            </div>
+                                                <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any unit and sizes of other product offers that applies to the promo you offered:</h5>
+                                                    <asp:CheckBoxList ID="chUnitSizes_otherProduct" runat="server">
                                                     </asp:CheckBoxList>
                                             </div>
                                                  <div class="col-md-12 col-sm-12 ">
                                             <h5>Points required to claim the reward:</h5>
-                                            <asp:TextBox ID="txtpointsrequired" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the reward"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <asp:TextBox ID="txtpromo_pointsToClaimReward" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the reward"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromo_pointsToClaimReward" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Expiration:</h5>
@@ -180,14 +207,21 @@
                                                 <strong> To:</strong>
                                                  <asp:TextBox ID="txtpromoExpirationTo" TextMode="Date" runat="server"></asp:TextBox>
                                           <%--  <asp:TextBox ID="TextBox1" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo points required "></asp:TextBox>--%>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpointsrequired" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoExpirationTo" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                 <br />
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                               <%-- set data button--%>
-                                               <asp:Button ID="btnAdd" runat="server" Text="Add Promo Offered" class="btn btn-primary btn-sm" OnClick="btnAddPromoOffered_Click" AutoPostBack="false"/>
+                                                    <%-- add data button--%>
+                                               <asp:Button ID="btnAdd" runat="server" Text="Add Promo Offered" class="btn btn-primary btn-sm" ValidationGroup="a" OnClick="btnAddPromoOffered_Click" />
+
+                                                    <%-- <script>
+                                                         function disableButton() {
+                                                             document.getElementById("btnAdd").disabled = true;
+                                                         }
+                                                     </script>--%>
+                                              <%-- <asp:Button ID="btnAdd" runat="server" Text="Add Promo Offered" class="btn btn-primary btn-sm" OnClientClick="disableButton()" ValidationGroup="a" OnClick="btnAddPromoOffered_Click" AutoPostBack="false"/>--%>
                                                 </div>
                                               </div>
                                             </div>
@@ -205,7 +239,12 @@
                                                          <asp:Label ID="Label1" runat="server" Text="PROMO REPORTS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                         <div style="float:right;"> 
                                                             <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by promo name " ToolTip="enter promo name to view record" Height="40px" runat="server"></asp:TextBox>
-                                                            <asp:Button ID="btnSearchReports" runat="server" Text="Search" OnClick="btnSearchReports_Click" CssClass="btn-primary" Height="40px"/>
+                                                            <asp:Button ID="btnSearchReports" runat="server" Text="Search Promo" OnClick="btnSearchReports_Click" CssClass="btn-primary" Height="40px"/>
+                                                        
+                                                        </div>
+                                                         <div style="float:left;"> 
+                                                            <asp:TextBox ID="txtSearchReward" Width="450px" Placeholder="search using per transaction or per amount (small letters only) " ToolTip="enter per transaction or per amount to view record " Height="40px" runat="server"></asp:TextBox>
+                                                            <asp:Button ID="btnSearchRewards" runat="server" Text="Search Reward" OnClick="btnSearchReward_Click" CssClass="btn-primary" Height="40px"/>
                                                         
                                                         </div>
                                                         <div class="card-header-right">
@@ -224,7 +263,7 @@
                         <div class="modal-content">
                           <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                             <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel3"> REWARD / PROMO REPORTS: 
+                              <h4 class="modal-title" id="myModalLabel3"> REWARD SYSTEM REPORTS: 
                                 
                               </h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
@@ -232,7 +271,6 @@
                             <div class="modal-body">
                               <div class="col-xl-12 col-xl-12 ">
                                 <div class="x_content">
-                                   <%-- USERS LOG REPORTS--%>
                                      <div class="card-block">
                                                         <div class="table-responsive">
                                                             <div class="tab-content">
@@ -241,6 +279,7 @@
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
                                                                    <asp:Label ID="lblMessageError" runat="server" Font-Underline="true" ForeColor="red"/>
                                                                    <br />
+                                                                   <%--  GRID REWARD SYSTEM OFFERED--%>
                                                                     <asp:GridView runat="server" ID="gridReward" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                                   
@@ -253,6 +292,58 @@
                                                             <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                             <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                         </asp:GridView>
+                                                                
+
+                                                              </div><!--/tab-pane-->
+                                                          </div><!--/tab-content-->
+                                                            <%--TAB end --%>
+                                                        </div>
+                                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                                                  <%-- MODAL TO VIEW PROMO OFFERED CERTAIN RECORDS --%>
+                                                    <div class="modal fade" id="viewPromo" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                          <form id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel4"> PROMO REPORTS: 
+                                
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="col-xl-12 col-xl-12 ">
+                                <div class="x_content">
+                                     <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <div class="tab-content">
+                                                            <div class="tab-pane active">
+                                                                <%--the gridview starts here--%>
+                                                               <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
+                                                                   <asp:Label ID="Label2" runat="server" Font-Underline="true" ForeColor="red"/>
+                                                                   <br />
+                                                                      <%--  GRID PROMO OFFERED--%>
+                                                                     <asp:GridView runat="server" ID="gridPromoOffered" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
+                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
+                                                                  
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                    </div>
+
+                                                               <%--Gridview ends here--%>
                                                                     </div>
 
                                                                <%--Gridview ends here--%>
@@ -287,8 +378,12 @@
                                                             <div class="tab-pane active">
                                                                 <%--the gridview starts here--%>
                                                                <div style="overflow: auto; height: 600px; text-align:center;" class="texts" >
+                                                                    <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red"/>
                                                                    <br />
-                                                                   <asp:Label ID="lblreports" runat="server"></asp:Label>
+                                                                    <div style="text-align: center;">
+                                                                    <asp:Label ID="lblreports" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                               </div>
+                                                                  
                                                                    <br />
                                                                     <asp:GridView runat="server" ID="gridPromoReports" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >

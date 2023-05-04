@@ -281,7 +281,8 @@ namespace WRS2big_Web.Model
         public int promoDiscountValue { get; set; }
         public string promoDescription { get; set; }
         public string promoAppliedToProductOffers { get; set; }
-        public string promoAppliedToUnitSizes { get; set; }
+        public string promoAppliedTo_productRefillUnitSizes { get; set; }
+        public string promoAppliedTo_otherProductUnitSizes { get; set; }
         public DateTimeOffset promoExpirationFrom { get; set; }
         public DateTimeOffset promoExpirationTo { get; set; }
         public DateTimeOffset promoDateAdded { get; set; }

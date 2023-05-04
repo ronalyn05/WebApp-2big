@@ -59,7 +59,7 @@ namespace WRS2big_Web.Admin
 
             foreach (string unitSizes in refillUnitSizesList)
             {
-                chUnitSizes.Items.Add(new ListItem(unitSizes));
+                chUnitSizes_proRefill.Items.Add(new ListItem(unitSizes));
             }
 
             // Add the unit and sizes data of other products to the CheckBoxList
@@ -80,548 +80,642 @@ namespace WRS2big_Web.Admin
 
             foreach (string unitSizes in otherUnitSizesList)
             {
-                chUnitSizes.Items.Add(new ListItem(unitSizes));
+                chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
             }
 
-           // rewardReportsDisplay();
+            //// Get the radio button list control and the min and max range textboxes
+            //RadioButtonList radioWaysToEarnPoints = (RadioButtonList)Page.FindControl("radioWaysToEarnPoints");
+            //TextBox txtMinRange = (TextBox)Page.FindControl("txtminRange_perAmount");
+            //TextBox txtMaxRange = (TextBox)Page.FindControl("txtmaxRange_perAmount");
+
+            //// Check if the objects are not null before accessing them
+            //if (radioWaysToEarnPoints != null && txtMinRange != null && txtMaxRange != null)
+            //{
+            //    // Call the disableMinMaxRange function based on the selected radio button
+            //    if (radioWaysToEarnPoints.SelectedValue == "per transaction")
+            //    {
+            //        txtMinRange.Enabled = false;
+            //        txtMaxRange.Enabled = false;
+            //    }
+            //    else
+            //    {
+            //        txtMinRange.Enabled = true;
+            //        txtMaxRange.Enabled = true;
+            //    }
+
+            //    // Add a JavaScript function call to the OnSelectedIndexChanged event of the radio button list
+            //    radioWaysToEarnPoints.Attributes.Add("onchange", "disableMinMaxRange();");
+            //}
 
         }
 
-        //RETREIVE REPORTS
-        //private void rewardReportsDisplay()
-        //{
+        //RETRIEVE REPORTS
+        private void rewardReportsDisplay()
+        {
 
-        //    string idno = (string)Session["idno"];
+            string idno = (string)Session["idno"];
 
-        //    // Get the log ID from the session
-        //    int logsId = (int)Session["logsId"];
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"];
 
-        //    // Retrieve all orders from the ORDERS table
-        //    FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
-        //    Dictionary<string, RewardSystem> userReward = response.ResultAs<Dictionary<string, RewardSystem>>();
-        //    //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-        //    var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
+            Dictionary<string, RewardSystem> userReward = response.ResultAs<Dictionary<string, RewardSystem>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
 
-        //    // Create the DataTable to hold the orders
-        //    //sa pag create sa table 
-        //    DataTable userPromoTable = new DataTable();
-        //    userPromoTable.Columns.Add("PROMO ID");
-        //    userPromoTable.Columns.Add("PROMO NAME");
-        //    userPromoTable.Columns.Add("PROMO DESCRIPTION");
-        //    userPromoTable.Columns.Add("WAYS TO EARN POINTS");
-        //    userPromoTable.Columns.Add("POINTS TO EARN");
-        //    userPromoTable.Columns.Add("POINTS REQUIRED TO CLAIM REWARD");
-        //    userPromoTable.Columns.Add("UNIT & SIZES PROMO APPLIED");
-        //    userPromoTable.Columns.Add("PRODUCT OFFERED TYPE");
-        //    userPromoTable.Columns.Add("PROMO EXPIRATION FROM");
-        //    userPromoTable.Columns.Add("PROMO EXPIRATION TO");
-        //    userPromoTable.Columns.Add("MINIMUM RANGE AMOUNT (per amount)");
-        //    userPromoTable.Columns.Add("DATE ADDED");
-        //    userPromoTable.Columns.Add("ADDED BY");
+            // Create the DataTable to hold the orders
+            DataTable rewardTable = new DataTable();
+            rewardTable.Columns.Add("REWARD ID");
+            rewardTable.Columns.Add("WAYS TO EARN REWARD POINTS");
+            rewardTable.Columns.Add("REWARD POINTS TO EARN");
+            rewardTable.Columns.Add("MINIMUM RANGE PER AMOUNT");
+            rewardTable.Columns.Add("MAXIMUM RANGE PER AMOUNT");
+            rewardTable.Columns.Add("DATE ADDED");
+            rewardTable.Columns.Add("ADDED BY");
 
-        //    if (response != null && response.ResultAs<RewardSystem>() != null)
-        //    {
-        //        // Loop through the orders and add them to the DataTable
-        //        foreach (var entry in filteredList)
-        //        {
-        //            string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+            //condition to fetch the product refill data
+            if (response != null && response.ResultAs<RewardSystem>() != null)
+            {
+                //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
+             //   var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
 
+                // Loop through the entries and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                    
+                        string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-        //            userPromoTable.Rows.Add(entry.rewardId, entry.rewardType,
-        //                               entry.reward_description, entry.cusEarnPoints, entry.pointsPerTxnOrAmount, entry.points_requiredToClaim, entry.promoAppliedToUnitSizes,
-        //                               entry.productOffered, entry.promoExpirationFrom, entry.promoExpirationTo, entry.range_perAmount, dateAdded, entry.addedBy);
+                        rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
+                            entry.reward_minRange_perAmount, entry.reward_maxRange_perAmount, dateAdded, entry.addedBy);
+                    
+                }
 
-        //            //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
-        //            //                     entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
-        //            //                     entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
-        //            //                     entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Handle null response or invalid selected value
-        //        userPromoTable.Rows.Add("No data found", "", "", "", "", "", "");
-        //    }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblMessage.Text = "No data found ";
+            }
 
 
-        //    // Bind the DataTable to the GridView
-        //    gridRewardsDetails.DataSource = userPromoTable;
-        //    gridRewardsDetails.DataBind();
 
-        //}
-        //DISPLAY PROMO OFFERED REPORTS 
-        //private void promoOfferedReportsDisplay()
-        //{
+            // Bind the DataTable to the GridView
+            gridRewardReport.DataSource = rewardTable;
+            gridRewardReport.DataBind();
 
-        //    string idno = (string)Session["idno"];
+        }
+        //DISPLAY PROMO OFFERED REPORTS
+        private void promoOfferedReportsDisplay()
+        {
 
-        //    // Get the log ID from the session
-        //    int logsId = (int)Session["logsId"];
+            string idno = (string)Session["idno"];
 
-        //    // Retrieve all orders from the ORDERS table
-        //    FirebaseResponse response = twoBigDB.Get("REWARDS/");
-        //    Dictionary<string, Reward> userReward = response.ResultAs<Dictionary<string, Reward>>();
-        //    //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-        //    var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
+            // Get the log ID from the session
+            int logsId = (int)Session["logsId"];
 
-        //    // Create the DataTable to hold the orders
-        //    //sa pag create sa table 
-        //    DataTable userPromoTable = new DataTable();
-        //    userPromoTable.Columns.Add("PROMO ID");
-        //    userPromoTable.Columns.Add("PROMO NAME");
-        //    userPromoTable.Columns.Add("PROMO DESCRIPTION");
-        //    userPromoTable.Columns.Add("WAYS TO EARN POINTS");
-        //    userPromoTable.Columns.Add("POINTS TO EARN");
-        //    userPromoTable.Columns.Add("POINTS REQUIRED TO CLAIM REWARD");
-        //    userPromoTable.Columns.Add("UNIT & SIZES PROMO APPLIED");
-        //    userPromoTable.Columns.Add("PRODUCT OFFERED TYPE");
-        //    userPromoTable.Columns.Add("PROMO EXPIRATION FROM");
-        //    userPromoTable.Columns.Add("PROMO EXPIRATION TO");
-        //    userPromoTable.Columns.Add("MINIMUM RANGE AMOUNT (per amount)");
-        //    userPromoTable.Columns.Add("DATE ADDED");
-        //    userPromoTable.Columns.Add("ADDED BY");
-
-        //    if (response != null && response.ResultAs<Reward>() != null)
-        //    {
-        //        // Loop through the orders and add them to the DataTable
-        //        foreach (var entry in filteredList)
-        //        {
-        //            string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-
-        //            userPromoTable.Rows.Add(entry.rewardId, entry.rewardType,
-        //                               entry.reward_description, entry.cusEarnPoints, entry.pointsPerTxnOrAmount, entry.points_requiredToClaim, entry.promoAppliedToUnitSizes,
-        //                               entry.productOffered, entry.promoExpirationFrom, entry.promoExpirationTo, entry.range_perAmount, dateAdded, entry.addedBy);
-
-        //            //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
-        //            //                     entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
-        //            //                     entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
-        //            //                     entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Handle null response or invalid selected value
-        //        userPromoTable.Rows.Add("No data found", "", "", "", "", "", "");
-        //    }
-
-
-        //    // Bind the DataTable to the GridView
-        //    gridRewardsDetails.DataSource = userPromoTable;
-        //    gridRewardsDetails.DataBind();
-
-        //}
-        //STORE PROMO OFFERED
-        //protected void btnAddPromoOffered_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    { 
-        //            string idno = (string)Session["idno"];
-        //            int logsId = (int)Session["logsId"];
-        //        string name = (string)Session["fullname"];
-
-        //        // Generate reward id number to make as the unique key
-        //        Random rnd = new Random();
-        //            int idnum = rnd.Next(1, 10000);
-
-        //            // Validate user input
-        //            if (string.IsNullOrEmpty(txtrewardname.Text) || string.IsNullOrEmpty(txtdescription.Text) || string.IsNullOrEmpty(txtpointsrequired.Text))
-        //            {
-        //                Response.Write("<script> alert('Please fill all the required fields.'); </script>");
-        //                return;
-        //            }
-
-        //            // Convert points required to an integer
-        //            int pointsRequired = 0;
-        //            if (!int.TryParse(txtpointsrequired.Text, out pointsRequired))
-        //            {
-        //                Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
-        //                return;
-        //            }
-
-        //            // Get the current UTC date and time as a DateTimeOffset object
-        //            DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
-
-
-        //            // Define the format of the date string
-        //            string format = "MMMM, dd yyyy";
-
-        //            // Convert the date string to a DateTimeOffset using ParseExact
-        //            DateTimeOffset rewardsDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
-
-        //            // Get the selected values from the CheckBoxList
-        //            string selectedValues = "";
-        //            foreach (ListItem item in checkPromoOffered.Items)
-        //            {
-        //                if (item.Selected)
-        //                {
-        //                    selectedValues += item.Value + ",";
-        //                }
-        //            }
-        //            // Remove the trailing comma if there are any selected values
-        //            if (!string.IsNullOrEmpty(selectedValues))
-        //            {
-        //                selectedValues = selectedValues.TrimEnd(',');
-        //            }
-
-        //            // Get the selected values from the CheckBoxList
-        //            string selectedUnitSizes = "";
-        //            foreach (ListItem item in chUnitSizes.Items)
-        //            {
-        //                if (item.Selected)
-        //                {
-        //                    selectedUnitSizes += item.Value + ",";
-
-        //                }
-        //            }
-        //            // Remove the trailing comma if there are any selected values
-        //            if (!string.IsNullOrEmpty(selectedUnitSizes))
-        //            {
-        //                selectedUnitSizes = selectedUnitSizes.TrimEnd(',');
-        //            }
-
-
-        //            // Get the selected values from the CheckBoxList
-        //            string cusEarnPoints_selectedValues = "";
-        //            foreach (ListItem item in radioCusEarnPoints.Items)
-        //            {
-        //                if (item.Selected)
-        //                {
-        //                    cusEarnPoints_selectedValues += item.Value + ",";
-        //                }
-        //            }
-
-        //            // Remove the trailing comma if there are any selected values
-        //            if (!string.IsNullOrEmpty(cusEarnPoints_selectedValues))
-        //            {
-        //                cusEarnPoints_selectedValues = cusEarnPoints_selectedValues.TrimEnd(',');
-        //            }
-
-        //        // Convert points required to an integer
-        //        int percentageVAlue = 0;
-        //        if (!int.TryParse(txtrewardValue.Text, out percentageVAlue))
-        //        {
-        //            Response.Write("<script> alert('Invalid percentage required value. Please enter a valid percentage number.'); </script>");
-        //            return;
-        //        }
-        //        // If txtrange_perAmount is null or empty, range_perAmount will be 0.
-        //        decimal range_perAmount = 0;
-        //        if (!string.IsNullOrEmpty(txtrange_perAmount.Text) && !decimal.TryParse(txtrange_perAmount.Text, out range_perAmount))
-        //        {
-        //            Response.Write("<script> alert('Invalid range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-        //            return;
-        //        }
-
-        //        // Add the reward promo to the database
-        //        var data = new Reward
-        //            {
-        //                rewardId = idnum,
-        //                adminId = int.Parse(idno),
-        //                rewardType = txtrewardname.Text,
-        //                rewardPercentageValue = percentageVAlue,
-        //                reward_description = txtdescription.Text,
-        //                points_requiredToClaim = pointsRequired,
-        //                rewardsDateAdded = rewardsDateAdded,
-        //                productOffered = selectedValues,
-        //                range_perAmount = range_perAmount,
-        //              //  range_perAmount = int.Parse(txtrange_perAmount.Text),
-        //                cusEarnPoints = cusEarnPoints_selectedValues,
-        //                pointsPerTxnOrAmount = decimal.Parse(txtpointsPerTxnOrAmount.Text),
-        //                promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
-        //                promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
-        //                promoAppliedToUnitSizes = selectedUnitSizes,
-        //                addedBy = name
-                        
-        //            };
-
-        //            SetResponse response;
-        //            response = twoBigDB.Set("REWARDS/" + data.rewardId, data);
-
-
-        //            // Get the current date and time
-        //            DateTime addedTime = DateTime.UtcNow;
-
-        //            //Store the login information in the USERLOG table
-        //            var rewardLog = new UsersLogs
-        //            {
-        //                userIdnum = int.Parse(idno),
-        //                logsId = idnum,
-        //                userFullname = (string)Session["fullname"],
-        //                activityTime = addedTime,
-        //                userActivity = "ADDED REWARDS OFFERED",
-        //            };
-
-        //            //Storing the  info
-        //            response = twoBigDB.Set("USERSLOG/" + rewardLog.logsId, rewardLog);//Storing data to the database
-
-        //            // Show success message
-        //            Response.Write("<script> alert('Reward promo added successfully!'); location.reload(); window.location.href = '/Admin/Rewards.aspx'; </script>");
+            // Retrieve all records from the PROMO_OFFERED table
+            FirebaseResponse response = twoBigDB.Get("PROMO_OFFERED/");
+            Dictionary<string, PromoOffered> userReward = response.ResultAs<Dictionary<string, PromoOffered>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.promoDateAdded);
             
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
-        //}
+
+            // Create the DataTable to hold the orders
+            DataTable promoOfferedTable = new DataTable();
+            promoOfferedTable.Columns.Add("PROMO ID");
+            promoOfferedTable.Columns.Add("PROMO NAME");
+            promoOfferedTable.Columns.Add("PROMO DESCRIPTION");
+            promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT OFFERS");
+            promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT REFILL");
+            promoOfferedTable.Columns.Add("PROMO APPLIED TO OTHER PRODUCT");
+            promoOfferedTable.Columns.Add("PROMO EXPIRATION FROM");
+            promoOfferedTable.Columns.Add("PROMO EXPIRATION TO");
+            promoOfferedTable.Columns.Add("DATE ADDED");
+            promoOfferedTable.Columns.Add("ADDED BY");
+
+           
+            //condition to fetch the other product data
+            if (response != null && response.ResultAs<PromoOffered>() != null)
+            {
+              //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+
+                // Loop through the entries and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                        string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidFrom = entry.promoExpirationFrom == DateTimeOffset.MinValue ? "" : entry.promoExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidUntil = entry.promoExpirationTo == DateTimeOffset.MinValue ? "" : entry.promoExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    promoOfferedTable.Rows.Add(entry.promoId, entry.promoName, entry.promoDescription, entry.promoAppliedToProductOffers,
+                             entry.promoAppliedTo_productRefillUnitSizes, entry.promoAppliedTo_otherProductUnitSizes, promoValidFrom,
+                             promoValidUntil, dateAdded, entry.addedBy);
+                    
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblMessage.Text = "No data found ";
+            }
+            
+            
+            // Bind the DataTable to the GridView
+            gridPromoReports.DataSource = promoOfferedTable;
+            gridPromoReports.DataBind();
+
+        }
+       // STORE PROMO OFFERED
+        protected void btnAddPromoOffered_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string idno = (string)Session["idno"];
+                int logsId = (int)Session["logsId"];
+                string name = (string)Session["fullname"];
+
+                // Generate reward id number to make as the unique key
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
+                
+                
+                // Validate user input
+                if (string.IsNullOrEmpty(txtpromoname.Text) || string.IsNullOrEmpty(txtpromodescription.Text) || string.IsNullOrEmpty(txtpromo_pointsToClaimReward.Text))
+                {
+                    Response.Write("<script> alert('Please fill all the required fields.'); </script>");
+                    return;
+                }
+
+                // Convert discount value to an integer
+                int discountValue = 0;
+                if (!int.TryParse(txtpromoDiscountValue.Text, out discountValue))
+                {
+                    Response.Write("<script> alert('Invalid discount required value. Please enter a valid number.'); </script>");
+                    return;
+                }
+
+                // Convert points required to an integer
+                int pointsRequired = 0;
+                if (!int.TryParse(txtpromo_pointsToClaimReward.Text, out pointsRequired))
+                {
+                    Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
+                    return;
+                }
+
+                // Get the current UTC date and time as a DateTimeOffset object
+                DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
+
+
+                // Define the format of the date string
+                string format = "MMMM, dd yyyy";
+
+                // Convert the date string to a DateTimeOffset using ParseExact
+                DateTimeOffset promoDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
+
+                // Get the selected values from the CheckBoxList
+                string selectedPromo_productOffered = "";
+                foreach (ListItem item in checkPromo_productOffered.Items)
+                {
+                    if (item.Selected)
+                    {
+                        selectedPromo_productOffered += item.Value + ",";
+                    }
+                }
+                // Remove the trailing comma if there are any selected values
+                if (!string.IsNullOrEmpty(selectedPromo_productOffered))
+                {
+                    selectedPromo_productOffered = selectedPromo_productOffered.TrimEnd(',');
+                }
+
+                // Get the selected values from the CheckBoxList
+                string selectedUnitSizesproRefill = "";
+                foreach (ListItem item in chUnitSizes_proRefill.Items)
+                {
+                    if (item.Selected)
+                    {
+                        selectedUnitSizesproRefill += item.Value + ",";
+
+                    }
+                }
+                // Remove the trailing comma if there are any selected values
+                if (!string.IsNullOrEmpty(selectedUnitSizesproRefill))
+                {
+                    selectedUnitSizesproRefill = selectedUnitSizesproRefill.TrimEnd(',');
+                }
+
+                // Get the selected values from the CheckBoxList
+                string selectedUnitSizesOtherProduct = "";
+                foreach (ListItem item in chUnitSizes_otherProduct.Items)
+                {
+                    if (item.Selected)
+                    {
+                        selectedUnitSizesOtherProduct += item.Value + ",";
+
+                    }
+                }
+                // Remove the trailing comma if there are any selected values
+                if (!string.IsNullOrEmpty(selectedUnitSizesOtherProduct))
+                {
+                    selectedUnitSizesOtherProduct = selectedUnitSizesOtherProduct.TrimEnd(',');
+                }
+
+                // Convert points required to an integer
+                int percentageVAlue = 0;
+                if (!int.TryParse(txtpromoDiscountValue.Text, out percentageVAlue))
+                {
+                    Response.Write("<script> alert('Invalid percentage required value. Please enter a valid percentage number.'); </script>");
+                    return;
+                }
+              
+                // Add the reward promo to the database
+                var data = new PromoOffered
+                {
+                    promoId = idnum,
+                    adminId = int.Parse(idno),
+                    promoName = txtpromoname.Text,
+                    promoDiscountValue = percentageVAlue,
+                    promoDescription = txtpromodescription.Text,
+                    promoAppliedToProductOffers = selectedPromo_productOffered,
+                    promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
+                    promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
+                    promoAppliedTo_otherProductUnitSizes = selectedUnitSizesOtherProduct,
+                    promoAppliedTo_productRefillUnitSizes = selectedUnitSizesproRefill,
+                    promoDateAdded = promoDateAdded,
+                    addedBy = name
+
+                };
+
+                SetResponse response;
+                response = twoBigDB.Set("PROMO_OFFERED/" + data.promoId, data);
+
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
+
+                //Store the login information in the USERLOG table
+                var promoLog = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "ADDED PROMO OFFERED",
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("USERSLOG/" + promoLog.logsId, promoLog);//Storing data to the database
+
+                txtpromoname.Text = null;
+                txtpromoDiscountValue.Text = null;
+                txtpromodescription.Text = null;
+                txtpromo_pointsToClaimReward.Text = null;
+                txtpromoExpirationFrom.Text = null;
+                txtpromoExpirationTo.Text = null;
+                checkPromo_productOffered.SelectedValue = null;
+                chUnitSizes_otherProduct.SelectedValue = null;
+                chUnitSizes_proRefill.SelectedValue = null;
+                // Show success message
+                Response.Write("<script> alert('Promo offered added successfully!') </script>");
+                    
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
+            }
+        }
         //STORE REWARD
         protected void btnAddReward_Click(object sender, EventArgs e)
         {
-        //    try
-        //    {
-        //        string idno = (string)Session["idno"];
-        //        int logsId = (int)Session["logsId"];
-        //        string name = (string)Session["fullname"];
+            try
+            {
+                string idno = (string)Session["idno"];
+                int logsId = (int)Session["logsId"];
+                string name = (string)Session["fullname"];
 
-        //        // Generate reward id number to make as the unique key
-        //        Random rnd = new Random();
-        //        int idnum = rnd.Next(1, 10000);
+                // Generate reward id number to make as the unique key
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
 
-        //        // Validate user input
-        //        if (string.IsNullOrEmpty(txtrewardname.Text) || string.IsNullOrEmpty(txtdescription.Text) || string.IsNullOrEmpty(txtpointsrequired.Text))
-        //        {
-        //            Response.Write("<script> alert('Please fill all the required fields.'); </script>");
-        //            return;
-        //        }
-
-        //        // Convert points required to an integer
-        //        int pointsRequired = 0;
-        //        if (!int.TryParse(txtpointsrequired.Text, out pointsRequired))
-        //        {
-        //            Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
-        //            return;
-        //        }
-
-        //        // Get the current UTC date and time as a DateTimeOffset object
-        //        DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
+                // Get the current UTC date and time as a DateTimeOffset object
+                DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
 
 
-        //        // Define the format of the date string
-        //        string format = "MMMM, dd yyyy";
+                // Define the format of the date string
+                string format = "MMMM, dd yyyy";
 
-        //        // Convert the date string to a DateTimeOffset using ParseExact
-        //        DateTimeOffset rewardsDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
-
-        //        // Get the selected values from the CheckBoxList
-        //        string selectedValues = "";
-        //        foreach (ListItem item in checkPromoOffered.Items)
-        //        {
-        //            if (item.Selected)
-        //            {
-        //                selectedValues += item.Value + ",";
-        //            }
-        //        }
-        //        // Remove the trailing comma if there are any selected values
-        //        if (!string.IsNullOrEmpty(selectedValues))
-        //        {
-        //            selectedValues = selectedValues.TrimEnd(',');
-        //        }
-
-        //        // Get the selected values from the CheckBoxList
-        //        string selectedUnitSizes = "";
-        //        foreach (ListItem item in chUnitSizes.Items)
-        //        {
-        //            if (item.Selected)
-        //            {
-        //                selectedUnitSizes += item.Value + ",";
-
-        //            }
-        //        }
-        //        // Remove the trailing comma if there are any selected values
-        //        if (!string.IsNullOrEmpty(selectedUnitSizes))
-        //        {
-        //            selectedUnitSizes = selectedUnitSizes.TrimEnd(',');
-        //        }
+                // Convert the date string to a DateTimeOffset using ParseExact
+                DateTimeOffset rewardsDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
 
 
-        //        // Get the selected values from the CheckBoxList
-        //        string cusEarnPoints_selectedValues = "";
-        //        foreach (ListItem item in radioCusEarnPoints.Items)
-        //        {
-        //            if (item.Selected)
-        //            {
-        //                cusEarnPoints_selectedValues += item.Value + ",";
-        //            }
-        //        }
+               
+                    
 
-        //        // Remove the trailing comma if there are any selected values
-        //        if (!string.IsNullOrEmpty(cusEarnPoints_selectedValues))
-        //        {
-        //            cusEarnPoints_selectedValues = cusEarnPoints_selectedValues.TrimEnd(',');
-        //        }
+                // Get the selected values from the CheckBoxList
+                string waysToEarnPoints_selectedValues = "";
+                foreach (ListItem item in radioWaysToEarnPoints.Items)
+                {
+                    if (item.Selected)
+                    {
+                        waysToEarnPoints_selectedValues += item.Value + ",";
+                    }
+                }
 
-        //        // Convert points required to an integer
-        //        int percentageVAlue = 0;
-        //        if (!int.TryParse(txtrewardValue.Text, out percentageVAlue))
-        //        {
-        //            Response.Write("<script> alert('Invalid percentage required value. Please enter a valid percentage number.'); </script>");
-        //            return;
-        //        }
-        //        // If txtrange_perAmount is null or empty, range_perAmount will be 0.
-        //        decimal range_perAmount = 0;
-        //        if (!string.IsNullOrEmpty(txtrange_perAmount.Text) && !decimal.TryParse(txtrange_perAmount.Text, out range_perAmount))
-        //        {
-        //            Response.Write("<script> alert('Invalid range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-        //            return;
-        //        }
+                // Remove the trailing comma if there are any selected values
+                if (!string.IsNullOrEmpty(waysToEarnPoints_selectedValues))
+                {
+                    waysToEarnPoints_selectedValues = waysToEarnPoints_selectedValues.TrimEnd(',');
+                }
+                // Convert rewards points to earn to an integer
+                decimal rewardspoints = 0;
+                if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text) && !decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out rewardspoints))
+                {
+                    Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
+                    return;
+                }
 
-        //        // Add the reward promo to the database
-        //        var data = new Reward
-        //        {
-        //            rewardId = idnum,
-        //            adminId = int.Parse(idno),
-        //            rewardType = txtrewardname.Text,
-        //            rewardPercentageValue = percentageVAlue,
-        //            reward_description = txtdescription.Text,
-        //            points_requiredToClaim = pointsRequired,
-        //            rewardsDateAdded = rewardsDateAdded,
-        //            productOffered = selectedValues,
-        //            range_perAmount = range_perAmount,
-        //            //  range_perAmount = int.Parse(txtrange_perAmount.Text),
-        //            cusEarnPoints = cusEarnPoints_selectedValues,
-        //            pointsPerTxnOrAmount = decimal.Parse(txtpointsPerTxnOrAmount.Text),
-        //            promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
-        //            promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
-        //            promoAppliedToUnitSizes = selectedUnitSizes,
-        //            addedBy = name
+                // If minimum range per amount is null or empty, minRange_perAmount will be 0.
+                decimal minRange_perAmount = 0;
+                if (!string.IsNullOrEmpty(txtminRange_perAmount.Text) && !decimal.TryParse(txtminRange_perAmount.Text, out minRange_perAmount))
+                {
+                    Response.Write("<script> alert('Invalid minimum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                    return;
+                }
+                // If maximum range per amount is null or empty, maxRange_perAmount will be 0.
+                decimal maxRange_perAmount = 0;
+                if (!string.IsNullOrEmpty(txtmaxRange_perAmount.Text) && !decimal.TryParse(txtmaxRange_perAmount.Text, out maxRange_perAmount))
+                {
+                    Response.Write("<script> alert('Invalid maximum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                    return;
+                }
 
-        //        };
+                // Add the reward promo to the database
+                var data = new RewardSystem
+                {
+                    rewardId = idnum,
+                    adminId = int.Parse(idno),
+                    rewardWaysToEarn = waysToEarnPoints_selectedValues,
+                    rewardPointsToEarn = rewardspoints,
+                    reward_minRange_perAmount = minRange_perAmount,
+                    reward_maxRange_perAmount = maxRange_perAmount,
+                    rewardsDateAdded = rewardsDateAdded,
+                    addedBy = name
 
-        //        SetResponse response;
-        //        response = twoBigDB.Set("REWARDS/" + data.rewardId, data);
+                };
+
+                SetResponse response;
+                response = twoBigDB.Set("REWARDSYSTEM/" + data.rewardId, data);
 
 
-        //        // Get the current date and time
-        //        DateTime addedTime = DateTime.UtcNow;
+                // Get the current date and time
+                DateTime addedTime = DateTime.UtcNow;
 
-        //        //Store the login information in the USERLOG table
-        //        var rewardLog = new UsersLogs
-        //        {
-        //            userIdnum = int.Parse(idno),
-        //            logsId = idnum,
-        //            userFullname = (string)Session["fullname"],
-        //            activityTime = addedTime,
-        //            userActivity = "ADDED REWARDS OFFERED",
-        //        };
+                //Store the login information in the USERLOG table
+                var rewardLog = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "ADDED REWARD SYSTEM",
+                };
 
-        //        //Storing the  info
-        //        response = twoBigDB.Set("USERSLOG/" + rewardLog.logsId, rewardLog);//Storing data to the database
+                //Storing the  info
+                response = twoBigDB.Set("USERSLOG/" + rewardLog.logsId, rewardLog);//Storing data to the database
 
-        //        // Show success message
-        //        Response.Write("<script> alert('Reward promo added successfully!'); location.reload(); window.location.href = '/Admin/Rewards.aspx'; </script>");
+                // Show success message
+                Response.Write("<script> alert('Reward added successfully!'); </script>");
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
+                txtrewardspointsPerTxnOrAmount.Text = null;
+                txtmaxRange_perAmount.Text = null;
+                txtminRange_perAmount.Text = null;
+                radioWaysToEarnPoints.SelectedValue = null;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
+            }
         }
-        //DISPLAY REPORTS
-        //protected void btnDisplayReports_Click(object sender, EventArgs e)
+
+        //protected void radioWaysToEarnPoints_SelectedIndexChanged(object sender, EventArgs e)
         //{
-        //    try
+        //    if (radioWaysToEarnPoints.SelectedValue == "per_transaction")
         //    {
-        //        string selectedOption = ddlSearchOptions.SelectedValue;
-
-
-        //        if (selectedOption == "0")
-        //        {
-        //            lblreports.Text = "PROMO OFFERE REPORT";
-        //            gridPromoReports.Visible = true;
-        //            gridRewardReport.Visible = false;
-        //            rewardReportsDisplay();
-        //        }
-        //        else if (selectedOption == "1")
-        //        {
-        //            lblreports.Text = "REWARD SYSTEM REPORT";
-        //            gridRewardReport.Visible = true;
-        //            gridPromoReports.Visible = false;
-        //            promoOfferedReportsDisplay();
-        //        }
+        //        // Disable txtminRange_perAmount and txtmaxRange_perAmount
+        //        txtminRange_perAmount.Enabled = false;
+        //        txtmaxRange_perAmount.Enabled = false;
         //    }
-        //    catch (Exception ex)
+        //    else if (radioWaysToEarnPoints.SelectedValue == "per_amount")
         //    {
-        //        Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+        //        // Enable txtminRange_perAmount and txtmaxRange_perAmount
+        //        txtminRange_perAmount.Enabled = true;
+        //        txtmaxRange_perAmount.Enabled = true;
         //    }
         //}
-        ////SEARCH REPORTS OF CERTAIN RECORD
-        //protected void btnSearchReports_Click(object sender, EventArgs e)
-        //{
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
-
-        //    string idno = (string)Session["idno"];
-        //    try
-        //    {
-        //        string rewardnum = txtSearch.Text;
-
-        //        // Check if the employee ID is valid
-        //        if (string.IsNullOrEmpty(rewardnum))
-        //        {
-        //            Response.Write("<script>alert ('Invalid promo / reward name!');</script>");
-        //            return;
-        //        }
-        //        // Retrieve all orders from the ORDERS table
-        //        FirebaseResponse response = twoBigDB.Get("REWARDS");
-        //        Dictionary<string, Reward> rewardList = response.ResultAs<Dictionary<string, Reward>>();
-
-        //        // Create the DataTable to hold the orders
-        //        DataTable userPromoTable = new DataTable();
-        //        userPromoTable.Columns.Add("PROMO ID");
-        //        userPromoTable.Columns.Add("PROMO NAME");
-        //        userPromoTable.Columns.Add("PROMO DESCRIPTION");
-        //        userPromoTable.Columns.Add("WAYS TO EARN POINTS");
-        //        userPromoTable.Columns.Add("POINTS TO EARN");
-        //        userPromoTable.Columns.Add("POINTS REQUIRED TO CLAIM REWARD");
-        //        userPromoTable.Columns.Add("UNIT & SIZES PROMO APPLIED");
-        //        userPromoTable.Columns.Add("PRODUCT OFFERED TYPE");
-        //        userPromoTable.Columns.Add("PROMO EXPIRATION FROM");
-        //        userPromoTable.Columns.Add("PROMO EXPIRATION TO");
-        //        userPromoTable.Columns.Add("MINIMUM RANGE AMOUNT (per amount)");
-        //        userPromoTable.Columns.Add("DATE ADDED");
-        //        userPromoTable.Columns.Add("ADDED BY");
-
-        //        //condition to fetch the product refill data
-        //        if (response != null && response.ResultAs<Reward>() != null)
-        //        {
-        //            //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
-        //            var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
-
-        //            // Loop through the entries and add them to the DataTable
-        //            foreach (var entry in filteredList)
-        //            {
-        //                if (rewardnum == entry.rewardType.ToString())
-        //                {
-        //                    string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-
-        //                    userPromoTable.Rows.Add(entry.rewardId, entry.rewardType,
-        //                                       entry.reward_description, entry.cusEarnPoints, entry.pointsPerTxnOrAmount, entry.points_requiredToClaim, entry.promoAppliedToUnitSizes,
-        //                                       entry.productOffered, entry.promoExpirationFrom, entry.promoExpirationTo, entry.range_perAmount, dateAdded, entry.addedBy);
-
-        //                }
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            //Response.Write("<script>alert('Error retrieving product data.');</script>");
-        //            lblMessageError.Text = "No data found for reward" + rewardnum;
-        //        }
+        protected void radioWaysToEarnPoints_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (radioWaysToEarnPoints.SelectedValue == "per amount")
+            {
+                txtminRange_perAmount.Enabled = true;
+                txtmaxRange_perAmount.Enabled = true;
+            }
+            else
+            {
+                txtminRange_perAmount.Enabled = false;
+                txtmaxRange_perAmount.Enabled = false;
+            }
+        }
 
 
 
-        //        // Bind the DataTable to the GridView
-        //        gridReward.DataSource = userPromoTable;
-        //        gridReward.DataBind();
+        //OPTION DISPLAY REPORTS
+        protected void btnDisplayReports_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string selectedOption = ddlSearchOptions.SelectedValue;
 
-        //        //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
-        //        txtSearch.Text = null;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>" + ex.Message);
-        //    }
-        //}
+                if (selectedOption == "0")
+                {
+                    lblreports.Text = "REWARD SYSTEM REPORT";
+                    gridRewardReport.Visible = true;
+                    gridPromoReports.Visible = false;
+                    rewardReportsDisplay();
+
+                }
+                else if (selectedOption == "1")
+                {
+                    lblreports.Text = "PROMO OFFERED REPORT";
+                    gridPromoReports.Visible = true;
+                    gridRewardReport.Visible = false;
+                    promoOfferedReportsDisplay();
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
+            }
+        }
+        //SEARCH PROMO REPORTS OF CERTAIN RECORD
+        protected void btnSearchReports_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#viewpromo').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string searchname = txtSearch.Text;
+
+                // Check if the employee ID is valid
+                if (string.IsNullOrEmpty(searchname))
+                {
+                    Response.Write("<script>alert ('Invalid promo name!');</script>");
+                    return;
+                }
+
+                //// Retrieve all orders from the ORDERS table
+                //FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM");
+                //Dictionary<string, RewardSystem> rewardList = response.ResultAs<Dictionary<string, RewardSystem>>();
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("PROMO_OFFERED");
+                Dictionary<string, PromoOffered> promolist = responselist.ResultAs<Dictionary<string, PromoOffered>>();
+
+                // Create the DataTable to hold the orders
+                DataTable promoOfferedTable = new DataTable();
+                promoOfferedTable.Columns.Add("PROMO ID");
+                promoOfferedTable.Columns.Add("PROMO NAME");
+                promoOfferedTable.Columns.Add("PROMO DESCRIPTION");
+                promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT OFFERS");
+                promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT REFILL");
+                promoOfferedTable.Columns.Add("PROMO APPLIED TO OTHER PRODUCT");
+                promoOfferedTable.Columns.Add("PROMO EXPIRATION FROM");
+                promoOfferedTable.Columns.Add("PROMO EXPIRATION TO");
+                promoOfferedTable.Columns.Add("DATE ADDED");
+                promoOfferedTable.Columns.Add("ADDED BY");
+
+                //condition to fetch the other product data
+                if (responselist != null && responselist.ResultAs<PromoOffered>() != null)
+                {
+                    var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        if (searchname == entry.promoName.ToString())
+                        {
+
+                            string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidFrom = entry.promoExpirationFrom == DateTimeOffset.MinValue ? "" : entry.promoExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidUntil = entry.promoExpirationTo == DateTimeOffset.MinValue ? "" : entry.promoExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            promoOfferedTable.Rows.Add(entry.promoId, entry.promoName, entry.promoDescription, entry.promoAppliedToProductOffers,
+                                     entry.promoAppliedTo_productRefillUnitSizes, entry.promoAppliedTo_otherProductUnitSizes, promoValidFrom,
+                                     promoValidUntil, dateAdded, entry.addedBy);
+                        }
+                    }
+                }
+                else
+                {
+                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
+                    lblMessageError.Text = "No data found for " + " " + searchname;
+                }
+
+                
+
+                gridPromoOffered.DataSource = promoOfferedTable;
+                gridPromoOffered.DataBind();
+                // lblProductId.Text = productnum;
+
+                //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+                txtSearch.Text = null;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/Rewards.aspx'; </script>" + ex.Message);
+            }
+        }
+        //SEARCH REWARD REPORTS OF CERTAIN RECORD
+        protected void btnSearchReward_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string searchname = txtSearchReward.Text;
+
+                // Check if the employee ID is valid
+                if (string.IsNullOrEmpty(searchname))
+                {
+                    Response.Write("<script>alert ('Enter per transaction or per amount only!');</script>");
+                    return;
+                }
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM");
+                Dictionary<string, RewardSystem> rewardList = response.ResultAs<Dictionary<string, RewardSystem>>();
+
+                // Create the DataTable to hold the orders
+                DataTable rewardTable = new DataTable();
+                rewardTable.Columns.Add("REWARD ID");
+                rewardTable.Columns.Add("WAYS TO EARN REWARD POINTS");
+                rewardTable.Columns.Add("REWARD POINTS TO EARN");
+                rewardTable.Columns.Add("MINIMUM RANGE PER AMOUNT");
+                rewardTable.Columns.Add("MAXIMUM RANGE PER AMOUNT");
+                rewardTable.Columns.Add("DATE ADDED");
+                rewardTable.Columns.Add("ADDED BY");
+                //condition to fetch the product refill data
+                if (response != null && response.ResultAs<RewardSystem>() != null)
+                {
+                    //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
+                    var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
+
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        if (searchname == entry.rewardWaysToEarn.ToString())
+                        {
+
+                            string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
+                                entry.reward_minRange_perAmount, entry.reward_maxRange_perAmount, dateAdded, entry.addedBy);
+                        }
+                    }
+
+                }
+                else
+                {
+                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
+                    lblMessageError.Text = "No data found for " + " " + searchname;
+                }
+               
+                // Bind the DataTable to the GridView
+                gridReward.DataSource = rewardTable;
+                gridReward.DataBind();
+
+              
+                //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
+                txtSearchReward.Text = null;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("location.reload(); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
+            }
+        }
 
     }
 }

@@ -15,31 +15,40 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
-        /// radioCusEarnPoints control.
+        /// radioWaysToEarnPoints control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList radioCusEarnPoints;
+        protected global::System.Web.UI.WebControls.RadioButtonList radioWaysToEarnPoints;
 
         /// <summary>
-        /// txtpointsPerTxnOrAmount control.
+        /// txtrewardspointsPerTxnOrAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtpointsPerTxnOrAmount;
+        protected global::System.Web.UI.WebControls.TextBox txtrewardspointsPerTxnOrAmount;
 
         /// <summary>
-        /// txtrange_perAmount control.
+        /// txtminRange_perAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtrange_perAmount;
+        protected global::System.Web.UI.WebControls.TextBox txtminRange_perAmount;
+
+        /// <summary>
+        /// txtmaxRange_perAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtmaxRange_perAmount;
 
         /// <summary>
         /// btnSet control.
@@ -51,13 +60,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSet;
 
         /// <summary>
-        /// txtrewardname control.
+        /// txtpromoname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtrewardname;
+        protected global::System.Web.UI.WebControls.TextBox txtpromoname;
 
         /// <summary>
         /// RequiredFieldValidator4 control.
@@ -69,13 +78,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
 
         /// <summary>
-        /// txtrewardValue control.
+        /// txtpromoDiscountValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtrewardValue;
+        protected global::System.Web.UI.WebControls.TextBox txtpromoDiscountValue;
 
         /// <summary>
         /// reqlname control.
@@ -87,13 +96,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqlname;
 
         /// <summary>
-        /// txtdescription control.
+        /// txtpromodescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtdescription;
+        protected global::System.Web.UI.WebControls.TextBox txtpromodescription;
 
         /// <summary>
         /// RequiredFieldValidator1 control.
@@ -105,13 +114,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
 
         /// <summary>
-        /// checkPromoOffered control.
+        /// checkPromo_productOffered control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList checkPromoOffered;
+        protected global::System.Web.UI.WebControls.CheckBoxList checkPromo_productOffered;
 
         /// <summary>
         /// pro_refillRadio control.
@@ -132,22 +141,31 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.ListItem otherproductRadio;
 
         /// <summary>
-        /// chUnitSizes control.
+        /// chUnitSizes_proRefill control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes;
+        protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes_proRefill;
 
         /// <summary>
-        /// txtpointsrequired control.
+        /// chUnitSizes_otherProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtpointsrequired;
+        protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes_otherProduct;
+
+        /// <summary>
+        /// txtpromo_pointsToClaimReward control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtpromo_pointsToClaimReward;
 
         /// <summary>
         /// RequiredFieldValidator2 control.
@@ -222,6 +240,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSearchReports;
 
         /// <summary>
+        /// txtSearchReward control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearchReward;
+
+        /// <summary>
+        /// btnSearchRewards control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchRewards;
+
+        /// <summary>
         /// lblMessageError control.
         /// </summary>
         /// <remarks>
@@ -240,6 +276,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.GridView gridReward;
 
         /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// gridPromoOffered control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridPromoOffered;
+
+        /// <summary>
         /// ddlSearchOptions control.
         /// </summary>
         /// <remarks>
@@ -256,6 +310,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDisplayReports;
+
+        /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
 
         /// <summary>
         /// lblreports control.
