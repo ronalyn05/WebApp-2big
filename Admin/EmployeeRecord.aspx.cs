@@ -36,6 +36,7 @@ namespace WRS2big_Web.Admin
             {
                 DisplayTable();
             }
+            
 
         }
 
@@ -66,8 +67,10 @@ namespace WRS2big_Web.Admin
             employeesTable.Columns.Add("EMERGENCY CONTACT");
             employeesTable.Columns.Add("DATE ADDED");
             employeesTable.Columns.Add("ADDED BY");
-            employeesTable.Columns.Add("DATE UPDATED");
-            employeesTable.Columns.Add("UPDATED BY");
+            employeesTable.Columns.Add("DETAILS DATE UPDATED");
+            employeesTable.Columns.Add("DETAILS UPDATED BY");
+            employeesTable.Columns.Add("DATE RESIGNED");
+            employeesTable.Columns.Add("STATUS MODIFIED BY");
 
             if (response != null && response.ResultAs<Employee>() != null)
             {
@@ -76,11 +79,11 @@ namespace WRS2big_Web.Admin
                 {
                     string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateStatusModified = entry.statusDateModified == DateTimeOffset.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
-                                       entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
-                                       entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_address,
-                                       entry.emp_emergencycontact, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                    employeesTable.Rows.Add(entry.emp_status, entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
+                        entry.emp_gender, entry.emp_role,  entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact,
+                        dateAdded, entry.addedBy, dateUpdated, entry.updatedBy, dateStatusModified, entry.status_ModifiedBy);
 
                     //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
                     //                     entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
@@ -209,7 +212,9 @@ namespace WRS2big_Web.Admin
                 // Get the new status and position from the DropDownList in the modal popup
                 string newPosition = drd_empPosition.SelectedValue;
                 string newStatus = drd_empStatus.SelectedValue;
-
+                string contactnumber = txt_contactNumber.Text;
+                string email = txtEmail_address.Text;
+                 
                 // Create a new employee object with the updated data
                 Employee updatedEmp = new Employee
                 {
@@ -234,16 +239,29 @@ namespace WRS2big_Web.Admin
                 };
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
+                if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role || !string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum || !string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
                 {
+                    updatedEmp.emp_email = email;
+                    updatedEmp.emp_contactnum = contactnumber;
                     updatedEmp.emp_role = newPosition;
+                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.updatedBy = name;
                 }
+                //if emp status is already inactive
+                if (existingEmp.emp_status == "Inactive")
+                {
+                    Response.Write("<script>alert ('Error: This employee is inactive and cannot be updated.'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
+                    
+                    return;
+                }
+
                 if (!string.IsNullOrEmpty(newStatus) && newStatus != existingEmp.emp_status)
                 {
                     updatedEmp.emp_status = newStatus;
+                    updatedEmp.statusDateModified = DateTimeOffset.UtcNow;
+                    updatedEmp.status_ModifiedBy = name;
                 }
-                updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
-                updatedEmp.updatedBy = name;
+
 
                 // Update the existing employee object in the database
                 response = twoBigDB.Update("EMPLOYEES/" + empID, updatedEmp);
@@ -282,12 +300,12 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             try
             {
-                string empnum = txtSearch.Text;
+                string empSearch = txtSearch.Text;
 
                 // Check if the employee ID is valid
-                if (string.IsNullOrEmpty(empnum))
+                if (string.IsNullOrEmpty(empSearch))
                 {
-                    Response.Write("<script>alert ('Please enter a valid employee ID!');</script>");
+                    Response.Write("<script>alert ('Please enter a valid employee ID or firstname!');</script>");
                     return;
                 }
                 // Retrieve all orders from the ORDERS table
@@ -310,35 +328,33 @@ namespace WRS2big_Web.Admin
                 employeeTable.Columns.Add("ADDED BY");
                 employeeTable.Columns.Add("DATE UPDATED");
                 employeeTable.Columns.Add("UPDATED BY");
+                employeeTable.Columns.Add("DATE RESIGNED");
+                employeeTable.Columns.Add("STATUS MODIFIED BY");
 
 
-                //condition to fetch the product refill data
+                // Filter the employee list based on the search query
                 if (response != null && response.ResultAs<Employee>() != null)
                 {
-                    //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
-                    var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno);
+                    var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch ||
+                        d.emp_firstname.ToLower().Contains(empSearch.ToLower())));
 
                     // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        if (empnum == entry.emp_id.ToString())
-                        {
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateStatusModified = entry.statusDateModified == DateTimeOffset.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            employeeTable.Rows.Add(entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname, 
-                                entry.emp_gender, entry.emp_role, entry.emp_status, entry.emp_contactnum, entry.emp_email, 
-                                entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
-                        }
+                        employeeTable.Rows.Add(entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
+                            entry.emp_gender, entry.emp_role, entry.emp_status, entry.emp_contactnum, entry.emp_email,
+                            entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy,
+                            dateStatusModified, entry.status_ModifiedBy);
                     }
-
                 }
                 else
                 {
-                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
-                    lblMessage.Text = "No data found for employee with id number" + empnum;
+                    lblMessage.Text = "No employee data found for the given search query.";
                 }
-
 
 
                 // Bind the DataTable to the GridView
@@ -347,6 +363,57 @@ namespace WRS2big_Web.Admin
 
                 //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
                 txtSearch.Text = null;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>" + ex.Message);
+            }
+        }
+        //SEARCH EMPLOYEE DETAILS TO UPDATE
+        protected void btnSearchEmpDetails_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#edit').modal();", true);
+
+            string idno = (string)Session["idno"];
+            try
+            {
+                string empSearch = txtempId.Text;
+
+                // Check if the employee ID is valid
+                if (string.IsNullOrEmpty(empSearch))
+                {
+                    Response.Write("<script>alert ('Please enter a valid employee ID !');</script>");
+                    return;
+                }
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employeeList = response.ResultAs<Dictionary<string, Employee>>();
+
+                // Filter the employee list based on the search query
+                if (response != null && response.ResultAs<Employee>() != null)
+                {
+                    var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch));
+
+                    
+
+                    //var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch ||
+                    //    d.emp_firstname.ToLower().Contains(empSearch.ToLower())));
+
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        txtEmail_address.Text = entry.emp_email;
+                        txt_contactNumber.Text = entry.emp_contactnum;
+                        drd_empPosition.SelectedValue = entry.emp_role;
+                        drd_empStatus.SelectedValue = entry.emp_status;
+                    }
+
+                }
+                else
+                {
+                    lblMessage.Text = "No employee data found for the given search query.";
+                }
 
             }
             catch (Exception ex)

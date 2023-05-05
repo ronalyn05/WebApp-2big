@@ -51,7 +51,7 @@
                                      <div class="clearfix">
                                         <%-- add employee button--%>
                                              <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"> <i class="fa fa-plus"></i> Add Employee</button>
-                                              <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> Edit Employee Details</button>
+                                              <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i> Edit Employee Details</button>
                                                       &nbsp;
                                        <%-- MODAL FOR ADD EMPLOYEE--%>
                                                <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
@@ -179,7 +179,7 @@
                                                      </div>
                                                    </div>
                                                     <%-- MODAL FOR UPDATE RECORDS --%>
-                                                    <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
                                                       <div class="modal-dialog modal-dialog-centered modal-md">
                                                           <div class="modal-content">
                                                               <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
@@ -193,13 +193,28 @@
                                                                           <div class="x_content">
                                                                               <div class="col-md-12 col-sm-12">
                                                                                   <strong>Employee ID:</strong>
-                                                                                  <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number"></asp:TextBox>
+                                                                                 <div style="display: flex;">
+                                                                                  <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number" Height="40px" Width="200px"></asp:TextBox>
+                                                                                  <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />
+                                                                                </div>
+
+                                                                                  <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                               </div>
+                                                                               <div class="col-md-12 col-sm-12">
+                                                                                  <strong>Contact Number:</strong>
+                                                                                  <asp:TextBox ID="txt_contactNumber" runat="server" ToolTip="Enter contact number you want to update"  placeholder="Enter contact number to update" class="form-control" TextMode="Number"></asp:TextBox>
                                                                                   <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
                                                                                </div> 
+                                                                               <div class="col-md-12 col-sm-12">
+                                                                                  <strong>Email Address:</strong>
+                                                                                  <asp:TextBox ID="txtEmail_address" runat="server" ToolTip="Enter email address you want to update" placeholder="Enter email address to update" class="form-control"></asp:TextBox>
+                                                                                  <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                               </div> 
+                                                                               
                                                                                   <div class="col-md-12 col-sm-12">
                                                                                       <strong>Position:</strong>
                                                                                           <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
-                                                                                          <asp:ListItem Selected="False" > ------ Update Employee Position ------ </asp:ListItem>
+                                                                                          <%--<asp:ListItem Selected="False" > ------ Update Employee Position ------ </asp:ListItem>--%>
                                                                                           <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
                                                                                           <asp:ListItem Text="Driver" Value="Driver" ></asp:ListItem>
                                                                                           <asp:ListItem Text="Water Refiller" Value="Water Refiller" ></asp:ListItem>
@@ -209,7 +224,7 @@
                                                                                   <div class="col-md-12 col-sm-12">
                                                                                       <strong>Status:</strong>
                                                                                           <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
-                                                                                          <asp:ListItem Selected="False" > ------ Update Employee Status ------ </asp:ListItem>
+                                                                                          <%--<asp:ListItem Selected="False" > ------ Update Employee Status ------ </asp:ListItem>--%>
                                                                                           <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
                                                                                           <asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>
                                                                                           </asp:DropDownList>
@@ -286,7 +301,7 @@
                                                                              <asp:Label ID="Label1" runat="server" Text="LIST OF EMPLOYEE RECORDS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                                              <div style="float:right;"> 
                                                              
-                                                             <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by employee id ...." ToolTip="enter employee id number to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                             <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by employee id or by firstname...." ToolTip="enter employee id number or firstname to search and view record" Height="40px" runat="server"></asp:TextBox>
                                                                                 <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtSearch" ValidationGroup="a"></asp:RequiredFieldValidator>--%>
                                                             <asp:Button ID="btnSearchEmployee" runat="server" Text="Search" OnClick="btnSearchEmployee_Click" CssClass="btn-primary" Height="40px"/>
 

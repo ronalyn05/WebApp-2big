@@ -84,7 +84,10 @@ namespace WRS2big_Web.Model
         public DateTimeOffset dateAdded { get; set; }
         public string updatedBy { get; set; }
         public DateTimeOffset dateUpdated { get; set; }
+        public string status_ModifiedBy { get; set; }
+        public DateTimeOffset statusDateModified { get; set; }
     }
+
     public class TankSupply
     {
         public int tankId { get; set; }
@@ -279,7 +282,8 @@ namespace WRS2big_Web.Model
         public int adminId { get; set; }
         public string promoName { get; set; }
         public int promoDiscountValue { get; set; }
-        public string promoDescription { get; set; }
+        public int promoPointsRequiredToClaim { get; set; }
+    public string promoDescription { get; set; }
         public string promoAppliedToProductOffers { get; set; }
         public string promoAppliedTo_productRefillUnitSizes { get; set; }
         public string promoAppliedTo_otherProductUnitSizes { get; set; }

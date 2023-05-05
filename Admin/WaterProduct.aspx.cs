@@ -113,17 +113,19 @@ namespace WRS2big_Web.Admin
                                 double orderedGallons = 0;
                                 if (order.order_Products[0].order_unit == "gallon/s")
                                 {
-                                    orderedGallons = order.order_Products[0].order_size;
+                                    orderedGallons = (double)order.order_Products[0].order_size;
                                 }
                                 else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
                                 {
                                     double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                    orderedGallons = order.order_Products[0].order_size * gallonsPerLiter;
+                                    orderedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
                                 }
                                 else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
                                 {
                                     double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
-                                    orderedGallons = order.order_Products[0].order_size / gallonsPerML;
+                                    //orderedGallons = order.order_Products[0].order_size / gallonsPerML;
+                                    orderedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
+
                                 }
                                 //if (order.order_unit == "gallon/s")
                                 //{
