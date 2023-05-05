@@ -329,7 +329,7 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script> alert('Invalid percentage required value. Please enter a valid percentage number.'); </script>");
                     return;
                 }
-              
+
                 // Add the reward promo to the database
                 var data = new PromoOffered
                 {
@@ -338,6 +338,7 @@ namespace WRS2big_Web.Admin
                     promoName = txtpromoname.Text,
                     promoDiscountValue = percentageVAlue,
                     promoDescription = txtpromodescription.Text,
+                    promoPointsRequiredToClaim = pointsRequired,
                     promoAppliedToProductOffers = selectedPromo_productOffered,
                     promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
                     promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),

@@ -58,8 +58,10 @@ namespace WRS2big_Web.Model
         public int order_ProductId { get; set; }
         public string order_ProductName { get; set; }
         public decimal order_ProductPrice { get; set; }
-        public int order_size { get; set; }
+        public decimal order_size { get; set; }
         public string order_unit { get; set; }
+        public string qtyPerItem { get; set; }
+        public string offerType { get; set; }
     }
 
     //    public class Order

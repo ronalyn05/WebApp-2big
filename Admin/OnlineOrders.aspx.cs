@@ -75,7 +75,8 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("CUSTOMER ID");
             ordersTable.Columns.Add("DRIVER ID");
             ordersTable.Columns.Add("STORE NAME");
-            ordersTable.Columns.Add("PRODUCT ORDER");
+            ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+            ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
             ordersTable.Columns.Add("ORDER QUANTITY");
             ordersTable.Columns.Add("DELIVERY TYPE");
             ordersTable.Columns.Add("ORDER TYPE");
@@ -96,7 +97,7 @@ namespace WRS2big_Web.Admin
 
                         foreach (var product in order.order_Products)
                         {
-                            product_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " " ;
+                            product_order += product.qtyPerItem + " " + product.order_size + " " + product.order_unit + " " + product.order_ProductName + " " ;
 
                         }
 
