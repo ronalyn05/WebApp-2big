@@ -47,7 +47,8 @@ namespace WRS2big_Web.Admin
             ordersTable.Columns.Add("DRIVER ID");
             ordersTable.Columns.Add("STORE NAME");
             ordersTable.Columns.Add("TOTAL AMOUNT");
-            ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
+            ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+            ordersTable.Columns.Add("DRIVER ASSIGNED BY");
             ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
             ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
             ordersTable.Columns.Add("PAYMENT RECEIVED BY");
@@ -61,12 +62,14 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    string dateAccepted = entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDelivered = entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string datePayment = entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAccepted = entry.dateOrderAccepted == DateTimeOffset.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDelivered = entry.dateOrderDelivered == DateTimeOffset.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string datePayment = entry.datePaymentReceived == DateTimeOffset.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDriverAssigned = entry.datePaymentReceived == DateTimeOffset.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
 
                     ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.order_TotalAmount,
-                        dateAccepted, dateDelivered, datePayment, entry.payment_receivedBy);
+                        dateDriverAssigned, entry.driverAssignedBy, dateAccepted, dateDelivered, datePayment, entry.payment_receivedBy);
                 }
             }
             else

@@ -177,7 +177,8 @@
                                                             </div>
                                                          </div>
                                                      </div>
-                                                   </div>
+                                                   </div>  
+                                         <br />
                                                     <%-- MODAL FOR UPDATE RECORDS --%>
                                                     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
                                                       <div class="modal-dialog modal-dialog-centered modal-md">
@@ -240,7 +241,7 @@
                                                                </div>
                                                           </div>
                                                       </div>
-                                                   </div><%-- end for modal update records--%>
+                                                   </div><%-- end for modal update records--%>  <br />
                                            <%-- MODAL TO VIEW CERTAIN RECORDS --%>
                                                     <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -293,6 +294,7 @@
                         </div>
                       </div>
                     </div><%-- end for modal view--%>
+                                         <br />
                                                     <!--PAGE CONTENTS-->
                                                     <div class="col-xl-12 col-xl-12 h-100">
                                                                  <div class="card">

@@ -41,9 +41,59 @@
                                 <div class="page-wrapper">
                                     <!-- Page-body start -->
                                     <!-- page content -->
+                                    <button type="button" style="font-size:14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target="#assign"><i class="fa fa-plus"></i> Assign Driver</button>
                                       <div class="col-xl-12 col-xl-12 h-100">
+                                           <%-- MODAL FOR UPDATE RECORDS --%>
+                                                    <div class="modal fade" id="assign" tabindex="-1" role="dialog" aria-hidden="true">
+                                                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                          <div class="modal-content">
+                                                              <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                  <div class="modal-header">
+                                                                      <h5 class="modal-title" id="myModalLabel3">ASSIGN DRIVER: </h5>
+                                                                      <%--exit button--%>
+                                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                      <div class="col-md-12 col-sm-12 ">
+                                                                          <div class="x_content">
+                                                                               <h5 style="color:black;font-family:Bahnschrift"> You can assign the driver to deliver the certain order to customer's order here:</h5>
+                                                <hr />
+                                                                              <div class="col-md-12 col-sm-12">
+                                                                                  <h6>Which order would you like to assign to the driver to deliver the customer's order?</h6>
+                                                                                 <div style="display: flex;">
+                                                                                  <asp:TextBox ID="txtOrderId" runat="server" ToolTip="Enter the order ID you want to assign to the driver" class="form-control" placeholder="Enter the order ID you want to assign to the driver" TextMode="Number" Height="40px"></asp:TextBox>
+                                                                                 <%-- <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />--%>
+                                                                                </div>
+
+                                                                                  <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                               </div>
+                                                                              <br />
+                                                                               <div class="col-md-12 col-sm-12">
+                                                                                   <div style="display: flex;">
+                                                                                 <h6>Which driver would you like to assign to deliver the customer's order?</h6>
+                                                                                        </div> 
+                                                                                  <asp:TextBox ID="txtDriverId" runat="server" Height="40px" ToolTip="Enter the id number of the driver you want to assign the order of the customer" TextMode="Number" placeholder="Enter the id number of the driver you want to assign the order of the customer" class="form-control"></asp:TextBox>
+                                                                                  <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                               </div> 
+                                                                                  
+                                                                                <br />
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="modal-footer">
+                                                                      <%--  BUTTON SUBMIT RECORD HERE--%>
+                                                                       <%--   <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click"/>--%>
+                                                                      <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="btnSubmit_Click"/>
+                                                                      </div>
+                                                                  </div>
+                                                               </div>
+                                                          </div>
+                                                      </div>
+                                                   </div><%-- end for modal assigning drivers--%>
+                                          <br />
+                                        <%--  DISPLAYING ORDER DETAILS HERE--%>
                                                 <div class="card">
                                                     <div class="card-header">
+
                                                          <asp:Label ID="Label2" runat="server" Text="ORDERS FROM CUSTOMER" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                         <div class="card-header-right">
                                                             <ul class="list-unstyled card-option">

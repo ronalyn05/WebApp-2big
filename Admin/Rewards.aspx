@@ -68,17 +68,17 @@
                                               <div id="pointsInput" class="col-md-12 col-sm-12">
                                                   <h5>Points to earn:</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
-                                                <asp:TextBox ID="txtrewardspointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the reward points to earn by the customer per transaction or per amount"></asp:TextBox>
+                                                <asp:TextBox ID="txtrewardspointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the reward points to earn by the customer per transaction or per amount"></asp:TextBox>
                                               </div>
                                                   <div class="col-md-12 col-sm-12">
                                                   <h5>Minimum range per amount (applies for per amount only):</h5>
-                                                <%--<label for="points">Points:</labe>l>--%>
-                                                <asp:TextBox ID="txtminRange_perAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the minimum range amount"></asp:TextBox>
-                                              </div>
+                                                  <asp:TextBox ID="txtminRange_perAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the minimum range amount"></asp:TextBox>
+                                                </div>
+
                                                 <div class="col-md-12 col-sm-12">
                                                   <h5>Maximum range per amount (applies for per amount only):</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
-                                                <asp:TextBox ID="txtmaxRange_perAmount" runat="server" CssClass="form-control" TextMode="SingleLine" placeholder="Enter the maximum range amount"></asp:TextBox>
+                                                <asp:TextBox ID="txtmaxRange_perAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the maximum range amount"></asp:TextBox>
                                               </div>
                                             </div>
                                                  <script type="text/javascript">
@@ -283,7 +283,7 @@
                                                                     <asp:GridView runat="server" ID="gridReward" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                                   
-                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                             <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                             <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
                                                             <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />

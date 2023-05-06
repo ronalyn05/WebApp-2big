@@ -270,9 +270,9 @@ namespace WRS2big_Web.Model
         public int rewardId { get; set; }
         public int adminId { get; set; }
         public string rewardWaysToEarn { get; set; }
-        public decimal rewardPointsToEarn { get; set; }
-        public decimal reward_minRange_perAmount { get; set; }
-        public decimal reward_maxRange_perAmount { get; set; }
+        public string rewardPointsToEarn { get; set; }
+        public string reward_minRange_perAmount { get; set; }
+        public string reward_maxRange_perAmount { get; set; }
         public DateTimeOffset rewardsDateAdded { get; set; }
         public string addedBy { get; set; }
     }

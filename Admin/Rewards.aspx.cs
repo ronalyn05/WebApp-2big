@@ -430,28 +430,63 @@ namespace WRS2big_Web.Admin
                 {
                     waysToEarnPoints_selectedValues = waysToEarnPoints_selectedValues.TrimEnd(',');
                 }
-                // Convert rewards points to earn to an integer
-                decimal rewardspoints = 0;
-                if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text) && !decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out rewardspoints))
+              //  // Convert rewards points to earn to an integer
+                //string rewardspoints = " ";
+                //if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text) && !decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out rewardspoints))
+                //{
+                //    Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
+                //    return;
+                //}
+                string rewardspoints = " ";
+                if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text))
                 {
-                    Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
-                    return;
+                    if (!decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out decimal points))
+                    {
+                        Response.Write("<script> alert('Invalid points required value. Please enter a valid number or decimal.'); </script>");
+                        return;
+                    }
+                    rewardspoints = points.ToString();
                 }
 
-                // If minimum range per amount is null or empty, minRange_perAmount will be 0.
-                decimal minRange_perAmount = 0;
-                if (!string.IsNullOrEmpty(txtminRange_perAmount.Text) && !decimal.TryParse(txtminRange_perAmount.Text, out minRange_perAmount))
+                //// If minimum range per amount is null or empty, minRange_perAmount will be null.
+                //string minRange_perAmount = " ";
+                //if (!string.IsNullOrEmpty(txtminRange_perAmount.Text) && !string(txtminRange_perAmount.Text, out minRange_perAmount))
+                //{
+                //    Response.Write("<script> alert('Invalid minimum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                //    return;
+                //}
+
+                //// If maximum range per amount is null or empty, maxRange_perAmount will be null.
+                //string maxRange_perAmount = " ";
+                //if (!string.IsNullOrEmpty(txtmaxRange_perAmount.Text) && !string(txtmaxRange_perAmount.Text, out maxRange_perAmount))
+                //{
+                //    Response.Write("<script> alert('Invalid maximum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                //    return;
+                //}
+                // If minimum range per amount is null or empty, minRange_perAmount will be null.
+                string minRange_perAmount = " ";
+                if (!string.IsNullOrEmpty(txtminRange_perAmount.Text))
                 {
-                    Response.Write("<script> alert('Invalid minimum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-                    return;
+                    if (!decimal.TryParse(txtminRange_perAmount.Text, out decimal minRange))
+                    {
+                        Response.Write("<script> alert('Invalid minimum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                        return;
+                    }
+                    minRange_perAmount = minRange.ToString();
                 }
-                // If maximum range per amount is null or empty, maxRange_perAmount will be 0.
-                decimal maxRange_perAmount = 0;
-                if (!string.IsNullOrEmpty(txtmaxRange_perAmount.Text) && !decimal.TryParse(txtmaxRange_perAmount.Text, out maxRange_perAmount))
+
+                // If maximum range per amount is null or empty, maxRange_perAmount will be null.
+                string maxRange_perAmount = " ";
+                if (!string.IsNullOrEmpty(txtmaxRange_perAmount.Text))
                 {
-                    Response.Write("<script> alert('Invalid maximum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-                    return;
+                    if (!decimal.TryParse(txtmaxRange_perAmount.Text, out decimal maxRange))
+                    {
+                        Response.Write("<script> alert('Invalid maximum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
+                        return;
+                    }
+                    maxRange_perAmount = maxRange.ToString();
                 }
+
 
                 // Add the reward promo to the database
                 var data = new RewardSystem
@@ -464,8 +499,9 @@ namespace WRS2big_Web.Admin
                     reward_maxRange_perAmount = maxRange_perAmount,
                     rewardsDateAdded = rewardsDateAdded,
                     addedBy = name
-
                 };
+
+
 
                 SetResponse response;
                 response = twoBigDB.Set("REWARDSYSTEM/" + data.rewardId, data);
