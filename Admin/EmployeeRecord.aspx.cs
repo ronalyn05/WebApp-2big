@@ -367,7 +367,8 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>" + ex.Message);
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
         //SEARCH EMPLOYEE DETAILS TO UPDATE
@@ -418,7 +419,8 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>" + ex.Message);
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
 
