@@ -35,6 +35,28 @@ namespace WRS2big_Web.Admin
 
             loadFeatures();
         }
+        public double ShowpackagePrice()
+        {
+            double packagePrice = 0;
+            FirebaseResponse features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+            var list = features.Body;
+            Dictionary<string, Model.PackagePlans> allFeatures = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(list);
+
+            if (allFeatures != null)
+            {
+                foreach (KeyValuePair<string, Model.PackagePlans> entry in allFeatures)
+                {
+                    if (entry.Value.packageName == "Package B")
+                    {
+                        packagePrice = entry.Value.packagePrice;
+                        return packagePrice;
+                    }
+                }
+
+            }
+            return packagePrice;
+
+        }
         private void loadFeatures()
         {
             FirebaseResponse features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");

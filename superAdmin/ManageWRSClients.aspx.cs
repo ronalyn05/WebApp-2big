@@ -39,8 +39,15 @@ namespace WRS2big_Web.superAdmin
                 DisplayAll();
                 DisplayPending();
                 DisplayApproved();
-                DisplayFullDetails();
+                DisplayDeclined();
+               
 
+                pendingGridView.Visible = false;
+                approvedGridView.Visible = false;
+                declinedGridView.Visible = false;
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
             }
         }
 
@@ -67,8 +74,6 @@ namespace WRS2big_Web.superAdmin
 
             foreach (KeyValuePair<string, Model.AdminAccount> entry in Allclients)
             {
-
-
                 FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                 Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
                
@@ -173,11 +178,46 @@ namespace WRS2big_Web.superAdmin
             approvedGridView.DataSource = approvedTable;
             approvedGridView.DataBind();
         }
-        private void DisplayFullDetails()
+       private void DisplayDeclined()
         {
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
+            DataTable approvedTable = new DataTable();
+            approvedTable.Columns.Add("CLIENT ID");
+            approvedTable.Columns.Add("CLIENT NAME");
+            approvedTable.Columns.Add("EMAIL");
+            approvedTable.Columns.Add("CONTACT #");
+            approvedTable.Columns.Add("STATION NAME");
+            approvedTable.Columns.Add("STATION ADDRESS");
+            approvedTable.Columns.Add("STATUS");
+            approvedTable.Columns.Add("DATE REGISTERED");
 
+            foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clients)
+            {
+                FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
+                Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+
+                if (adminEntry.Value.status == "Declined")
+                {
+                    approvedTable.Rows.Add(
+              //entry.Value.profile_image,
+              adminEntry.Value.idno,
+               adminEntry.Value.fname + " " + adminEntry.Value.lname,
+               adminEntry.Value.email,
+               adminEntry.Value.phone,
+               station.stationName,
+               station.stationAddress,
+               adminEntry.Value.status,
+               adminEntry.Value.dateRegistered);
+                }
+            }
+            declinedGridView.DataSource = approvedTable;
+            declinedGridView.DataBind();
         }
+
 
 
         protected void detailsButton_Click(object sender, EventArgs e)
@@ -201,6 +241,7 @@ namespace WRS2big_Web.superAdmin
 
         }
 
+        //multiple approve the customers
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> customerIDs = new List<int>();
@@ -217,7 +258,7 @@ namespace WRS2big_Web.superAdmin
 
             if (customerIDs.Count == 0)
             {
-                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                Response.Write("<script>alert ('Please select at least one client to approve'); </script>");
                 return;
             }
 
@@ -298,178 +339,252 @@ namespace WRS2big_Web.superAdmin
             }
         }
 
+        //protected void searchButton_Click(object sender, EventArgs e)
+        //{
+        //    string searched = search.Text;
+
+        //    //FETCH THE CLIENTS
+        //    FirebaseResponse clientsResponse = twoBigDB.Get("ADMIN");
+        //    Model.AdminAccount admin = clientsResponse.ResultAs<Model.AdminAccount>();
+        //    var clientData = clientsResponse.Body;
+        //    Dictionary<string, Model.AdminAccount> clientAdmin = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(clientData);
+
+        //    DataTable approvedTable = new DataTable();
+        //    approvedTable.Columns.Add("CLIENT ID");
+        //    approvedTable.Columns.Add("CLIENT NAME");
+        //    approvedTable.Columns.Add("EMAIL");
+        //    approvedTable.Columns.Add("CONTACT #");
+        //    approvedTable.Columns.Add("STATION NAME");
+        //    approvedTable.Columns.Add("STATION ADDRESS");
+        //    approvedTable.Columns.Add("STATUS");
+        //    approvedTable.Columns.Add("DATE REGISTERED");
+
+        //    foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clientAdmin)
+        //    {
+        //        FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
+        //        Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+
+
+
+        //        if (searched == station.stationName)
+        //        {
+        //            approvedTable.Rows.Add(
+        //          //entry.Value.profile_image,
+        //          adminEntry.Value.idno,
+        //           adminEntry.Value.fname + " " + adminEntry.Value.lname,
+        //           adminEntry.Value.email,
+        //           adminEntry.Value.phone,
+        //           station.stationName,
+        //           station.stationAddress,
+        //           adminEntry.Value.status,
+        //           adminEntry.Value.dateRegistered
+
+
+        //          );
+
+        //        }
+        //    }
+        //    // Bind DataTable to GridView control
+        //    AllGridview.DataSource = approvedTable;
+        //    AllGridview.DataBind();
+
+
+        //}
         protected void searchButton_Click(object sender, EventArgs e)
         {
             string searched = search.Text;
+            string selectedValue = sortDropdown.SelectedValue;
 
-            //FETCH THE CLIENTS
-            FirebaseResponse clientsResponse = twoBigDB.Get("ADMIN");
-            Model.AdminAccount admin = clientsResponse.ResultAs<Model.AdminAccount>();
-            var clientData = clientsResponse.Body;
-            Dictionary<string, Model.AdminAccount> clientAdmin = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(clientData);
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> Allclients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
-            DataTable approvedTable = new DataTable();
-            approvedTable.Columns.Add("CLIENT ID");
-            approvedTable.Columns.Add("CLIENT NAME");
-            approvedTable.Columns.Add("EMAIL");
-            approvedTable.Columns.Add("CONTACT #");
-            approvedTable.Columns.Add("STATION NAME");
-            approvedTable.Columns.Add("STATION ADDRESS");
-            approvedTable.Columns.Add("STATUS");
-            approvedTable.Columns.Add("DATE REGISTERED");
+            //creating the columns of the gridview
+            DataTable clientsTable = new DataTable();
+            clientsTable.Columns.Add("CLIENT ID");
+            clientsTable.Columns.Add("CLIENT NAME");
+            clientsTable.Columns.Add("EMAIL");
+            clientsTable.Columns.Add("CONTACT #");
+            clientsTable.Columns.Add("STATUS");
+            clientsTable.Columns.Add("STATION NAME");
+            clientsTable.Columns.Add("STATION ADDRESS");
+            clientsTable.Columns.Add("DATE REGISTERED");
 
-            foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clientAdmin)
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in Allclients)
             {
-                FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
-                Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
+                response = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
+                Model.RefillingStation station = response.ResultAs<Model.RefillingStation>();
 
-                
 
-                if (searched == station.stationName)
+                if ((selectedValue == "All" || selectedValue == entry.Value.status) &&
+                    (searched == entry.Value.fname || searched == station.stationName || searched == entry.Value.email || searched == entry.Key))
                 {
-                    approvedTable.Rows.Add(
-                  //entry.Value.profile_image,
-                  adminEntry.Value.idno,
-                   adminEntry.Value.fname + " " + adminEntry.Value.lname,
-                   adminEntry.Value.email,
-                   adminEntry.Value.phone,
-                   station.stationName,
-                   station.stationAddress,
-                   adminEntry.Value.status,
-                   adminEntry.Value.dateRegistered
-
-
-                  );
-
+                    clientsTable.Rows.Add(
+                        entry.Value.idno,
+                        entry.Value.fname + " " + entry.Value.lname,
+                        entry.Value.email,
+                        entry.Value.phone,
+                        entry.Value.status,
+                        station.stationName,
+                        station.stationAddress,
+                        entry.Value.dateRegistered);
                 }
             }
-            // Bind DataTable to GridView control
-            AllGridview.DataSource = approvedTable;
-            AllGridview.DataBind();
 
+            if (clientsTable.Rows.Count == 0)
+            {
+               
+                Response.Write("<script>alert ('Client not found!'); window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+               
+            }
 
+            search.Text = "";
+            // Bind DataTable to GridView control based on selected value of dropdown
+            if (selectedValue == "All")
+            {
+                AllGridview.DataSource = clientsTable;
+                AllGridview.DataBind();
+                AllGridview.Visible = true;
+                approvedGridView.Visible = false;
+                pendingGridView.Visible = false;
+                declinedGridView.Visible = false;
+            }
+            else if (selectedValue == "Pending")
+            {
+                pendingGridView.DataSource = clientsTable;
+                pendingGridView.DataBind();
+                pendingGridView.Visible = true;
+                AllGridview.Visible = false;
+                approvedGridView.Visible = false;
+                declinedGridView.Visible = false;
+            }
+            else if (selectedValue == "Approved")
+            {
+                approvedGridView.DataSource = clientsTable;
+                approvedGridView.DataBind();
+                approvedGridView.Visible = true;
+                AllGridview.Visible = false;
+                pendingGridView.Visible = false;
+                declinedGridView.Visible = false;
+            }
+            else if (selectedValue == "Declined")
+            {
+                declinedGridView.DataSource = clientsTable;
+                declinedGridView.DataBind();
+                declinedGridView.Visible = true;
+                AllGridview.Visible = false;
+                approvedGridView.Visible = false;
+                pendingGridView.Visible = false;
+            }
         }
-
         protected void viewSorted_Click(object sender, EventArgs e)
         {
             string selectedValue = sortDropdown.SelectedValue;
 
             if (selectedValue == "All")
             {
-                AllGridview.Visible = true;
-               
+                Response.Write("<script> window.location.href = '/superAdmin/ManageWRSClients.aspx';</script>");
+
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
+
             }
-            else if (selectedValue == "Pending Clients")
-            {
-                pendingGridView.Visible = true;
-               
-            }
-            else if (selectedValue == "Approved Clients")
-            {
-                approvedGridView.Visible = false;
-            }
-            else if (selectedValue == "Declined Clients")
+            else if (selectedValue == "Pending")
             {
 
+                search.Text = "";
+                pendingGridView.Visible = true;
+                AllGridview.Visible = false;
+                approvedGridView.Visible = false;
+                declinedGridView.Visible = false;
+
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = true;
+                approveButton.Visible = true;
+                declineButton.Visible = true;
+
+
+            }
+            else if (selectedValue == "Approved")
+            {
+
+                search.Text = "";
+                pendingGridView.Visible = false;
+                AllGridview.Visible = false;
+                approvedGridView.Visible = true;
+                declinedGridView.Visible = false;
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
+
+            }
+            else if (selectedValue == "Declined")
+            {
+
+                search.Text = "";
                 pendingGridView.Visible = false;
                 approvedGridView.Visible = false;
+                AllGridview.Visible = false;
+                declinedGridView.Visible = true;
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
 
-                FirebaseResponse response = twoBigDB.Get("ADMIN");
-                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
-                var data = response.Body;
-                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
-
-                DataTable approvedTable = new DataTable();
-                approvedTable.Columns.Add("CLIENT ID");
-                approvedTable.Columns.Add("CLIENT NAME");
-                approvedTable.Columns.Add("EMAIL");
-                approvedTable.Columns.Add("CONTACT #");
-                approvedTable.Columns.Add("STATION NAME");
-                approvedTable.Columns.Add("STATION ADDRESS");
-                approvedTable.Columns.Add("STATUS");
-                approvedTable.Columns.Add("DATE REGISTERED");
-
-                foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clients)
-                {
-                    FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + adminEntry.Key + "/RefillingStation");
-                    Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
-
-                    if (adminEntry.Value.status == "Declined")
-                    {
-                        approvedTable.Rows.Add(
-                  //entry.Value.profile_image,
-                  adminEntry.Value.idno,
-                   adminEntry.Value.fname + " " + adminEntry.Value.lname,
-                   adminEntry.Value.email,
-                   adminEntry.Value.phone,
-                   station.stationName,
-                   station.stationAddress,
-                   adminEntry.Value.status,
-                   adminEntry.Value.dateRegistered);
-                    }
-                }
-                AllGridview.DataSource = approvedTable;
-                AllGridview.DataBind();
             }
         }
 
-        //protected void btnAccept_Click(object sender, EventArgs e)
-        //{
+        protected void closeButton_Click(object sender, EventArgs e)
+        {
 
+            string selectedValue = sortDropdown.SelectedValue;
 
-        //     Get the GridViewRow that contains the clicked button
-        //    Button btn = (Button)sender;
-        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
+            if (selectedValue == "All")
+            {
+                DisplayAll();
+                pendingGridView.Visible = false;
+                approvedGridView.Visible = false;
+                declinedGridView.Visible = false;
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
+            }
+            else if (selectedValue == "Approved")
+            {
+                DisplayApproved();
+                pendingGridView.Visible = false;
+                declinedGridView.Visible = false;
+                AllGridview.Visible = false;
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
+            }
+            else if (selectedValue == "Pending")
+            {
+                DisplayPending();
+                declinedGridView.Visible = true;
+                AllGridview.Visible = true;
+                approvedGridView.Visible = true;
+            }
+            else if (selectedValue == "Declined")
+            {
+                DisplayDeclined();
+                pendingGridView.Visible = false;
+                approvedGridView.Visible = false;
+                AllGridview.Visible = false;
+                //Display button and checkbox for SELECT ALL 
+                selectAll.Visible = false;
+                approveButton.Visible = false;
+                declineButton.Visible = false;
+            }
+        }
 
-        //     Get the order ID from the first cell in the row
-        //    int adminID = int.Parse(row.Cells[1].Text);
-
-        //     Retrieve the existing order object from the database
-        //    FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
-        //    Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
-
-        //    to check if the status is already approved or declined 
-        //    if (pendingClients.status == "Approved" || pendingClients.status == "Declined")
-        //    {
-
-        //        return;
-        //    }
-
-        //    pendingClients.status = "Approved";
-        //    response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
-
-        //    DisplayTable();
-        //}
-
-
-        //protected void btnDecline_Click(object sender, EventArgs e)
-        //{
-
-
-        //     Get the GridViewRow that contains the clicked button
-        //    Button btn = (Button)sender;
-        //    GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-        //     Get the order ID from the first cell in the row
-        //    int adminID = int.Parse(row.Cells[1].Text);
-
-        //     Retrieve the existing order object from the database
-        //    FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID);
-        //    Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
-
-        //    to check if the status is already approved or declined 
-        //    if (pendingClients.status =="Approved" || pendingClients.status == "Declined")
-        //    {
-        //        return;
-        //    }
-
-        //        pendingClients.status = "Declined";
-        //        response = twoBigDB.Update("ADMIN/" + adminID, pendingClients);
-
-
-        //    DisableUpdateActionButtons();
-        //    DisplayTable();
-        //}
 
 
     }

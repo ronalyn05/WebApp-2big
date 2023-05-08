@@ -101,7 +101,7 @@ namespace WRS2big_Web.Admin
                         data.expiration = DateTime.Now.AddMonths(package.packageDuration); //add the current month to the duration saved in the database
                         data.packageName = package.packageName;
                         data.packageDescription = package.packageDescription;
-                        data.packagePrice = package.packagePrice;
+                        //data.packagePrice = package.packagePrice;
                         data.subStart = DateTime.Now;
                         data.subStatus = "Active";
                         data.orderLimit = package.packageLimit;
@@ -128,7 +128,7 @@ namespace WRS2big_Web.Admin
                             fullname = update.fname + " " + update.mname + " " + update.lname,
                             email = update.email,
                             phone = update.phone,
-                            amount = package.packagePrice,
+                            //amount = package.packagePrice,
                             plan = package.packageName,
                             currentSubStatus = "Active",
                             dateSubscribed = DateTime.Now,

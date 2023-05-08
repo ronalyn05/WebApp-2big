@@ -242,8 +242,8 @@
                     </div>
                 </div>
             </div>
-            <script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
-    </script>
+            
+<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AcJf_P4ytitRihPYV5HEMgO4o1_YVhMaONhnrcl0YJO3YWUsOl2JtXJklGvnFMf0vyyDy0SSOGAOxox3&currency=PHP"></script>
         </main>
 
                     <script>
@@ -268,7 +268,8 @@
                                     },
                                     purchase_units: [{
                                         amount: {
-                                            value: '0.01'
+                                            value: '<%= ShowpackagePrice() %>'
+                                            
 
                                         }
                                     }]
@@ -287,7 +288,7 @@
                             }).render("#paypal-button-container-packageA");
                     </script>
     </div>
-        <script src="/Scripts/MyScript/Index.js"></script>
+       
 
     <div id="js-global-screen-reader-notice" class="sr-only" aria-live="polite"></div>
 
