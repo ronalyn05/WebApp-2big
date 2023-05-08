@@ -255,7 +255,7 @@
 
 
         </main>
-<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AYAFhn0XmpP6EiQM_GVzmj2KIUjfOPS_jgzExbE8Ssmim0KMrdhdzESAlmgYUmSVLfCia0vrDaPPvJBZ&currency=PHP">
+<script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AcJf_P4ytitRihPYV5HEMgO4o1_YVhMaONhnrcl0YJO3YWUsOl2JtXJklGvnFMf0vyyDy0SSOGAOxox3&currency=PHP">
     </script>
                     <script>
                         var name = '<%= Session["Lname"] %>';
@@ -278,7 +278,7 @@
                         },
                         purchase_units: [{
                             amount: {
-                                value: '3000'
+                                value: '<%= ShowpackagePrice() %>'
 
                             }
                         }]
@@ -297,7 +297,6 @@
                         }).render("#paypal-button-container-packageB");
                     </script>
     </div>
-     <script src="/Scripts/MyScript/Index.js"></script>
     <style>
         .user-mention[href$="/RheaMaeRMT"] {
             color: var(--color-user-mention-fg);
