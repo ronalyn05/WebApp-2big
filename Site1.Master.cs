@@ -120,7 +120,7 @@ namespace WRS2big_Web
                         AdminNotifications.Add(entry.Value);
 
                     }
-                }
+                } 
 
                 // Sort the super admin notifications based on dateAdded property in descending order
                 AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
