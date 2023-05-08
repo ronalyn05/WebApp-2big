@@ -44,10 +44,11 @@ namespace WRS2big_Web.superAdmin
             Model.PackagePlans all = response.ResultAs<Model.PackagePlans>();
             var data = response.Body;
             
-
+            
                 Dictionary<string, Model.PackagePlans> allPackages = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(data);
 
-
+             if (allPackages != null)
+            {
                 //creating the columns of the gridview
                 DataTable packagesTable = new DataTable();
                 packagesTable.Columns.Add("PACKAGE ID");
@@ -66,7 +67,10 @@ namespace WRS2big_Web.superAdmin
                 // Bind DataTable to GridView control
                 packagesGridview.DataSource = packagesTable;
                 packagesGridview.DataBind();
-            
+            }
+               
+
+
 
         }
 

@@ -64,7 +64,7 @@ namespace WRS2big_Web.Model
         public int packageID { get; set; }
         public string packageName { get; set; }
         public string packageDescription { get; set; }
-        public int packagePrice { get; set; }
+        public double packagePrice { get; set; }
         public string durationType { get; set; }
         public int packageDuration { get; set; }
 

@@ -41,6 +41,9 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 
+    <!-- Datatables css -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
     <!-- Required Jquery -->
     <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
@@ -294,6 +297,9 @@
         <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
         <script type="text/javascript" src="/assets/js/script.js "></script>
         <script src="/Scripts/MyScript/Index.js"></script>
+
+        <!-- DataTables JS -->
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     </form>
 </body>
 </html>

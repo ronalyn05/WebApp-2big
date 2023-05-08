@@ -48,7 +48,7 @@ namespace WRS2big_Web.Admin
                     if (entry.Value.packageName == "Package C")
                     {
                         int packageID = entry.Value.packageID;
-                        int price = entry.Value.packagePrice;
+                        double price = entry.Value.packagePrice;
 
 
                         packageCName.Text = entry.Value.packageName;
