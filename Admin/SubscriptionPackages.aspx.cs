@@ -61,25 +61,25 @@ namespace WRS2big_Web.Admin
                         featuresPackageA.DataSource = featuresList;
                         featuresPackageA.DataBind();
                     }
-                    if (entry.Value.packageName == "Package C")
-                    {
-                        int packageID = entry.Value.packageID;
-                        double price = entry.Value.packagePrice;
+                    //if (entry.Value.packageName == "Package C")
+                    //{
+                    //    int packageID = entry.Value.packageID;
+                    //    double price = entry.Value.packagePrice;
 
 
-                        packageCName.Text = entry.Value.packageName;
-                        packageCdescription.Text = entry.Value.packageDescription;
-                        packageCPrice.Text = price.ToString();
-                        durationC.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
-                        //manageStations.Text = entry.Value.numberOfStations + " " + "Refilling Stations";
+                    //    packageCName.Text = entry.Value.packageName;
+                    //    packageCdescription.Text = entry.Value.packageDescription;
+                    //    packageCPrice.Text = price.ToString();
+                    //    durationC.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
+                    //    //manageStations.Text = entry.Value.numberOfStations + " " + "Refilling Stations";
 
-                        features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
-                        var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
+                    //    features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
+                    //    var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
 
-                        // Bind featuresList to your repeater control
-                        featuresPackageC.DataSource = featuresList;
-                        featuresPackageC.DataBind();
-                    }
+                    //    // Bind featuresList to your repeater control
+                    //    featuresPackageC.DataSource = featuresList;
+                    //    featuresPackageC.DataBind();
+                    //}
                     if (entry.Value.packageName == "Package B")
                     {
                         int packageID = entry.Value.packageID;

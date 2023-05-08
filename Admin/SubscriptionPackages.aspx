@@ -164,7 +164,7 @@
                     <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center">
 
                         <!--PACKAGE A HERE-->
-                        <div class="col-lg-4 mb-3 mb-lg-0">
+                        <div class="col-lg-5 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="1"
                                 data-max-seats="4">
                                 <div
@@ -222,7 +222,7 @@
 
 
                         <!--PACKAGE B HERE-->
-                        <div class="col-lg-4 mb-3 mb-lg-0">
+                        <div class="col-lg-5 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="5" data-max-seats="10">
                                 <p class="position-absolute left-0 right-0 h5 text-center text-uppercase color-text-white js-recommended-plan-caption" hidden style="top: 6px;">Most popular</p>
                                 <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
@@ -276,7 +276,7 @@
                             </div>
                         </div>
                         <!--PACKAGE C HERE-->
-                        <div class="col-lg-4 mb-3 mb-lg-0">
+<%--                        <div class="col-lg-4 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="11"
                                 data-max-seats="Infinity">
                                 <div
@@ -327,7 +327,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
 
                     </div>
 
