@@ -199,11 +199,6 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('You haven't finished setting up your station details yet. Please complete your refilling station details now.');</script>");
             }
 
-            
-
-            ImageButton_new.ImageUrl = (string)Session["profile_image"];
-
-          
         }
 
         //RENEW SUBSCRIPTION
@@ -464,6 +459,7 @@ namespace WRS2big_Web.Admin
                 ImageButton_new.ImageUrl = imageUrl;
             }
 
+            Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx';</script>");
         }
 
 

@@ -40,7 +40,8 @@ namespace WRS2big_Web
             if (Session["idno"] == null)
             {
                 // User not found
-                Response.Write("<script>alert('User not found');</script>");
+
+                Response.Write("<script>alert ('Session expired. Please login again');window.location.href = '/LandingPage/Account.aspx';</script>");
                 //Response.Redirect("/LandingPage/Account.aspx");
             }
             else
@@ -49,89 +50,132 @@ namespace WRS2big_Web
                 lblWRSname.Text = stationName;
             }
 
+
+          
+
             loadNotifications();
             SubscriptionStatus();
             //reminderNotification();
+
+         
         }
 
         private void SubscriptionStatus()
         {
-            var adminID = Session["idno"].ToString();
+            string adminID = Session["idno"].ToString();
 
-            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
-            Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
-
-            
-            //if (expiration.expiration < DateTime.Now)
-            //{
-            //    //SEND NOTIFICATION TO ADMIN 
-            //    Random rnd = new Random();
-            //    int ID = rnd.Next(1, 20000);
-            //    var Notification = new Notification
-            //    {
-            //        admin_ID = int.Parse(adminID),
-            //        sender = "Super Admin",
-            //        title = "Subscription Expired",
-            //        receiver = "Admin",
-            //        body = "Your subscription has Expired! Subscribe again to continue using the platform",
-            //        notificationDate = DateTime.Now,
-            //        status = "unread",
-            //        notificationID = ID
-
-            //    };
-
-            //    SetResponse notifResponse;
-            //    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-            //    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
-
-               
-            //}
-            //Debug.WriteLine($"NOW: {DateTime.Now}");
-            //Debug.WriteLine($"DATE: {expiration.expiration}");
-        }
-        private void loadNotifications()
-        {
-
-
-            //NOTIFICATION FROM CUSTOMER TO ADMIN
-
-            string adminID = (string)Session["idno"];
-
-            int admin = int.Parse(adminID);
-
-
-            FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
-            var adminBody = adminNotif.Body;
-            Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
-
-            if (adminAllNotifs != null)
+            if (Session["idno"] == null)
             {
-                // Create a list to store all the notifications with the receiver as " Admin"
-                List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
+            }
+            else
+            {
+               
+                FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
 
-                // Loop through all the notifications
-                foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+                if (expiration != null)
                 {
-                    // Check if the current notification has the receiver as "Admin"
-                    if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+                    if (expiration.expiration < DateTime.Now)
                     {
+                        //SEND NOTIFICATION TO ADMIN 
+                        Random rnd = new Random();
+                        int ID = rnd.Next(1, 20000);
+                        var Notification = new Notification
+                        {
+                            admin_ID = int.Parse(adminID),
+                            sender = "Super Admin",
+                            title = "Subscription Expired",
+                            receiver = "Admin",
+                            body = "Your subscription has Expired! Subscribe again to continue using the platform",
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = ID
 
-                        // Add the current notification to the list of admin notifications
-                        AdminNotifications.Add(entry.Value);
+                        };
+
+                        SetResponse notifResponse;
+                        notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                        Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
 
                     }
-                } 
-
-                // Sort the super admin notifications based on dateAdded property in descending order
-                AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
-
-                // Bind the list of super admin notifications to the repeater control
-                rptNotifications.DataSource = AdminNotifications;
-                rptNotifications.DataBind();
+                    Debug.WriteLine($"NOW: {DateTime.Now}");
+                    Debug.WriteLine($"DATE: {expiration.expiration}");
+                }
             }
 
 
         }
+        private void loadNotifications()
+        {
+            //NOTIFICATION FROM CUSTOMER TO ADMIN
+            string adminID = (string)Session["idno"];
+
+            if (Session["idno"] == null)
+            {
+                Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
+            }
+
+            if (adminID != null)
+            {
+                int admin = int.Parse(adminID);
+
+                FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                var adminBody = adminNotif.Body;
+                Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                //int unreadCount = 0;
+
+                if (adminAllNotifs != null)
+                {
+                    // Create a list to store all the notifications with the receiver as "Admin"
+                    List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+
+                    //List for unread notifications
+                    List<Model.Notification> unreadNotifications = new List<Model.Notification>();
+
+                    // Loop through all the notifications
+                    foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+                    {
+                        // Check if the current notification has the receiver as "Admin"
+                        if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+                        {
+                            // Add the current notification to the list of admin notifications
+                            AdminNotifications.Add(entry.Value);
+
+                            if (entry.Value.status == "unread")
+                            {
+                               
+                                unreadNotifications.Add(entry.Value);
+
+                            }
+                        }
+                    }
+
+                    // Sort the super admin notifications based on dateAdded property in descending order
+                    AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
+
+                    // Bind the list of super admin notifications to the repeater control
+                    rptNotifications.DataSource = AdminNotifications;
+                    rptNotifications.DataBind();
+
+                    int unreadCount = unreadNotifications.Count;
+                    // return unreadCount;
+                    unread.Text = unreadNotifications.Count.ToString();
+
+                    if (unreadCount > 0)
+                    {
+                        unread.Visible = true;
+                    }
+                    else
+                    {
+                        unread.Visible = false;
+                    }
+                }
+            }
+        }
+
 
         //the notificationID is clicked
         protected void notifMsg_Click(object sender, EventArgs e)
@@ -310,6 +354,26 @@ namespace WRS2big_Web
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx'; </script>");
             }
+            else if (title == "Station update")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+            }
 
         }
         protected void btnLogout_Click(object sender, EventArgs e)
@@ -345,5 +409,86 @@ namespace WRS2big_Web
             Session.Clear();
             Response.Redirect("/LandingPage/Account.aspx");
         }
+
+        //protected void markasRead_Click(object sender, EventArgs e)
+        //{
+        //    //LinkButton clickedButton = (LinkButton)sender;
+        //    //string notificationID = (sender as LinkButton).CommandArgument;
+
+        //    //FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + notificationID);
+        //    //var adminBody = notification.Body;
+        //    //Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+        //    //foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+        //    //{
+
+        //    //}
+
+        //    string adminID = (string)Session["idno"];
+
+        //    if (Session["idno"] == null)
+        //    {
+        //        Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
+        //    }
+
+
+
+        //    if (adminID != null)
+        //    {
+        //        int admin = int.Parse(adminID);
+
+        //        FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+        //        var adminBody = adminNotif.Body;
+        //        Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+        //        if (adminAllNotifs != null)
+        //        {
+        //            // Create a list to store all the notifications with the receiver as " Admin"
+        //            List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+
+        //            // Loop through all the notifications
+        //            foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+        //            {
+        //                // Check if the current notification has the receiver as "Admin"
+        //                if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+        //                {
+
+        //                    // Add the current notification to the list of admin notifications
+        //                    AdminNotifications.Add(entry.Value);
+
+        //                    if (entry.Value.status == "unread")
+        //                    {
+        //                        var updatedNotif = new Notification
+        //                        {
+        //                            notificationID = entry.Value.notificationID,
+        //                            notificationDate = entry.Value.notificationDate,
+        //                            receiver = entry.Value.receiver,
+        //                            sender = entry.Value.sender,
+        //                            title = entry.Value.title,
+        //                            orderID = entry.Value.orderID,
+        //                            cusId = entry.Value.cusId,
+        //                            driverId = entry.Value.driverId,
+        //                            //UPDATE THE STATUS FROM UNREAD TO READ
+        //                            status = "read",
+        //                            body = entry.Value.body,
+        //                            admin_ID = entry.Value.admin_ID
+        //                        };
+        //                        adminNotif = twoBigDB.Update("NOTIFICATION/" + entry.Key, updatedNotif);
+        //                        Response.Write("<script> alert('Marked as Read!'); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+        //                    }
+
+        //                }
+        //            }
+
+
+
+
+        //        }
+        //    }
+
+
+
+
+        //}
     }
 }

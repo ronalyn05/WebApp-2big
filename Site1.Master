@@ -1,11 +1,10 @@
-﻿ <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="WRS2big_Web.Site1"%>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="WRS2big_Web.Site1" %>
 
 <!DOCTYPE html>
 
 <html>
 <head runat="server">
-    <title>
-        2BiG: WRS Management System
+    <title>2BiG: WRS Management System
     </title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -44,132 +43,145 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 </head>
 <body>
-     <form id="form1" runat="server">
-    <div id="pcoded" class="pcoded">
-        <div class="pcoded-overlay-box"></div>
-        <div class="pcoded-container navbar-wrapper">
-            <nav class="navbar header-navbar pcoded-header">
-                <div class="navbar-wrapper" >
-                    <div class="navbar-logo">
-                        <div>
-                            <img src="/images/secLogo.png" style="width:180px" alt="logo.png">
-                        </div>
-                        <a class="mobile-menu waves-effect waves-light text-left" id="mobile-collapse" href="#!">
-                            <i class="ti-menu"></i>
-                        </a>
-                        <div class="mobile-search waves-effect waves-light">
-                            <div class="header-search">
-                                <div class="main-search morphsearch-search">
-                                    <div class="input-group">
-                                        <span class="input-group-addon search-close"><i class="ti-close"></i></span>
-                                        <input type="text" class="form-control" placeholder="Enter Keyword">
-                                        <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+    <form id="form1" runat="server">
+        <div id="pcoded" class="pcoded">
+            <div class="pcoded-overlay-box"></div>
+            <div class="pcoded-container navbar-wrapper">
+                <nav class="navbar header-navbar pcoded-header">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-logo">
+                            <div>
+                                <img src="/images/secLogo.png" style="width: 180px" alt="logo.png">
+                            </div>
+                            <a class="mobile-menu waves-effect waves-light text-left" id="mobile-collapse" href="#!">
+                                <i class="ti-menu"></i>
+                            </a>
+                            <div class="mobile-search waves-effect waves-light">
+                                <div class="header-search">
+                                    <div class="main-search morphsearch-search">
+                                        <div class="input-group">
+                                            <span class="input-group-addon search-close"><i class="ti-close"></i></span>
+                                            <input type="text" class="form-control" placeholder="Enter Keyword">
+                                            <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
+                            <a class="mobile-options waves-effect waves-light">
+                                <i class="ti-more"></i>
+                            </a>
                         </div>
-                        <a class="mobile-options waves-effect waves-light">
-                            <i class="ti-more"></i>
-                        </a>
-                    </div>
 
-                    <div class="navbar-container container-fluid">
-                        <ul class="nav-left">
-                            <li>
-                                <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
-                            </li>
-                            <li>
-                                <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
-                                    <i class="ti-fullscreen"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav-left">
-                            <li>
-                                <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
-                            </li>
-                            <div class="text-center">
-                                <img src="/images/imgLogo.png" style="width:750px;padding-top: 5px;" alt="logo.png">
-                            </div>
-                        </ul>
+                        <div class="navbar-container container-fluid">
+                            <ul class="nav-left">
+                                <li>
+                                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                                </li>
+                                <li>
+                                    <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
+                                        <i class="ti-fullscreen"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav-left">
+                                <li>
+                                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                                </li>
+                                <div class="text-center">
+                                    <img src="/images/imgLogo.png" style="width: 750px; padding-top: 5px;" alt="logo.png">
+                                </div>
+                            </ul>
 
-                        <!-- NOTIFICATIONS -->
-                        <ul class="nav-right" >
-                            <li class="header-notification" >
-                                <a href="#!">
-                                    <i class="ti-bell"></i>
-                                   <%-- <span class="badge bg-c-red"></span>--%>
-                                </a>
-                            <asp:Repeater ID="rptNotifications" runat="server">
-                                <HeaderTemplate>
-                                    <ul class="show-notification">
-                                        <li>
-                                            <h6>Notifications</h6>
-                                        
-                                        </li>
-                                </HeaderTemplate>
-                                <ItemTemplate >
-                                        <li style='<%# Eval("status").ToString() == "unread" ? "background-color: whitesmoke;" : "" %>' >
-                                            
-                                            <div class="media">
-                                                <div class="media-body">
-                                                      <asp:LinkButton runat="server" style="font-size:19px;color:black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg" ></asp:LinkButton> 
-                                                   <br />
-                                                    <asp:Label runat="server" style="font-size:18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg" ></asp:Label> <br />
-                                                    <asp:Label runat="server" ID="notifArrived" Text='<%# Eval("notificationDate") %>' class="notification-time"></asp:Label>
+                            <!-- NOTIFICATIONS -->
+                            <ul class="nav-right">
+                                <li class="header-notification">
+                                    <a href="#!">
+                                        <i class="ti-bell"></i>
+                                        <asp:Label runat="server" ID="unread" class="badge bg-c-red"></asp:Label>
+                                    </a>
+                                    
+                                    <asp:Repeater ID="rptNotifications" runat="server">
+                                        <HeaderTemplate>
+
+                                            <ul class="show-notification" style="overflow-y: auto; height: 700px">
+                                                <li>
+
+                                                    <div class=" header-notification;" style="position: fixed;">
+                                                        <h6 style="font-size: 16px;">Notifications</h6>
+                                                     
+                                                      
+                                                    </div>
+                                                    <br />
+                                                    
+                                                </li>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+
+                                            <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #EEEEEE;": "" %>'>
+                                                
+                                                <div class="media">
+                                                    <div class="media-body">
+                                                        <asp:LinkButton runat="server" Style="font-size: 19px; color: black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg"></asp:LinkButton>
+                                                        <br />
+                                                        <asp:Label runat="server" Style="font-size: 18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg"></asp:Label>
+                                                        <br />
+                                                        <asp:Label runat="server" ID="notifArrived" Text='<%# Eval("notificationDate") %>' class="notification-time"></asp:Label>
+                                                    </div>
+
                                                 </div>
-                                               
-                                            </div>
+                                            </li>
+
+
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            </ul>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
+
+
+
+                                </li>
+                                <!-- NOTIFICATIONS END -->
+                                <li class="user-profile header-notification">
+                                    <a href="#!" class="waves-effect waves-light">
+                                        <asp:Label ID="lblWRSname" runat="server"></asp:Label>
+                                        <i class="ti-angle-down"></i>
+                                    </a>
+                                    <ul class="show-notification profile-notification">
+                                        <li class="waves-effect waves-light">
+                                            <a href="/Admin/AdminProfile">
+                                                <i class="ti-user"></i>PROFILE
+                                            </a>
                                         </li>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    </ul>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                                
-                            </li> 
-                            <!-- NOTIFICATIONS END -->
-                            <li class="user-profile header-notification">
-                                <a href="#!" class="waves-effect waves-light">
-                                    <asp:Label ID="lblWRSname" runat="server"></asp:Label>
-                                    <i class="ti-angle-down"></i>
-                                </a>
-                                <ul class="show-notification profile-notification">
-                                    <li class="waves-effect waves-light">
-                                        <a href="/Admin/AdminProfile">
-                                            <i class="ti-user"></i> PROFILE
-                                        </a>
-                                    </li>
-                                    <li class="waves-effect waves-light">
-                                       <%-- Logout--%>
-<%--                                         <a href="/LandingPage/index">
+                                        <li class="waves-effect waves-light">
+                                            <%-- Logout--%>
+                                            <%--                                         <a href="/LandingPage/index">
                                             <i class="ti-layout-sidebar-left"></i> LOGOUT
                                         </a>--%>
-                                        <%--<a href="/LandingPage/index">--%>
+                                            <%--<a href="/LandingPage/index">--%>
                                             <i class="ti-layout-sidebar-left">
-                                                <asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" Text="LOGOUT" BorderColor="Transparent" BackColor="Transparent"/>
+                                                <asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" Text="LOGOUT" BorderColor="Transparent" BackColor="Transparent" />
                                             </i>
-                                      <%--  </a>--%>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                            <%--  </a>--%>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                </nav>
+                <div>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
                 </div>
-            </nav>
-                                  <div>
-                                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-
-                                    </asp:ContentPlaceHolder>
-                                </div>
-<%--            <div class="pcoded-main-container"  >--%>
-                <div class="pcoded-wrapper" >
+                <%--            <div class="pcoded-main-container"  >--%>
+                <div class="pcoded-wrapper">
                     <nav class="pcoded-navbar">
                         <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                         <div class="pcoded-inner-navbar main-menu" <%-- style="background-color:#deffea"--%>>
                             <div class="">
                                 <div>
-                                    <img class="img-fluid" src="/images/FinalLogo.png" alt="Theme-Logo" style="width:200px">
+                                    <img class="img-fluid" src="/images/FinalLogo.png" alt="Theme-Logo" style="width: 200px">
                                     <!-- <div class="user-details">
                                         <span id="more-details">Admin 1<i class="fa fa-caret-down"></i></span>
                                     </div> -->
@@ -192,53 +204,54 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    
+
                                 </ul>
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
-                                       <ul class="pcoded-item pcoded-left-item">
-                                            <li>
-                                                <a href="/Admin/EmployeeRecord" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-notepad"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Employee Records</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                           <li>
-                                                <a href="/Admin/WaterProduct" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main"> Product </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/Admin/Deliverydetails" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-truck"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main"> Delivery Details</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li>
+                                        <a href="/Admin/WalkIns" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-shopping-cart"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Walk-In</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/EmployeeRecord" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-notepad"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Employee Records</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/OnlineOrders" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-shopping-cart-full"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Orders</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Deliverydetails" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-truck"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Delivery </span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/WaterProduct" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Product </span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+
+                                    <li>
                                         <a href="/Admin/Rewards" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-gift"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                            <li>
-                                        <a href="/Admin/OnlineOrders" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-shopping-cart-full"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Orders</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                            </li>
-                                            <li>
-                                                <a href="/Admin/WalkIns" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-shopping-cart"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Walk-In</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                           <%-- <li class=" ">
+                                    <%-- <li class=" ">
                                                 <a href="/Admin/DeliveryRecords" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
                                                          <i class="ti-truck"></i>
@@ -249,42 +262,40 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>--%>
-                                            <%--<li>
+                                    <%--<li>
                                                 <a href="/Admin/Reservations" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>
                                                     <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reservations </span>
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>--%>
-                                           
                                 </ul>
-                           
-                                     <div class="pcoded-navigation-label" data-i18n="nav.category.forms">REPORTS</div>
-                                       <ul class="pcoded-item pcoded-left-item">      
-                               <%-- <li>
+
+                                <div class="pcoded-navigation-label" data-i18n="nav.category.forms">REPORTS</div>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <%-- <li>
                                         <a href="/Admin/Reports" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-stats-up"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Sales</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>--%>
-                                           <li class=" ">
-                                                <a href="/Admin/WaterOrders" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-envelope"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">
-                                                        List of Orders
-                                                    </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="/Admin/Reports" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Sales</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                           <%--<li class="">
+                                    <li class=" ">
+                                        <a href="/Admin/WaterOrders" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-envelope"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">List of Orders
+                                            </span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="/Admin/Reports" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Sales</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <%--<li class="">
                                                 <a href="/Admin/Graphs" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
                                                         <i >
@@ -296,22 +307,22 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>--%>
-                                           
-                                            <li class="">
-                                                <a href="/Admin/UsersLog" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-list"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Users Log</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>
-                                            <li>
+
+                                    <li class="">
+                                        <a href="/Admin/UsersLog" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-list"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Users Log</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="/Admin/Reviews" class="waves-effect waves-dark active">
                                             <span class="pcoded-micon"><i class="ti-star"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reviews and Ratings</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                           <%-- <li class="">
+                                    <%-- <li class="">
                                                 <a href="/Admin/WaterRefill" class="waves-effect waves-dark">
                                                     <span class="pcoded-micon">
                                                         <i class="ti-package"></i>
@@ -320,9 +331,8 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>--%>
-
-                                        </ul>
-                               <%-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">CUSTOMER REPORTS</div>
+                                </ul>
+                                <%-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">CUSTOMER REPORTS</div>
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li>
                                         <a href="/Admin/Reviews" class="waves-effect waves-dark active">
@@ -342,40 +352,40 @@
                             </div>
                     </nav>
                 </div>
+            </div>
         </div>
-    </div>
 
         <!-- Warning Section Ends -->
-    <!-- Required Jquery -->
-    <script src="/assets/js/jquery/jquery.min.js"></script>
-    <script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
-    <script src="/assets/js/popper.js/popper.min.js"></script>
-    <script type="text/javascript" src="/assets/js/bootstrap/js/bootstrap.min.js "></script>
-    <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
-    <!-- waves js -->
-    <script src="assets/pages/waves/js/waves.min.js"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript" src="/assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
-    <!-- modernizr js -->
-    <script type="text/javascript" src="/assets/js/modernizr/modernizr.js "></script>
-    <!-- slimscroll js -->
-    <script type="text/javascript" src="/assets/js/SmoothScroll.js"></script>
-    <script src="/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
-    <!-- Chart js -->
-    <script type="text/javascript" src="assets/js/chart.js/Chart.js"></script>
-    <!-- amchart js -->
-    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script src="/assets/pages/widget/amchart/gauge.js"></script>
-    <script src="/assets/pages/widget/amchart/serial.js"></script>
-    <script src="/assets/pages/widget/amchart/light.js"></script>
-    <script src="/assets/pages/widget/amchart/pie.min.js"></script>
-    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-    <!-- menu js -->
-    <script src="/assets/js/pcoded.min.js"></script>
-    <script src="/assets/js/vertical-layout.min.js "></script>
-    <!-- custom js -->
-    <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
-    <script type="text/javascript" src="/assets/js/script.js "></script>
-         </form>
+        <!-- Required Jquery -->
+        <script src="/assets/js/jquery/jquery.min.js"></script>
+        <script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
+        <script src="/assets/js/popper.js/popper.min.js"></script>
+        <script type="text/javascript" src="/assets/js/bootstrap/js/bootstrap.min.js "></script>
+        <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
+        <!-- waves js -->
+        <script src="assets/pages/waves/js/waves.min.js"></script>
+        <!-- jquery slimscroll js -->
+        <script type="text/javascript" src="/assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
+        <!-- modernizr js -->
+        <script type="text/javascript" src="/assets/js/modernizr/modernizr.js "></script>
+        <!-- slimscroll js -->
+        <script type="text/javascript" src="/assets/js/SmoothScroll.js"></script>
+        <script src="/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+        <!-- Chart js -->
+        <script type="text/javascript" src="assets/js/chart.js/Chart.js"></script>
+        <!-- amchart js -->
+        <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+        <script src="/assets/pages/widget/amchart/gauge.js"></script>
+        <script src="/assets/pages/widget/amchart/serial.js"></script>
+        <script src="/assets/pages/widget/amchart/light.js"></script>
+        <script src="/assets/pages/widget/amchart/pie.min.js"></script>
+        <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+        <!-- menu js -->
+        <script src="/assets/js/pcoded.min.js"></script>
+        <script src="/assets/js/vertical-layout.min.js "></script>
+        <!-- custom js -->
+        <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
+        <script type="text/javascript" src="/assets/js/script.js "></script>
+    </form>
 </body>
 </html>
