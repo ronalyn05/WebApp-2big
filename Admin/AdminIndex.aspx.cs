@@ -34,6 +34,12 @@ namespace WRS2big_Web.Admin
             // Get the ID of the currently logged-in owner from session state
             string idno = (string)Session["idno"];
 
+            if (idno == null)
+            {
+                Response.Write("<script>alert ('Session expired. Please log in again.');</script>");
+                return;
+            }
+
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ORDERS");
             Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
