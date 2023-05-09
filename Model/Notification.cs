@@ -19,5 +19,7 @@ namespace WRS2big_Web.Model
         public int cusId { get; set; }
         public int driverId { get; set; }
         public string title { get; set; }
+        //public int unreadCount { get; set; }
+        public DateTime scheduledSent { get; set; }
     }
 }
