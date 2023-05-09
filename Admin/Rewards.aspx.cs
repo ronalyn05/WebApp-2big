@@ -679,7 +679,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/Rewards.aspx'; </script>" + ex.Message);
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
             }
         }
         //SEARCH REWARD REPORTS OF CERTAIN RECORD
@@ -750,7 +750,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("location.reload(); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
+                Response.Write("<pre>" + ex.ToString() + "</pre>");
             }
         }
 
