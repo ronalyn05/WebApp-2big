@@ -40,7 +40,26 @@ namespace WRS2big_Web.Admin
             //METHODS TO DISPLAY THE IDs
             if (!IsPostBack)
             {
-              
+                // Check which button was clicked
+                //if (btnAcceptGcashClicked || btnPaymentAccept.Clicked || btnDeclineGcash.Clicked)
+                //{
+                //    DisplayGcash_order();
+                //}
+                //else if (btnAcceptCODClicked || btnDeclineCODClicked)
+                //{
+                //    DisplayCOD_order();
+                //}
+                //else if (btnAcceptPointsClicked || btnDeclinePointsClicked || btnPaymentAcceptPointsClicked)
+                //{
+                //    DisplayRewardPoints_order();
+                //}
+
+                DisplayRewardPoints_order();
+                lblViewOrders.Text = "COD ORDER";
+                DisplayGcash_order();
+                lblViewGcashOrder.Text = "GCASH ORDER";
+                DisplayCOD_order();
+                lblViewRewardPoints.Text = "REWARD POINTS ORDER";
             }
 
             string idno = (string)Session["idno"];
@@ -72,7 +91,8 @@ namespace WRS2big_Web.Admin
 
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery"));
+                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery")).OrderByDescending(d => d.orderDate);
+                
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
@@ -87,10 +107,12 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("REFILL SELECTED OPTION");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+
 
 
                 if (response != null && response.ResultAs<Order>() != null)
@@ -129,10 +151,11 @@ namespace WRS2big_Web.Admin
                                 }
 
                             }
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
                                 productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount);
+                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
                         }
                     }
 
@@ -279,7 +302,7 @@ namespace WRS2big_Web.Admin
             {
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash"));
+                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash")).OrderByDescending(d => d.orderDate);
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
@@ -297,8 +320,7 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
-                ordersTable.Columns.Add("GCASH PROOF PAYMENT", typeof(string));
-
+                ordersTable.Columns.Add("ORDER DATE ");
 
 
                 if (response != null && response.ResultAs<Order>() != null)
@@ -326,11 +348,16 @@ namespace WRS2big_Web.Admin
                                 }
 
                             }
-
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                            productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                            order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, order.order_GcashProofOfPayment);
+                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
+                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
+
+
+                            //ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
+                            //productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
+                            //order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, order.order_GcashProofOfPayment);
                         }
                     }
 
@@ -357,7 +384,81 @@ namespace WRS2big_Web.Admin
                 lblGcashError.Visible = true;
             }
         }
-     //   DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS
+        //DISPLAY GCASH PROOF IMAGE
+        protected void btnPaymentProof_Click(object sender, EventArgs e)
+        {
+            // Show the modal using JavaScript
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#viewPaymentProof').modal();", true);
+
+            // Get the clicked button and its row
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            // Retrieve the order id from the data source
+            // Get the order ID from the first cell in the row
+            int orderID = int.Parse(row.Cells[3].Text);
+            //int orderId = Convert.ToInt32(((DataRowView)row.DataItem)["orderID"]);
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            Order existingOrder = response.ResultAs<Order>();
+
+            // Check if the Gcash proof of payment is available
+            string imagePath = existingOrder.order_GcashProofOfPayment;
+            //string imagePath = string.Empty;
+            //if (!string.IsNullOrEmpty(existingOrder.order_GcashProofOfPayment))
+            //{
+            //    // Convert the base64 string to an image and get the image path
+            //    byte[] imageBytes = Convert.FromBase64String(existingOrder.order_GcashProofOfPayment);
+            //    string base64String = Convert.ToBase64String(imageBytes);
+            //    imagePath = string.Format("data:image/jpeg;base64,{0}", base64String);
+            //}
+            // Get the download URL of the uploaded file
+            // string imageUrl = storage.Get("Customer_GcashProof").Child(uniqueFileName).GetDownloadUrlAsync();
+
+            // Set the ImageUrl property of the imgGcashProof control in the modal to the retrieved image path 
+            imgGcashProof.ImageUrl = imagePath;
+
+          
+
+        }
+
+
+        //protected void btnPaymentProof_Click(object sender, EventArgs e)
+        //{
+        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#viewPaymentProof').modal();", true);
+
+        //    string idno = (string)Session["idno"];
+
+        //    try
+        //    {
+        //        FirebaseResponse response = twoBigDB.Get("ORDERS");
+        //        Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+        //        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash"));
+
+        //        //string imageUrl = "";
+        //        // Get the download URL of the uploaded file
+        //        string imageUrl = await storage.Child("Customer_Gcash_Proof").Child(uniqueFileName).GetDownloadUrlAsync();
+
+        //        if (!string.IsNullOrEmpty(order_GcashProofOfPayment))
+        //        {
+
+        //            byte[] imageBytes = Convert.FromBase64String(order_GcashProofOfPayment);
+        //            string base64String = Convert.ToBase64String(imageBytes);
+        //            imageUrl = string.Format("data:image/jpeg;base64,{0}", base64String);
+        //        }
+
+        //        // Display the image of the gcash proof
+        //        imgGcashProof.ImageUrl = imageUrl;
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
+        //    }
+        //}
+        //   DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS
         private void DisplayRewardPoints_order()
         {
             string idno = (string)Session["idno"];
@@ -366,7 +467,7 @@ namespace WRS2big_Web.Admin
             {
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points"));
+                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
@@ -385,6 +486,7 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
 
 
                 if (response != null && response.ResultAs<Order>() != null)
@@ -424,9 +526,11 @@ namespace WRS2big_Web.Admin
 
                             }
 
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
                                 productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount);
+                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
                         }
                     }
 
@@ -720,8 +824,9 @@ namespace WRS2big_Web.Admin
 
                         twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
-                        DisplayRewardPoints_order();
-                        DisplayGcash_order();
+                        gridCOD_order.Visible = true;
+                        //DisplayRewardPoints_order();
+                        //DisplayGcash_order();
                         DisplayCOD_order();
                     }
                     else
@@ -742,8 +847,9 @@ namespace WRS2big_Web.Admin
 
                             // Display an error message indicating that no driver will be assigned 
                             Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                            DisplayRewardPoints_order();
-                            DisplayGcash_order();
+                            //DisplayRewardPoints_order();
+                            //DisplayGcash_order();
+                            gridCOD_order.Visible = true;
                             DisplayCOD_order();
                         }
                         else
@@ -847,9 +953,11 @@ namespace WRS2big_Web.Admin
                                 };
 
                                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
-                                DisplayRewardPoints_order();
-                                DisplayGcash_order();
+
+                                //DisplayRewardPoints_order();
+                                //DisplayGcash_order();
                                 DisplayCOD_order();
+                                gridCOD_order.Visible = true;
                             }
                             else
                             {
@@ -969,8 +1077,9 @@ namespace WRS2big_Web.Admin
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
-            DisplayRewardPoints_order();
-            DisplayGcash_order();
+            //DisplayRewardPoints_order();
+            //DisplayGcash_order();
+            gridCOD_order.Visible = true;
             DisplayCOD_order();
 
         }
@@ -995,7 +1104,7 @@ namespace WRS2big_Web.Admin
                 GridViewRow row = (GridViewRow)btn.NamingContainer;
 
                 // Get the order ID from the first cell in the row
-                int orderID = int.Parse(row.Cells[2].Text);
+                int orderID = int.Parse(row.Cells[3].Text);
 
                 // Retrieve the existing order object from the database
                 FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1087,9 +1196,10 @@ namespace WRS2big_Web.Admin
 
                         twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
-                        DisplayRewardPoints_order();
+                        //DisplayRewardPoints_order();
                         DisplayGcash_order();
-                        DisplayCOD_order();
+                        gridGcash_order.Visible = true;
+                        //DisplayCOD_order();
                     }
                     else
                     {
@@ -1109,9 +1219,10 @@ namespace WRS2big_Web.Admin
 
                             // Display an error message indicating that no driver will be assigned 
                             Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                            DisplayRewardPoints_order();
+                            //DisplayRewardPoints_order();
                             DisplayGcash_order();
-                            DisplayCOD_order();
+                            gridGcash_order.Visible = true;
+                            //DisplayCOD_order();
                         }
                         else
                         {
@@ -1214,9 +1325,10 @@ namespace WRS2big_Web.Admin
                                 };
 
                                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
-                                DisplayRewardPoints_order();
+                                //DisplayRewardPoints_order();
                                 DisplayGcash_order();
-                                DisplayCOD_order();
+                                gridGcash_order.Visible = true;
+                                //DisplayCOD_order();
                             }
                             else
                             {
@@ -1253,7 +1365,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[2].Text);
+            int orderID = int.Parse(row.Cells[3].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1336,12 +1448,13 @@ namespace WRS2big_Web.Admin
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
-            DisplayRewardPoints_order();
+            //DisplayRewardPoints_order();
             DisplayGcash_order();
-            DisplayCOD_order();
+            gridGcash_order.Visible = true;
+            //DisplayCOD_order();
 
         }
-        //UPDATING THE STATUS ORDERS FOR RECEIVEING GCASH PAYMENT
+        //UPDATING THE STATUS ORDERS FOR RECEIVING GCASH PAYMENT
         protected void btnPaymentAcceptGcash_Click(object sender, EventArgs e)
         {
             // Get the admin ID from the session
@@ -1360,7 +1473,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[2].Text);
+            int orderID = int.Parse(row.Cells[3].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1449,7 +1562,8 @@ namespace WRS2big_Web.Admin
 
                     twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
-                    DisplayRewardPoints_order();
+                    //DisplayRewardPoints_order();
+                    gridGcash_order.Visible = true;
                     DisplayGcash_order();
                 }
                 else
@@ -1574,8 +1688,9 @@ namespace WRS2big_Web.Admin
                         twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                         DisplayRewardPoints_order();
-                        DisplayGcash_order();
-                        DisplayCOD_order();
+                        gridRewardPoints_order.Visible = true;
+                        //DisplayGcash_order();
+                        //DisplayCOD_order();
                     }
                     else
                     {
@@ -1595,9 +1710,11 @@ namespace WRS2big_Web.Admin
 
                             // Display an error message indicating that no driver will be assigned 
                             Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                           
                             DisplayRewardPoints_order();
-                            DisplayGcash_order();
-                            DisplayCOD_order();
+                            gridRewardPoints_order.Visible = true;
+                            //DisplayGcash_order();
+                            //DisplayCOD_order();
                         }
                         else
                         {
@@ -1700,9 +1817,11 @@ namespace WRS2big_Web.Admin
                                 };
 
                                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
+
+                                gridRewardPoints_order.Visible = true;
                                 DisplayRewardPoints_order();
-                                DisplayGcash_order();
-                                DisplayCOD_order();
+                                //DisplayGcash_order();
+                                //DisplayCOD_order();
                             }
                             else
                             {
@@ -1822,9 +1941,11 @@ namespace WRS2big_Web.Admin
             };
 
             twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
+            gridRewardPoints_order.Visible = true;
             DisplayRewardPoints_order();
-            DisplayGcash_order();
-            DisplayCOD_order();
+            //DisplayGcash_order();
+            //DisplayCOD_order();
 
         }
         //UPDATING THE STATUS ORDERS FOR REWARD POINTS IN RECEIVEING GCASH PAYMENT
@@ -1886,7 +2007,7 @@ namespace WRS2big_Web.Admin
                         receiver = "Driver",
                         body = "The payment for Order ID:" + orderID + " has been received",
                         notificationDate = DateTime.Now,
-                        status = "unread",
+                        status = "unread", 
                         notificationID = notifID
                     };
                     SetResponse driverNotifRes;
@@ -1936,7 +2057,8 @@ namespace WRS2big_Web.Admin
                     twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                     DisplayRewardPoints_order();
-                    DisplayGcash_order();
+                    gridRewardPoints_order.Visible = true;
+                    //DisplayGcash_order();
                 }
                 else
                 {

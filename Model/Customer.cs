@@ -47,6 +47,7 @@ namespace WRS2big_Web.Model
         public decimal order_TotalAmount { get; set; }
         public string order_GcashProofOfPayment { get; set; }
         public string order_RefillSelectedOption { get; set; }
+        public DateTimeOffset orderDate { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
         public DateTimeOffset dateOrderDeclined { get; set; }
