@@ -119,21 +119,31 @@
                                 <li class="header-notification">
                                     <a href="#!">
                                         <i class="ti-bell"></i>
-                                        <%-- <span class="badge bg-c-red"></span>--%>
+                                        <asp:Label runat="server" ID="unread" class="badge bg-c-red"></asp:Label>
                                     </a>
+                                    
                                     <asp:Repeater ID="rptNotifications" runat="server">
                                         <HeaderTemplate>
-                                            <ul class="show-notification">
+
+                                            <ul class="show-notification" style="overflow-y: auto; height: 700px">
                                                 <li>
-                                                    <h6>Notifications</h6>
-                                                    <%--<asp:Label runat="server" id="notifCount"  Text='<%# Eval("count") %>'  class="notification-msg"></asp:Label>--%>
+
+                                                    <div class=" header-notification;" style="position: fixed;">
+                                                        <h6 style="font-size: 16px;">Notifications</h6>
+                                                    
+                                                      
+                                                    </div>
+                                                    <br />
+                                                    
                                                 </li>
                                         </HeaderTemplate>
                                         <ItemTemplate>
-                                            <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #D8D8D8;": "" %>'>
-
+                                            
+                                            <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #EEEEEE;": "" %>'>
+                                                 
                                                 <div class="media">
                                                     <div class="media-body">
+                                                        <%--<asp:Label  runat="server" ID="noNotifications"></asp:Label>--%>
                                                         <asp:LinkButton runat="server" Style="font-size: 19px; color: black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg"></asp:LinkButton>
                                                         <br />
                                                         <asp:Label runat="server" Style="font-size: 18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg"></asp:Label>
@@ -143,11 +153,16 @@
 
                                                 </div>
                                             </li>
+
+
                                         </ItemTemplate>
                                         <FooterTemplate>
                                             </ul>
                                         </FooterTemplate>
                                     </asp:Repeater>
+
+
+
                                 </li>
                                 <!-- NOTIFICATIONS END -->
                                 <li class="user-profile header-notification">

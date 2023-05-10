@@ -50,8 +50,17 @@ namespace WRS2big_Web
                 lblWRSname.Text = stationName;
             }
 
+            int adminID = (int)Session["idno"];
+            FirebaseResponse response;
+            response = twoBigDB.Get("ADMIN/" + adminID);
+            AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
 
-          
+            if (user.status == "pending")
+            {
+                navigationBarMaster.Visible = false;
+            }
+
+
 
             loadNotifications();
             SubscriptionStatus();
@@ -65,6 +74,10 @@ namespace WRS2big_Web
             string adminID = Session["idno"].ToString();
 
             if (Session["idno"] == null)
+            {
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
+            }
+            if (adminID == null)
             {
                 Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }

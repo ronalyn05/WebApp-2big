@@ -35,45 +35,57 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse response = twoBigDB.Get("CUSTOMER");
             Dictionary<string, Customer> customerList = response.ResultAs<Dictionary<string, Customer>>();
 
-            int count = customerList.Count;
+            if (customerList != null)
+            {
+                int count = customerList.Count;
 
-            registeredCustomers.Text = count.ToString();
+                registeredCustomers.Text = count.ToString();
+            }
+           
 
             response = twoBigDB.Get("ADMIN");
             Dictionary<string, AdminAccount> Clients = response.ResultAs<Dictionary<string, AdminAccount>>();
 
-            int clientCount = 0;
-            int pendingCount = 0;
-
-            foreach (var admin in Clients)
+            if (Clients != null)
             {
-                if (admin.Value.subStatus == "Subscribed")
-                {
-                    clientCount++;
-                }
-            }
-            subscribedClients.Text = clientCount.ToString();
+                int clientCount = 0;
+                int pendingCount = 0;
 
-            foreach (var pending in Clients)
-            {
-                if (pending.Value.status == "pending")
+                foreach (var admin in Clients)
                 {
-                    pendingCount++;
+                    if (admin.Value.subStatus == "Subscribed")
+                    {
+                        clientCount++;
+                    }
                 }
+                subscribedClients.Text = clientCount.ToString();
+
+                foreach (var pending in Clients)
+                {
+                    if (pending.Value.status == "pending")
+                    {
+                        pendingCount++;
+                    }
+                }
+                pendingClients.Text = pendingCount.ToString();
             }
-            pendingClients.Text = pendingCount.ToString();
+            
 
             response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
             Dictionary<string, superAdminClients> subscribed = response.ResultAs<Dictionary<string, superAdminClients>>();
 
-            double totalSale = 0;
-            foreach (var entry in subscribed)
+            if (subscribed != null)
             {
-                superAdminClients client = entry.Value;
-                totalSale += client.amount;
-            }
+                double totalSale = 0;
+                foreach (var entry in subscribed)
+                {
+                    superAdminClients client = entry.Value;
+                    totalSale += client.amount;
+                }
 
-            totalSubSale.Text = totalSale.ToString();
+                totalSubSale.Text = totalSale.ToString();
+            }
+            
 
 
         }

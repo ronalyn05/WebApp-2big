@@ -63,7 +63,7 @@
                                             <span class="input-group-addon search-close"><i class="ti-close"></i></span>
                                             <input type="text" class="form-control" placeholder="Enter Keyword">
                                             <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                         <i class="ti-bell"></i>
                                         <asp:Label runat="server" ID="unread" class="badge bg-c-red"></asp:Label>
                                     </a>
-                                    
+
                                     <asp:Repeater ID="rptNotifications" runat="server">
                                         <HeaderTemplate>
 
@@ -108,17 +108,17 @@
 
                                                     <div class=" header-notification;" style="position: fixed;">
                                                         <h6 style="font-size: 16px;">Notifications</h6>
-                                                     
-                                                      
+
+
                                                     </div>
                                                     <br />
-                                                    
+
                                                 </li>
                                         </HeaderTemplate>
                                         <ItemTemplate>
 
                                             <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #EEEEEE;": "" %>'>
-                                                
+
                                                 <div class="media">
                                                     <div class="media-body">
                                                         <asp:LinkButton runat="server" Style="font-size: 19px; color: black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg"></asp:LinkButton>
@@ -154,11 +154,6 @@
                                             </a>
                                         </li>
                                         <li class="waves-effect waves-light">
-                                            <%-- Logout--%>
-                                            <%--                                         <a href="/LandingPage/index">
-                                            <i class="ti-layout-sidebar-left"></i> LOGOUT
-                                        </a>--%>
-                                            <%--<a href="/LandingPage/index">--%>
                                             <i class="ti-layout-sidebar-left">
                                                 <asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" Text="LOGOUT" BorderColor="Transparent" BackColor="Transparent" />
                                             </i>
@@ -175,26 +170,13 @@
                     </asp:ContentPlaceHolder>
                 </div>
                 <%--            <div class="pcoded-main-container"  >--%>
-                <div class="pcoded-wrapper">
+                <div class="pcoded-wrapper" id="navigationBarMaster" runat="server">
                     <nav class="pcoded-navbar">
                         <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                         <div class="pcoded-inner-navbar main-menu" <%-- style="background-color:#deffea"--%>>
                             <div class="">
                                 <div>
                                     <img class="img-fluid" src="/images/FinalLogo.png" alt="Theme-Logo" style="width: 200px">
-                                    <!-- <div class="user-details">
-                                        <span id="more-details">Admin 1<i class="fa fa-caret-down"></i></span>
-                                    </div> -->
-                                </div>
-                                <!-- <div class="p-15 p-b-0">
-                                    <form class="form-material">
-                                        <div class="form-group form-primary">
-                                            <input type="text" name="footer-email" class="form-control" required="">
-                                            <span class="form-bar"></span>
-                                            <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
-                                        </div>
-                                    </form>
-                                </div> -->
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">MAIN</div>
                                 <ul class="pcoded-item pcoded-left-item">
                                     <li class="">
@@ -251,35 +233,12 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <%-- <li class=" ">
-                                                <a href="/Admin/DeliveryRecords" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon">
-                                                         <i class="ti-truck"></i>
-                                                    </span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">
-                                                        Deliveries
-                                                    </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>--%>
-                                    <%--<li>
-                                                <a href="/Admin/Reservations" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reservations </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>--%>
+
                                 </ul>
 
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">REPORTS</div>
                                 <ul class="pcoded-item pcoded-left-item">
-                                    <%-- <li>
-                                        <a href="/Admin/Reports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-stats-up"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Sales</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>--%>
+
                                     <li class=" ">
                                         <a href="/Admin/WaterOrders" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-envelope"></i><b>FC</b></span>
@@ -295,18 +254,7 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <%--<li class="">
-                                                <a href="/Admin/Graphs" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon">
-                                                        <i >
 
-                                                             <img class="img-fluid" src="assets/images/customerRecord.png" />
-                                                        </i>
-                                                    </span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Customer Graph </span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>--%>
 
                                     <li class="">
                                         <a href="/Admin/UsersLog" class="waves-effect waves-dark">
@@ -322,33 +270,9 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <%-- <li class="">
-                                                <a href="/Admin/WaterRefill" class="waves-effect waves-dark">
-                                                    <span class="pcoded-micon">
-                                                        <i class="ti-package"></i>
-                                                    </span>
-                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Water Refill</span>
-                                                    <span class="pcoded-mcaret"></span>
-                                                </a>
-                                            </li>--%>
+
                                 </ul>
-                                <%-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">CUSTOMER REPORTS</div>
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li>
-                                        <a href="/Admin/Reviews" class="waves-effect waves-dark active">
-                                            <span class="pcoded-micon"><i class="ti-star"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Reviews and Ratings</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/Admin/ListGraph" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-pie-chart"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customer Graph</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>--%>
+
                             </div>
                     </nav>
                 </div>
