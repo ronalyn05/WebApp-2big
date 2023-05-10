@@ -114,6 +114,24 @@ namespace WRS2big_Web.Admin
                 int employee_id = rnd.Next(1, 10000);
                 //  string employee_id = (string)Session["idno"];
 
+                // Password validation
+                string password = txtpass.Text;
+                if (password.Length < 8 || password.Length > 20 ||
+                    !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
+                    !password.Any(c => !char.IsLetterOrDigit(c)))
+                {
+                    Response.Write("<script>alert('Password must be 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                    return;
+                }
+
+                // Contact number validation
+                string contactNum = txtcontactnum.Text;
+                if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
+                {
+                    Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
+                    return;
+                }
+
                 //insert data
                 var data = new Employee
                 {
@@ -239,14 +257,25 @@ namespace WRS2big_Web.Admin
                 };
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role || !string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum || !string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
+                if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)  
                 {
-                    updatedEmp.emp_email = email;
-                    updatedEmp.emp_contactnum = contactnumber;
                     updatedEmp.emp_role = newPosition;
                     updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
                     updatedEmp.updatedBy = name;
                 }
+                else if(!string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum)
+                {
+                    updatedEmp.emp_contactnum = contactnumber;
+                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.updatedBy = name;
+                }
+                else if (!string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
+                {
+                    updatedEmp.emp_email = email;
+                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.updatedBy = name;
+                }
+
                 //if emp status is already inactive
                 if (existingEmp.emp_status == "Inactive")
                 {

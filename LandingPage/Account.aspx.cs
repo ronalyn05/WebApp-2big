@@ -63,6 +63,25 @@ namespace WRS2big_Web.LandingPage
                 string selectedProof = documentDropDown.SelectedValue;
                 string validID = validIDList.SelectedValue;
 
+                // Password validation
+                string password = txt_password.Text;
+                if (password.Length < 8 || password.Length > 20 ||
+                    !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
+                    !password.Any(c => !char.IsLetterOrDigit(c)))
+                {
+                    Response.Write("<script>alert('Password must be 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                    return;
+                }
+
+                // Contact number validation
+                string contactNum = txtphoneNum.Text;
+                if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
+                {
+                    Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
+                    return;
+                }
+
+
                 var data = new AdminAccount
                 {
                     idno = idnum,
@@ -70,9 +89,9 @@ namespace WRS2big_Web.LandingPage
                     fname = txtfname.Text,
                     mname = txtmname.Text,
                     bdate = txtbirthdate.Text,
-                    phone = txtphoneNum.Text,
+                    phone = contactNum,
                     email = txtEmail.Text,
-                    pass = id_passwordreg.Text,
+                    pass = password,
                     businessProof = selectedProof,
                     validID = validID,
                     status = "pending",
@@ -213,6 +232,15 @@ namespace WRS2big_Web.LandingPage
                 //generate a random number for users logged
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
+
+                // Password validation
+                //if (password.Length < 8 || password.Length > 20 ||
+                //    !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
+                //    !password.Any(c => !char.IsLetterOrDigit(c)))
+                //{
+                //    Response.Write("<script>alert('Password must be 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                //    return;
+                //}
 
                 FirebaseResponse response;
                 response = twoBigDB.Get("ADMIN/" + idno);

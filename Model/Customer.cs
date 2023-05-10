@@ -49,10 +49,12 @@ namespace WRS2big_Web.Model
         public string order_RefillSelectedOption { get; set; }
         public DateTimeOffset orderDate { get; set; }
         public DateTimeOffset dateOrderAccepted { get; set; }
+        public string orderAcceptedBy { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
-        public DateTimeOffset dateOrderDeclined { get; set; }
-        public DateTimeOffset dateOrderDelivered { get; set; }
         public string payment_receivedBy { get; set; }
+        public DateTimeOffset dateOrderDeclined { get; set; }
+        public string orderDeclineddBy { get; set; }
+        public DateTimeOffset dateOrderDelivered { get; set; }
         public DateTimeOffset dateDriverAssigned { get; set; }
         public string driverAssignedBy { get; set; }
     }

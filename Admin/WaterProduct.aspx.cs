@@ -59,6 +59,7 @@ namespace WRS2big_Web.Admin
 
             // Get the ID of the currently logged-in owner from session state
             string idno = (string)Session["idno"];
+
             try
             {
                 // Retrieve all orders from the TANKSUPPLY table
@@ -127,29 +128,47 @@ namespace WRS2big_Web.Admin
                                     orderedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
 
                                 }
-                                //if (order.order_unit == "gallon/s")
-                                //{
-                                //    orderedGallons = Double.Parse(order.order_size);
-                                //}
-                                //else if (order.order_unit == "L" || order.order_unit == "liter/s")
-                                //{
-                                //    double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                //    orderedGallons = Double.Parse(order.order_size) * gallonsPerLiter;
-                                //}
-                                //else if (order.order_unit == "mL" || order.order_unit == "ML" || order.order_unit == "milliliters")
-                                //{
-                                //    double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
-                                //    orderedGallons = Double.Parse(order.order_size) / gallonsPerML;
-                                //}
+                                
                                 //Get the total of ordered gallons 
                                 totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
+
                             }
                         }
+                        // Calculate the total gallons declined
+                        double totalDeclinedGallons = 0;
+                        var declinedOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Declined");
+                        foreach (Order order in declinedOrders)
+                        {
+                            double declinedGallons = 0;
+                            if (order.order_Products[0].order_unit == "gallon/s")
+                            {
+                                declinedGallons = (double)order.order_Products[0].order_size;
+                            }
+                            else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
+                            {
+                                double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
+                                declinedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
+                            }
+                            else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
+                            {
+                                double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
+                                declinedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
+                            }
+                            // Get the total of declined gallons
+                            totalDeclinedGallons += declinedGallons * order.order_OverallQuantities;
+                        }
+
+                        // Update the tank supply and remaining balance
+                        //double remainingGallons = tankCapacity + totalOrderedGallons - totalDeclinedGallons;
+                        //double remainingBalance = remainingGallons * filteredSupply.pricePerGallon;
+
+                        //lblremainingGallons.Text = remainingGallons.ToString() + " gallons";
+                        //lblRemainingBalance.Text = remainingBalance.ToString("C");
 
                         //Calculate the ordered gallons of walkin
                         if (walkinOrders != null)
                         {
-                            var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno && d.orderType == "Refill" || d.orderType == "New Gallon");
+                            var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno);
                             foreach (WalkInOrders order in filteredWalkinOrders)
                             {
                                 // Convert order size to gallons or milliliters based on order unit
@@ -168,8 +187,10 @@ namespace WRS2big_Web.Admin
                                 totalOrderedGallons += orderedGallons * order.productQty;
                             }
                         }
+
                         //Get the total of remaining supply base on each ordered place
-                        double remainingSupply = tankCapacity - totalOrderedGallons;
+                        double remainingSupply = tankCapacity - totalOrderedGallons + totalDeclinedGallons;
+                        
 
                         // display the remaining supply
                         if (remainingSupply < 0)
@@ -205,6 +226,7 @@ namespace WRS2big_Web.Admin
                                     dateAdded = filteredSupply.dateAdded,
                                     tankVolume = filteredSupply.tankVolume,
                                     tankUnit = filteredSupply.tankUnit,
+                                    addedBy = filteredSupply.addedBy,
                                     tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
                                     dateUpdated = DateTimeOffset.UtcNow
                              };
@@ -242,8 +264,8 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the product refill table
             FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
             Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
-            var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno);
-        
+            var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable productRefillTable = new DataTable();
@@ -310,7 +332,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the other product table
             FirebaseResponse response = twoBigDB.Get("otherPRODUCTS");
             Dictionary<string, otherProducts> otherproductsList = response.ResultAs<Dictionary<string, otherProducts>>();
-            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
 
             // Create the DataTable to hold the other product report
             //sa pag create sa table
@@ -372,7 +394,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the TANKSUPPLY table
             FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
             Dictionary<string, TankSupply> otherproductsList = response.ResultAs<Dictionary<string, TankSupply>>();
-            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString( ) == idno).OrderByDescending(d => d.dateAdded);
 
             // Create the DataTable to hold the tank supply report
             //sa pag create sa table
