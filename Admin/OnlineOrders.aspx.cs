@@ -478,11 +478,11 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-                //  ordersTable.Columns.Add("OVERALL ORDER QUANTITY");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("REFILL SELECTED OPTION");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
@@ -529,7 +529,7 @@ namespace WRS2big_Web.Admin
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
+                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod, " ",
                                 order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
                         }
                     }
@@ -1000,42 +1000,44 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
             Order existingOrder = response.ResultAs<Order>();
 
-            // Retrieve the quantity and unit of the declined order from the existingOrder object
-            double quantity = existingOrder.order_OverallQuantities;
-            //string unit = existingOrder.productUnit;
-            string unit = existingOrder.order_Products[0].order_unit;
+            //// Retrieve the quantity and unit of the declined order from the existingOrder object
+            //double quantity = existingOrder.order_OverallQuantities;
+            ////string unit = existingOrder.productUnit;
+            //string unit = existingOrder.order_Products[0].order_unit;
 
-            // Retrieve the tank object from the database
-            FirebaseResponse tankResponse = twoBigDB.Get("TANKSUPPLY/");
-            TankSupply tank = tankResponse.ResultAs<TankSupply>();
+            //// Retrieve the tank object from the database
+            //FirebaseResponse tankResponse = twoBigDB.Get("TANKSUPPLY/");
+            //TankSupply tank = tankResponse.ResultAs<TankSupply>();
 
-            if (unit == "L" || unit == "liter/s")
-            {
-                tank.tankBalance += quantity;
-            }
-            else if (unit == "gallon/s")
-            {
-                tank.tankBalance += (quantity * 3.78541); // convert gallons to liters
-            }
-            else if (unit == "mL" || unit == "ML" || unit == "milliliters")
-            {
-                tank.tankBalance += quantity;
-            }
+            //if (unit == "L" || unit == "liter/s")
+            //{
+            //    tank.tankBalance += quantity;
+            //}
+            //else if (unit == "gallon/s")
+            //{
+            //    tank.tankBalance += (quantity * 3.78541); // convert gallons to liters
+            //}
+            //else if (unit == "mL" || unit == "ML" || unit == "milliliters")
+            //{
+            //    tank.tankBalance += quantity;
+            //}
 
-            // Update the tank object in the database
-            twoBigDB.Update("TANKSUPPLY/" + tank.tankId, tank);
+            //// Update the tank object in the database
+            //twoBigDB.Update("TANKSUPPLY/" + tank.tankId, tank);
             // Update the order status in the existing object
             existingOrder.order_OrderStatus = "Declined";
             existingOrder.driverId = 0; // clear the driver ID
+            existingOrder.dateOrderDeclined = DateTimeOffset.UtcNow;
 
             //existingOrder.driverId = (int)driverId; // clear the driver ID
 
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
+            Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
 
             //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
-           //Random rnd = new Random();
+            //Random rnd = new Random();
             int ID = rnd.Next(1, 20000);
             var Notification = new Model.Notification
             {

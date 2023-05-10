@@ -247,6 +247,7 @@
                                                   </div> <%--end of login here--%>
                 <%--                                @*      SIGN UP     *@--%>
                                             <div class="active" id="register" style="display:none;">
+                                                  <%--  <div id="register">--%>
                                               <div style="background-color:#018cff;color:white" class="card card-block">
 	                                               <h5 >PERSONAL INFORMATION</h5>
                                                </div>
@@ -308,7 +309,10 @@
                                                         <div class="form-group">
                                                             <label>Phone Number</label> 
                                                             <div class="input-group-sm">
-                                                            <asp:TextBox runat="server" TextMode="Phone" class="form-control" Placeholder ="ex: 90909090909" ID="txtphoneNum"></asp:TextBox>  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>
+                                                            <asp:TextBox runat="server" TextMode="Phone" class="form-control" Placeholder="(Format: 09XXXXXXXXX) (must be 11 digit)" ID="txtphoneNum"></asp:TextBox>
+                                                        <asp:RegularExpressionValidator ID="RegexValidator" ValidationGroup="a" runat="server" ControlToValidate="txtphoneNum" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
+
+<%--                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -343,6 +347,8 @@
                                                             </asp:RequiredFieldValidator>
                                                             <div class="input-group-sm">
                                                             <asp:TextBox runat="server" class="form-control" TextMode="Password" ID="id_passwordreg" ></asp:TextBox> 
+                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*_#?&]{8,20}$"
+                                                            runat="server" ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character except underscore(_) " ForeColor="Red" ControlToValidate="id_passwordreg"></asp:RegularExpressionValidator>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -646,4 +652,3 @@
 </form>
 </body>
 </html>
-
