@@ -161,6 +161,7 @@ namespace WRS2big_Web.Model
         public string exDeliveryType { get; set; }
         public int expressDistance { get; set; }
         public string expressProducts { get; set; }
+        
         //public string exOrderType { get; set; }
         //public string expressSwapOptions { get; set; }
 
