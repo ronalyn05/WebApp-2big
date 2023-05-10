@@ -31,12 +31,6 @@ namespace WRS2big_Web
             twoBigDB = new FireSharp.FirebaseClient(config);
 
 
-            //if (Session["username"] == null)
-            //{
-            //    //User not found
-            //     Response.Write("<script>alert('User not found');</script>");
-            //    //Response.Redirect("/LandingPage/Account.aspx");
-            ////}
             if (Session["idno"] == null)
             {
                 // User not found
@@ -48,17 +42,20 @@ namespace WRS2big_Web
             {
                 string stationName = (string)Session["stationName"];
                 lblWRSname.Text = stationName;
+
+                string adminID = Session["idno"].ToString();
+                FirebaseResponse response;
+                response = twoBigDB.Get("ADMIN/" + adminID);
+                AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
+
+
+                if (user.status == "pending")
+                {
+                    navigationBarMaster.Visible = false;
+                }
             }
 
-            int adminID = (int)Session["idno"];
-            FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/" + adminID);
-            AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
-
-            if (user.status == "pending")
-            {
-                navigationBarMaster.Visible = false;
-            }
+           
 
 
 
@@ -386,6 +383,26 @@ namespace WRS2big_Web
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+            }
+            else if (title == "Refilling Station Pre-setup")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
             }
 
         }

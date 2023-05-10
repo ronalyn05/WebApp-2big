@@ -17,7 +17,7 @@
                                     <div class="page-body">
                                         <section class="login-block">
                                             <div class="text-center">
-                                                <img src="/images/2ndLogo.png" style="width: 400px" alt="logo.png">
+                                                <img src="/images/2ndLogo.png" alt="logo.png" width="400">
                                             </div>
                                             <div class="row justify-content-center">
                                                 <div class="col-lg-5">

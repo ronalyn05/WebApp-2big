@@ -431,6 +431,16 @@ namespace WRS2big_Web.Admin
         //UPDATE PROFILE PIC
         protected async void profileBtn_Click(object sender, EventArgs e)
         {
+            //generate a random number for users logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            string idno = (string)Session["idno"];
+
+            // Retrieve the existing product data from the database
+            var result = twoBigDB.Get("ADMIN/" + idno);
+            AdminAccount obj = result.ResultAs<AdminAccount>();
+
             if (imgProfile.HasFile)
             {
                 // Get the file name and extension
@@ -455,10 +465,28 @@ namespace WRS2big_Web.Admin
                 };
                 var response = await twoBigDB.UpdateAsync("ADMIN/" + Lbl_Idno.Text, data);
 
+
                 // Display the image on the profile page
                 ImageButton_new.ImageUrl = imageUrl;
             }
 
+            // Get the current date and time
+            DateTime addedTime = DateTime.UtcNow; ;
+
+
+            //Store the login information in the USERLOG table
+            var profilelog = new UsersLogs
+            {
+                userIdnum = int.Parse(idno),
+                logsId = idnum,
+                userFullname = (string)Session["fullname"],
+                userActivity = "UPLOAD IMAGE",
+                // userActivity = UserActivityType.AddedProductRefill,
+                activityTime = addedTime
+            };
+
+            //Storing the  info
+            SetResponse logresponse = twoBigDB.Set("USERSLOG/" + profilelog.logsId, profilelog);//Storing data to the database
             Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx';</script>");
         }
 
@@ -608,25 +636,56 @@ namespace WRS2big_Web.Admin
                 // Save the new object to the database
                 twoBigDB.Set("ADMIN/" + idno + "/RefillingStation/", newObj);
 
-                //SEND NOTIFICATION TO ADMIN 
+                // Check if the RefillingStation object already exists in the database
+                var adminresult = twoBigDB.Get("ADMIN/" + idno);
+                AdminAccount admin = adminresult.ResultAs<AdminAccount>();
 
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Notification
+                if (admin.status == "pending")
                 {
-                    admin_ID = int.Parse(idno),
-                    sender = "Super Admin",
-                    title = "Refiling Station Set-up",
-                    receiver = "Admin",
-                    body = "You have completed your Refilling Station set-up! You can now add your products! Please proceed to Products page.",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
+                    //SEND NOTIFICATION TO ADMIN 
 
-                };
+                    int ID = rnd.Next(1, 20000);
+                    var Notification = new Notification
+                    {
+                        admin_ID = int.Parse(idno),
+                        sender = "Super Admin",
+                        title = "Refilling Station Pre-setup",
+                        receiver = "Admin",
+                        body = "You have completed your Refilling Station set-up! However, your account is still pending. Please wait for your account to be approved before you can completely manage your refilling business.",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
 
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                }
+                else
+                {
+                    //SEND NOTIFICATION TO ADMIN 
+
+                    int ID = rnd.Next(1, 20000);
+                    var Notification = new Notification
+                    {
+                        admin_ID = int.Parse(idno),
+                        sender = "Super Admin",
+                        title = "Refiling Station Set-up",
+                        receiver = "Admin",
+                        body = "You have completed your Refilling Station set-up! You can now add your products! Please proceed to Products page.",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
+
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                }
 
 
                 Response.Write("<script>alert ('Station details successfully added!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
