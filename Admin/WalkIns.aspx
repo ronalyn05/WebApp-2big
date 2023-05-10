@@ -80,7 +80,7 @@
                                                                             <br />
                                                                              <h5>Product Unit and Size: </h5>
                                                                             <asp:DropDownList ID="drdUnit_Size" runat="server" class="text-center" Height="40px" Width="364px" >
-                                                                                <asp:ListItem Selected="True" Text="Select Unit"></asp:ListItem>
+                                                                                <asp:ListItem Selected="True" Text="Select Size and Unit"></asp:ListItem>
                                                                        </asp:DropDownList>
                                                                              <%-- <asp:TextBox  ID="txtprodSize" class="text-center" runat="server" Height="40px" Width="564px" Font-Size="14px"></asp:TextBox>--%>
                                                                           <%-- <asp:Label ID="lblUnit" runat="server" BorderColor="Black" BorderWidth="1" class="text-center" Height="40px" Width="564px" Font-Size="18px"></asp:Label>--%>

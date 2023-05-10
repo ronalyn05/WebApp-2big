@@ -155,7 +155,7 @@ namespace WRS2big_Web.Admin
             drdUnit_Size.Items.Clear();
             //drdSize.Items.Clear();
 
-            if (selectedOption == "Refill" || selectedOption == "New Gallon")
+            if (selectedOption == "Refill")
             {
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
                 Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
@@ -250,7 +250,7 @@ namespace WRS2big_Web.Admin
                     // Check if the product exists in the "PRODUCTREFILL" table
                     response = twoBigDB.Get("PRODUCTREFILL/");
                     Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
-                    ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType == selectedType);
+                    ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillWaterType.ToString() == selectedType);
 
                     //ProductRefill selectedProduct = products.Values.FirstOrDefault(p => p.pro_refillSize == selectedSize && p.pro_refillWaterType == selectedType && p.pro_refillUnit == selectedUnit);
 
