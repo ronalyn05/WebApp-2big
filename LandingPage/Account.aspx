@@ -347,8 +347,8 @@
                                                             </asp:RequiredFieldValidator>
                                                             <div class="input-group-sm">
                                                             <asp:TextBox runat="server" class="form-control" TextMode="Password" ID="id_passwordreg" ></asp:TextBox> 
-                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$"
-                                                            runat="server" ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="id_passwordreg"></asp:RegularExpressionValidator>
+                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*_#?&]{8,20}$"
+                                                            runat="server" ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character except underscore(_) " ForeColor="Red" ControlToValidate="id_passwordreg"></asp:RegularExpressionValidator>
                                                             </div>
                                                         </div>
                                                     </div>
