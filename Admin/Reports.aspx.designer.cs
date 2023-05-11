@@ -15,6 +15,33 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
+        /// ddlSaleTransaction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSaleTransaction;
+
+        /// <summary>
+        /// btnView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnView;
+
+        /// <summary>
+        /// lbloverallTotalSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbloverallTotalSale;
+
+        /// <summary>
         /// lblTotalSales control.
         /// </summary>
         /// <remarks>
@@ -24,13 +51,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblTotalSales;
 
         /// <summary>
-        /// lblDeliveries control.
+        /// lblCombinedOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDeliveries;
+        protected global::System.Web.UI.WebControls.Label lblCombinedOrders;
 
         /// <summary>
         /// lblOrders control.
@@ -42,12 +69,93 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblOrders;
 
         /// <summary>
-        /// lblReservations control.
+        /// lblTodaysSale control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReservations;
+        protected global::System.Web.UI.WebControls.Label lblTodaysSale;
+
+        /// <summary>
+        /// lbl_TodaysSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_TodaysSale;
+
+        /// <summary>
+        /// lblYesterdaySale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblYesterdaySale;
+
+        /// <summary>
+        /// lbl_YesterdaySale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_YesterdaySale;
+
+        /// <summary>
+        /// lblPastWeekSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPastWeekSale;
+
+        /// <summary>
+        /// lbl_PastWeekSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_PastWeekSale;
+
+        /// <summary>
+        /// lblPastmonthSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPastmonthSale;
+
+        /// <summary>
+        /// lbl_PastmonthSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_PastmonthSale;
+
+        /// <summary>
+        /// lbl2023Sale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl2023Sale;
+
+        /// <summary>
+        /// lbl_2023Sale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_2023Sale;
     }
 }

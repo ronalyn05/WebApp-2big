@@ -81,7 +81,7 @@ namespace WRS2big_Web.Admin
                 }
                 if (ordersTable.Rows.Count == 0)
                 {
-                    lblMessage.Text = "No  Data Found";
+                    lblMessage.Text = "No  record found  ";
                     lblMessage.Visible = true;
                 }
                 else
@@ -95,7 +95,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblMessage.Text = "No data found";
+                lblMessage.Text = "No record found";
             }
 
             
@@ -157,7 +157,7 @@ namespace WRS2big_Web.Admin
 
                 if (walkInordersTable.Rows.Count == 0)
                 {
-                    lblMessage.Text = "No Data Found";
+                    lblMessage.Text = "No record found";
                     lblMessage.Visible = true;
                 }
                 else
@@ -171,7 +171,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblMessage.Text = "No data found";
+                lblMessage.Text = "No record found";
             }
         }
         //SEARCH REPORTS
