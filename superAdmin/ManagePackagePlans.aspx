@@ -203,7 +203,7 @@
 
                                                                             </div>
                                                                          </div>
-                                                                           <div class="col-xl-6 col-md-12">
+<%--                                                                           <div class="col-xl-6 col-md-12">
                                                                               <div class="card-block">
                                                                                            <div style="background-color:#018cff;color:white" class="card card-block">
 	                                                                                           <h7>PACKAGE SETTINGS</h7>
@@ -227,7 +227,7 @@
                                                                                             </div>
 
                                                                             </div>
-                                                                         </div>
+                                                                         </div>--%>
                                                     </div>
                                                     <!-- Row end -->
                                                 </div>

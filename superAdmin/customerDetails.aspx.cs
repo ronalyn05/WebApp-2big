@@ -120,8 +120,28 @@ namespace WRS2big_Web.superAdmin
             admin.cus_status = "Approved";
             adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 
+            //SEND NOTIFICATION TO CUSTOMER 
+            Random rnd = new Random();
+            int ID = rnd.Next(1, 20000);
+            var Notification = new Model.Notification
+            {
+                admin_ID = customerID,
+                sender = "Super Admin",
+                title = "Application Approved",
+                receiver = "Customer",
+                body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
+                notificationDate = DateTime.Now,
+                status = "unread",
+                notificationID = ID
+
+            };
+
+            SetResponse notifResponse;
+            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
             Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
-            //DIRI I-INSERT ANG PAGSAVE SA NOTIFICATION INTO DATABASE
+           
         }
 
         protected void declineButton_Click(object sender, EventArgs e)

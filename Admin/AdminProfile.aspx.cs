@@ -595,7 +595,7 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "ADDED STATION DETAILS",
+                    userActivity = "UPDATED STATION DETAILS",
                 };
                 
                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
@@ -672,7 +672,7 @@ namespace WRS2big_Web.Admin
                     {
                         admin_ID = int.Parse(idno),
                         sender = "Super Admin",
-                        title = "Refiling Station Set-up",
+                        title = "Refilling Station Set-up",
                         receiver = "Admin",
                         body = "You have completed your Refilling Station set-up! You can now add your products! Please proceed to Products page.",
                         notificationDate = DateTime.Now,
@@ -706,15 +706,51 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "UPDATED THE STATION DETAILS",
+                    userActivity = "ADDED THE STATION DETAILS",
                 };
 
-                twoBigDB.Set("USERSLOG" + log.logsId, log);
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                 // Display the image on the profile page
                 ImageButton_new.ImageUrl = (string)Session["profile_image"];
             }
         }
 
+        protected void renewBTN_Click(object sender, EventArgs e)
+        {
+            string adminID = Session["idno"].ToString();
+
+            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+            Model.Subscribed_Package package = adminDet.ResultAs<Model.Subscribed_Package>();
+
+            if (package.packageName == "Package A")
+            {
+                //SEND NOTIFICATION TO ADMIN 
+                Random rnd = new Random();
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Notification
+                {
+                    admin_ID = int.Parse(adminID),
+                    sender = "Super Admin",
+                    title = "Package Renewal",
+                    receiver = "Admin",
+                    body = package.packageName + " " + "is not renewable. You must subscribe to another package",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                Response.Write("<script> alert('Current plan is not renewable. Redirecting to Package B'); window.location.href = '/Admin/PackageBPage.aspx';</script>");
+            }
+            else if (package.packageName == "Package B")
+            {
+                Response.Write("<script> window.location.href = '/Admin/PackageBPage.aspx';</script>");
+            }
+        }
     }
 }

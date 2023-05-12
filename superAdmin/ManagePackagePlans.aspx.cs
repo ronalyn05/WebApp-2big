@@ -97,8 +97,8 @@ namespace WRS2big_Web.superAdmin
                     packageDuration = int.Parse(packageDuration.Text),
                     packagePrice = int.Parse(packagePrice.Text),
                     packageLimit = int.Parse(packageOrderLimit.Text),
-                    messaging = messagingOption.SelectedValue,
-                    numberOfStations = int.Parse(numofStations.Text),
+                    //messaging = messagingOption.SelectedValue,
+                    //numberOfStations = int.Parse(numofStations.Text),
                     features = features
 
 

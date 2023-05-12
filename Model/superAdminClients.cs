@@ -21,6 +21,7 @@ namespace WRS2big_Web.Model
         public int amount { get; set; }
         public DateTime subExpiration { get; set; }
         public string currentSubStatus { get; set; }
+        public string paymentStatus { get; set; }
         
     }
 

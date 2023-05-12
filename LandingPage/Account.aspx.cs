@@ -113,7 +113,7 @@ namespace WRS2big_Web.LandingPage
                     pass = password,
                     businessProof = selectedProof,
                     validID = validID,
-                    status = "pending",
+                    status = "Pending",
                     businessProofLnk = null,
                     validIDLnk = null,
                     subStatus = "notSubscribed",
@@ -376,16 +376,16 @@ namespace WRS2big_Web.LandingPage
 
                         // Retrieve the existing subscribed admin from the database
 
-                        if (clientStat == "pending") //NOT APPROVED YET, BY THE SUPERADMIN
+                        if (clientStat == "Pending") //NOT APPROVED YET, BY THE SUPERADMIN
                         {
                             Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
 
                         }
-                        else if (clientStat == "Approved" && subStatus == "notSubscribed") //APPROVED BUT NOT SUBSCRIBED
+                        else if (subStatus == "notSubscribed")
                         {
-                            Response.Write("<script> window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-
+                            Response.Write("<script> window.location.href = '/Admin/AdminProfile.aspx'; </script>");
                         }
+
                         else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
                         {
                             Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");

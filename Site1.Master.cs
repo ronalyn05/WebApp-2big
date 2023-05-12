@@ -48,11 +48,16 @@ namespace WRS2big_Web
                 response = twoBigDB.Get("ADMIN/" + adminID);
                 AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
 
-
+                //TO REMOVE THE SIDE NAVBARS 
                 if (user.status == "pending")
                 {
                     navigationBarMaster.Visible = false;
+                } 
+                if (user.subStatus == "notSubscribed")
+                {
+                    navigationBarMaster.Visible = false;
                 }
+                
             }
 
            
@@ -60,24 +65,24 @@ namespace WRS2big_Web
 
 
             loadNotifications();
-            SubscriptionStatus();
+            //SubscriptionStatus();
             //reminderNotification();
 
          
         }
-
+        private void reminderCheck()
+        {
+            
+        }
         private void SubscriptionStatus()
         {
             string adminID = Session["idno"].ToString();
 
-            if (Session["idno"] == null)
+            if (adminID == null && Session["idno"] == null)
             {
                 Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
-            if (adminID == null)
-            {
-                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
-            }
+
             else
             {
                
@@ -86,30 +91,157 @@ namespace WRS2big_Web
 
                 if (expiration != null)
                 {
-                    if (expiration.expiration < DateTime.Now)
-                    {
-                        //SEND NOTIFICATION TO ADMIN 
-                        Random rnd = new Random();
-                        int ID = rnd.Next(1, 20000);
-                        var Notification = new Notification
+
+                        //UPDATE THE SUBSTATUS OF SUBSCRIBED_PACKAGE FROM ACTIVE TO EXPIRED
+                       adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                        Model.Subscribed_Package subStatus = adminDet.ResultAs<Model.Subscribed_Package>();
+                        
+                        if (subStatus != null)
                         {
-                            admin_ID = int.Parse(adminID),
-                            sender = "Super Admin",
-                            title = "Subscription Expired",
-                            receiver = "Admin",
-                            body = "Your subscription has Expired! Subscribe again to continue using the platform",
-                            notificationDate = DateTime.Now,
-                            status = "unread",
-                            notificationID = ID
+                            DateTimeOffset currentDate = DateTimeOffset.UtcNow.Date;
+                            DateTimeOffset reminderNotif = expiration.expiration.AddDays(-2); //2 days before the expiration
+                            DateTimeOffset expirationDate = expiration.expiration; //actual expiration date on database
+                            DateTimeOffset finalExpiration = expiration.expiration.AddDays(2); //final expiration !
 
-                        };
+                            Debug.WriteLine($"NOW: {currentDate}");
+                            Debug.WriteLine($"REMINER: {reminderNotif}");
+                            Debug.WriteLine($"EXPIRATION: {expirationDate}");
+                            Debug.WriteLine($"final EXPIRATION: {finalExpiration}");
 
-                        SetResponse notifResponse;
-                        notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                        Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+                        if (currentDate.Date == reminderNotif.Date)
+                        {
+                            int admin = int.Parse(adminID);
+
+                            FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                            var adminBody = adminNotif.Body;
+                            Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                            // Check if there is already a Subscription Reminder notification for this admin_ID
+                            bool hasSubscriptionReminder = adminAllNotifs.Values.Any(n => n.admin_ID == admin && n.title == "Subscription Reminder");
+
+                            if (!hasSubscriptionReminder)
+                            {
+                                //SEND FIRST NOTIFICATION TO ADMIN FOR SUBSCRIPTION REMINDER
+                                Random rnd = new Random();
+                                int ID = rnd.Next(1, 20000);
+                                var Notification = new Notification
+                                {
+                                    admin_ID = int.Parse(adminID),
+                                    sender = "Super Admin",
+                                    title = "Subscription Reminder",
+                                    receiver = "Admin",
+                                    body = "Your subscription is about to expire in 2 days! Don't forget to renew your subscription to continue using the platform.",
+                                    notificationDate = DateTime.Now,
+                                    status = "unread",
+                                    notificationID = ID
+                                };
+
+                                SetResponse notifResponse;
+                                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification); //Storing data to the database
+                                Notification notif = notifResponse.ResultAs<Notification>(); //Database Result
+
+                                //Debug.WriteLine($"NOW: {DateTime.Now}");
+                                Debug.WriteLine($"REMINDER SENT: {ID}");
+                            }
+                        }
+                        else if (currentDate.Date == expirationDate.Date)
+                            {
+                            int admin = int.Parse(adminID);
+
+                            FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                            var adminBody = adminNotif.Body;
+                            Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                            // Check if there is already a Subscription Reminder notification for this admin_ID
+                            bool hasSubscriptionReminder = adminAllNotifs.Values.Any(n => n.admin_ID == admin && n.title == "Subscription Extended");
+                            
+                            if (!hasSubscriptionReminder)
+                            {
+                                //SEND SECOND NOTIFICATION TO ADMIN FOR SUBSCRIPTION REMINDER
+                                Random rnd = new Random();
+                                int ID = rnd.Next(1, 20000);
+                                var Notification = new Notification
+                                {
+                                    admin_ID = int.Parse(adminID),
+                                    sender = "Super Admin",
+                                    title = "Subscription Extended",
+                                    receiver = "Admin",
+                                    body = "Your subscription has expired today! However, as our valued client, you are given an extra 2 days before your account will be locked. Locked account means you can't perform transactions anymore. Don't forget to renew your subscription in your Profile page to continue using the platform.",
+                                    notificationDate = DateTime.Now,
+                                    status = "unread",
+                                    notificationID = ID
+                                };
+
+                                SetResponse notifResponse;
+                                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification); //Storing data to the database
+                                Notification notif = notifResponse.ResultAs<Notification>(); //Database Result
+
+                            }
+
+                        }
+
+                        else if (currentDate.Date == finalExpiration.Date)
+
+                        {
+                            int admin = int.Parse(adminID);
+
+                            FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                            var adminBody = adminNotif.Body;
+                            Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                            // Check if there is already a Subscription Reminder notification for this admin_ID
+                            bool hasSubscriptionReminder = adminAllNotifs.Values.Any(n => n.admin_ID == admin && n.title == "Subscription Expired");
+
+                            if (!hasSubscriptionReminder)
+                            {
+                                //change the status in ADMIN table
+                                subStatus.subStatus = "Expired";
+                                adminDet = twoBigDB.Update("ADMIN/" + adminID + "/Subscribed_Package", subStatus);
+
+                                //fetch admin data
+                                FirebaseResponse client = twoBigDB.Get("ADMIN/" + adminID);
+                                Model.AdminAccount clientstat = client.ResultAs<Model.AdminAccount>();
+                                //updte
+                                clientstat.currentSubscription = "Expired";
+                                client = twoBigDB.Update("ADMIN/" + adminID, clientstat);
+
+                                //fetch from superadmin table
+                                FirebaseResponse superAdmin = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID);
+                                Model.superAdminClients subscribed = superAdmin.ResultAs<Model.superAdminClients>();
+
+                                //change the status in SUPERADMIN Table
+                                subscribed.currentSubStatus = "Expired";
+                                superAdmin = twoBigDB.Update("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID, subscribed);
+
+                                //SEND LAST NOTIFICATION TO ADMIN FOR SUBSCRIPTION REMINDER
+                                Random rnd = new Random();
+                                int ID = rnd.Next(1, 20000);
+                                var Notification = new Notification
+                                {
+                                    admin_ID = int.Parse(adminID),
+                                    sender = "Super Admin",
+                                    title = "Subscription Expired",
+                                    receiver = "Admin",
+                                    body = "Your subscription has expired! Please renew your subscription in the Profile Page to continue using the platform.",
+                                    notificationDate = DateTime.Now,
+                                    status = "unread",
+                                    notificationID = ID
+                                };
+
+                                SetResponse notifResponse;
+                                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification); //Storing data to the database
+                                Notification notif = notifResponse.ResultAs<Notification>(); //Database Result
+                            }
+
+
+
+                        }
+
 
 
                     }
+
+                    
                     Debug.WriteLine($"NOW: {DateTime.Now}");
                     Debug.WriteLine($"DATE: {expiration.expiration}");
                 }
@@ -119,6 +251,8 @@ namespace WRS2big_Web
         }
         private void loadNotifications()
         {
+            SubscriptionStatus();
+
             //NOTIFICATION FROM CUSTOMER TO ADMIN
             string adminID = (string)Session["idno"];
 
@@ -284,6 +418,26 @@ namespace WRS2big_Web
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
             }
+            else if (title == "Subscription Success")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+            }
             else if (title == "Welcome to 2BiG!")
             {
                 var updatedNotif = new Notification
@@ -324,26 +478,6 @@ namespace WRS2big_Web
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
             }
-            else if (title == "Refilling Station Set-up")
-            {
-                var updatedNotif = new Notification
-                {
-                    notificationID = notif.notificationID,
-                    notificationDate = notif.notificationDate,
-                    receiver = notif.receiver,
-                    sender = notif.sender,
-                    title = notif.title,
-                    orderID = notif.orderID,
-                    cusId = notif.cusId,
-                    driverId = notif.driverId,
-                    //UPDATE THE STATUS FROM UNREAD TO READ
-                    status = "read",
-                    body = notif.body,
-                    admin_ID = notif.admin_ID
-                };
-                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-                Response.Write("<script>window.location.href = '/Admin/WaterProducts.aspx'; </script>");
-            }
             else if (title == "Subscription Expired")
             {
                 var updatedNotif = new Notification
@@ -362,7 +496,7 @@ namespace WRS2big_Web
                     admin_ID = notif.admin_ID
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-                Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx'; </script>");
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
             }
             else if (title == "Station update")
             {
@@ -403,6 +537,66 @@ namespace WRS2big_Web
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+            }
+            else if (title == "Refilling Station Set-up")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+            }
+            else if (title == "Subscription Reminder")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+            }
+            else if (title == "Subscription Extended")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
             }
 
         }

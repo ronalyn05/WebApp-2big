@@ -116,7 +116,7 @@ namespace WRS2big_Web.superAdmin
 
             foreach (KeyValuePair<string, Model.AdminAccount> entry in pendingClients)
             {
-                if (entry.Value.status == "pending")
+                if (entry.Value.status == "Pending")
                 {
                     FirebaseResponse stationResponse = twoBigDB.Get("ADMIN/" + entry.Key + "/RefillingStation");
                     Model.RefillingStation station = stationResponse.ResultAs<Model.RefillingStation>();
@@ -244,50 +244,56 @@ namespace WRS2big_Web.superAdmin
         //multiple approve the customers
         protected void approveButton_Click(object sender, EventArgs e)
         {
-            List<int> customerIDs = new List<int>();
+            List<int> clientIDs = new List<int>();
 
             foreach (GridViewRow row in pendingGridView.Rows)
             {
                 CheckBox chk = (CheckBox)row.FindControl("select");
                 if (chk != null && chk.Checked)
                 {
-                    int customerID = int.Parse(row.Cells[1].Text);
-                    customerIDs.Add(customerID);
+                    int clientID = int.Parse(row.Cells[1].Text);
+                    clientIDs.Add(clientID);
                 }
             }
 
-            if (customerIDs.Count == 0)
+            if (clientIDs.Count == 0)
             {
                 Response.Write("<script>alert ('Please select at least one client to approve'); </script>");
                 return;
             }
 
-            foreach (int customerID in customerIDs)
+            foreach (int clientID in clientIDs)
             {
-                FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + clientID);
                 Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
 
 
                 admin.status = "Approved";
                 admin.dateApproved = DateTime.Now;
-                response = twoBigDB.Update("ADMIN/" + customerID, admin);
+                response = twoBigDB.Update("ADMIN/" + clientID, admin);
 
-                //ADD NOTIFICATION HERE
+                //SEND NOTIFICATION TO ADMIN 
+                Random rnd = new Random();
+                int ID = rnd.Next(1, 20000);
 
-                //var client = new Model.AdminAccount
-                //{
-                //    idno = admin.idno,
-                //    fname = admin.fname,
-                //    lname = admin.lname,
-                //    phone = admin.phone,
-                //    email = admin.email,
-                //    dateApproved = DateTime.Now,
-                //    dateRegistered = admin.dateRegistered,
-                //    userRole = admin.userRole
-                //};
-                //SetResponse userResponse;
-                //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + admin.idno, client);//Storing data to the database
-                //Model.AdminAccount user = userResponse.ResultAs<Model.AdminAccount>();//Database Result
+                var Notification = new Model.Notification
+                {
+                    admin_ID = clientID,
+                    sender = "Super Admin",
+                    title = "Application Approved",
+                    receiver = "Admin",
+                    body = "Your application is now approved! You can now subscribe to our Subscription Packages",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+
 
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
@@ -418,7 +424,7 @@ namespace WRS2big_Web.superAdmin
 
 
                 if ((selectedValue == "All" || selectedValue == entry.Value.status) &&
-                    (searched == entry.Value.fname || searched == station.stationName || searched == entry.Value.email || searched == entry.Key))
+                    (searched == entry.Value.fname || searched == entry.Value.lname || searched == station.stationName || searched == entry.Value.email || searched == entry.Key))
                 {
                     clientsTable.Rows.Add(
                         entry.Value.idno,
@@ -439,7 +445,7 @@ namespace WRS2big_Web.superAdmin
                
             }
 
-            search.Text = "";
+            //search.Text = "";
             // Bind DataTable to GridView control based on selected value of dropdown
             if (selectedValue == "All")
             {
@@ -543,6 +549,7 @@ namespace WRS2big_Web.superAdmin
 
             string selectedValue = sortDropdown.SelectedValue;
 
+            search.Text = "";
             if (selectedValue == "All")
             {
                 DisplayAll();
