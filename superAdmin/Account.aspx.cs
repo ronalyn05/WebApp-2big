@@ -39,6 +39,7 @@ namespace WRS2big_Web.superAdmin
             string uEmail = txt_idno.Text;
             string uPass = txt_password.Text;
 
+           
 
             if (uEmail == email && uPass == pass)
             {
@@ -47,7 +48,38 @@ namespace WRS2big_Web.superAdmin
                 Session["email"] = uEmail;
                 Session["password"] = uPass;
 
-                Response.Write("<script>alert ('Login Successfull!'); location.reload(); window.location.href = '/superAdmin/SAdminIndex.aspx'; </script>");
+                //Get the current date and time
+                DateTime loginTime = DateTime.UtcNow;
+
+                //generate a random number for users logged
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
+                //Store the login information in the USERLOG table
+                var data = new UsersLogs
+                {
+                    logsId = idnum,
+                    //userIdnum = int.Parse(idno),
+                    userFullname = superAdmin,
+                    userActivity = "LOGGED IN",
+                    activityTime = loginTime
+                };
+
+                //Storing the  info
+                FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
+                //Get the exsiting data in the database
+                FirebaseResponse resLogs = twoBigDB.Get("SUPERADMIN_LOGS/" + data.logsId);
+                UsersLogs existingLog = resLogs.ResultAs<UsersLogs>();
+
+                if (existingLog != null)
+                {
+                    Session["logsId"] = existingLog.logsId;
+                }
+
+
+                Response.Write("<script>alert ('Login Successfull!'); window.location.href = '/superAdmin/SAdminIndex.aspx'; </script>");
 
                 Session["name"] = superAdmin;
             }
