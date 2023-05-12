@@ -177,7 +177,7 @@ namespace WRS2big_Web.Admin
                                     //create logs
                                     int logsId = (int)Session["logsId"];
                                     // Retrieve the existing Users log object from the database
-                                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                                    FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                                     Model.UsersLogs existingLog = resLog.ResultAs<Model.UsersLogs>();
 
                                     // Get the current date and time
@@ -192,7 +192,7 @@ namespace WRS2big_Web.Admin
                                         userActivity = "SUBSCRIPTION RENEWAL",
                                         activityTime = addedTime
                                     };
-                                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                                    twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
 
                                     //SEND USERS LOG TO SUPERADMIN
                                     DateTime logTime = DateTime.UtcNow; //Get the current date and time
@@ -364,7 +364,7 @@ namespace WRS2big_Web.Admin
                                     //create logs
                                     int logsId = (int)Session["logsId"];
                                     // Retrieve the existing Users log object from the database
-                                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                                    FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                                     Model.UsersLogs existingLog = resLog.ResultAs<Model.UsersLogs>();
 
                                     // Get the current date and time
@@ -380,7 +380,7 @@ namespace WRS2big_Web.Admin
                                         activityTime = addedTime
                                     };
 
-                                    twoBigDB.Update("USERSLOG/" + log.logsId, log);
+                                    twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
 
 
 
