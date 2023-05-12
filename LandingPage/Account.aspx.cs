@@ -344,11 +344,11 @@ namespace WRS2big_Web.LandingPage
                         };
 
                         //Storing the  info
-                        response = twoBigDB.Set("USERSLOG/" + data.logsId, data);//Storing data to the database
+                        response = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
                         UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
 
                         //Get the exsiting data in the database
-                        FirebaseResponse resLogs = twoBigDB.Get("USERSLOG/" + data.logsId);
+                        FirebaseResponse resLogs = twoBigDB.Get("ADMINLOGS/" + data.logsId);
                         UsersLogs existingLog = resLogs.ResultAs<UsersLogs>();
 
                         if (existingLog != null)

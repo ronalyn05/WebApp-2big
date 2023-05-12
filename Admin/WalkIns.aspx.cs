@@ -129,7 +129,7 @@ namespace WRS2big_Web.Admin
                 };
 
                 //Storing the  info
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
                 //response = twoBigDB.Set("USERSLOG/" + log.logsId, log);//Storing data to the database
                 //UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
 
