@@ -595,7 +595,7 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "ADDED STATION DETAILS",
+                    userActivity = "UPDATED STATION DETAILS",
                 };
                 
                 twoBigDB.Set("USERSLOG/" + log.logsId, log);
@@ -706,10 +706,10 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "UPDATED THE STATION DETAILS",
+                    userActivity = "ADDED THE STATION DETAILS",
                 };
 
-                twoBigDB.Set("USERSLOG" + log.logsId, log);
+                twoBigDB.Set("USERSLOG/" + log.logsId, log);
 
                 // Display the image on the profile page
                 ImageButton_new.ImageUrl = (string)Session["profile_image"];
