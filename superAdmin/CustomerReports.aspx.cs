@@ -47,43 +47,46 @@ namespace WRS2big_Web.superAdmin
             var data = response.Body;
             Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
-           
-
-            DataTable customerTable = new DataTable();
-            //customerTable.Columns.Add("PROFILE");
-            customerTable.Columns.Add("USER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
-            customerTable.Columns.Add("EMAIL");
-            customerTable.Columns.Add("ADDRESS");
-            customerTable.Columns.Add("PHONE #");
-            customerTable.Columns.Add("DATE APPROVED");
-            customerTable.Columns.Add("DATE REGISTERED");
-
-
-
-          
-            foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+           if (clients != null)
             {
-                //clientProfile.ImageUrl = entry.Value.profile_image;
+                DataTable customerTable = new DataTable();
+                //customerTable.Columns.Add("PROFILE");
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("FIRST NAME");
+                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE APPROVED");
+                customerTable.Columns.Add("DATE REGISTERED");
 
-                FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-                customerTable.Rows.Add(
-                   //entry.Value.profile_image,
-                   entry.Value.idno,
-                    entry.Value.fname,
-                    entry.Value.lname,
-                    entry.Value.email,
-                   stations.stationAddress,
-                    entry.Value.phone,
-                    entry.Value.dateApproved,
-                    entry.Value.dateRegistered);
-                    
+
+
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
+                {
+                    //clientProfile.ImageUrl = entry.Value.profile_image;
+
+                    FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
+                    Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
+                    customerTable.Rows.Add(
+                       //entry.Value.profile_image,
+                       entry.Value.idno,
+                        entry.Value.fname,
+                        entry.Value.lname,
+                        entry.Value.email,
+                       stations.stationAddress,
+                        entry.Value.phone,
+                        entry.Value.dateApproved,
+                        entry.Value.dateRegistered);
+
+                }
+                // Bind DataTable to GridView control
+                clientReports.DataSource = customerTable;
+                clientReports.DataBind();
             }
-            // Bind DataTable to GridView control
-            clientReports.DataSource = customerTable;
-            clientReports.DataBind();
+
+           
         }
 
 
@@ -95,41 +98,45 @@ namespace WRS2big_Web.superAdmin
             var data = response.Body;
             Dictionary<string, Model.Customer> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
 
-
-            DataTable customerTable = new DataTable();
-            customerTable.Columns.Add("USER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
-            customerTable.Columns.Add("EMAIL");
-            customerTable.Columns.Add("ADDRESS");
-            customerTable.Columns.Add("PHONE #");
-            
-
-
-
-            foreach (KeyValuePair<string, Model.Customer> entry in clients)
+            if (clients!= null)
             {
-                double lattitude = entry.Value.lattitudeLocation;
-                double longitude = entry.Value.longitudeLocation;
-                string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+                DataTable customerTable = new DataTable();
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("FIRST NAME");
+                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
 
-                string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
 
-                //customerProfile.ImageUrl = entry.Value.imageProof;
 
-                customerTable.Rows.Add(
-                    //entry.Value.imageProof,
-                    entry.Value.cusId,
-                    entry.Value.firstName,
-                    entry.Value.lastName,
-                    entry.Value.email,
-                    address,
-                    entry.Value.phoneNumber);
 
+                foreach (KeyValuePair<string, Model.Customer> entry in clients)
+                {
+                    double lattitude = entry.Value.lattitudeLocation;
+                    double longitude = entry.Value.longitudeLocation;
+                    string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+
+                    string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
+
+                    //customerProfile.ImageUrl = entry.Value.imageProof;
+
+                    customerTable.Rows.Add(
+                        //entry.Value.imageProof,
+                        entry.Value.cusId,
+                        entry.Value.firstName,
+                        entry.Value.lastName,
+                        entry.Value.email,
+                        address,
+                        entry.Value.phoneNumber);
+
+                }
+                // Bind DataTable to GridView control
+                customerReports.DataSource = customerTable;
+                customerReports.DataBind();
             }
-            // Bind DataTable to GridView control
-            customerReports.DataSource = customerTable;
-            customerReports.DataBind();
+
+           
 
         }
 
