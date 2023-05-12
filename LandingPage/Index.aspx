@@ -67,6 +67,111 @@
     <script src="/assets/pages/waves/js/waves.min.js"></script>
         <!-- Favicon icon -->
     <link rel="icon" src="/images/FinalLogo.png" type="image/x-icon">
+        <meta charset="utf-8">
+    <link rel="dns-prefetch" href="https://github-cloud.s3.amazonaws.com">
+    <link rel="dns-prefetch" href="https://user-images.githubusercontent.com/">
+    <link rel="preconnect" href="https://github.githubassets.com">
+    <link rel="preconnect" href="https://avatars.githubusercontent.com">
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/light-0946cdc16f15.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/dark-3946c959759a.css" />
+    <link data-color-theme="light" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/light-0946cdc16f15.css" />
+    <link data-color-theme="dark" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/dark-3946c959759a.css" />
+    <link data-color-theme="dark_dimmed" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/dark_dimmed-9b9a8c91acc5.css" />
+    <link data-color-theme="dark_high_contrast" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/dark_high_contrast-11302a585e33.css" />
+    <link data-color-theme="dark_colorblind" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/dark_colorblind-1a4564ab0fbf.css" />
+    <link data-color-theme="light_colorblind" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/light_colorblind-12a8b2aa9101.css" />
+    <link data-color-theme="light_high_contrast" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/light_high_contrast-5924a648f3e7.css" />
+    <link data-color-theme="light_tritanopia" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/light_tritanopia-05358496cb79.css" />
+    <link data-color-theme="dark_tritanopia" crossorigin="anonymous" media="all" rel="stylesheet"
+        data-href="https://github.githubassets.com/assets/dark_tritanopia-aad6b801a158.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/primer-4d8f37cc9d91.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/global-243d3a393d7d.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/github-b717d68e0146.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/site-2e14bc28cc0a.css" />
+    <link crossorigin="anonymous" media="all" rel="stylesheet"
+        href="https://github.githubassets.com/assets/pricing-38d9c74b2012.css" />
+
+
+
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/wp-runtime-bb6465119c89.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_stacktrace-parser_dist_stack-trace-parser_esm_js-node_modules_github_bro-a4c183-ae93d3fba59c.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/ui_packages_failbot_failbot_ts-e38c93eab86e.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/environment-de3997b81651.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_selector-observer_dist_index_esm_js-2646a2c533e3.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_relative-time-element_dist_index_js-99e288659d4f.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_fzy_js_index_js-node_modules_github_markdown-toolbar-element_dist_index_js-e3de700a4c9d.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_auto-complete-element-5b3870-ff38694180c6.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_file-attachment-element_dist_index_js-node_modules_github_text-ex-3415a8-7ecc10fb88d0.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_filter-input-element_dist_index_js-node_modules_github_remote-inp-8873b7-5771678648e0.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_primer_view-components_app_components_primer_primer_js-node_modules_gith-3af896-2189f4f604ee.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/github-elements-7b037525f59f.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/element-registry-265f231a8769.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_lit-html_lit-html_js-9d9fe1859ce5.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_github_alive-client_dist-bf5aa2-424aa982deef.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_turbo_dist_turbo_es2017-esm_js-ba0e4d5b3207.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_primer_behaviors_dist_esm_dimensions_js-node_modules_github_hotkey_dist_-269f6d-5d145c7cc849.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_scroll-anchoring_dist_scro-5881a7-44d01ee9e782.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_color-convert_index_js-35b3ae68c408.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_github_paste-markdown_dist_index_esm_js-node_modules_github_quote-select-973149-7c1c1618332f.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_updatable-content_ts-dadb69f79923.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_keyboard-shortcuts-helper_ts-app_assets_modules_github_be-f5afdb-8cfe1dd0ad56.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_blob-anchor_ts-app_assets_modules_github_code-editor_ts-app_assets_-d384d0-eae4affc5787.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_sticky-scroll-into-view_ts-1d145b63ed56.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_ajax-error_ts-app_assets_modules_github_behaviors_include-2e2258-dae7d38e0248.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/app_assets_modules_github_behaviors_commenting_edit_ts-app_assets_modules_github_behaviors_ht-83c235-80a9915bf75c.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/behaviors-86791d034ef8.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_catalyst_lib_index_js-623425af41e1.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/notifications-global-4dc6f295cc92.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_catalyst_lib_index_js-b4a243-6b0c4317c3ae.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/marketing-2db4382316fc.js"></script>
+    <script crossorigin="anonymous" defer="defer" type="application/javascript"
+        src="https://github.githubassets.com/assets/pricing-c6cefaa0d0c4.js"></script>
+    <link rel="icon" href="/images/FinalLogo.PNG" type="image/x-icon">
 
     <style>
         .divider {
@@ -210,60 +315,6 @@
 
 
 <body>
-    <!-- Pre-loader start -->
-    <div class="theme-loader">
-        <div class="loader-track">
-            <div class="preloader-wrapper">
-                <div class="spinner-layer spinner-blue">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-                <div class="spinner-layer spinner-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-
-                <div class="spinner-layer spinner-yellow">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-
-                <div class="spinner-layer spinner-green">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Pre-loader end -->
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -339,8 +390,8 @@
                             </div>
                         </div>
 
-                        <div>
-                            <h1 class="h3 text-center">
+                        <div class="h1">
+                            <h1 class=" text-center">
                                 Grow your business with 2BiG!
                             </h1>
                         </div>
@@ -373,35 +424,45 @@
                     <!-- WHY 2BIG?-->
                     <section class="cell medium-8 orange-gradient padding-vertical-4">
 
-                        <div>
-                            <h1 class="h3 text-center">
+                        <div class="h2">
+                            <h1 class=" text-center">
                                 <br> Why choose 2BiG ? <br>
                             </h1>
                         </div><br>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group form-primary">
-                                    <p class="h2 text-right">
-                                        ACCURATE
-                                    </p>
-                                    <h1 class="h3 text-right">
-                                        SALES AND <br> REPORTS
-                                    </h1>
+                                    <div class="h1">
+                                        <h1 class="text-right">
+                                            ACCURATE
+                                        </h1>
+                                    </div>
+                                    <div class="h2">
+                                        <h2 class=" text-right">
+                                            SALES AND <br> REPORTS
+                                        </h2>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div class="verticalLine">
+                            <div class="verticalLine" style="height:120px">
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group form-primary">
-                                    <p class="h2 text-left">
+                                    <div class="h1">
+                                    <h1 class="text-left">
                                         EFFICIENT
-                                    </p>
-                                    <p class="h3 text-left">
+                                    </h1>
+                                    </div>
+                                    <div class="h2">
+                                    <h2 class="text-left">
                                         BUSINESS <br> OPERATIONS <br><br>
-                                    </p>
+                                    </h2>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
+                        </div> <br />
                         <div class="text-center">
                             <h2 class="texts">
                                 A platform that provides efficient business management. <br>This platform aims to increase productivity to the business <br>and provide quality services for both business owners and customers.
@@ -409,7 +470,7 @@
                         </div>
                         <div cell small-24 class="text-center h4">
                             <br>
-                            <a href="#subscription" class="button" style="color:darkblue;font-size: 25px;background-color: pink;padding: 6px;">
+                            <a href="#subscription" class="button" style="color:darkblue;font-size: 25px;background-color: white;padding: 10px;">
                                 SUBSCRIBE
                                 <!--
                                 <img src="images/playstore.PNG" style="width:80px"> <br>
@@ -422,20 +483,20 @@
                     <section class="cell medium-8 padding-vertical-4">
                         <a name="services"> </a>
                         <div>
-                            <h1 class="h3 text-center">
+                            <h1 class="h1 text-center">
                                 <br> SERVICES <br>
                             </h1>
                         </div>
                         <br>
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-sm-3" style="background-color: pink;">
+                                <div class="col-sm-3" style="background-color: white;">
                                     <div class="">
                                         <div class="text-center">
                                             <img src="/images/delivery.png" style="width:50%">
                                         </div>
-                                        <p class="h3 text-center">DELIVERY</p>
-                                        <h2 class="texts text-center " style="font-size:20px;">Provides reliable and efficient service to residential and commercial customers</h2> <br>
+                                        <p class="h2 text-center">DELIVERY</p>
+                                        <h2 class="texts text-center " style="font-size:25px;">Provides reliable and efficient service to residential and commercial customers</h2> <br>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -443,19 +504,19 @@
                                         <div class="text-center">
                                             <img src="/images/orders.PNG" style="width:50%">
                                         </div>
-                                        <p class="h3 text-center">ONLINE ORDER</p>
-                                        <h2 class="texts text-center" style="font-size:20px;">
+                                        <p class="h2 text-center">ONLINE ORDER</p>
+                                        <h2 class="texts text-center" style="font-size:25px;">
                                             Online ordering is critical for your business’ success, By using 2BiG, you are building an online presence that would attract more potential customers for your water refilling business.
                                         </h2>
                                     </div>
                                 </div>
-                                <div class="col-sm-3" style="background-color: pink;">
+                                <div class="col-sm-3" style="background-color: white;">
                                     <div class="service-item second-service">
                                         <div class="text-center">
                                             <img src="/images/monitor.PNG" style="width:50%">
                                         </div>
-                                        <p class="h3 text-center">MONITORING</p>
-                                        <h2 class="texts text-center" style="font-size:20px;">
+                                        <p class="h2 text-center">MONITORING</p>
+                                        <h2 class="texts text-center" style="font-size:25px;">
                                             2BiG allows you to track all orders in real-time. You can also monitor your delivery locations and your sales & reports.
                                         </h2>
                                     </div>
@@ -465,8 +526,8 @@
                                         <div class="text-center">
                                             <img src="/images/reports.PNG" style="width:50%">
                                         </div>
-                                        <p class="h3 text-center">REPORTS</p>
-                                        <h2 class="texts text-center" style="font-size:20px;">
+                                        <p class="h2 text-center">REPORTS</p>
+                                        <h2 class="texts text-center" style="font-size:25px;">
                                             2BiG gives you accurate and real-time reports on your sales, deliveries, customers and etc.
                                         </h2>
                                     </div>
@@ -474,7 +535,7 @@
                             </div>
                         </div>
                     </section>
-
+                    <br /><br />
 
                     <div class="text-center page-block ">
                         <section class="cell medium-8 teal-gradient padding-vertical-4">
@@ -492,9 +553,9 @@
                                 </div>
 
                                 <div class="col-sm-4">
-                                    <br><br><br><br>
+                                    <br><br><br><br> <br /><br />
                                     <div cell small-24 class="text-center">
-                                        <a href="#subscription" class="button" style="color:darkblue;font-size: 25px;background-color: pink;padding: 6px;">
+                                        <a href="#subscription" class="button h2" style="color:darkblue;font-size: 25px;padding: 10px;">
                                             SUBSCRIBE TO 2BIG NOW!
                                             <!--
                                             <img src="images/playstore.PNG" style="width:80px"> <br>
@@ -506,91 +567,172 @@
                                     <ul class="nav-left">
                                         <li>
                                             <div class="text-left">
-                                                <h6 style="color:black;font-size: 100%;" class="">
+                                                <h2 style="color:black;font-size: 100%;" class="">
                                                     <br><br> <br><br><br>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Boost
                                                     </a>
-                                                    <a class="h4">
+                                                    <a class="h2">
                                                         your
                                                     </a>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Water Refilling Business
                                                     </a>
-                                                    <a class="h4">
+                                                    <a class="h2">
                                                         <br>
                                                         now,  and attract new <br>
                                                     </a>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Loyal Customers!
                                                     </a>
-                                                </h6>
+                                                </h2>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </section>
-                        <!-- SUBSCRIPTION-->
-                        <section class="cell medium-8 padding-vertical-4">
-                            <a name="subscription"> </a>
-                            <div>
-                                <h1 class="h3 text-center">
-                                    <br> SUBSCRIPTION <br>
-                                </h1>
-                                <h4 style="color:black"> Pick the Best Plan</h4>
-                                <h2 class="texts text-center " style="font-size:20px;">Take your desired plan to get access to our service easily</h2><br />
+ 
+<!--SUBSCRIPTION--->
+              <a name="subscription"> </a>          
+        <main class="font-mktg">
+            <div class="position-relative">
+                <div class="p-responsive container-xl text-center">
 
-                            </div>
-                            <br>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm-3" style="background-color: white;">
-                                    </div>
+                    <div class="p-responsive container-xl text-center mt-7 mt-md-8 mt-lg-9 mb-5 mb-lg-9">
+                        <h6 class="h4-mktg">Take your desired package <br /> and start growing your business now!</h6>
+                    </div>
+                    
+                    <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center" style="margin-left:250px">
 
-                                    <div class="col-sm-3" style="background-color: pink;">
-                                        <div class="">
-                                            <div class="text-center">
-                                                <img src="/images/BasicPlan.PNG" style="width:100%">
-                                            </div>
-                                            <p class="h3 text-center">BASIC PLAN</p>
-                                            <h2 class="texts text-center " style="font-size:20px;"> Grow your Water Refilling Business for only ₱3000 good for 6 Months ! Enjoy a hassle-free business process and attract new and loyal customers</h2> <br>
-                                            <div cell small-24 class="text-center">
-                                                <a href="BasicPlanSub.aspx" class="button" style="color:darkblue;font-size: 18px;background-color: lightskyblue;padding: 10px;">
-                                                    SUBSCRIBE
-                                                </a>
-                                            </div> <br>
+                        <!--PACKAGE A HERE-->
+                        <div class="col-lg-5 mb-3 mb-lg-0">
+                            <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="1"
+                                data-max-seats="4">
+                                <div
+                                    class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
+                                    <div class="px-3 pt-4 pb-3">
+                                        <asp:Label class="mb-2 h5-mktg" ID="packageAName" runat="server"> </asp:Label>
+                                        <br />
+                                        <br />
+                                        <asp:Label class=" lh-condensed mb-2" ID="packageAdescription" runat="server" Style="font-size: 16px; color: black">  </asp:Label>
+                                        <br />
+                                        <br />
+                                        <div hidden class="js-monthly-cost tooltipped-n tooltipped-multiline tooltipped-no-delay"
+                                            data-plan="free">
+                                            <h3 class="mb-0">
+                                                <span class="d-flex flex-justify-center flex-items-center">
+                                                    <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
+                                                        <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
+                                                        <asp:Label runat="server" class="js-computed-value" ID="packageAPrice"></asp:Label>
+                                                        <br />
+                                                    </span>
+                                                </span>
+                                                <asp:Label runat="server" ID="durationA" class="text-normal f4 color-fg-muted js-pricing-cost-suffix js-monthly-suffix"></asp:Label>
+                                                <br />
+                                            </h3>
                                         </div>
                                     </div>
 
+                                    <div
+                                        class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
+                                        <br />
+                                        <h4>Features:</h4>
+                                        <br />
+                                        <!--FEATURES AREA HERE-->
+                                        <asp:Repeater ID="featuresPackageA" runat="server">
+                                            <ItemTemplate>
 
-                                    <div class="col-sm-3" style="background-color: lightskyblue;">
-                                        <div class="service-item second-service">
-                                            <div class="text-center">
-                                                <img src="/images/PremiumPlan.PNG" style="width:100%">
-                                            </div>
-                                            <p class="h3 text-center">PREMIUM PLAN</p>
-                                            <h2 class="texts text-center" style="font-size:20px;">
-                                               Grow your Water Refilling Business for only ₱5500 good for 1 year ! Enjoy a hassle-free business process and attract new and loyal customers
-                                            </h2> <br>
-                                            <div cell small-24 class="text-center">
-                                                <a href="PremiumPlanSub" class="button" style="color:darkblue;font-size: 18px;background-color: pink;padding: 10px;">
-                                                    SUBSCRIBE
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-3" style="background-color: white;">
-                                        <div class="service-item second-service">
+                                                <div class="col-10 d-none d-md-block text-left" style="font-size: 16px; height: 50px">
+                                                    <div class="height-full">
+                                                        <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                        <%# Container.DataItem%>
+                                                    </div>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                        <div class="mt-2">
+                                            <a class="btn-mktg d-block btn-muted-mktg" href="Account.aspx">View Package details
+                                            </a> <br />
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                        </section>
+                        </div>
+
+
+
+                        <!--PACKAGE B HERE-->
+                        <div class="col-lg-5 mb-3 mb-lg-0">
+                            <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="5" data-max-seats="10">
+                                <p class="position-absolute left-0 right-0 h5 text-center text-uppercase color-text-white js-recommended-plan-caption" hidden style="top: 6px;">Most popular</p>
+                                <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
+                                    <div class="px-3 pt-4 pb-3">
+                                        <asp:Label runat="server" class="mb-2 h5-mktg" ID="packageBName"></asp:Label>
+                                        <br />
+                                        <br />
+                                        <asp:Label runat="server" class="lh-condensed" ID="packageBdescription" Style="font-size: 16px; color: black"></asp:Label>
+                                        <br />
+                                        <br />
+                                        <div hidden class="js-monthly-cost tooltipped-n tooltipped-multiline tooltipped-no-delay"
+                                            data-plan="business">
+                                            <h3 class="mb-0">
+                                                <span class="d-flex flex-justify-center flex-items-center">
+                                                    <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
+                                                        <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
+                                                        <asp:Label runat="server" class="js-computed-value" ID="packageBPrice"></asp:Label>
+                                                        <br />
+
+                                                    </span>
+                                                </span>
+                                                <asp:Label runat="server" ID="durationB" class="text-normal f4 color-fg-muted js-pricing-cost-suffix js-monthly-suffix"></asp:Label>
+                                                <br />
+                                            </h3>
+                                        </div>
+
+                                    </div>
+                                    <div
+                                        class="d-lg-block flex-auto text-left rounded-bottom-3  px-3 py-2 js-compare-features-item">
+                                        <br />
+                                        <h4>Features:</h4>
+                                        <br />
+                                        <asp:Repeater ID="featuresPackageB" runat="server">
+                                            <ItemTemplate>
+
+                                                <div class="col-10 d-none d-md-block text-left" style="font-size: 16px; height: 50px">
+                                                    <div class="height-full">
+                                                        <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                        <%# Container.DataItem%>
+                                                    </div>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                        
+                                        <div class="mt-2">
+                                            <a class="btn-mktg d-block btn-muted-mktg" href="Account.aspx">View Package details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+
+
+        </main>
+
+
                         <a name="theteam" > </a>
-                        </section class="login-block">
                         <!-- WHY 2BIG?-->
                         <section class="cell medium-8 orange-gradient padding-vertical-4">
                             <div>
@@ -608,10 +750,10 @@
                                                 <br>
                                                 <img src="/images/rhea.PNG" style="width:50%">
                                             </div> <br>
-                                            <p class="h4 text-center">RHEA MAE TRINIDAD</p>
-                                            <h2 class="texts text-center " style="font-size:16px;">PROJECT MANAGER </h2>
+                                            <p class="h2 text-center">RHEA MAE TRINIDAD</p>
+                                            <h2 class="texts text-center " style="font-size:20px;">PROJECT MANAGER </h2>
 
-                                            <a href="" class="button h6">
+                                            <a href="mailto:rheamae.trinidad@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact
                                             </a>
@@ -623,10 +765,10 @@
                                                 <br>
                                                 <img src="/images/ja.PNG" style="width:50%">
                                             </div> <br>
-                                            <p class="h4 text-center">Jeahael Suhot</p>
-                                            <h2 class="texts text-center " style="font-size:16px;">SOFTWARE ENGINEER </h2>
+                                            <p class="h2 text-center">Jeahael Suhot</p>
+                                            <h2 class="texts text-center " style="font-size:20px;">SOFTWARE ENGINEER </h2>
 
-                                            <a href="" class="button h6">
+                                            <a href="mailto:jeahael.suhot@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact
                                             </a>
@@ -644,9 +786,9 @@
                                                 <br>
                                                 <img src="/images/rona.jpg" style="width:50%">
                                             </div> <br>
-                                            <p class="h4 text-center">RONALYN GIDUCOS</p>
-                                            <h2 class="texts text-center " style="font-size:16px;">UI DESIGNER </h2>
-                                            <a href="" class="button h6">
+                                            <p class="h2 text-center">RONALYN GIDUCOS</p>
+                                            <h2 class="texts text-center " style="font-size:20px;">UI DESIGNER </h2>
+                                            <a href="mailto:ronalyn.giducos@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact
                                             </a>
@@ -658,9 +800,9 @@
                                                 <br>
                                                 <img src="/images/DC.jpg" style="width:50%">
                                             </div> <br>
-                                            <p class="h4 text-center">DAISY LIMATO</p>
-                                            <h2 class="texts text-center " style="font-size:16px;">UI DESIGNER</h2>
-                                            <a href="" class="button h6">
+                                            <p class="h2 text-center">DAISY LIMATO</p>
+                                            <h2 class="texts text-center " style="font-size:20px;">UI DESIGNER</h2>
+                                            <a href="mailto:daisy.limato@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact
                                             </a>
@@ -695,7 +837,7 @@
                                             <!-- SUBSCRIBE TO 2BIG NOW!-->
 
                                             <img src="/images/playstore.PNG" style="width:80px"> <br>
-                                            Download <br> 2BiG Mobile ! <br> <br>
+                                            Download <br> 2BiG Driver ! <br> <br>
                                         </a>
                                     </div>
                                 </div>
@@ -703,25 +845,25 @@
                                     <ul class="nav-left">
                                         <li>
                                             <div class="text-left">
-                                                <h6 style="color:black;font-size: 100%;" class="">
+                                                <h2 style="color:black;font-size: 100%;" class="">
                                                     <br><br> <br><br><br>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Boost
                                                     </a>
-                                                    <a class="h4">
+                                                    <a class="h2">
                                                         your
                                                     </a>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Water Refilling Business
                                                     </a>
-                                                    <a class="h4">
+                                                    <a class="h2">
                                                         <br>
                                                         now,  and attract new <br>
                                                     </a>
-                                                    <a class="h3">
+                                                    <a class="h1">
                                                         Loyal Customers!
                                                     </a>
-                                                </h6>
+                                                </h2>
                                             </div>
                                         </li>
                                     </ul>
