@@ -62,7 +62,7 @@ namespace WRS2big_Web.superAdmin
 
                 foreach (var pending in Clients)
                 {
-                    if (pending.Value.status == "pending")
+                    if (pending.Value.status == "Pending")
                     {
                         pendingCount++;
                     }

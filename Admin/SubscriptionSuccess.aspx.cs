@@ -192,8 +192,49 @@ namespace WRS2big_Web.Admin
                                         userActivity = "SUBSCRIPTION RENEWAL",
                                         activityTime = addedTime
                                     };
-
                                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
+                                    //SEND USERS LOG TO SUPERADMIN
+                                    DateTime logTime = DateTime.UtcNow; //Get the current date and time
+
+                                    //generate a random number for users logged
+                                    //Random rnd = new Random();
+                                    int idnum = rnd.Next(1, 10000);
+
+                                    string superName = (string)Session["name"];
+
+                                    //Store the login information in the USERLOG table
+                                    var superLog = new Model.UsersLogs
+                                    {
+                                        logsId = idnum,
+                                        //userIdnum = int.Parse(idno),
+                                        userFullname = superName,
+                                        userActivity = "CLIENT " + update.fname + " " + update.lname + " " + "RENEWED HIS SUBSCRIPTION TO" + package.packageName,
+                                        activityTime = logTime
+                                    };
+
+                                    //Storing the  info
+                                    response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
+                                    Model.UsersLogs superRes = response.ResultAs<Model.UsersLogs>();//Database Result
+
+
+                                    //SEND NOTIFICATION TO SUPER ADMIN
+                                    int notifID = rnd.Next(1, 20000);
+                                    var superNotif = new Model.Notification
+                                    {
+                                        admin_ID = int.Parse(adminID),
+                                        sender = "Admin",
+                                        title = "Client Renewal",
+                                        receiver = "Super Admin",
+                                        body = "CLIENT" + update.fname + " " + update.lname + " " + "RENEWED HIS SUBSCRIPTION",
+                                        notificationDate = DateTime.Now,
+                                        status = "unread",
+                                        notificationID = notifID
+
+                                    };
+                                    SetResponse superResponse;
+                                    superResponse = twoBigDB.Set("NOTIFICATION/" + newID, superNotif);//Storing data to the database
+                                    Model.Notification notifsuper = superResponse.ResultAs<Model.Notification>();//Database Result
 
                                     Response.Write("<script>alert ('Renewal Success!'); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
                                 }
@@ -301,6 +342,25 @@ namespace WRS2big_Web.Admin
                                     notifResponse = twoBigDB.Set("NOTIFICATION/" + newID, newNotif);//Storing data to the database
                                     Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
+                                    //SEND NOTIFICATION TO SUPER ADMIN
+                                    int notifID = rnd.Next(1, 20000);
+                                    var superNotif = new Model.Notification
+                                    {
+                                        admin_ID = int.Parse(adminID),
+                                        sender = "Admin",
+                                        title = "Client Subscription",
+                                        receiver = "Super Admin",
+                                        body = "CLIENT" + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + package.packageName,
+                                        notificationDate = DateTime.Now,
+                                        status = "unread",
+                                        notificationID = notifID
+
+                                    };
+                                    SetResponse superResponse;
+                                    superResponse = twoBigDB.Set("NOTIFICATION/" + newID, superNotif);//Storing data to the database
+                                    Model.Notification notifsuper = superResponse.ResultAs<Model.Notification>();//Database Result
+
+
                                     //create logs
                                     int logsId = (int)Session["logsId"];
                                     // Retrieve the existing Users log object from the database
@@ -321,6 +381,31 @@ namespace WRS2big_Web.Admin
                                     };
 
                                     twoBigDB.Update("USERSLOG/" + log.logsId, log);
+
+
+
+                                        //SEND USERS LOG TO SUPERADMIN
+                                        DateTime logTime = DateTime.UtcNow; //Get the current date and time
+
+                                        //generate a random number for users logged
+                                        //Random rnd = new Random();
+                                        int idnum = rnd.Next(1, 10000);
+
+                                        string superName = (string)Session["name"];
+
+                                        //Store the login information in the USERLOG table
+                                        var superLog = new Model.UsersLogs
+                                        {
+                                            logsId = idnum,
+                                            //userIdnum = int.Parse(idno),
+                                            userFullname = superName,
+                                            userActivity = "CLIENT " + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + package.packageName,
+                                            activityTime = logTime
+                                        };
+
+                                        //Storing the  info
+                                        response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
+                                        Model.UsersLogs superRes = response.ResultAs<Model.UsersLogs>();//Database Result
 
                                     Response.Write("<script>alert ('Subscription Success!'); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
                                 }

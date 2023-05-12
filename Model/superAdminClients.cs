@@ -22,6 +22,7 @@ namespace WRS2big_Web.Model
         public DateTime subExpiration { get; set; }
         public string currentSubStatus { get; set; }
         public string paymentStatus { get; set; }
+       // public string type { get; set; } //SUBSCRIPTION, RENEWAL
         
     }
 

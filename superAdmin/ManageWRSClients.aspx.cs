@@ -241,7 +241,7 @@ namespace WRS2big_Web.superAdmin
 
         }
 
-        //multiple approve the customers
+        //multiple approve the clients
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> clientIDs = new List<int>();
@@ -294,7 +294,28 @@ namespace WRS2big_Web.superAdmin
                 Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
 
+                //Get the current date and time
+                DateTime logTime = DateTime.UtcNow;
 
+                //generate a random number for users logged
+                //Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
+                string superName = (string)Session["name"];
+
+                //Store the login information in the USERLOG table
+                var data = new Model.UsersLogs
+                {
+                    logsId = idnum,
+                    //userIdnum = int.Parse(idno),
+                    userFullname = superName,
+                    userActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
             }
@@ -340,6 +361,29 @@ namespace WRS2big_Web.superAdmin
                 response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
 
                 //SEND NOTIFICATION
+
+                //Get the current date and time
+                DateTime logTime = DateTime.UtcNow;
+
+                //generate a random number for users logged
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
+                string superName = (string)Session["name"];
+
+                //Store the login information in the USERLOG table
+                var data = new Model.UsersLogs
+                {
+                    logsId = idnum,
+                    //userIdnum = int.Parse(idno),
+                    userFullname = superName,
+                    userActivity = "DECLINED CLIENT:" + " " + customerDetails.fname + " " + customerDetails.lname,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
 
                 Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
             }

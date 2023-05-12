@@ -282,6 +282,28 @@ namespace WRS2big_Web.superAdmin
                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                 Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
+                //Get the current date and time
+                DateTime logTime = DateTime.UtcNow;
+
+                //generate a random number for users logged
+                //Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+
+                string superName = (string)Session["name"];
+
+                //Store the login information in the USERLOG table
+                var data = new Model.UsersLogs
+                {
+                    logsId = idnum,
+                    //userIdnum = int.Parse(idno),
+                    userFullname = superName,
+                    userActivity = "APPROVED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }

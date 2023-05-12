@@ -127,21 +127,28 @@ namespace WRS2big_Web.superAdmin
             notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
-            //var client = new AdminAccount
-            //{
-            //    idno = admin.idno,
-            //    fname = admin.fname,
-            //    lname = admin.lname,
-            //    phone = admin.phone,
-            //    email = admin.email,
-            //    dateApproved = DateTime.Now,
-            //    dateRegistered = admin.dateRegistered,
-            //    userRole = admin.userRole
-            //};
-            //SetResponse userResponse;
-            //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + admin.idno, client);//Storing data to the database
-            //AdminAccount user = userResponse.ResultAs<AdminAccount>();//Database Result
+            //Get the current date and time
+            DateTime logTime = DateTime.UtcNow;
 
+            //generate a random number for users logged
+            //Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            string superName = (string)Session["name"];
+
+            //Store the login information in the USERLOG table
+            var data = new UsersLogs
+            {
+                logsId = idnum,
+                //userIdnum = int.Parse(idno),
+                userFullname = superName,
+                userActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                activityTime = logTime
+            };
+
+            //Storing the  info
+            FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+            UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
 
             Response.Write("<script>alert ('Client Approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 
@@ -194,6 +201,29 @@ namespace WRS2big_Web.superAdmin
             SetResponse notifResponse;
             notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+            //Get the current date and time
+            DateTime logTime = DateTime.UtcNow;
+
+            //generate a random number for users logged
+            //Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            string superName = (string)Session["name"];
+
+            //Store the login information in the USERLOG table
+            var data = new UsersLogs
+            {
+                logsId = idnum,
+                //userIdnum = int.Parse(idno),
+                userFullname = superName,
+                userActivity = "DECLINED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                activityTime = logTime
+            };
+
+            //Storing the  info
+            FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+            UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
 
             Response.Write("<script>alert ('You declined the application! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 

@@ -107,6 +107,30 @@ namespace WRS2big_Web.superAdmin
                 SetResponse response;
                 response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + data.packageID, data);//Storing data to the database
                 Model.PackagePlans result = response.ResultAs<Model.PackagePlans>();//Database Result
+
+                //Get the current date and time
+                DateTime logTime = DateTime.UtcNow;
+
+                //generate a random number for users logged
+                //Random rnd = new Random();
+                int logID = rnd.Next(1, 10000);
+
+                string superName = (string)Session["name"];
+
+                //Store the login information in the USERLOG table
+                var log = new Model.UsersLogs
+                {
+                    logsId = logID,
+                    //userIdnum = int.Parse(idno),
+                    userFullname = superName,
+                    userActivity = "CREATED NEW PACKAGE:" + " " + result.packageName,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
+
                 Response.Write("<script>alert ('New Subscription Package Added ! Package Name: " + result.packageName + " ');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
 
             }
