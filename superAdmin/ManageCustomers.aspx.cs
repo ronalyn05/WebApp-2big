@@ -262,21 +262,25 @@ namespace WRS2big_Web.superAdmin
                 customerDetails.cus_status = "Approved";
                 response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
 
-                ////SAVE TO SUPERADMIN 
-                //var client = new Model.Customer
-                //{
-                //    cusId = customerDetails.cusId,
-                //    firstName = customerDetails.firstName,
-                //    lastName = customerDetails.lastName,
-                //    phoneNumber = customerDetails.phoneNumber,
-                //    email = customerDetails.email,
-                //    dateApproved = DateTime.Now,
-                //    dateRegistered = customerDetails.dateRegistered,
-                //    userRole = customerDetails.userRole
-                //};
-                //SetResponse userResponse;
-                //userResponse = twoBigDB.Set("SUPERADMIN/USERS/" + customerDetails.cusId, client);//Storing data to the database
-                //Model.Customer user = userResponse.ResultAs<Model.Customer>();//Database Result
+                //SEND NOTIFICATION TO CUSTOMER 
+                Random rnd = new Random();
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Model.Notification
+                {
+                    admin_ID = customerID,
+                    sender = "Super Admin",
+                    title = "Application Approved",
+                    receiver = "Customer",
+                    body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
@@ -512,7 +516,7 @@ namespace WRS2big_Web.superAdmin
                 Response.Write("<script>alert ('Customer not found!'); window.location.href = '/superAdmin/ManageCustomers.aspx';</script>");
             }
 
-            search.Text = "";
+            //search.Text = "";
             // Bind DataTable to GridView control based on selected value of dropdown
             if (selectedValue == "All")
             {
@@ -607,6 +611,7 @@ namespace WRS2big_Web.superAdmin
 
             string selectedValue = sortDropdown.SelectedValue;
 
+            search.Text = "";
             if (selectedValue == "All")
             {
                 DisplayAll();

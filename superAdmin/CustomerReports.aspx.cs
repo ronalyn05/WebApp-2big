@@ -281,11 +281,18 @@ namespace WRS2big_Web.superAdmin
                 customerReports.Visible = false;
                 customersLabel.Visible = false;
 
+
+
                 FirebaseResponse response = twoBigDB.Get("ADMIN");
                 Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
                 var data = response.Body;
                 Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
+
+                //response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
+                //Model.superAdminClients subscribedClients = response.ResultAs<Model.superAdminClients>();
+                //var clientData = response.Body;
+                //Dictionary<string, Model.superAdminClients> subscribed = response.ResultAs<Dictionary<string, Model.superAdminClients>>();
 
 
                 DataTable customerTable = new DataTable();
