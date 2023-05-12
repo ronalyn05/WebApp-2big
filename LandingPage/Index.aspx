@@ -344,7 +344,7 @@
                             </li>
                             <li class="user-profile header-notification">
                                 <a href="/LandingPage/Account.aspx" class="waves-effect waves-light">
-                                    <span> Account </span>
+                                    <span> Sign Up / Login </span>
                                 </a>
 
                             </li>
@@ -751,7 +751,7 @@
                                                 <img src="/images/rhea.PNG" style="width:50%">
                                             </div> <br>
                                             <p class="h2 text-center">RHEA MAE TRINIDAD</p>
-                                            <h2 class="texts text-center " style="font-size:20px;">PROJECT MANAGER </h2>
+                                            <h2 class="texts text-center " style="font-size:20px;">PROJECT MANAGER / WEB DEVELOPER</h2>
 
                                             <a href="mailto:rheamae.trinidad@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
@@ -763,10 +763,10 @@
                                         <div class="">
                                             <div class="text-center">
                                                 <br>
-                                                <img src="/images/ja.PNG" style="width:50%">
+                                                <img src="/images/jeahael.jpg" style="width:50%">
                                             </div> <br>
                                             <p class="h2 text-center">Jeahael Suhot</p>
-                                            <h2 class="texts text-center " style="font-size:20px;">SOFTWARE ENGINEER </h2>
+                                            <h2 class="texts text-center " style="font-size:20px;">MOBILE DEVELOPER </h2>
 
                                             <a href="mailto:jeahael.suhot@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
@@ -784,10 +784,10 @@
                                         <div class="">
                                             <div class="text-center">
                                                 <br>
-                                                <img src="/images/rona.jpg" style="width:50%">
+                                                <img src="/images/ronalyn.jpg" style="width:50%">
                                             </div> <br>
                                             <p class="h2 text-center">RONALYN GIDUCOS</p>
-                                            <h2 class="texts text-center " style="font-size:20px;">UI DESIGNER </h2>
+                                            <h2 class="texts text-center " style="font-size:20px;">WEB DEVELOPER </h2>
                                             <a href="mailto:ronalyn.giducos@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact
@@ -798,10 +798,10 @@
                                         <div class="">
                                             <div class="text-center">
                                                 <br>
-                                                <img src="/images/DC.jpg" style="width:50%">
+                                                <img src="/images/daisy.jpg" style="width:50%">
                                             </div> <br>
                                             <p class="h2 text-center">DAISY LIMATO</p>
-                                            <h2 class="texts text-center " style="font-size:20px;">UI DESIGNER</h2>
+                                            <h2 class="texts text-center " style="font-size:20px;">MOBILE DEVELOPER</h2>
                                             <a href="mailto:daisy.limato@ctu.edu.ph" class="button h5">
                                                 <i class="ti-email"></i>
                                                 Contact

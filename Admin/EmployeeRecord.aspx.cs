@@ -162,7 +162,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
 
                 // Retrieve the existing employee object from the database
-                FirebaseResponse res = twoBigDB.Get("USERSLOG/" + logsId);
+                FirebaseResponse res = twoBigDB.Get("ADMINLOGS/" + logsId);
                 UsersLogs existingLog = res.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -177,7 +177,7 @@ namespace WRS2big_Web.Admin
                     activityTime = addedTime,
                     userActivity = "ADDED EMPLOYEE DETAILS"
                 };
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 DisplayTable();
             }
@@ -311,7 +311,7 @@ namespace WRS2big_Web.Admin
                     userActivity = "UPDATED EMPLOYEE DETAILS",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 DisplayTable();
             }

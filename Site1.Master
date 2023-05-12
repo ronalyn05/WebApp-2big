@@ -190,24 +190,17 @@
                                 </ul>
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
                                 <ul class="pcoded-item pcoded-left-item">
-                                    <li>
-                                        <a href="/Admin/WalkIns" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-shopping-cart"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Walk-In</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
+                                     <li>
                                         <a href="/Admin/EmployeeRecord" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-notepad"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Employee Records</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="/Admin/OnlineOrders" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-shopping-cart-full"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Orders</span>
+                                     <li>
+                                        <a href="/Admin/WaterProduct" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Product </span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
@@ -219,21 +212,26 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/Admin/WaterProduct" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-package"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Product </span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-
-                                    <li>
                                         <a href="/Admin/Rewards" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-gift"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.form-components.main">Rewards</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a href="/Admin/OnlineOrders" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-shopping-cart-full"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Orders</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/WalkIns" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-shopping-cart"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Walk-In</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
                                 </ul>
 
                                 <div class="pcoded-navigation-label" data-i18n="nav.category.forms">REPORTS</div>
@@ -254,15 +252,6 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-
-
-                                    <li class="">
-                                        <a href="/Admin/UsersLog" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-list"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Users Log</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
                                     <li>
                                         <a href="/Admin/Reviews" class="waves-effect waves-dark active">
                                             <span class="pcoded-micon"><i class="ti-star"></i><b>FC</b></span>
@@ -270,6 +259,15 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
+
+                                    <li class="">
+                                        <a href="/Admin/UsersLog" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-list"></i><b>FC</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">History</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    
 
                                 </ul>
 

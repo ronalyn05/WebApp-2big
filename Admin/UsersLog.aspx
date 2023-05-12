@@ -22,7 +22,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
                                         <div class="page-header-title">
-                                            <h5 class="m-b-10">USERS LOG </h5>
+                                            <h5 class="m-b-10">HISTORY </h5>
                                             <h6 class="m-b-0">2BiG: Water Refilling Station Management System</h6>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@
                                                     <div class="card-header">
                                                          <asp:Label ID="Label1" runat="server" Text="USER ACTIVITY LOG" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
                                                         <div style="float:right;"> 
-                                                            <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by activity (must be in capital letters and spacing in between words)...." ToolTip="enter activity to search in capital letters and with space in between each word" Height="40px" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSearch" Width="545px" Placeholder="search by activity (must be in capital letters and spacing in between words)...." ToolTip="enter activity to search in capital letters and with space in between each word" Height="40px" runat="server"></asp:TextBox>
                                                             <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px"/>
                                                             <%--<asp:TextBox ID="txtSearch" Placeholder="search activity (must be in capital letters)...." ToolTip="enter activity to search in capital letters and with space in between each word" Width ="364px" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
                                                          <asp:Button ID="btnSearchLogs" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchLogs_Click"/>--%>

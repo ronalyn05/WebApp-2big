@@ -82,31 +82,6 @@ namespace WRS2big_Web.Admin
             {
                 chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
             }
-
-            //// Get the radio button list control and the min and max range textboxes
-            //RadioButtonList radioWaysToEarnPoints = (RadioButtonList)Page.FindControl("radioWaysToEarnPoints");
-            //TextBox txtMinRange = (TextBox)Page.FindControl("txtminRange_perAmount");
-            //TextBox txtMaxRange = (TextBox)Page.FindControl("txtmaxRange_perAmount");
-
-            //// Check if the objects are not null before accessing them
-            //if (radioWaysToEarnPoints != null && txtMinRange != null && txtMaxRange != null)
-            //{
-            //    // Call the disableMinMaxRange function based on the selected radio button
-            //    if (radioWaysToEarnPoints.SelectedValue == "per transaction")
-            //    {
-            //        txtMinRange.Enabled = false;
-            //        txtMaxRange.Enabled = false;
-            //    }
-            //    else
-            //    {
-            //        txtMinRange.Enabled = true;
-            //        txtMaxRange.Enabled = true;
-            //    }
-
-            //    // Add a JavaScript function call to the OnSelectedIndexChanged event of the radio button list
-            //    radioWaysToEarnPoints.Attributes.Add("onchange", "disableMinMaxRange();");
-            //}
-
         }
 
         //RETRIEVE REPORTS
@@ -367,7 +342,7 @@ namespace WRS2big_Web.Admin
                 };
 
                 //Storing the  info
-                response = twoBigDB.Set("USERSLOG/" + promoLog.logsId, promoLog);//Storing data to the database
+                response = twoBigDB.Set("ADMINLOGS/" + promoLog.logsId, promoLog);//Storing data to the database
 
                 txtpromoname.Text = null;
                 txtpromoDiscountValue.Text = null;
@@ -521,7 +496,7 @@ namespace WRS2big_Web.Admin
                 };
 
                 //Storing the  info
-                response = twoBigDB.Set("USERSLOG/" + rewardLog.logsId, rewardLog);//Storing data to the database
+                response = twoBigDB.Set("ADMINLOGS/" + rewardLog.logsId, rewardLog);//Storing data to the database
 
                 // Show success message
                 Response.Write("<script> alert('Reward added successfully!'); </script>");
@@ -540,21 +515,6 @@ namespace WRS2big_Web.Admin
             }
         }
 
-        //protected void radioWaysToEarnPoints_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (radioWaysToEarnPoints.SelectedValue == "per_transaction")
-        //    {
-        //        // Disable txtminRange_perAmount and txtmaxRange_perAmount
-        //        txtminRange_perAmount.Enabled = false;
-        //        txtmaxRange_perAmount.Enabled = false;
-        //    }
-        //    else if (radioWaysToEarnPoints.SelectedValue == "per_amount")
-        //    {
-        //        // Enable txtminRange_perAmount and txtmaxRange_perAmount
-        //        txtminRange_perAmount.Enabled = true;
-        //        txtmaxRange_perAmount.Enabled = true;
-        //    }
-        //}
         protected void radioWaysToEarnPoints_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (radioWaysToEarnPoints.SelectedValue == "per amount")
@@ -568,9 +528,6 @@ namespace WRS2big_Web.Admin
                 txtmaxRange_perAmount.Enabled = false;
             }
         }
-
-
-
         //OPTION DISPLAY REPORTS
         protected void btnDisplayReports_Click(object sender, EventArgs e)
         {
@@ -743,8 +700,6 @@ namespace WRS2big_Web.Admin
                 gridReward.DataSource = rewardTable;
                 gridReward.DataBind();
 
-              
-                //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
                 txtSearchReward.Text = null;
 
             }

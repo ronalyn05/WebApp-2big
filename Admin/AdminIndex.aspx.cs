@@ -125,7 +125,7 @@ namespace WRS2big_Web.Admin
             int logsId = (int)Session["logsId"]; 
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             //Get the current date and time
@@ -141,7 +141,7 @@ namespace WRS2big_Web.Admin
                 activityTime = addedTime
             };
 
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
 
             Session.Abandon();
             Session.RemoveAll();
