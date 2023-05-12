@@ -607,7 +607,7 @@ namespace WRS2big_Web
             int logsId = (int)Session["logsId"];
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             //Get the current date and time
@@ -623,7 +623,7 @@ namespace WRS2big_Web
                 activityTime = addedTime
             };
 
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
 
 
             Session.Abandon();
@@ -634,85 +634,5 @@ namespace WRS2big_Web
             Response.Redirect("/LandingPage/Account.aspx");
         }
 
-        //protected void markasRead_Click(object sender, EventArgs e)
-        //{
-        //    //LinkButton clickedButton = (LinkButton)sender;
-        //    //string notificationID = (sender as LinkButton).CommandArgument;
-
-        //    //FirebaseResponse notification = twoBigDB.Get("NOTIFICATION/" + notificationID);
-        //    //var adminBody = notification.Body;
-        //    //Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
-
-        //    //foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
-        //    //{
-
-        //    //}
-
-        //    string adminID = (string)Session["idno"];
-
-        //    if (Session["idno"] == null)
-        //    {
-        //        Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
-        //    }
-
-
-
-        //    if (adminID != null)
-        //    {
-        //        int admin = int.Parse(adminID);
-
-        //        FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
-        //        var adminBody = adminNotif.Body;
-        //        Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
-
-        //        if (adminAllNotifs != null)
-        //        {
-        //            // Create a list to store all the notifications with the receiver as " Admin"
-        //            List<Model.Notification> AdminNotifications = new List<Model.Notification>();
-
-        //            // Loop through all the notifications
-        //            foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
-        //            {
-        //                // Check if the current notification has the receiver as "Admin"
-        //                if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
-        //                {
-
-        //                    // Add the current notification to the list of admin notifications
-        //                    AdminNotifications.Add(entry.Value);
-
-        //                    if (entry.Value.status == "unread")
-        //                    {
-        //                        var updatedNotif = new Notification
-        //                        {
-        //                            notificationID = entry.Value.notificationID,
-        //                            notificationDate = entry.Value.notificationDate,
-        //                            receiver = entry.Value.receiver,
-        //                            sender = entry.Value.sender,
-        //                            title = entry.Value.title,
-        //                            orderID = entry.Value.orderID,
-        //                            cusId = entry.Value.cusId,
-        //                            driverId = entry.Value.driverId,
-        //                            //UPDATE THE STATUS FROM UNREAD TO READ
-        //                            status = "read",
-        //                            body = entry.Value.body,
-        //                            admin_ID = entry.Value.admin_ID
-        //                        };
-        //                        adminNotif = twoBigDB.Update("NOTIFICATION/" + entry.Key, updatedNotif);
-        //                        Response.Write("<script> alert('Marked as Read!'); window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-        //                    }
-
-        //                }
-        //            }
-
-
-
-
-        //        }
-        //    }
-
-
-
-
-        //}
     }
 }

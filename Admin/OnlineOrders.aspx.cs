@@ -128,16 +128,6 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-                                //if(product.offerType == "Product Refill")
-                                //{
-                                //    productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-                                //    productrefill_qty = product.qtyPerItem;
-                                //}
-                                //if (product.offerType == "other Product")
-                                //{
-                                //    otherproduct_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-                                //    otherproduct_qty = product.qtyPerItem;
-                                //}
 
                                 if (product.offerType == "Product Refill")
                                 {
@@ -182,119 +172,8 @@ namespace WRS2big_Web.Admin
                 lblCodError.Visible = true;
             }
         }
+
         //DISPLAY THE ORDER FROM THE CUSTOMER THRU GCASH
-        //private void DisplayGcash_order()
-        //{
-        //    string idno = (string)Session["idno"];
-        //    try
-        //    {
-        //        FirebaseResponse response = twoBigDB.Get("ORDERS");
-        //        Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-        //        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash"));
-
-        //        DataTable ordersTable = new DataTable();
-        //        ordersTable.Columns.Add("ORDER ID");
-        //        ordersTable.Columns.Add("CUSTOMER ID");
-        //        ordersTable.Columns.Add("DRIVER ID");
-        //        ordersTable.Columns.Add("STORE NAME");
-        //        ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-        //        ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
-        //        ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-        //        ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-        //        ordersTable.Columns.Add("DELIVERY TYPE");
-        //        ordersTable.Columns.Add("ORDER TYPE");
-        //        ordersTable.Columns.Add("PAYMENT METHOD");
-        //        ordersTable.Columns.Add("REFILL SELECTED OPTION");
-        //        ordersTable.Columns.Add("RESERVATION DATE");
-        //        ordersTable.Columns.Add("STATUS");
-        //        ordersTable.Columns.Add("TOTAL AMOUNT");
-        //        ordersTable.Columns.Add("GCASH PROOF PAYMENT", typeof(string));
-
-
-        //        if (response != null && response.ResultAs<Order>() != null)
-        //        {
-        //            foreach (var order in filteredList)
-        //            {
-        //                if (order.order_Products != null)
-        //                {
-        //                    string productrefill_order = "";
-        //                    string otherproduct_order = "";
-        //                    string productrefill_qty = "";
-        //                    string otherproduct_qty = "";
-
-        //                    foreach (var product in order.order_Products)
-        //                    {
-        //                        if (product.offerType == "Product Refill")
-        //                        {
-        //                            productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-        //                            productrefill_qty += product.qtyPerItem + " " + " ";
-        //                        }
-        //                        else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-        //                        {
-        //                            otherproduct_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " " + " ";
-        //                            otherproduct_qty += product.qtyPerItem + " " + " ";
-        //                        }
-
-        //                    }
-
-        //                    string gcashProofOfPayment = order.order_GcashProofOfPayment;
-
-        //                    if (!string.IsNullOrEmpty(gcashProofOfPayment))
-        //                    {
-        //                        if (Uri.IsWellFormedUriString(gcashProofOfPayment, UriKind.Absolute))
-        //                        {
-        //                            // If the GCash proof of payment is a URL, create a hyperlink control
-        //                            HyperLink hlGcashProofOfPayment = new HyperLink();
-        //                            hlGcashProofOfPayment.NavigateUrl = gcashProofOfPayment;
-        //                            hlGcashProofOfPayment.Text = "View Image";
-
-        //                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-        //                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-        //                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, hlGcashProofOfPayment.ToString()); // Add ToString() method
-        //                        }
-        //                        else
-        //                        {
-        //                            // If the GCash proof of payment is an image, create an image control
-        //                            Image imgGcashProofOfPayment = new Image();
-        //                            imgGcashProofOfPayment.ImageUrl = gcashProofOfPayment;
-        //                            imgGcashProofOfPayment.Width = 100;
-        //                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-        //                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-        //                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, imgGcashProofOfPayment.ToString()); // Add ToString() method
-        //                        }
-
-        //                    }
-        //                    else
-        //                    {
-        //                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-        //                        productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-        //                        order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, "");
-        //                    }
-        //                }
-        //            }
-        //            if (ordersTable.Rows.Count == 0)
-        //            {
-        //                lblGcashError.Text = "No  Orders Found";
-        //                lblGcashError.Visible = true;
-        //            }
-        //            else
-        //            {
-        //                gridGcash_order.DataSource = ordersTable;
-        //                gridGcash_order.DataBind();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            lblGcashError.Text = "No Orders Found";
-        //            lblGcashError.Visible = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
-        //        lblGcashError.Visible = true;
-        //    }
-        //}
         private void DisplayGcash_order()
         {
             string idno = (string)Session["idno"];
@@ -354,10 +233,6 @@ namespace WRS2big_Web.Admin
                                 productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
                                 order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
 
-
-                            //ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                            //productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                            //order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, order.order_GcashProofOfPayment);
                         }
                     }
 
@@ -405,16 +280,6 @@ namespace WRS2big_Web.Admin
 
             // Check if the Gcash proof of payment is available
             string imagePath = existingOrder.order_GcashProofOfPayment;
-            //string imagePath = string.Empty;
-            //if (!string.IsNullOrEmpty(existingOrder.order_GcashProofOfPayment))
-            //{
-            //    // Convert the base64 string to an image and get the image path
-            //    byte[] imageBytes = Convert.FromBase64String(existingOrder.order_GcashProofOfPayment);
-            //    string base64String = Convert.ToBase64String(imageBytes);
-            //    imagePath = string.Format("data:image/jpeg;base64,{0}", base64String);
-            //}
-            // Get the download URL of the uploaded file
-            // string imageUrl = storage.Get("Customer_GcashProof").Child(uniqueFileName).GetDownloadUrlAsync();
 
             // Set the ImageUrl property of the imgGcashProof control in the modal to the retrieved image path 
             imgGcashProof.ImageUrl = imagePath;
@@ -423,41 +288,6 @@ namespace WRS2big_Web.Admin
 
         }
 
-
-        //protected void btnPaymentProof_Click(object sender, EventArgs e)
-        //{
-        //    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#viewPaymentProof').modal();", true);
-
-        //    string idno = (string)Session["idno"];
-
-        //    try
-        //    {
-        //        FirebaseResponse response = twoBigDB.Get("ORDERS");
-        //        Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-        //        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash"));
-
-        //        //string imageUrl = "";
-        //        // Get the download URL of the uploaded file
-        //        string imageUrl = await storage.Child("Customer_Gcash_Proof").Child(uniqueFileName).GetDownloadUrlAsync();
-
-        //        if (!string.IsNullOrEmpty(order_GcashProofOfPayment))
-        //        {
-
-        //            byte[] imageBytes = Convert.FromBase64String(order_GcashProofOfPayment);
-        //            string base64String = Convert.ToBase64String(imageBytes);
-        //            imageUrl = string.Format("data:image/jpeg;base64,{0}", base64String);
-        //        }
-
-        //        // Display the image of the gcash proof
-        //        imgGcashProof.ImageUrl = imageUrl;
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<pre>" + ex.ToString() + "</pre>");
-        //    }
-        //}
         //   DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS
         private void DisplayRewardPoints_order()
         {
@@ -502,17 +332,7 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-                                //if(product.offerType == "Product Refill")
-                                //{
-                                //    productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-                                //    productrefill_qty = product.qtyPerItem;
-                                //}
-                                //if (product.offerType == "other Product")
-                                //{
-                                //    otherproduct_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-                                //    otherproduct_qty = product.qtyPerItem;
-                                //}
-
+                                
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " " + " " ;
@@ -698,7 +518,7 @@ namespace WRS2big_Web.Admin
                     userActivity = "ASSIGNED THE DRIVER TO DELIVER THE ORDER",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 DisplayRewardPoints_order();
                 DisplayGcash_order();
@@ -805,7 +625,7 @@ namespace WRS2big_Web.Admin
                         //}
 
                         // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                         UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                         // Get the current date and time
@@ -822,7 +642,7 @@ namespace WRS2big_Web.Admin
                             activityTime = addedTime
                         };
 
-                        twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                         gridCOD_order.Visible = true;
                         //DisplayRewardPoints_order();
@@ -864,24 +684,6 @@ namespace WRS2big_Web.Admin
                                 existingOrder.dateOrderAccepted = DateTimeOffset.UtcNow;
                                 existingOrder.dateDriverAssigned = DateTimeOffset.UtcNow;
                                 existingOrder.driverAssignedBy = name;
-
-                                //// Set notification based on amount of gallons ordered
-                                //int gallonsOrdered = existingOrder.order_Quantity;
-                                //int notificationDelay = 0; // in seconds
-                                //switch (gallonsOrdered)
-                                //{
-                                //    case 1:
-                                //        notificationDelay = 2 * 24 * 60 * 60; // 2 days
-                                //        break;
-                                //    case 2:
-                                //        notificationDelay = 4 * 24 * 60 * 60; // 4 days
-                                //        break;
-                                //    default:
-                                //        // Default delay is 1 day
-                                //        notificationDelay = 1 * 24 * 60 * 60; // 1 day
-                                //        break;
-                                //}
-                                //DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
 
                                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
@@ -929,11 +731,7 @@ namespace WRS2big_Web.Admin
                                 Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                                 Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                                //else
-                                //{
-                                //    // Handle the case where the existing notification does not exist
-                                //}
-
+                              
                                 // Retrieve the existing Users log object from the database
                                 FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
                                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
@@ -952,7 +750,7 @@ namespace WRS2big_Web.Admin
                                     activityTime = addedTime
                                 };
 
-                                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                                 //DisplayRewardPoints_order();
                                 //DisplayGcash_order();
@@ -1000,30 +798,6 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
             Order existingOrder = response.ResultAs<Order>();
 
-            //// Retrieve the quantity and unit of the declined order from the existingOrder object
-            //double quantity = existingOrder.order_OverallQuantities;
-            ////string unit = existingOrder.productUnit;
-            //string unit = existingOrder.order_Products[0].order_unit;
-
-            //// Retrieve the tank object from the database
-            //FirebaseResponse tankResponse = twoBigDB.Get("TANKSUPPLY/");
-            //TankSupply tank = tankResponse.ResultAs<TankSupply>();
-
-            //if (unit == "L" || unit == "liter/s")
-            //{
-            //    tank.tankBalance += quantity;
-            //}
-            //else if (unit == "gallon/s")
-            //{
-            //    tank.tankBalance += (quantity * 3.78541); // convert gallons to liters
-            //}
-            //else if (unit == "mL" || unit == "ML" || unit == "milliliters")
-            //{
-            //    tank.tankBalance += quantity;
-            //}
-
-            //// Update the tank object in the database
-            //twoBigDB.Update("TANKSUPPLY/" + tank.tankId, tank);
             // Update the order status in the existing object
             existingOrder.order_OrderStatus = "Declined";
             existingOrder.driverId = 0; // clear the driver ID
@@ -1061,7 +835,7 @@ namespace WRS2big_Web.Admin
 
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
 
@@ -1078,7 +852,7 @@ namespace WRS2big_Web.Admin
                 activityTime = addedTime
             };
 
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
             //DisplayRewardPoints_order();
             //DisplayGcash_order();
             gridCOD_order.Visible = true;
@@ -1173,13 +947,9 @@ namespace WRS2big_Web.Admin
                         Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                         Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                        //else
-                        //{
-                        //    // Handle the case where the existing notification does not exist
-                        //}
-
+                       
                         // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                         UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                         // Get the current date and time
@@ -1196,7 +966,7 @@ namespace WRS2big_Web.Admin
                             activityTime = addedTime
                         };
 
-                        twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                         //DisplayRewardPoints_order();
                         DisplayGcash_order();
@@ -1239,24 +1009,7 @@ namespace WRS2big_Web.Admin
                                 existingOrder.dateDriverAssigned = DateTimeOffset.UtcNow;
                                 existingOrder.driverAssignedBy = name;
 
-                                //// Set notification based on amount of gallons ordered
-                                //int gallonsOrdered = existingOrder.order_Quantity;
-                                //int notificationDelay = 0; // in seconds
-                                //switch (gallonsOrdered)
-                                //{
-                                //    case 1:
-                                //        notificationDelay = 2 * 24 * 60 * 60; // 2 days
-                                //        break;
-                                //    case 2:
-                                //        notificationDelay = 4 * 24 * 60 * 60; // 4 days
-                                //        break;
-                                //    default:
-                                //        // Default delay is 1 day
-                                //        notificationDelay = 1 * 24 * 60 * 60; // 1 day
-                                //        break;
-                                //}
-                                //DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
-
+                              
                                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
                                 //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
@@ -1303,13 +1056,9 @@ namespace WRS2big_Web.Admin
                                 Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                                 Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                                //else
-                                //{
-                                //    // Handle the case where the existing notification does not exist
-                                //}
 
                                 // Retrieve the existing Users log object from the database
-                                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                                 // Get the current date and time
@@ -1326,7 +1075,7 @@ namespace WRS2big_Web.Admin
                                     activityTime = addedTime
                                 };
 
-                                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
                                 //DisplayRewardPoints_order();
                                 DisplayGcash_order();
                                 gridGcash_order.Visible = true;
@@ -1432,7 +1181,7 @@ namespace WRS2big_Web.Admin
 
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
 
@@ -1449,7 +1198,7 @@ namespace WRS2big_Web.Admin
                 activityTime = addedTime
             };
 
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
             //DisplayRewardPoints_order();
             DisplayGcash_order();
             gridGcash_order.Visible = true;
@@ -1544,9 +1293,9 @@ namespace WRS2big_Web.Admin
                     notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                     Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
-                    //USERSLOG
+                    //ADMINLOGS
                     // Retrieve the existing Users log object from the database
-                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                     // Get the current date and time
@@ -1562,7 +1311,7 @@ namespace WRS2big_Web.Admin
                         activityTime = addedTime
                     };
 
-                    twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                     //DisplayRewardPoints_order();
                     gridGcash_order.Visible = true;
@@ -1788,13 +1537,9 @@ namespace WRS2big_Web.Admin
                         Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                         Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                        //else
-                        //{
-                        //    // Handle the case where the existing notification does not exist
-                        //}
-
+                      
                         // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                         UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                         // Get the current date and time
@@ -1811,7 +1556,7 @@ namespace WRS2big_Web.Admin
                             activityTime = addedTime
                         };
 
-                        twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                         DisplayRewardPoints_order();
                         gridRewardPoints_order.Visible = true;
@@ -1855,23 +1600,6 @@ namespace WRS2big_Web.Admin
                                 existingOrder.dateDriverAssigned = DateTimeOffset.UtcNow;
                                 existingOrder.driverAssignedBy = name;
 
-                                //// Set notification based on amount of gallons ordered
-                                //int gallonsOrdered = existingOrder.order_Quantity;
-                                //int notificationDelay = 0; // in seconds
-                                //switch (gallonsOrdered)
-                                //{
-                                //    case 1:
-                                //        notificationDelay = 2 * 24 * 60 * 60; // 2 days
-                                //        break;
-                                //    case 2:
-                                //        notificationDelay = 4 * 24 * 60 * 60; // 4 days
-                                //        break;
-                                //    default:
-                                //        // Default delay is 1 day
-                                //        notificationDelay = 1 * 24 * 60 * 60; // 1 day
-                                //        break;
-                                //}
-                                //DateTimeOffset notificationTime = DateTimeOffset.UtcNow.AddSeconds(notificationDelay);
 
                                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
@@ -1919,13 +1647,9 @@ namespace WRS2big_Web.Admin
                                 Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                                 Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-                                //else
-                                //{
-                                //    // Handle the case where the existing notification does not exist
-                                //}
-
+                              
                                 // Retrieve the existing Users log object from the database
-                                FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                                 // Get the current date and time
@@ -1942,7 +1666,7 @@ namespace WRS2big_Web.Admin
                                     activityTime = addedTime
                                 };
 
-                                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                                 gridRewardPoints_order.Visible = true;
                                 DisplayRewardPoints_order();
@@ -2049,7 +1773,7 @@ namespace WRS2big_Web.Admin
 
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
 
@@ -2066,7 +1790,7 @@ namespace WRS2big_Web.Admin
                 activityTime = addedTime
             };
 
-            twoBigDB.Update("USERSLOG/" + log.logsId, log);
+            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
 
             gridRewardPoints_order.Visible = true;
             DisplayRewardPoints_order();
@@ -2163,9 +1887,9 @@ namespace WRS2big_Web.Admin
                     notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                     Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
-                    //USERSLOG
+                    //ADMINLOGS
                     // Retrieve the existing Users log object from the database
-                    FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                     UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                     // Get the current date and time
@@ -2181,7 +1905,7 @@ namespace WRS2big_Web.Admin
                         activityTime = addedTime
                     };
 
-                    twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                     DisplayRewardPoints_order();
                     gridRewardPoints_order.Visible = true;

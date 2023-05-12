@@ -417,7 +417,7 @@ namespace WRS2big_Web.Admin
                 };
 
                 //Storing the  info
-                response = twoBigDB.Set("USERSLOG/" + profilelog.logsId, profilelog);//Storing data to the database
+                response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
 
                 // Display the image on the profile page
                 ImageButton_new.ImageUrl = (string)Session["profile_image"];
@@ -486,7 +486,7 @@ namespace WRS2big_Web.Admin
             };
 
             //Storing the  info
-            SetResponse logresponse = twoBigDB.Set("USERSLOG/" + profilelog.logsId, profilelog);//Storing data to the database
+            SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
             Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx';</script>");
         }
 
@@ -598,7 +598,7 @@ namespace WRS2big_Web.Admin
                     userActivity = "UPDATED STATION DETAILS",
                 };
                 
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
             } 
             //CREATE NEW DETAILS
@@ -709,7 +709,7 @@ namespace WRS2big_Web.Admin
                     userActivity = "ADDED THE STATION DETAILS",
                 };
 
-                twoBigDB.Set("USERSLOG/" + log.logsId, log);
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 // Display the image on the profile page
                 ImageButton_new.ImageUrl = (string)Session["profile_image"];
