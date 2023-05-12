@@ -210,6 +210,30 @@
             </summary>
             <param name="accessToken">The access token.</param>
         </member>
+        <member name="M:RestSharp.BuildUriExtensions.BuildUri(RestSharp.IRestClient,RestSharp.RestRequest)">
+            <summary>
+            Builds the URI for the request
+            </summary>
+            <param name="client">Client instance</param>
+            <param name="request">Request instance</param>
+            <returns></returns>
+        </member>
+        <member name="M:RestSharp.BuildUriExtensions.BuildUriWithoutQueryParameters(RestSharp.IRestClient,RestSharp.RestRequest)">
+            <summary>
+            Builds the URI for the request without query parameters.
+            </summary>
+            <param name="client">Client instance</param>
+            <param name="request">Request instance</param>
+            <returns></returns>
+        </member>
+        <member name="M:RestSharp.BuildUriExtensions.GetRequestQuery(RestSharp.IRestClient,RestSharp.RestRequest)">
+            <summary>
+            Gets the query string for the request.
+            </summary>
+            <param name="client">Client instance</param>
+            <param name="request">Request instance</param>
+            <returns></returns>
+        </member>
         <member name="T:RestSharp.ParameterType">
             <summary>
             Types of parameters that can be added to requests
@@ -378,6 +402,11 @@
             Client-level serializers
             </summary>
         </member>
+        <member name="P:RestSharp.IRestClient.DefaultParameters">
+            <summary>
+            Default parameters to use on every request made with this client instance.
+            </summary>
+        </member>
         <member name="M:RestSharp.IRestClient.ExecuteAsync(RestSharp.RestRequest,System.Threading.CancellationToken)">
             <summary>
             Executes the request asynchronously, authenticating if needed
@@ -486,6 +515,12 @@
             Sets the value of the Host header to be sent with requests.
             </summary>
         </member>
+        <member name="P:RestSharp.RestClientOptions.CookieContainer">
+            <summary>
+            Custom cookie container to be used for requests. RestSharp will not assign the container to the message handler,
+            but will fetch cookies from it and set them on the request.
+            </summary>
+        </member>
         <member name="P:RestSharp.RestClientOptions.MaxTimeout">
             <summary>
             Maximum request duration in milliseconds. When the request timeout is specified using <seealso cref="P:RestSharp.RestRequest.Timeout"/>,
@@ -529,11 +564,6 @@
             Custom function to encode a string for use in a URL query.
             </summary>
         </member>
-        <member name="P:RestSharp.RestRequestOptions.Authenticator">
-            <summary>
-            Authenticator that will be used to populate request with necessary authentication data
-            </summary>
-        </member>
         <member name="P:RestSharp.BodyParameter.DataFormat">
             <summary>
             Body parameter data type
@@ -543,6 +573,30 @@
             <summary>
             Custom content encoding
             </summary>
+        </member>
+        <member name="M:RestSharp.DefaultParameters.AddParameter(RestSharp.Parameter)">
+            <summary>
+            Safely add a default parameter to the collection.
+            </summary>
+            <param name="parameter">Parameter to add</param>
+            <returns></returns>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:RestSharp.DefaultParameters.RemoveParameter(System.String,RestSharp.ParameterType)">
+            <summary>
+            Safely removes all the default parameters with the given name and type.
+            </summary>
+            <param name="name">Parameter name</param>
+            <param name="type">Parameter type</param>
+            <returns></returns>
+        </member>
+        <member name="M:RestSharp.DefaultParameters.ReplaceParameter(RestSharp.Parameter)">
+            <summary>
+            Replace a default parameter with the same name and type.
+            </summary>
+            <param name="parameter">Parameter instance</param>
+            <returns></returns>
         </member>
         <member name="T:RestSharp.FileParameter">
             <summary>
@@ -743,9 +797,20 @@
         </member>
         <member name="P:RestSharp.RestRequest.MultipartFormQuoteParameters">
             <summary>
-            When set to true, parameters in a multipart form data requests will be enclosed in
+            When set to true, parameter values in a multipart form data requests will be enclosed in
             quotation marks. Default is false. Enable it if the remote endpoint requires parameters
             to be in quotes (for example, FreshDesk API). 
+            </summary>
+        </member>
+        <member name="P:RestSharp.RestRequest.MultipartFormQuoteBoundary">
+            <summary>
+            When set to true, the form boundary part of the content type will be enclosed in
+            quotation marks. Default is true.
+            </summary>
+        </member>
+        <member name="P:RestSharp.RestRequest.FormBoundary">
+            <summary>
+            Overrides the default (random) form boundary
             </summary>
         </member>
         <member name="P:RestSharp.RestRequest.Parameters">
@@ -831,6 +896,11 @@
         <member name="P:RestSharp.RestRequest.CompletionOption">
             <summary>
             Completion option for <seealso cref="T:System.Net.Http.HttpClient"/>
+            </summary>
+        </member>
+        <member name="P:RestSharp.RestRequest.CachePolicy">
+            <summary>
+            Cache policy to be used for requests using <seealso cref="T:System.Net.Http.Headers.CacheControlHeaderValue"/>
             </summary>
         </member>
         <member name="P:RestSharp.RestRequest.ResponseWriter">
@@ -1104,6 +1174,16 @@
             <param name="contentType">Content type of the body</param>
             <returns></returns>
         </member>
+        <member name="M:RestSharp.RestRequestExtensions.AddJsonBody(RestSharp.RestRequest,System.String,System.Boolean,RestSharp.ContentType)">
+            <summary>
+            Adds a JSON body parameter to the request from a string
+            </summary>
+            <param name="request">Request instance</param>
+            <param name="forceSerialize">Force serialize the top-level string</param>
+            <param name="contentType">Optional: content type. Default is "application/json"</param>
+            <param name="jsonString">JSON string to be used as a body</param>
+            <returns></returns>
+        </member>
         <member name="M:RestSharp.RestRequestExtensions.AddJsonBody``1(RestSharp.RestRequest,``0,RestSharp.ContentType)">
             <summary>
             Adds a JSON body parameter to the request
@@ -1342,6 +1422,9 @@
         <member name="P:RestSharp.RestClient.Serializers">
             <inheritdoc />>
         </member>
+        <member name="P:RestSharp.RestClient.DefaultParameters">
+            <inheritdoc/>
+        </member>
         <member name="M:RestSharp.RestClient.#ctor(RestSharp.RestClientOptions,RestSharp.ConfigureHeaders,RestSharp.ConfigureSerialization,System.Boolean)">
             <summary>
             Creates an instance of RestClient using the provided <see cref="T:RestSharp.RestClientOptions"/>
@@ -1407,13 +1490,6 @@
             <param name="disposeHandler">Dispose the handler when disposing RestClient, true by default</param>
             <param name="configureRestClient">Delegate to configure the client options</param>
             <param name="configureSerialization">Delegate to configure serialization</param>
-        </member>
-        <member name="M:RestSharp.RestClient.AddDefaultParameter(RestSharp.Parameter)">
-            <summary>
-            Add a parameter to use on every request made with this client instance
-            </summary>
-            <param name="parameter">Parameter to add</param>
-            <returns></returns>
         </member>
         <member name="M:RestSharp.RestClientExtensions.ExecuteGetAsync``1(RestSharp.IRestClient,RestSharp.RestRequest,System.Threading.CancellationToken)">
             <summary>
@@ -1668,17 +1744,25 @@
             <typeparam name="TRequest">Request object type</typeparam>
             <returns>Response status code</returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultParameter(RestSharp.RestClient,System.String,System.String)">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultParameter(RestSharp.IRestClient,RestSharp.Parameter)">
+            <summary>
+            Add a parameter to use on every request made with this client instance
+            </summary>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
+            <param name="parameter"><see cref="T:RestSharp.Parameter"/> to add</param>
+            <returns></returns>
+        </member>
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultParameter(RestSharp.IRestClient,System.String,System.String)">
             <summary>
             Adds a default HTTP parameter (QueryString for GET, DELETE, OPTIONS and HEAD; Encoded form for POST and PUT)
             Used on every request made by this client instance
             </summary>
-            <param name="client"><see cref="T:RestSharp.RestClientOptions"/> instance</param>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
             <param name="name">Name of the parameter</param>
             <param name="value">Value of the parameter</param>
             <returns>This request</returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultParameter(RestSharp.RestClient,System.String,System.Object,RestSharp.ParameterType)">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultParameter(RestSharp.IRestClient,System.String,System.Object,RestSharp.ParameterType)">
             <summary>
             Adds a default parameter to the client options. There are four types of parameters:
             - GetOrPost: Either a QueryString value or encoded form value based on method
@@ -1687,22 +1771,22 @@
             - RequestBody: Used by AddBody() (not recommended to use directly)
             Used on every request made by this client instance
             </summary>
-            <param name="client"><see cref="T:RestSharp.RestClientOptions"/> instance</param>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
             <param name="name">Name of the parameter</param>
             <param name="value">Value of the parameter</param>
             <param name="type">The type of parameter to add</param>
             <returns>This request</returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultHeader(RestSharp.RestClient,System.String,System.String)">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultHeader(RestSharp.IRestClient,System.String,System.String)">
             <summary>
             Adds a default header to the RestClient. Used on every request made by this client instance.
             </summary>
-            <param name="client"><see cref="T:RestSharp.RestClientOptions"/> instance</param>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
             <param name="name">Name of the header to add</param>
             <param name="value">Value of the header to add</param>
             <returns></returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultHeaders(RestSharp.RestClient,System.Collections.Generic.Dictionary{System.String,System.String})">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultHeaders(RestSharp.IRestClient,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             Adds default headers to the RestClient. Used on every request made by this client instance.
             </summary>
@@ -1710,20 +1794,20 @@
             <param name="headers">Dictionary containing the Names and Values of the headers to add</param>
             <returns></returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultUrlSegment(RestSharp.RestClient,System.String,System.String)">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultUrlSegment(RestSharp.IRestClient,System.String,System.String)">
             <summary>
             Adds a default URL segment parameter to the RestClient. Used on every request made by this client instance.
             </summary>
-            <param name="client"><see cref="T:RestSharp.RestClientOptions"/> instance</param>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
             <param name="name">Name of the segment to add</param>
             <param name="value">Value of the segment to add</param>
             <returns></returns>
         </member>
-        <member name="M:RestSharp.RestClientExtensions.AddDefaultQueryParameter(RestSharp.RestClient,System.String,System.String)">
+        <member name="M:RestSharp.RestClientExtensions.AddDefaultQueryParameter(RestSharp.IRestClient,System.String,System.String)">
             <summary>
             Adds a default URL query parameter to the RestClient. Used on every request made by this client instance.
             </summary>
-            <param name="client"><see cref="T:RestSharp.RestClientOptions"/> instance</param>
+            <param name="client"><see cref="T:RestSharp.RestClient"/> instance</param>
             <param name="name">Name of the query parameter to add</param>
             <param name="value">Value of the query parameter to add</param>
             <returns></returns>
@@ -1936,11 +2020,6 @@
         <member name="P:RestSharp.Serializers.Xml.DotNetXmlSerializer.Namespace">
             <summary>
             XML namespace to use when serializing
-            </summary>
-        </member>
-        <member name="P:RestSharp.Serializers.Xml.DotNetXmlSerializer.DateFormat">
-            <summary>
-            Format string to use when serializing dates
             </summary>
         </member>
         <member name="P:RestSharp.Serializers.Xml.DotNetXmlSerializer.ContentType">

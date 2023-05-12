@@ -64,7 +64,7 @@ namespace WRS2big_Web.LandingPage
                 string validID = validIDList.SelectedValue;
 
                 // Password validation
-                string password = txt_password.Text;
+                string password = id_passwordreg.Text;
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
                     !password.Any(c => !char.IsLetterOrDigit(c)))
@@ -78,6 +78,25 @@ namespace WRS2big_Web.LandingPage
                 if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
                 {
                     Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
+                    return;
+                }
+
+                // Birthdate validation
+                DateTime birthdate;
+                if (!DateTime.TryParse(txtbirthdate.Text, out birthdate))
+                {
+                    Response.Write("<script>alert('Invalid birthdate. Please enter a valid date in the format YYYY/MM/D.');</script>");
+                    return;
+                }
+
+                int age = DateTime.Now.Year - birthdate.Year;
+                if (birthdate > DateTime.Now.AddYears(-age))
+                {
+                    age--;
+                }
+                if (age < 18 || age > 100)
+                {
+                    Response.Write("<script>alert('You must be at least 18 years old to sign up and at most 100 years old.');</script>");
                     return;
                 }
 
