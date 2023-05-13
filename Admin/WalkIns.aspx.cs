@@ -47,6 +47,7 @@ namespace WRS2big_Web.Admin
                 // Convert input values to numerical format
                 int qty;
                 decimal price, discount, totalAmount, discountAmount, subtotal;
+                
 
                 if (!int.TryParse(txtQty.Text, out qty))
                 {
@@ -92,7 +93,7 @@ namespace WRS2big_Web.Admin
                     productUnitSize = drdUnit_Size.SelectedValue,
                    // productSize = drdSize.SelectedValue,
                     productPrice = price,
-                    productDiscount = discount, // Store the discount value in the database
+                    productDiscount = discount.ToString(), // Store the discount value in the database
                     productQty = qty, // Adjust quantity to account for free gallon
                     //productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
                     totalAmount = totalAmount, // Store calculated total amount as decimal
@@ -165,7 +166,7 @@ namespace WRS2big_Web.Admin
                     if (product.adminId.ToString() == idno) // check if the product belongs to the current user
                     {
                         drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
-                        drdUnit_Size.Items.Add(new ListItem(product.pro_refillSize + " " + product.pro_refillUnit));
+                        drdUnit_Size.Items.Add(new ListItem(product.pro_refillQty + " " + product.pro_refillUnitVolume));
                     }
                     //drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
                     //drdUnit_Size.Items.Add(new ListItem(product.pro_refillSize + " " + product.pro_refillUnit));
@@ -174,17 +175,17 @@ namespace WRS2big_Web.Admin
 
 
             }
-            else if (selectedOption == "Other Products")
+            else if (selectedOption == "thirdparty Products")
             {
-                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
-                Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
+                FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/");
+                Dictionary<string, thirdpartyProducts> otherproducts = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
 
                 foreach (var otherproduct in otherproducts.Values)
                 {
                     if (otherproduct.adminId.ToString() == idno) // check if the product belongs to the current user
                     {
-                        drdProdName.Items.Add(new ListItem(otherproduct.other_productName));
-                        drdUnit_Size.Items.Add(new ListItem(otherproduct.other_productSize + " " + otherproduct.other_productUnit));
+                        drdProdName.Items.Add(new ListItem(otherproduct.thirdparty_productName));
+                        drdUnit_Size.Items.Add(new ListItem(otherproduct.thirdparty_qtyStock + " " + otherproduct.thirdparty_unitStock));
                         // drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
                     }
                 }
@@ -207,23 +208,23 @@ namespace WRS2big_Web.Admin
             if (!string.IsNullOrEmpty(selectedType))
             {
                 // Check if the product exists in the "otherPRODUCTS" table
-                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/");
-                Dictionary<string, otherProducts> otherproducts = response.ResultAs<Dictionary<string, otherProducts>>();
-                otherProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.other_productName == selectedType);
+                FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/");
+                Dictionary<string, thirdpartyProducts> otherproducts = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
+                thirdpartyProducts otherselectedProduct = otherproducts.Values.FirstOrDefault(p => p.thirdparty_productName == selectedType);
 
 
                 if (otherselectedProduct != null)
                 {
                     // Display the unit for the selected product
-                    if (otherselectedProduct.other_productPrice != null)
+                    if (otherselectedProduct.thirdparty_productPrice != null)
                     {
-                        lblprice.Text = otherselectedProduct.other_productPrice.ToString();
+                        lblprice.Text = otherselectedProduct.thirdparty_productPrice.ToString();
                     }
                     else
                     {
                         lblprice.Text = "";
                     }
-                    if (!decimal.TryParse(otherselectedProduct.other_productDiscount.ToString(), out discount))
+                    if (!decimal.TryParse(otherselectedProduct.thirdparty_productDiscount.ToString(), out discount))
                     {
                         // If the discount value is not a valid decimal, assume it is zero
                         discount = 0;

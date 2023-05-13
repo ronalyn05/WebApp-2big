@@ -172,6 +172,19 @@
                                                 <div class="table-responsive">
                                                     <div class="tab-content">
                                                         <div class="tab-pane active">
+                                                             <asp:Label Style="text-align: center;" ID="Label3" runat="server" Text="View order base on delivery type" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                <%--<h5 style="text-align: center;">View order base on customer's payment mode to pay the order:</h5>--%>
+                                                <br>
+
+                                                <div style="display: flex; justify-content: center;">
+                                                    <asp:DropDownList ID="DropDownList1" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                        <asp:ListItem Text="All Orders" Value="0"></asp:ListItem>
+                                                        <asp:ListItem Text="COD" Value="1"></asp:ListItem>
+                                                        <asp:ListItem Text="Gcash" Value="2"></asp:ListItem>
+                                                        <asp:ListItem Text="Reward Points" Value="3"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                    <asp:Button ID="Button1" runat="server" Text="View Orders" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
+                                                </div>
                                                             <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                 <asp:Label Style="text-align: center;" ID="lblViewOrders" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
                                                                 <br />

@@ -37,19 +37,19 @@ namespace WRS2big_Web.Admin
             Dictionary<string, ProductRefill> refillProducts = responseRefill.ResultAs<Dictionary<string, ProductRefill>>();
             var filteredRefillList = refillProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
 
-            var responseOther = twoBigDB.Get("otherPRODUCTS");
-            Dictionary<string, otherProducts> otherProducts = responseOther.ResultAs<Dictionary<string, otherProducts>>();
+            var responseOther = twoBigDB.Get("thirdparty_PRODUCTS");
+            Dictionary<string, thirdpartyProducts> otherProducts = responseOther.ResultAs<Dictionary<string, thirdpartyProducts>>();
             var filteredOtherList = otherProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
 
             // Add the unit and sizes data of refill products to the CheckBoxList
             List<string> refillUnitSizesList = new List<string>();
             foreach (var product in filteredRefillList)
             {
-                string unit = product.pro_refillUnit;
-                string size = product.pro_refillSize;
-                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                string unitofVolume = product.pro_refillUnitVolume;
+                string qty = product.pro_refillQty;
+                if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = size + "  " + unit;
+                    string unitSizes = qty + "  " + unitofVolume;
                     if (!refillUnitSizesList.Contains(unitSizes))
                     {
                         refillUnitSizesList.Add(unitSizes);
@@ -66,11 +66,11 @@ namespace WRS2big_Web.Admin
             List<string> otherUnitSizesList = new List<string>();
             foreach (var product in filteredOtherList)
             {
-                string unit = product.other_productUnit;
-                string size = product.other_productSize;
-                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                string unitofVolume = product.thirdparty_productUnitVolume;
+                string qty = product.thirdparty_qtyStock.ToString();
+                if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = size + "  " + unit;
+                    string unitSizes = qty + "  " + unitofVolume;
                     if (!otherUnitSizesList.Contains(unitSizes))
                     {
                         otherUnitSizesList.Add(unitSizes);
@@ -97,7 +97,7 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
             Dictionary<string, RewardSystem> userReward = response.ResultAs<Dictionary<string, RewardSystem>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
+          
 
             // Create the DataTable to hold the orders
             DataTable rewardTable = new DataTable();
@@ -112,8 +112,9 @@ namespace WRS2big_Web.Admin
             //condition to fetch the product refill data
             if (response != null && response.ResultAs<RewardSystem>() != null)
             {
+                var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
                 //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
-             //   var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
+                //   var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
 
                 // Loop through the entries and add them to the DataTable
                 foreach (var entry in filteredList)
@@ -154,7 +155,6 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("PROMO_OFFERED/");
             Dictionary<string, PromoOffered> userReward = response.ResultAs<Dictionary<string, PromoOffered>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.promoDateAdded);
             
 
             // Create the DataTable to hold the orders
@@ -174,12 +174,15 @@ namespace WRS2big_Web.Admin
             //condition to fetch the other product data
             if (response != null && response.ResultAs<PromoOffered>() != null)
             {
-              //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+                //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+
+                var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.promoDateAdded);
 
                 // Loop through the entries and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                        string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string promoValidFrom = entry.promoExpirationFrom == DateTimeOffset.MinValue ? "" : entry.promoExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string promoValidUntil = entry.promoExpirationTo == DateTimeOffset.MinValue ? "" : entry.promoExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");

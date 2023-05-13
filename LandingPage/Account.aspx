@@ -588,6 +588,10 @@
                                                         <asp:ListItem Value="Postal ID">Postal ID</asp:ListItem>
                                                         <asp:ListItem Value="Voters ID">Voters ID</asp:ListItem>
                                                         <asp:ListItem Value="National ID">National ID</asp:ListItem>
+                                                        <asp:ListItem Value="SSS ID">SSS ID</asp:ListItem>
+                                                        <asp:ListItem Value="GSIS ID">GSIS ID</asp:ListItem>
+                                                        <asp:ListItem Value="PAGIBIG ID">PAGIBIG ID</asp:ListItem>
+                                                        <asp:ListItem Value="PHILHEALTH ID">PHILHEALTH ID</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <br />

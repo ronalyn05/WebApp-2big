@@ -52,7 +52,7 @@
                                 <div class="">
                                   <div class="clearfix">
                                        <%-- add product button--%>
-                                         <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Other Product Offers</button>
+                                         <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i> Add Third Party Product Offers</button>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i> Add Product Refill Offers</button>
                                      <%--  <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>--%>
                                        <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i> Add Tank Supply</button>
@@ -109,11 +109,11 @@
 
                                        <%-- MODAL FOR ADD PRODUCT--%>
                                        <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                           <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
                                             <form id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel">Add Other Product</h4>
+                                            <h4 class="modal-title" id="myModalLabel">Add Third Party Product Offered</h4>
                                                 <%--exit button--%>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
@@ -121,23 +121,26 @@
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
                                            <%-- <div class="item form-group">--%>
-                                                <h4 style="color:black;font-family:Bahnschrift"> Set other offered products here:</h4>
+                                                <h4 style="color:black;font-family:Bahnschrift"> Set outside offered products here:</h4>
+                                                <hr />
+                                                <strong>Note: This is intended for third party product offered.</strong>
+                                                <hr />
                                             <div class="col-md-12 col-sm-12 ">
                                                <%--PRODUCT TYPE--%>
-                                             <strong>Product Type:</strong>
-                                                 <asp:TextBox ID="productName" runat="server" Placeholder="Enter the type of product offered" Width="364px"></asp:TextBox>
+                                             <strong>Product Name:</strong>
+                                                 <asp:TextBox ID="productName" runat="server" Placeholder="Enter the product name offered" Width="464px"></asp:TextBox>
                                             </div>
                                                 <br />
                                              <div class="col-md-12 col-sm-12">
                                                  <%--PRODUCT NAME--%>
                                                  <strong>Product Image:</strong>
                                                         <%--file upload--%>
-                                                        <asp:FileUpload ID="imgProduct" runat="server" Font-Size="Medium" Height="38px" Width="301px"  />
+                                                        <asp:FileUpload ID="imgProduct" runat="server" Font-Size="Medium" Height="38px" Width="464px"  />
                                               </div>
                                                 <br />
                                                 <div class="col-md-12 col-sm-12">
-                                                  <strong>Product Unit:</strong>
-                                                 <asp:DropDownList ID="drdprodUnit" runat="server" Height="40px" Width="364px">
+                                                  <strong>Product Unit of Volume:</strong>
+                                                 <asp:DropDownList ID="drdprodUnitVolume" runat="server" Height="40px" Width="464px">
                                                        <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
                                                        <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
                                                        <asp:ListItem Text="ML" Value="ml" ></asp:ListItem>
@@ -146,30 +149,30 @@
                                                      </div>
                                                 <br />
                                              <div class="col-md-12 col-sm-12">
-                                                  <strong>Product Size:</strong>
-                                                 <asp:TextBox ID="productSize" TextMode="Number" Placeholder="Enter size of product" runat="server" Width="364px"></asp:TextBox>
+                                                  <strong>Product Quantity:</strong>
+                                                 <asp:TextBox ID="productQty" TextMode="Number" step="any" Placeholder="Enter how many quantity the unit of volume have" runat="server" Width="464px"></asp:TextBox>
                                               </div>
                                                 <br />
                                                 <%--PRODUCT PRICE--%>
                                                     <div class="col-md-12 col-sm-12 ">
                                                         <strong>Product Price:</strong>
                                                        <%-- <asp:Label ID="Label1" runat="server" Text="Product Price: "></asp:Label><br />--%>
-                                                        <asp:TextBox ID="productPrice" Placeholder="Enter the price of product cost" runat="server" Width="364px"></asp:TextBox>
+                                                        <asp:TextBox ID="productPrice" TextMode="Number" step="any" Placeholder="Enter the price of product cost" runat="server" Width="464px"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                  <%--PRODUCT Discount--%>
                                                       <div class="col-md-12 col-sm-12 ">
                                                           <strong>Product Discount:</strong> <br />
                                                           <h7>Please enter the discount percentage (%) you offer for this product</h7>
-                                                        <asp:TextBox ID="productDiscounts" TextMode="Number" Placeholder="Enter discount offered" runat="server" Width="364px"></asp:TextBox>
+                                                        <asp:TextBox ID="productDiscounts" TextMode="Number" step="any" Placeholder="Enter discount offered" runat="server" Width="464px"></asp:TextBox>
                                                           </div>
                                                 <br />
                                                 <hr />
                                                 <asp:Label ID="Label5" runat="server" Text="PRODUCT STOCK"></asp:Label>
                                                 <div class="col-md-12 col-sm-12">
                                                   <strong>Unit</strong>
-                                                 <asp:DropDownList ID="drdUnitStock" runat="server" Height="40px" Width="364px">
-                                                       <asp:ListItem Selected="False">--- Select the unit of measurement for your stock---</asp:ListItem>
+                                                 <asp:DropDownList ID="drdUnitStock" runat="server" Height="40px" Width="464px">
+                                                       <%--<asp:ListItem Selected="False">--- Select the unit of measurement for your stock---</asp:ListItem>--%>
                                                        <asp:ListItem Text="Bottle" Value="bottle"></asp:ListItem>
                                                      <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
                                                        <asp:ListItem Text="Box/Case" Value="box/case" ></asp:ListItem>
@@ -180,7 +183,7 @@
                                                       <div class="col-md-12 col-sm-12 ">
                                                           <strong>Quantity(Stock):</strong>
                                                          <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
-                                                        <asp:TextBox ID="stockQty" TextMode="Number" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="364px"></asp:TextBox>
+                                                        <asp:TextBox ID="stockQuantity" TextMode="Number" step="any" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                           </div>
                                                              <br />
                                                          </div>
@@ -188,7 +191,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                <%-- add data button--%>
-                                               <asp:Button ID="btnAdd" runat="server" Text="Add other Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="false"/>
+                                               <asp:Button ID="btnAdd" runat="server" Text="Add Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="false"/>
                                                 <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
                                                 --%></div>
                                               </div>
@@ -198,7 +201,7 @@
 
                                        <%-- MODAL FOR Set Product Refill Supply--%>
                                       <div class="modal fade set" tabindex="-1" role="dialog" aria-hidden="true">
-                                           <div class="modal-dialog modal-dialog-centered modal-md">
+                                           <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
                                             <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
@@ -209,12 +212,14 @@
                                             <div class="modal-body">
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
-                                                <h4 style="color:black;font-family:Bahnschrift"> Set offered products refill details here:</h4>
+                                                <h4 style="color:black;font-family:Bahnschrift"> Set your offered products details here:</h4>
                                                 <hr />
+                                                <strong>Note: add other product offered if any here (e.g empty gallon or new gallon with water)</strong>
+                                                 <hr />
                                                 <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Water Type:</strong>
+                                                        <strong>Product Name:</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="refillwaterType" Width="364px" Placeholder="Enter type of water offered to customer. Ex: Purified or Alkaline" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="refillwaterType" Width="364px" Placeholder="Enter product name offered to customer. Ex: Purified or Alkaline" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                 <div class="col-md-12 col-sm-12">
@@ -226,7 +231,7 @@
                                                 <br />
                                                 <div class="col-md-12 col-sm-12">
                                                   <strong>Refill Unit:</strong>
-                                                 <asp:DropDownList ID="refillUnit" runat="server" Height="40px" Width="364px">
+                                                 <asp:DropDownList ID="refillUnitOfVolume" runat="server" Height="40px" Width="364px">
                                                        <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
                                                        <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
                                                        <asp:ListItem Text="Liters" Value="liter/s" ></asp:ListItem>
@@ -236,23 +241,45 @@
                                                 <br />
                                                 
                                                  <div class="col-md-12 col-sm-12 ">
-                                                        <strong>Size:</strong>
+                                                        <strong>Quantity:</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="refillSize" Width="364px" Placeholder="Enter the size/volume of water dispensed for each customer " runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="refillQty" Width="464px" Placeholder="Enter how many quantity does the unit of volume have" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                  <div class="col-md-12 col-sm-12 ">
                                                         <strong>Price:</strong>
                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                        <asp:TextBox ID="refillPrice" Width="364px" Placeholder="Enter the price of refill cost" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="refillPrice" Width="364px" Placeholder="Enter the price of refill cost" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
                                                     <div class="col-md-12 col-sm-12 ">
                                                         <strong>Discounts</strong> <br />
                                                          <h7>Please enter the discount percentage (%) you offer for this product</h7>
-                                                        <asp:TextBox ID="refillDiscount" Width="364px" TextMode="Number" Placeholder="Enter discount offered" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="refillDiscount" Width="364px" TextMode="Number" Placeholder="Enter discount offered" step="any" runat="server"></asp:TextBox>
                                                      </div>
                                                 <br />
+                                                 <hr />
+                                                <strong>This is intended for your other product offered(e.g empty gallon or new gallon with water)</strong>
+                                                 <hr />
+                                                <hr />
+                                                <asp:Label ID="Label6" runat="server" Text="PRODUCT STOCK"></asp:Label>
+                                                <div class="col-md-12 col-sm-12">
+                                                  <strong>Unit</strong>
+                                                 <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="364px">
+                                                       <asp:ListItem Selected="False">--- Select the unit of measurement for your stock---</asp:ListItem>
+                                                       <asp:ListItem Text="Bottle" Value="bottle"></asp:ListItem>
+                                                     <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
+                                                       <asp:ListItem Text="Box/Case" Value="box/case" ></asp:ListItem>
+                                                   </asp:DropDownList>
+                                                     </div>
+                                                <br />
+                                                        <%--PRODUCT Available--%>
+                                                      <div class="col-md-12 col-sm-12 ">
+                                                          <strong>Quantity(Stock):</strong>
+                                                         <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
+                                                        <asp:TextBox ID="txtStockQty" TextMode="Number" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
+                                                          </div>
+                                                             <br />
                                                   </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -442,7 +469,7 @@
                                                             <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
                                                             <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
                                                            <asp:ListItem Text="Product Refill" Value="0"></asp:ListItem>
-                                                           <asp:ListItem Text="Other Product" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="Third Party Product" Value="1"></asp:ListItem>
                                                             <asp:ListItem Text="Tank Supply" Value="2"></asp:ListItem>
                                                          
                                                         </asp:DropDownList>

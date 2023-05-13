@@ -51,7 +51,9 @@ namespace WRS2big_Web.Model
         public DateTimeOffset dateOrderAccepted { get; set; }
         public string orderAcceptedBy { get; set; }
         public DateTimeOffset datePaymentReceived { get; set; }
-        public string payment_receivedBy { get; set; }
+        public string paymentReceivedBy { get; set; }
+        public string paymentGcashReceivedBy { get; set; }
+        public string paymentPointsReceivedBy { get; set; }
         public DateTimeOffset dateOrderDeclined { get; set; }
         public string orderDeclineddBy { get; set; }
         public DateTimeOffset dateOrderDelivered { get; set; }
