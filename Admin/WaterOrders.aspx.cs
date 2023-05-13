@@ -40,8 +40,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ORDERS");
             Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-            var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
-                (d.order_OrderStatus == "Payment Received" || d.order_OrderStatus == "Received"));
+            
 
             // Create the DataTable to hold the orders
             DataTable ordersTable = new DataTable();
@@ -64,10 +63,16 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Order>() != null)
             {
+                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
+                (d.order_OrderStatus == "Payment Received" || d.order_OrderStatus == "Received"));
                 //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
+                    //if(entry.orderPaymentMethod == "CashOnDelivery")
+                    //{
+
+                    //}
                     string dateAccepted = entry.dateOrderAccepted == DateTimeOffset.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateDeclined = entry.dateOrderDeclined == DateTimeOffset.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateDelivered = entry.dateOrderDelivered == DateTimeOffset.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
@@ -77,7 +82,7 @@ namespace WRS2big_Web.Admin
 
                     ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
                              dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclineddBy, dateDriverAssigned, entry.driverAssignedBy,
-                             dateDelivered, datePayment, entry.payment_receivedBy);
+                             dateDelivered, datePayment, entry.paymentReceivedBy);
                 }
                 if (ordersTable.Rows.Count == 0)
                 {
@@ -110,7 +115,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
             Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
-            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+            
 
             // Create the DataTable to hold the orders
             DataTable walkInordersTable = new DataTable();
@@ -130,6 +135,8 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<WalkInOrders>() != null)
             {
+                var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+
                 // Loop through the filtered orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -285,7 +292,7 @@ namespace WRS2big_Web.Admin
 
                             ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
                                      dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclineddBy, dateDriverAssigned, entry.driverAssignedBy,
-                                     dateDelivered, datePayment, entry.payment_receivedBy);
+                                     dateDelivered, datePayment, entry.paymentReceivedBy);
                         }
                     }
                 }

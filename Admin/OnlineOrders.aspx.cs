@@ -91,25 +91,23 @@ namespace WRS2big_Web.Admin
 
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery")).OrderByDescending(d => d.orderDate);
                 
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
                 ordersTable.Columns.Add("CUSTOMER ID");
                 ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("STORE NAME");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-                //  ordersTable.Columns.Add("OVERALL ORDER QUANTITY");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
 
@@ -117,6 +115,8 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery")).OrderByDescending(d => d.orderDate);
+
                     foreach (var order in filteredList)
                     {
                         if (order.order_Products != null)
@@ -143,9 +143,9 @@ namespace WRS2big_Web.Admin
                             }
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_OrderTypeValue, order.order_StoreName, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty, 
+                                order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_ReservationDate, order.order_TotalAmount, dateOrder);
                         }
                     }
 
@@ -181,29 +181,30 @@ namespace WRS2big_Web.Admin
             {
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash")).OrderByDescending(d => d.orderDate);
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
                 ordersTable.Columns.Add("CUSTOMER ID");
                 ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("STORE NAME");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("REFILL SELECTED OPTION");
                 ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
 
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash")).OrderByDescending(d => d.orderDate);
+
                     foreach (var order in filteredList)
                     {
                         if (order.order_Products != null)
@@ -229,10 +230,10 @@ namespace WRS2big_Web.Admin
                             }
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
 
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                               order.order_OrderTypeValue, order.order_StoreName, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_ReservationDate, order.order_TotalAmount, dateOrder);
                         }
                     }
 
@@ -297,30 +298,31 @@ namespace WRS2big_Web.Admin
             {
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
                 ordersTable.Columns.Add("CUSTOMER ID");
                 ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("STORE NAME");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
 
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
+
                     foreach (var order in filteredList)
                     {
                         if (order.order_Products != null)
@@ -348,9 +350,9 @@ namespace WRS2big_Web.Admin
 
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-                                productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod, " ",
-                                order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount, dateOrder);
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_OrderTypeValue, order.order_StoreName, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_ReservationDate, order.order_TotalAmount, dateOrder);
                         }
                     }
 
@@ -572,6 +574,7 @@ namespace WRS2big_Web.Admin
                         existingOrder.driverId = driver.emp_id;
                         existingOrder.order_OrderStatus = "Accepted";
                         existingOrder.dateOrderAccepted = DateTimeOffset.UtcNow;
+                        existingOrder.orderAcceptedBy = name;
 
                         response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
@@ -1246,7 +1249,7 @@ namespace WRS2big_Web.Admin
                     Employee driver = allDrivers[0];
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Payment Received";
-                    existingOrder.payment_receivedBy = name;
+                    existingOrder.paymentGcashReceivedBy = name;
                     existingOrder.datePaymentReceived = DateTimeOffset.UtcNow;
                     //existingOrder.datePaymentReceived = DateTimeOffset.Parse("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 
@@ -1742,8 +1745,6 @@ namespace WRS2big_Web.Admin
             existingOrder.order_OrderStatus = "Declined";
             existingOrder.driverId = 0; // clear the driver ID
 
-            //existingOrder.driverId = (int)driverId; // clear the driver ID
-
             // Update the existing order object in the database
             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
@@ -1839,7 +1840,7 @@ namespace WRS2big_Web.Admin
                     Employee driver = allDrivers[0];
                     existingOrder.driverId = driver.emp_id;
                     existingOrder.order_OrderStatus = "Payment Received";
-                    existingOrder.payment_receivedBy = name;
+                    existingOrder.paymentPointsReceivedBy = name;
                     existingOrder.datePaymentReceived = DateTimeOffset.UtcNow;
                     //existingOrder.datePaymentReceived = DateTimeOffset.Parse("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
 

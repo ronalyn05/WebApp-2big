@@ -49,8 +49,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
             Dictionary<string, Employee> employeelist = response.ResultAs<Dictionary<string, Employee>>();
-            var filteredList = employeelist.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
-
+           
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable employeesTable = new DataTable();
@@ -62,7 +61,7 @@ namespace WRS2big_Web.Admin
             employeesTable.Columns.Add("CONTACT NUMBER");
             employeesTable.Columns.Add("EMAIL ADDRESS");
             employeesTable.Columns.Add("DATE HIRED");
-            // employeesTable.Columns.Add("AVAILABILITY");
+            employeesTable.Columns.Add("AVAILABILITY");
             employeesTable.Columns.Add("ADDRESS");
             employeesTable.Columns.Add("EMERGENCY CONTACT");
             employeesTable.Columns.Add("DATE ADDED");
@@ -74,6 +73,8 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Employee>() != null)
             {
+                var filteredList = employeelist.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -82,7 +83,7 @@ namespace WRS2big_Web.Admin
                     string dateStatusModified = entry.statusDateModified == DateTimeOffset.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     employeesTable.Rows.Add(entry.emp_status, entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
-                        entry.emp_gender, entry.emp_role,  entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact,
+                        entry.emp_gender, entry.emp_role,  entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, entry.emp_emergencycontact,
                         dateAdded, entry.addedBy, dateUpdated, entry.updatedBy, dateStatusModified, entry.status_ModifiedBy);
 
                     //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
@@ -378,6 +379,8 @@ namespace WRS2big_Web.Admin
                             entry.emp_gender, entry.emp_role, entry.emp_status, entry.emp_contactnum, entry.emp_email,
                             entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy,
                             dateStatusModified, entry.status_ModifiedBy);
+
+                        txtSearch.Text = entry.emp_id.ToString();
                     }
                 }
                 else

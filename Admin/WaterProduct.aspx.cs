@@ -45,7 +45,7 @@ namespace WRS2big_Web.Admin
                 //displayTankSupply();
             }
             displayTankSupply();
-           
+
             //drdDeliverytype.Visible = false;
             //btnDeliverytype.Visible = false;
 
@@ -54,6 +54,9 @@ namespace WRS2big_Web.Admin
         }
 
         //DISPLAY TANK SUPPLY NI DIRI
+
+
+
         private void displayTankSupply()
         {
 
@@ -67,11 +70,9 @@ namespace WRS2big_Web.Admin
                 Dictionary<string, TankSupply> supply = response.ResultAs<Dictionary<string, TankSupply>>();
 
                 if (supply != null)
-                { 
+                {
                     // Filter the list of orders by the owner's ID and the order status and delivery type
                     var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
-                    
-
 
                     if (filteredSupply != null)
                     {
@@ -105,7 +106,7 @@ namespace WRS2big_Web.Admin
                         {
                             var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno &&
                                                 (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending"));
-                                                //&& (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
+                            //&& (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
                             //var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
                             //                    || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
 
@@ -123,12 +124,12 @@ namespace WRS2big_Web.Admin
                                 }
                                 else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
                                 {
-                                    double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
+                                    double gallonsPerML = 0.00026417205236; // conversion  factor from gallons to milliliters
                                     //orderedGallons = order.order_Products[0].order_size / gallonsPerML;
                                     orderedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
 
                                 }
-                                
+
                                 //Get the total of ordered gallons 
                                 totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
 
@@ -190,7 +191,7 @@ namespace WRS2big_Web.Admin
 
                         //Get the total of remaining supply base on each ordered place
                         double remainingSupply = tankCapacity - totalOrderedGallons + totalDeclinedGallons;
-                        
+
 
                         // display the remaining supply
                         if (remainingSupply < 0)
@@ -200,12 +201,12 @@ namespace WRS2big_Web.Admin
                             TankSupply tankSupply = new TankSupply
                             {
                                 tankId = filteredSupply.tankId,
-                                    adminId = filteredSupply.adminId,
-                                    dateAdded = filteredSupply.dateAdded,
-                                    tankVolume = filteredSupply.tankVolume,
-                                    tankUnit = filteredSupply.tankUnit,
-                                    tankBalance = remainingSupply.ToString() + ' ' + "gallons", // Update the remaining supply field
-                                    dateUpdated = DateTimeOffset.UtcNow
+                                adminId = filteredSupply.adminId,
+                                dateAdded = filteredSupply.dateAdded,
+                                tankVolume = filteredSupply.tankVolume,
+                                tankUnit = filteredSupply.tankUnit,
+                                tankBalance = remainingSupply.ToString() + ' ' + "gallons", // Update the remaining supply field
+                                dateUpdated = DateTimeOffset.UtcNow
                             };
 
                             FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
@@ -216,22 +217,22 @@ namespace WRS2big_Web.Admin
                         else
                         {
                             lblremainingSupply.Text = remainingSupply.ToString("N2") + ' ' + "gallons";
-                       
+
 
                             // Update the remaining supply in the TANKSUPPLY table
                             TankSupply tankSupply = new TankSupply
                             {
-                                    tankId = filteredSupply.tankId,
-                                    adminId = filteredSupply.adminId,
-                                    dateAdded = filteredSupply.dateAdded,
-                                    tankVolume = filteredSupply.tankVolume,
-                                    tankUnit = filteredSupply.tankUnit,
-                                    addedBy = filteredSupply.addedBy,
-                                    tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
-                                    dateUpdated = DateTimeOffset.UtcNow
-                             };
+                                tankId = filteredSupply.tankId,
+                                adminId = filteredSupply.adminId,
+                                dateAdded = filteredSupply.dateAdded,
+                                tankVolume = filteredSupply.tankVolume,
+                                tankUnit = filteredSupply.tankUnit,
+                                addedBy = filteredSupply.addedBy,
+                                tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+                                dateUpdated = DateTimeOffset.UtcNow
+                            };
 
-                                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+                            FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
 
                         }
                     }
@@ -264,16 +265,18 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the product refill table
             FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
             Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
-            var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+           
 
             // Create the DataTable to hold the orders
             //sa pag create sa table
             DataTable productRefillTable = new DataTable();
             productRefillTable.Columns.Add("PRODUCT ID");
             productRefillTable.Columns.Add("PRODUCT NAME");
-            productRefillTable.Columns.Add("PRODUCT UNIT");
-            productRefillTable.Columns.Add("PRODUCT SIZE");
+            productRefillTable.Columns.Add("PRODUCT QUANTITY");
+            productRefillTable.Columns.Add("PRODUCT UNIT OF VOLUME");
             productRefillTable.Columns.Add("PRODUCT PRICE");
+            productRefillTable.Columns.Add("PRODUCT DISCOUNT");
+            productRefillTable.Columns.Add("OTHER PRODUCT STOCK");
             productRefillTable.Columns.Add("PRODUCT DISCOUNT");
             productRefillTable.Columns.Add("DATE ADDED");
             productRefillTable.Columns.Add("ADDED BY");
@@ -282,6 +285,8 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<ProductRefill>() != null)
             {
+                var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -305,8 +310,8 @@ namespace WRS2big_Web.Admin
 
 
                     productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType,
-                                         entry.pro_refillUnit, entry.pro_refillSize, entry.pro_refillPrice,
-                                         discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                                         entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
+                                         discount, entry.pro_stockQty + " " + entry.pro_stockUnit, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
             }
             else
@@ -320,27 +325,26 @@ namespace WRS2big_Web.Admin
             gridProductRefill.DataBind();
         }
         //RETRIEVE OTHERPRODUCT DATA
-        private void otherProductsDisplay()
+        private void thirdpartyProductsDisplay()
         {
             string idno = (string)Session["idno"];
             //string empId = (string)Session["emp_id"];
             // int adminId = int.Parse(idno);
             decimal discount;
 
-            
+
 
             // Retrieve all orders from the other product table
-            FirebaseResponse response = twoBigDB.Get("otherPRODUCTS");
-            Dictionary<string, otherProducts> otherproductsList = response.ResultAs<Dictionary<string, otherProducts>>();
-            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
-
+            FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS");
+            Dictionary<string, thirdpartyProducts> otherproductsList = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
+         
             // Create the DataTable to hold the other product report
             //sa pag create sa table
             DataTable otherProductTable = new DataTable();
             otherProductTable.Columns.Add("PRODUCT ID");
             otherProductTable.Columns.Add("PRODUCT NAME");
-            otherProductTable.Columns.Add("PRODUCT UNIT");
-            otherProductTable.Columns.Add("PRODUCT SIZE");
+            otherProductTable.Columns.Add("PRODUCT QUANTITY");
+            otherProductTable.Columns.Add("PRODUCT UNIT OF VOLUME");
             otherProductTable.Columns.Add("PRODUCT PRICE");
             otherProductTable.Columns.Add("PRODUCT STOCK");
             otherProductTable.Columns.Add("PRODUCT DISCOUNT");
@@ -349,12 +353,14 @@ namespace WRS2big_Web.Admin
             otherProductTable.Columns.Add("DATE UPDATED");
             otherProductTable.Columns.Add("UPDATED BY");
 
-            if (response != null && response.ResultAs<otherProducts>() != null)
+            if (response != null && response.ResultAs<thirdpartyProducts>() != null)
             {
+                var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
                 // Loop through the orders and add them to the DataTable
-                foreach(var entry in filteredList)
+                foreach (var entry in filteredList)
                 {
-                    if (!decimal.TryParse(entry.other_productDiscount.ToString(), out discount))
+                    if (!decimal.TryParse(entry.thirdparty_productDiscount.ToString(), out discount))
                     {
                         // If the discount value is not a valid decimal, assume it is zero
                         discount = 0;
@@ -370,9 +376,9 @@ namespace WRS2big_Web.Admin
                     string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    otherProductTable.Rows.Add(entry.other_productId, entry.other_productName, entry.other_productUnit,
-                                               entry.other_productSize, entry.other_productPrice,
-                                               entry.other_qtyStock + " " + entry.other_unitStock, 
+                    otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty,
+                                               entry.thirdparty_productUnitVolume, entry.thirdparty_productPrice,
+                                               entry.thirdparty_qtyStock + " " + entry.thirdparty_unitStock,
                                                discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
             }
@@ -394,8 +400,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the TANKSUPPLY table
             FirebaseResponse response = twoBigDB.Get("TANKSUPPLY");
             Dictionary<string, TankSupply> otherproductsList = response.ResultAs<Dictionary<string, TankSupply>>();
-            var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString( ) == idno).OrderByDescending(d => d.dateAdded);
-
+          
             // Create the DataTable to hold the tank supply report
             //sa pag create sa table
             DataTable tankSupplyTable = new DataTable();
@@ -407,6 +412,8 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<TankSupply>() != null)
             {
+                var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -416,7 +423,7 @@ namespace WRS2big_Web.Admin
                     {
                         dateAdded = " ";
                     }
-                   
+
 
                     tankSupplyTable.Rows.Add(entry.tankId, entry.tankVolume + " " + entry.tankUnit, entry.tankBalance, dateAdded, entry.addedBy);
                 }
@@ -449,6 +456,7 @@ namespace WRS2big_Web.Admin
                 // Check if a record with the same adminId and dateAdded exists in the TANKSUPPLY table
                 FirebaseResponse res = twoBigDB.Get("TANKSUPPLY");
                 Dictionary<string, TankSupply> supply = res.ResultAs<Dictionary<string, TankSupply>>();
+
                 if (supply != null) // Add this null check
                 {
                     // Filter the list of orders by the owner's ID and the order status and delivery type
@@ -464,25 +472,32 @@ namespace WRS2big_Web.Admin
                     }
 
                 }
-                        // INSERT DATA TO TABLE = TANKSUPPLY
-                        Random rnd = new Random();
-                        int idnum = rnd.Next(1, 10000);
+                // INSERT DATA TO TABLE = TANKSUPPLY
+                Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
 
-                    var data = new TankSupply
-                    {
-                        adminId = adminId,
-                        tankId = idnum,
-                        tankUnit = drdTankUnit.SelectedValue,
-                        tankVolume = tankSize.Text,
-                        addedBy = name,
-                        dateAdded = DateTimeOffset.UtcNow
-                    };
+                // Check if the refillDiscount field is empty
+                int discount = 0;
+                if (!string.IsNullOrEmpty(refillDiscount.Text))
+                {
+                    discount = int.Parse(refillDiscount.Text);
+                }
 
-                    SetResponse response;
-                    response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
-                    TankSupply result = response.ResultAs<TankSupply>();
+                var data = new TankSupply
+                {
+                    adminId = adminId,
+                    tankId = idnum,
+                    tankUnit = drdTankUnit.SelectedValue,
+                    tankVolume = tankSize.Text,
+                    addedBy = name,
+                    dateAdded = DateTimeOffset.UtcNow
+                };
 
-                    Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                SetResponse response;
+                response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
+                TankSupply result = response.ResultAs<TankSupply>();
+
+                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); </script>");
 
                 // Retrieve the existing Users log object from the database
                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
@@ -508,6 +523,8 @@ namespace WRS2big_Web.Admin
                 lblDate.Text = data.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                 lbltankSupply.Text = data.tankVolume + ' ' + data.tankUnit;
 
+                tankSize.Text = null;
+
             }
 
             catch (Exception ex)
@@ -516,7 +533,7 @@ namespace WRS2big_Web.Admin
             }
         }
 
-        //STORING DATA TO otherPRODUCT
+        //STORING DATA TO third party product
         protected async void btnAdd_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -530,21 +547,30 @@ namespace WRS2big_Web.Admin
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
-                var data = new otherProducts 
+                // Check if the product Discounts field is empty
+                string discount = " ";
+
+                if (!string.IsNullOrEmpty(productDiscounts.Text))
+                {
+                    discount = productDiscounts.Text;
+                }
+                 
+                var data = new thirdpartyProducts
                 {
                     adminId = adminId,
-                    other_productId = idnum,
-                    offerType = "other Product",
-                    other_productName = productName.Text,
-                    other_productUnit = drdprodUnit.SelectedValue,
-                    other_productSize = productSize.Text,
-                    other_productPrice = productPrice.Text,
-                    other_productDiscount = int.Parse(productDiscounts.Text),
-                    other_unitStock = drdUnitStock.Text,
-                    other_qtyStock = int.Parse(stockQty.Text),
-                    other_productImage = null,
+                    thirdparty_productId = idnum,
+                    offerType = "thirdparty product",
+                    thirdparty_productName = productName.Text,
+                    thirdparty_productUnitVolume = drdprodUnitVolume.SelectedValue,
+                    thirdparty_productQty = productQty.Text,
+                    thirdparty_productPrice = productPrice.Text,
+                    thirdparty_productDiscount = discount,
+                    thirdparty_unitStock = drdUnitStock.Text,
+                    thirdparty_qtyStock = int.Parse(stockQuantity.Text),
+                    thirdparty_productImage = null,
                     addedBy = name,
                     dateAdded = DateTime.UtcNow
+
                 };
 
 
@@ -564,23 +590,30 @@ namespace WRS2big_Web.Admin
 
                     var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                     var fileExtension = Path.GetExtension(imgProduct.FileName);
-                    var filePath = $"otherProduct_images/{data.other_productId}{fileExtension}";
+                    var filePath = $"thirdpartyProduct_images/{data.thirdparty_productId}{fileExtension}";
                     //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
                     using (var stream = new MemoryStream(fileBytes))
                     {
                         var storageTask = storage.Child(filePath).PutAsync(stream);
                         var downloadUrl = await storageTask;
                         // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.other_productImage = downloadUrl;
+                        data.thirdparty_productImage = downloadUrl;
                     }
                 }
 
                 SetResponse response;
                 //USER = tablename, Idno = key(PK ? )
-               // response = twoBigDB.Set("ADMIN/" + idno + "/Product/" + data.productId, data);
-                 response = twoBigDB.Set("otherPRODUCTS/" + data.other_productId, data);
-                otherProducts result = response.ResultAs<otherProducts>();
-                Response.Write("<script>alert ('Other water product offers with Id number: " + data.other_productId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                // response = twoBigDB.Set("ADMIN/" + idno + "/Product/" + data.productId, data);
+                response = twoBigDB.Set("thirdparty_PRODUCTS/" + data.thirdparty_productId, data);
+                thirdpartyProducts result = response.ResultAs<thirdpartyProducts>();
+                Response.Write("<script>alert ('Third party product offers with Id number: " + data.thirdparty_productId + " is successfully added!'); </script>");
+
+                productName.Text = null;
+                productQty.Text = null;
+                productPrice.Text = null;
+                drdprodUnitVolume.Text = null;
+                productDiscounts.Text = null;
+                stockQuantity.Text = null;
 
                 // Retrieve the existing Users log object from the database
                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
@@ -595,7 +628,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
-                    userActivity = "ADDED OTHER PRODUCT",
+                    userActivity = "ADDED THIRD PARTY PRODUCT",
                     activityTime = addedTime
                 };
 
@@ -620,6 +653,26 @@ namespace WRS2big_Web.Admin
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
+                // Check if the productDiscounts field is empty
+                string discount = " ";
+                if (!string.IsNullOrEmpty(refillDiscount.Text))
+                {
+                    discount = refillDiscount.Text;
+                }
+
+                string productUnit = " ";
+               
+                if (!string.IsNullOrEmpty(drdProductStock.Text)) 
+                {
+                    productUnit = drdProductStock.Text;
+                }
+                string productStockQty = " ";
+                if (!string.IsNullOrEmpty(txtStockQty.Text))
+                {
+                    productStockQty = txtStockQty.Text;
+                }
+               
+
                 var data = new ProductRefill
                 {
                     pro_refillId = idnum,
@@ -627,10 +680,12 @@ namespace WRS2big_Web.Admin
                     offerType = "Product Refill",
                     pro_refillWaterType = refillwaterType.Text,
                     pro_Image = null,
-                    pro_refillUnit = refillUnit.SelectedValue,
-                    pro_discount = int.Parse(refillDiscount.Text),
-                    pro_refillSize = refillSize.Text,
+                    pro_refillUnitVolume = refillUnitOfVolume.SelectedValue,
+                    pro_discount = refillDiscount.Text,
+                    pro_refillQty = refillQty.Text,
                     pro_refillPrice = refillPrice.Text,
+                    pro_stockUnit = drdProductStock.Text,
+                    pro_stockQty = txtStockQty.Text,
                     addedBy = name,
                     dateAdded = DateTime.UtcNow
                 };
@@ -668,12 +723,18 @@ namespace WRS2big_Web.Admin
                 // response = twoBigDB.Set("Product/" + idno + "/Product/" + data.productId, data);
                 response = twoBigDB.Set("PRODUCTREFILL/" + data.pro_refillId, data);
                 ProductRefill result = response.ResultAs<ProductRefill>();
-                Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>");
+                Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
 
+                refillwaterType.Text = null;
+                refillDiscount.Text = null;
+                refillQty.Text = null;
+                refillUnitOfVolume.Text = null;
+                refillPrice.Text = null;
+                txtStockQty.Text = null;
                 //Response.Write("<script>alert ('Delivery details successfully added!');</script>");
 
                 // Retrieve the existing Users log object from the database
-                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -749,9 +810,11 @@ namespace WRS2big_Web.Admin
                     pro_Image = existingProduct.pro_Image,
                     pro_refillId = existingProduct.pro_refillId,
                     pro_refillPrice = existingProduct.pro_refillPrice,
-                    pro_refillSize = existingProduct.pro_refillSize,
-                    pro_refillUnit = existingProduct.pro_refillUnit,
+                    pro_refillQty = existingProduct.pro_refillQty,
+                    pro_refillUnitVolume = existingProduct.pro_refillUnitVolume,
                     pro_refillWaterType = existingProduct.pro_refillWaterType,
+                    pro_stockQty = existingProduct.pro_stockQty,
+                    pro_stockUnit = existingProduct.pro_stockUnit,
                     dateAdded = existingProduct.dateAdded,
                     offerType = existingProduct.offerType,
                     addedBy = existingProduct.addedBy
@@ -770,11 +833,13 @@ namespace WRS2big_Web.Admin
                 if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.pro_discount.ToString())
                 {
                     int discountValue;
+
                     if (int.TryParse(newDiscount, out discountValue))
                     {
-                        updatedProduct.pro_discount = discountValue;
+                        updatedProduct.pro_discount = discountValue.ToString();
                     }
-                        
+
+
                 }
                 updatedProduct.updatedBy = name;
                 updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
@@ -783,7 +848,11 @@ namespace WRS2big_Web.Admin
                 response = twoBigDB.Update("PRODUCTREFILL/" + productID, updatedProduct);
 
                 // Show success message
-                Response.Write("<script>alert ('Product Refill " + productID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+                Response.Write("<script>alert ('Product " + productID + " has been successfully updated!'); </script>");
+
+                txt_price.Text = null;
+                txt_discount.Text = null;
+                txt_productId = null;
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.UtcNow;
@@ -831,8 +900,8 @@ namespace WRS2big_Web.Admin
                     return;
                 }
                 // Retrieve the existing product object from the database using the empID entered
-                FirebaseResponse response = twoBigDB.Get("otherPRODUCTS/" + productID);
-                otherProducts existingProduct = response.ResultAs<otherProducts>();
+                FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/" + productID);
+                thirdpartyProducts existingProduct = response.ResultAs<thirdpartyProducts>();
 
                 if (existingProduct == null)
                 {
@@ -854,18 +923,18 @@ namespace WRS2big_Web.Admin
                 string newDiscount = txt_discount.Text;
 
                 // Create a new employee object with the updated data
-                otherProducts updatedProduct = new otherProducts
+                thirdpartyProducts updatedProduct = new thirdpartyProducts
                 {
                     adminId = existingProduct.adminId,
-                    other_productDiscount = existingProduct.other_productDiscount,
-                    other_productId = existingProduct.other_productId,
-                    other_productImage = existingProduct.other_productImage,
-                    other_productName = existingProduct.other_productName,
-                    other_productPrice = existingProduct.other_productPrice,
-                    other_productSize = existingProduct.other_productSize,
-                    other_productUnit = existingProduct.other_productUnit,
-                    other_qtyStock = existingProduct.other_qtyStock,
-                    other_unitStock = existingProduct.other_unitStock,
+                    thirdparty_productDiscount = existingProduct.thirdparty_productDiscount,
+                    thirdparty_productId = existingProduct.thirdparty_productId,
+                    thirdparty_productImage = existingProduct.thirdparty_productImage,
+                    thirdparty_productName = existingProduct.thirdparty_productName,
+                    thirdparty_productPrice = existingProduct.thirdparty_productPrice,
+                    thirdparty_productQty = existingProduct.thirdparty_productQty,
+                    thirdparty_productUnitVolume = existingProduct.thirdparty_productUnitVolume,
+                    thirdparty_qtyStock = existingProduct.thirdparty_qtyStock,
+                    thirdparty_unitStock = existingProduct.thirdparty_unitStock,
                     offerType = existingProduct.offerType,
                     dateAdded = existingProduct.dateAdded,
                     addedBy = existingProduct.addedBy
@@ -873,31 +942,45 @@ namespace WRS2big_Web.Admin
                 };
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.other_productPrice)
+                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.thirdparty_productPrice)
                 {
-                    updatedProduct.other_productPrice = newPrice;
+                    updatedProduct.thirdparty_productPrice = newPrice;
                 }
                 //if (!string.IsNullOrEmpty(newDiscount) && int.TryParse(newDiscount, out int discountValue) && discountValue != updatedProduct.pro_discount)
                 //{
                 //    updatedProduct.pro_discount = discountValue;
                 //}
-
-                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.other_productDiscount.ToString())
+                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.thirdparty_productDiscount.ToString())
                 {
                     int discountValue;
+
                     if (int.TryParse(newDiscount, out discountValue))
                     {
-                        updatedProduct.other_productDiscount = discountValue;
+                        updatedProduct.thirdparty_productDiscount = discountValue.ToString();
                     }
+
+
                 }
+                //if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.thirdparty_productDiscount.ToString())
+                //{
+                //    int discountValue;
+                //    if (int.TryParse(newDiscount, out discountValue))
+                //    {
+                //        updatedProduct.thirdparty_productDiscount = discountValue;
+                //    }
+                //}
                 updatedProduct.updatedBy = name;
                 updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
 
                 // Update the existing employee object in the database
-                response = twoBigDB.Update("otherPRODUCTS/" + productID, updatedProduct);
+                response = twoBigDB.Update("thirdparty_PRODUCTS/" + productID, updatedProduct);
 
                 // Show success message
-                Response.Write("<script>alert ('Other Product " + productID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+                Response.Write("<script>alert ('Other Product " + productID + " has been successfully updated!'); location.reload(); </script>");
+
+                txt_price.Text = null;
+                txt_discount.Text = null;
+                txt_productId = null;
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.UtcNow;
@@ -914,7 +997,7 @@ namespace WRS2big_Web.Admin
                 };
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
-                otherProductsDisplay();
+                thirdpartyProductsDisplay();
             }
             catch (Exception ex)
             {
@@ -926,41 +1009,41 @@ namespace WRS2big_Web.Admin
         //SEARCH PRODUCT REPORT
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-                try
-                {
-                    string selectedOption = ddlSearchOptions.SelectedValue;
+            try
+            {
+                string selectedOption = ddlSearchOptions.SelectedValue;
 
-                
-                    if (selectedOption == "0")
-                    {
-                        lblProductData.Text = "PRODUCT REFILL";
-                        gridProductRefill.Visible = true;
-                        gridTankSupply.Visible = false;
-                        gridotherProduct.Visible = false;
-                        productRefillDisplay();
-                    } 
-                    else if (selectedOption == "1")
-                    {
-                        lblProductData.Text = "OTHER PRODUCT";
-                        gridProductRefill.Visible = false;
-                        gridTankSupply.Visible = false;
-                        gridotherProduct.Visible = true;
-                        otherProductsDisplay();
-                    }
-                    else if (selectedOption == "2")
-                    {
-                        lblProductData.Text = "TANK SUPPLY";
-                        gridProductRefill.Visible = false;
-                        gridotherProduct.Visible = false;
-                        gridTankSupply.Visible = true;
-                        tankSupplyDisplay();
-                    }
-                }
-                catch (Exception ex)
+
+                if (selectedOption == "0")
                 {
-                    Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+                    lblProductData.Text = "PRODUCT REFILL";
+                    gridProductRefill.Visible = true;
+                    gridTankSupply.Visible = false;
+                    gridotherProduct.Visible = false;
+                    productRefillDisplay();
+                }
+                else if (selectedOption == "1")
+                {
+                    lblProductData.Text = "THIRDPARTY PRODUCT";
+                    gridProductRefill.Visible = false;
+                    gridTankSupply.Visible = false;
+                    gridotherProduct.Visible = true;
+                    thirdpartyProductsDisplay();
+                }
+                else if (selectedOption == "2")
+                {
+                    lblProductData.Text = "TANK SUPPLY";
+                    gridProductRefill.Visible = false;
+                    gridotherProduct.Visible = false;
+                    gridTankSupply.Visible = true;
+                    tankSupplyDisplay();
                 }
             }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
+            }
+        }
         //SEARCH CERTAIN PRODUCT REPORT
         protected void btnSearchProduct_Click(object sender, EventArgs e)
         {
@@ -977,15 +1060,18 @@ namespace WRS2big_Web.Admin
                 Dictionary<string, ProductRefill> productsList = response.ResultAs<Dictionary<string, ProductRefill>>();
 
                 // Retrieve all orders from the ORDERS table
-                FirebaseResponse responselist = twoBigDB.Get("otherPRODUCTS");
-                Dictionary<string, otherProducts> otherProductlist = responselist.ResultAs<Dictionary<string, otherProducts>>();
+                FirebaseResponse responselist = twoBigDB.Get("thirdparty_PRODUCTS");
+                Dictionary<string, thirdpartyProducts> otherProductlist = responselist.ResultAs<Dictionary<string, thirdpartyProducts>>();
 
                 // Create the DataTable to hold the orders
                 DataTable productRefillTable = new DataTable();
                 productRefillTable.Columns.Add("PRODUCT ID");
                 productRefillTable.Columns.Add("PRODUCT NAME");
-                productRefillTable.Columns.Add("PRODUCT UNIT & SIZE");
+                productRefillTable.Columns.Add("PRODUCT UNIT OF VOLUME");
+                productRefillTable.Columns.Add("PRODUCT QUANTITY");
                 productRefillTable.Columns.Add("PRODUCT PRICE");
+                productRefillTable.Columns.Add("PRODUCT DISCOUNT");
+                productRefillTable.Columns.Add("OTHER PRODUCT STOCK");
                 productRefillTable.Columns.Add("PRODUCT DISCOUNT");
                 productRefillTable.Columns.Add("DATE ADDED");
                 productRefillTable.Columns.Add("ADDED BY");
@@ -1014,26 +1100,27 @@ namespace WRS2big_Web.Admin
                     // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                            if (productnum == entry.pro_refillId.ToString())
+                        if (productnum == entry.pro_refillId.ToString())
+                        {
+                            if (!decimal.TryParse(entry.pro_discount.ToString(), out discount))
                             {
-                                if (!decimal.TryParse(entry.pro_discount.ToString(), out discount))
-                                {
-                                    // If the discount value is not a valid decimal, assume it is zero
-                                    discount = 0;
-                                }
-                                else
-                                {
-                                    // Convert discount from percentage to decimal
-                                    discount /= 100;
-                                }
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                                productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillSize + " " + entry.pro_refillUnit, 
-                                    entry.pro_refillPrice, discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                                // If the discount value is not a valid decimal, assume it is zero
+                                discount = 0;
                             }
+                            else
+                            {
+                                // Convert discount from percentage to decimal
+                                discount /= 100;
+                            }
+                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType,
+                                         entry.pro_refillUnitVolume, entry.pro_refillQty, entry.pro_refillPrice,
+                                         discount, entry.pro_stockQty + " " + entry.pro_stockUnit, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                        }
                     }
-                   
+
                 }
                 else
                 {
@@ -1041,34 +1128,34 @@ namespace WRS2big_Web.Admin
                     lblMessage.Text = "No data found for product with id number" + productnum;
                 }
                 //condition to fetch the other product data
-                if (responselist != null && responselist.ResultAs<otherProducts>() != null)
+                if (responselist != null && responselist.ResultAs<thirdpartyProducts>() != null)
                 {
-                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno && (d.other_productId.ToString() == productnum));
+                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno && (d.thirdparty_productId.ToString() == productnum));
 
-                        // Loop through the entries and add them to the DataTable
-                        foreach (var entry in filteredList)
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        if (productnum == entry.thirdparty_productId.ToString())
                         {
-                            if (productnum == entry.other_productId.ToString())
+                            if (!decimal.TryParse(entry.thirdparty_productDiscount.ToString(), out discount))
                             {
-                                if (!decimal.TryParse(entry.other_productDiscount.ToString(), out discount))
-                                {
-                                    // If the discount value is not a valid decimal, assume it is zero
-                                    discount = 0;
-                                }
-                                else
-                                {
-                                    // Convert discount from percentage to decimal
-                                    discount /= 100;
-                                }
-
-                                string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                                otherProductTable.Rows.Add(entry.other_productId, entry.other_productName, entry.other_productSize + " " + entry.other_productUnit, 
-                                     entry.other_productPrice, discount, entry.other_qtyStock + " " + entry.other_unitStock, dateAdded, 
-                                     entry.addedBy, dateUpdated, entry.updatedBy);
+                                // If the discount value is not a valid decimal, assume it is zero
+                                discount = 0;
                             }
+                            else
+                            {
+                                // Convert discount from percentage to decimal
+                                discount /= 100;
+                            }
+
+                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty + " " + entry.thirdparty_productUnitVolume,
+                                 entry.thirdparty_productPrice, discount, entry.thirdparty_qtyStock + " " + entry.thirdparty_unitStock, dateAdded,
+                                 entry.addedBy, dateUpdated, entry.updatedBy);
                         }
+                    }
                 }
                 else
                 {

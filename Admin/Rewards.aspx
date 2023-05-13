@@ -41,7 +41,7 @@
                                    <!-- Page-body start -->
 
                                     <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addreward"><i class="fa fa-plus"></i> Set reward system </button>
-                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".setpromo"><i class="fa fa-plus"></i> Set promo offered </button>
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".setpromo"><i class="fa fa-plus"></i> Set discount coupon offered </button>
                                     <br />
                                       <%-- MODAL FOR REWARD SYSTEM--%>
                                       <div class="modal fade addreward" tabindex="-1" role="dialog" aria-hidden="true">
@@ -153,14 +153,14 @@
                                             <div class="modal-content">
                                             <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel1"> PROMO OFFERED</h4>
+                                            <h4 class="modal-title" id="myModalLabel1"> DISCOUNT COUPON</h4>
                                                 <%--exit button--%>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
                                             <div class="modal-body">
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
-                                                <h4 style="color:black;font-family:Bahnschrift"> Set your promo offered here:</h4>
+                                                <h4 style="color:black;font-family:Bahnschrift"> Set your discount coupon offered here:</h4>
                                                 <hr />
                                                  <div class="col-md-12 col-sm-12 ">
                                             <h5>Promo Name:</h5>
