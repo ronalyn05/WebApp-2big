@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -29,6 +30,26 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
+            int clientID = (int)Session["currentClient"];
+
+            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
+            Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+            if (admin != null)
+            {
+                if (admin.status == "Approved" || admin.status == "Declined")
+                {
+                    declineButton.Enabled = false;
+                    approveButton.Enabled = false;
+
+                }
+                else
+                {
+                    approveButton.Enabled = true;
+                    declineButton.Enabled = true;
+                }
+            }
+
             DisplayDetails();
         }
         private void DisplayDetails()
@@ -50,6 +71,7 @@ namespace WRS2big_Web.superAdmin
             chosenValidID.Text = admin.validID;
             chosenProof.Text = admin.businessProof;
             proofChosen.Text = admin.businessProof + " " + "File:";
+            
 
             //FILE 
             string proofLink = admin.businessProofLnk;
@@ -68,6 +90,19 @@ namespace WRS2big_Web.superAdmin
             if (admin.profile_image != null)
             {
                 clientImage.ImageUrl = admin.profile_image.ToString();
+            }
+            if (admin.businessProofLnk != null)
+            {
+
+                string fileExtension = Path.GetExtension(admin.businessProofLnk.ToString()).ToLower();
+
+                // Check if file is an image
+                if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
+                {
+                    businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
+                }
+
+                //businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
             }
 
 
@@ -105,6 +140,7 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.status = "Approved";
+            admin.dateApproved = DateTime.Now;
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             //SEND NOTIFICATION TO ADMIN 
@@ -180,6 +216,7 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.status = "Declined";
+            admin.dateDeclined = DateTime.Now;
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             //SEND NOTIFICATION TO ADMIN 
@@ -191,7 +228,7 @@ namespace WRS2big_Web.superAdmin
                 sender = "Super Admin",
                 title = "Client Declined",
                 receiver = "Admin",
-                body = "Your application is Declined! The requirements submitted doesnt meet our requirements",
+                body = "Your application is Declined!",
                 notificationDate = DateTime.Now,
                 status = "unread",
                 notificationID = ID

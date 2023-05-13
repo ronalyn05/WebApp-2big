@@ -260,6 +260,7 @@ namespace WRS2big_Web.superAdmin
 
 
                 customerDetails.cus_status = "Approved";
+                customerDetails.dateApproved = DateTime.Now;
                 response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
 
                 //SEND NOTIFICATION TO CUSTOMER 
@@ -344,7 +345,29 @@ namespace WRS2big_Web.superAdmin
 
 
                 customerDetails.cus_status = "Declined";
+                customerDetails.dateDeclined = DateTime.Now;
                 response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
+
+
+                //SEND NOTIFICATION TO CUSTOMER 
+                Random rnd = new Random();
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Model.Notification
+                {
+                    cusId = customerID,
+                    sender = "Super Admin",
+                    title = "Application Declined",
+                    receiver = "Customer",
+                    body = "Your application is Declined!",
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
                 Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }

@@ -170,6 +170,7 @@
                                                                                                     <div class="form-group row text"  >
                                                                                                         <asp:Label runat="server" class="col-sm-5 col-form-label" id="proofChosen" style="font-size:18px"></asp:Label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                            <asp:Image runat="server" ID="businessProofImg" class="img-500  " style="width:600px;height:600px" />
                                                                                                             <asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
                                                                                                         </div>
                                                                                                     </div>

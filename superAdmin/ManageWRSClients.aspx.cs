@@ -45,9 +45,14 @@ namespace WRS2big_Web.superAdmin
                 pendingGridView.Visible = false;
                 approvedGridView.Visible = false;
                 declinedGridView.Visible = false;
+                //AllGridview.Visible = false;
                 selectAll.Visible = false;
                 approveButton.Visible = false;
                 declineButton.Visible = false;
+
+              
+
+               
             }
         }
 
@@ -358,6 +363,7 @@ namespace WRS2big_Web.superAdmin
 
 
                 customerDetails.status = "Declined";
+                customerDetails.dateDeclined = DateTime.Now;
                 response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
 
                 //SEND NOTIFICATION

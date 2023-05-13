@@ -78,7 +78,7 @@ namespace WRS2big_Web
         {
             string adminID = Session["idno"].ToString();
 
-            if (adminID == null && Session["idno"] == null)
+            if (adminID == null)
             {
                 Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
