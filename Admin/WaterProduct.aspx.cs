@@ -54,9 +54,6 @@ namespace WRS2big_Web.Admin
         }
 
         //DISPLAY TANK SUPPLY NI DIRI
-
-
-
         private void displayTankSupply()
         {
 
@@ -88,153 +85,168 @@ namespace WRS2big_Web.Admin
                         Dictionary<string, WalkInOrders> walkinOrders = walkinResponse.ResultAs<Dictionary<string, WalkInOrders>>();
 
                         // Convert tank capacity to gallons if it's not already in gallons
-                        double tankCapacity = double.Parse(filteredSupply.tankVolume);
-                        if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
+                        double tankCapacity = 0;
+                        if (!string.IsNullOrEmpty(filteredSupply.tankVolume) && double.TryParse(filteredSupply.tankVolume, out double volume))
                         {
-                            double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
-                            tankCapacity *= gallonsPerLiter;
-                        }
-                        else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
-                        {
-                            double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
-                            tankCapacity /= gallonsPerML;
-                        }
-
-                        // Calculate the total gallons ordered
-                        double totalOrderedGallons = 0;
-                        if (orders != null)
-                        {
-                            var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno &&
-                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending"));
-                            //&& (d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon"));
-                            //var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted"
-                            //                    || d.order_OrderStatus == "Pending" && d.order_OrderMethod == "refill" || d.order_OrderMethod == "new gallon");
-
-                            foreach (Order order in filteredOrders)
+                            tankCapacity = volume;
+                            if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
                             {
-                                double orderedGallons = 0;
-                                if (order.order_Products[0].order_unit == "gallon/s")
-                                {
-                                    orderedGallons = (double)order.order_Products[0].order_size;
-                                }
-                                else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
-                                {
-                                    double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                    orderedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
-                                }
-                                else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
-                                {
-                                    double gallonsPerML = 0.00026417205236; // conversion  factor from gallons to milliliters
-                                    //orderedGallons = order.order_Products[0].order_size / gallonsPerML;
-                                    orderedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
+                                double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                tankCapacity *= gallonsPerLiter;
+                            }
+                            else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
+                            {
+                                double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                tankCapacity /= gallonsPerML;
+                            }
+                            // Calculate the total gallons ordered
+                            double totalOrderedGallons = 0;
+                            // Calculate the total gallons declined
+                            double totalDeclinedGallons = 0;
+                            if (orders != null)
+                            {
+                                var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno);
 
-                                }
+                                foreach (Order order in filteredOrders)
+                                {
+                                    if (order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Accepted" || order.order_OrderStatus == "Pending")
+                                    {
+                                        double orderedGallons = 0;
+                                        if (order.order_Products[0].order_unit == "gallon/s")
+                                        {
+                                            orderedGallons = (double)order.order_Products[0].order_size;
+                                        }
+                                        else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
+                                        {
+                                            double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
+                                            orderedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
+                                        }
+                                        else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
+                                        {
+                                            double gallonsPerML = 0.00026417205236; // conversion  factor from gallons to milliliters
+                                                                                    //orderedGallons = order.order_Products[0].order_size / gallonsPerML;
+                                            orderedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
 
-                                //Get the total of ordered gallons 
-                                totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
+                                        }
+
+                                        //Get the total of ordered gallons 
+                                        totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
+                                    }
+                                    if (order.order_OrderStatus == "Declined")
+                                    {
+
+                                        double declinedGallons = 0;
+                                        if (order.order_Products[0].order_unit == "gallon/s")
+                                        {
+                                            declinedGallons = (double)order.order_Products[0].order_size;
+                                        }
+                                        else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
+                                        {
+                                            double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
+                                            declinedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
+                                        }
+                                        else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
+                                        {
+                                            double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
+                                            declinedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
+                                        }
+                                        // Get the total of declined gallons
+                                        totalDeclinedGallons += declinedGallons * order.order_OverallQuantities;
+                                    }
+                                }
+                            }
+
+                            //Calculate the ordered gallons of walkin
+                            if (walkinOrders != null)
+                            {
+                                var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno);
+                                foreach (WalkInOrders order in filteredWalkinOrders)
+                                {
+                                    // Convert order size to gallons or milliliters based on order unit
+                                    double orderedGallons = 0;
+                                    if (order.productUnit == "L" || order.productUnit == "liter/s")
+                                    {
+                                        double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                                        orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
+                                    }
+                                    else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
+                                    {
+                                        double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                                        orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
+                                    }
+                                    //Get the total of ordered gallons 
+                                    totalOrderedGallons += orderedGallons * order.productQty;
+                                }
+                            }
+
+                            //Get the total of remaining supply base on each ordered place
+                            //double remainingSupply = tankCapacity - totalOrderedGallons + totalDeclinedGallons;
+
+                            // Calculate the remaining gallons
+                            double remainingSupply = tankCapacity - totalOrderedGallons;
+                            remainingSupply += totalDeclinedGallons;
+
+
+                            // display the remaining supply
+                            if (remainingSupply < 0)
+                            {
+                                remainingSupply = 0;
+
+                                TankSupply tankSupply = new TankSupply
+                                {
+                                    tankId = filteredSupply.tankId,
+                                    adminId = filteredSupply.adminId,
+                                    dateAdded = filteredSupply.dateAdded,
+                                    tankVolume = filteredSupply.tankVolume,
+                                    tankUnit = filteredSupply.tankUnit,
+                                    tankBalance = remainingSupply.ToString() + ' ' + "gallons", // Update the remaining supply field
+                                    dateUpdated = DateTimeOffset.UtcNow
+                                };
+
+                                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
+                                lblremainingSupply.Text = "There is no remaining supply. Currently unable to fullfill any further orders.";
 
                             }
-                        }
-                        // Calculate the total gallons declined
-                        double totalDeclinedGallons = 0;
-                        var declinedOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Declined");
-                        foreach (Order order in declinedOrders)
-                        {
-                            double declinedGallons = 0;
-                            if (order.order_Products[0].order_unit == "gallon/s")
+                            else
                             {
-                                declinedGallons = (double)order.order_Products[0].order_size;
-                            }
-                            else if (order.order_Products[0].order_unit == "L" || order.order_Products[0].order_unit == "liter/s")
-                            {
-                                double gallonsPerLiter = 3.78541; // conversion factor from gallon to liters
-                                declinedGallons = (double)order.order_Products[0].order_size * gallonsPerLiter;
-                            }
-                            else if (order.order_Products[0].order_unit == "mL" || order.order_Products[0].order_unit == "ML" || order.order_Products[0].order_unit == "milliliters")
-                            {
-                                double gallonsPerML = 0.00026417205236; // conversion factor from gallons to milliliters
-                                declinedGallons = (double)order.order_Products[0].order_size / gallonsPerML;
-                            }
-                            // Get the total of declined gallons
-                            totalDeclinedGallons += declinedGallons * order.order_OverallQuantities;
-                        }
+                                lblremainingSupply.Text = remainingSupply.ToString("N2") + ' ' + "gallons";
 
-                        // Update the tank supply and remaining balance
-                        //double remainingGallons = tankCapacity + totalOrderedGallons - totalDeclinedGallons;
-                        //double remainingBalance = remainingGallons * filteredSupply.pricePerGallon;
 
-                        //lblremainingGallons.Text = remainingGallons.ToString() + " gallons";
-                        //lblRemainingBalance.Text = remainingBalance.ToString("C");
-
-                        //Calculate the ordered gallons of walkin
-                        if (walkinOrders != null)
-                        {
-                            var filteredWalkinOrders = walkinOrders.Values.Where(d => d.adminId.ToString() == idno);
-                            foreach (WalkInOrders order in filteredWalkinOrders)
-                            {
-                                // Convert order size to gallons or milliliters based on order unit
-                                double orderedGallons = 0;
-                                if (order.productUnit == "L" || order.productUnit == "liter/s")
+                                // Update the remaining supply in the TANKSUPPLY table
+                                TankSupply tankSupply = new TankSupply
                                 {
-                                    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
-                                    orderedGallons = Double.Parse(order.productSize) * gallonsPerLiter;
-                                }
-                                else if (order.productUnit == "mL" || order.productUnit == "ML" || order.productUnit == "milliliters")
-                                {
-                                    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
-                                    orderedGallons = Double.Parse(order.productSize) / gallonsPerML;
-                                }
-                                //Get the total of ordered gallons 
-                                totalOrderedGallons += orderedGallons * order.productQty;
+                                    tankId = filteredSupply.tankId,
+                                    adminId = filteredSupply.adminId,
+                                    dateAdded = filteredSupply.dateAdded,
+                                    tankVolume = filteredSupply.tankVolume,
+                                    tankUnit = filteredSupply.tankUnit,
+                                    addedBy = filteredSupply.addedBy,
+                                    tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
+                                    dateUpdated = DateTimeOffset.UtcNow
+                                };
+
+                                FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
+
                             }
-                        }
-
-                        //Get the total of remaining supply base on each ordered place
-                        double remainingSupply = tankCapacity - totalOrderedGallons + totalDeclinedGallons;
-
-
-                        // display the remaining supply
-                        if (remainingSupply < 0)
-                        {
-                            remainingSupply = 0;
-
-                            TankSupply tankSupply = new TankSupply
-                            {
-                                tankId = filteredSupply.tankId,
-                                adminId = filteredSupply.adminId,
-                                dateAdded = filteredSupply.dateAdded,
-                                tankVolume = filteredSupply.tankVolume,
-                                tankUnit = filteredSupply.tankUnit,
-                                tankBalance = remainingSupply.ToString() + ' ' + "gallons", // Update the remaining supply field
-                                dateUpdated = DateTimeOffset.UtcNow
-                            };
-
-                            FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
-
-                            lblremainingSupply.Text = "There is no remaining supply. Currently unable to fullfill any further orders.";
 
                         }
-                        else
-                        {
-                            lblremainingSupply.Text = remainingSupply.ToString("N2") + ' ' + "gallons";
+
+                        //double tankCapacity = double.Parse(filteredSupply.tankVolume);
+                        //if (filteredSupply.tankUnit == "L" || filteredSupply.tankUnit == "liter/s")
+                        //{
+                        //    double gallonsPerLiter = 0.26417205236; // conversion factor from gallon to liters
+                        //    tankCapacity *= gallonsPerLiter;
+                        //}
+                        //else if (filteredSupply.tankUnit == "mL" || filteredSupply.tankUnit == "ML" || filteredSupply.tankUnit == "milliliters")
+                        //{
+                        //    double gallonsPerML = 3785.41; // conversion factor from gallons to milliliters
+                        //    tankCapacity /= gallonsPerML;
+                        //}
 
 
-                            // Update the remaining supply in the TANKSUPPLY table
-                            TankSupply tankSupply = new TankSupply
-                            {
-                                tankId = filteredSupply.tankId,
-                                adminId = filteredSupply.adminId,
-                                dateAdded = filteredSupply.dateAdded,
-                                tankVolume = filteredSupply.tankVolume,
-                                tankUnit = filteredSupply.tankUnit,
-                                addedBy = filteredSupply.addedBy,
-                                tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
-                                dateUpdated = DateTimeOffset.UtcNow
-                            };
 
-                            FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
 
-                        }
                     }
                     else
                     {
@@ -277,7 +289,6 @@ namespace WRS2big_Web.Admin
             productRefillTable.Columns.Add("PRODUCT PRICE");
             productRefillTable.Columns.Add("PRODUCT DISCOUNT");
             productRefillTable.Columns.Add("OTHER PRODUCT STOCK");
-            productRefillTable.Columns.Add("PRODUCT DISCOUNT");
             productRefillTable.Columns.Add("DATE ADDED");
             productRefillTable.Columns.Add("ADDED BY");
             productRefillTable.Columns.Add("DATE UPDATED");
@@ -290,27 +301,23 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    if (!decimal.TryParse(entry.pro_discount.ToString(), out discount))
+                    if (!decimal.TryParse(entry.pro_discount, out discount))
                     {
                         // If the discount value is not a valid decimal, assume it is zero
                         discount = 0;
                     }
+
                     else
                     {
                         // Convert discount from percentage to decimal
                         discount /= 100;
                     }
-                    //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    //string dateUpdated = entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     // Convert the dates to strings using a standard format
                     string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
 
-
-
-                    productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType,
-                                         entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
+                    productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
                                          discount, entry.pro_stockQty + " " + entry.pro_stockUnit, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
             }
@@ -497,7 +504,7 @@ namespace WRS2big_Web.Admin
                 response = twoBigDB.Set("TANKSUPPLY/" + data.tankId, data);
                 TankSupply result = response.ResultAs<TankSupply>();
 
-                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); </script>");
+                Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
 
                 // Retrieve the existing Users log object from the database
                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
@@ -554,7 +561,31 @@ namespace WRS2big_Web.Admin
                 {
                     discount = productDiscounts.Text;
                 }
-                 
+
+                string productStockUnit = " ";
+                if (drdUnitStock.SelectedValue == "bottle")
+                {
+                    productStockUnit = drdUnitStock.SelectedValue;
+                }
+                else if (drdUnitStock.SelectedValue == "gallon")
+                {
+                    productStockUnit = drdUnitStock.SelectedValue;
+                }
+                else if (drdUnitStock.SelectedValue == "box/case")
+                {
+                    productStockUnit = drdUnitStock.SelectedValue;
+                }
+                else
+                {
+                    productStockUnit = " ";
+                }
+                string productStockQty = " ";
+                if (!string.IsNullOrEmpty(txtStockQty.Text))
+                {
+                    productStockQty = txtStockQty.Text;
+                }
+
+
                 var data = new thirdpartyProducts
                 {
                     adminId = adminId,
@@ -565,8 +596,8 @@ namespace WRS2big_Web.Admin
                     thirdparty_productQty = productQty.Text,
                     thirdparty_productPrice = productPrice.Text,
                     thirdparty_productDiscount = discount,
-                    thirdparty_unitStock = drdUnitStock.Text,
-                    thirdparty_qtyStock = int.Parse(stockQuantity.Text),
+                    thirdparty_unitStock = productStockUnit,
+                    thirdparty_qtyStock = int.Parse(productStockQty),
                     thirdparty_productImage = null,
                     addedBy = name,
                     dateAdded = DateTime.UtcNow
@@ -659,13 +690,25 @@ namespace WRS2big_Web.Admin
                 {
                     discount = refillDiscount.Text;
                 }
-
-                string productUnit = " ";
-               
-                if (!string.IsNullOrEmpty(drdProductStock.Text)) 
+                string productStockUnit = " ";
+                if (drdProductStock.SelectedValue == "bottle")
                 {
-                    productUnit = drdProductStock.Text;
+                    productStockUnit = drdProductStock.SelectedValue;
                 }
+               else if(drdProductStock.SelectedValue == "gallon")
+                {
+                    productStockUnit = drdProductStock.SelectedValue;
+                }
+                else if (drdProductStock.SelectedValue == "box/case")
+                {
+                    productStockUnit = drdProductStock.SelectedValue;
+                }
+                else
+                {
+                    productStockUnit = " ";
+                }
+
+
                 string productStockQty = " ";
                 if (!string.IsNullOrEmpty(txtStockQty.Text))
                 {
@@ -681,11 +724,11 @@ namespace WRS2big_Web.Admin
                     pro_refillWaterType = refillwaterType.Text,
                     pro_Image = null,
                     pro_refillUnitVolume = refillUnitOfVolume.SelectedValue,
-                    pro_discount = refillDiscount.Text,
+                    pro_discount = discount,
                     pro_refillQty = refillQty.Text,
                     pro_refillPrice = refillPrice.Text,
-                    pro_stockUnit = drdProductStock.Text,
-                    pro_stockQty = txtStockQty.Text,
+                    pro_stockUnit = productStockUnit,
+                    pro_stockQty = productStockQty,
                     addedBy = name,
                     dateAdded = DateTime.UtcNow
                 };
