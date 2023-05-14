@@ -86,7 +86,7 @@ namespace WRS2big_Web.Admin
                 }
                 if (ordersTable.Rows.Count == 0)
                 {
-                    lblMessage.Text = "No  record found  ";
+                    lblMessage.Text = "No record of successful order found  ";
                     lblMessage.Visible = true;
                 }
                 else

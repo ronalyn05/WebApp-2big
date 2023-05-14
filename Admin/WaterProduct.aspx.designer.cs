@@ -132,6 +132,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnAdd;
 
         /// <summary>
+        /// radioType_productoffered control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList radioType_productoffered;
+
+        /// <summary>
         /// refillwaterType control.
         /// </summary>
         /// <remarks>
@@ -265,6 +274,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnEditDetails;
+
+        /// <summary>
+        /// lblViewSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewSearch;
 
         /// <summary>
         /// lblMessage control.

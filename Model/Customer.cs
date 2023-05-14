@@ -15,8 +15,6 @@ namespace WRS2big_Web.Model
         public string birthdate { get; set; }
         public string address { get; set; }
         public string email { get; set; }
-        public string password { get; set; }
-        public string confirmPassword { get; set; }
         public string cus_status { get; set; }
         public string imageProof { get; set; }
         public string imageSelfie { get; set; }
@@ -30,6 +28,7 @@ namespace WRS2big_Web.Model
 
 
     }
+
     public class Order
     {
         public int orderID { get; set; }
@@ -37,6 +36,7 @@ namespace WRS2big_Web.Model
         public int cusId { get; set; }
         public int driverId { get; set; }
         public string orderPaymentMethod { get; set; }
+        public string orderPaymentMethod2 { get; set; }
         public string order_DeliveryTypeValue { get; set; }
         public string order_OrderStatus { get; set; }
         public string order_OrderTypeValue { get; set; }
@@ -66,8 +66,8 @@ namespace WRS2big_Web.Model
         public int order_ProductId { get; set; }
         public string order_ProductName { get; set; }
         public decimal order_ProductPrice { get; set; }
-        public decimal order_size { get; set; }
-        public string order_unit { get; set; }
+        public int  pro_refillQty{ get; set; }
+        public string pro_refillUnitVolume { get; set; }
         public string qtyPerItem { get; set; }
         public string offerType { get; set; }
     }

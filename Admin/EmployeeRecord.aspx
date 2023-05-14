@@ -230,7 +230,7 @@
                                                                         <div class="col-md-12 col-sm-12">
                                                                             <strong>Employee ID:</strong>
                                                                             <div style="display: flex;">
-                                                                                <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID you want to update" class="form-control" placeholder="Enter Employee ID" TextMode="Number" Height="40px" Width="200px"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID or firstname you want to update" class="form-control" placeholder="Enter Employee ID or firstname" Height="40px" Width="300px"></asp:TextBox>
                                                                                 <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />
                                                                             </div>
 
@@ -302,6 +302,7 @@
                                                                             <div class="table-responsive">
                                                                                 <div class="tab-content">
                                                                                     <div class="tab-pane active">
+                                                                                        <asp:Label ID="lblSearhRecord" runat="server" Font-Underline="true" ForeColor="black" />
                                                                                         <%--the gridview starts here--%>
                                                                                         <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                                             <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red" />

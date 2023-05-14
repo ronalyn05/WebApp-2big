@@ -120,7 +120,7 @@
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
                                                                             <%-- <div class="item form-group">--%>
-                                                                            <h4 style="color: black; font-family: Bahnschrift">Set outside offered products here:</h4>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">Set third party offered products here:</h4>
                                                                             <hr />
                                                                             <strong>Note: This is intended for third party product offered.</strong>
                                                                             <hr />
@@ -217,6 +217,13 @@
                                                                             <hr />
                                                                             <strong>Note: add other product offered if any here ( e.g empty gallon )</strong>
                                                                             <hr />
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                 <strong>Choose only one that is applicable to your product offered</strong>
+                                                    <asp:RadioButtonList ID="radioType_productoffered" runat="server" RepeatDirection="Horizontal">
+                                                <asp:ListItem Text="Product Refill" Value="Product Refill" />
+                                                <asp:ListItem Text="other Product" Value="other Product" />
+                                              </asp:RadioButtonList>
+                                                    </div>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Product Name:</strong>
                                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -231,7 +238,7 @@
                                                                             </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12">
-                                                                                <strong>Refill Unit:</strong>
+                                                                                <strong> Unit of Volume:</strong>
                                                                                 <asp:DropDownList ID="refillUnitOfVolume" runat="server" Height="40px" Width="464px">
                                                                                     <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
                                                                                     <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
@@ -339,7 +346,7 @@
                                                                     <div class="modal-footer">
                                                                         <%--  BUTTON PrODUCT EDIT HERE--%>
                                                                         <div style="float: right;">
-                                                                            <asp:Button ID="btnUpdateDetails" runat="server" Text="Update other product details" class="btn btn-primary btn-sm" OnClick="btnUpdateOtherProductDetails_Click" />
+                                                                            <asp:Button ID="btnUpdateDetails" runat="server" Text="Update third party product details" class="btn btn-primary btn-sm" OnClick="btnUpdateOtherProductDetails_Click" />
                                                                             <asp:Button ID="btnEditDetails" runat="server" Text="Update product refill details" class="btn btn-primary btn-sm" OnClick="btnEditProductDetails_Click" />
                                                                         </div>
                                                                     </div>
@@ -368,6 +375,7 @@
                                                                                 <div class="table-responsive">
                                                                                     <div class="tab-content">
                                                                                         <div class="tab-pane active">
+                                                                                             <asp:Label ID="lblViewSearch" runat="server" Font-Underline="true" Font-Size="14" ForeColor="black" />
                                                                                             <%--the gridview starts here--%>
                                                                                             <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                                                 <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red" />
