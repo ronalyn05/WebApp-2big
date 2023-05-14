@@ -129,8 +129,8 @@
                                                 <asp:Label ID="lblOrders" runat="server" CssClass="text-c-purple" Font-Bold="true" Font-Size="Large"></asp:Label>
                                               </div>
                                                                           <div class="col-md-12 col-sm-12">
-                                                 <asp:Label ID="lblTodaysSale" runat="server"  CssClass="text-dark" Font-Bold="true" Font-Size="Large"></asp:Label>
-                                                <asp:Label ID="lbl_TodaysSale" runat="server" CssClass="text-c-purple" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                <asp:Label ID="lbl_TodaysSale" runat="server" CssClass="text-c-dark" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                 <asp:Label ID="lblTodaysSale" runat="server"  CssClass="text-purple" Font-Bold="true" Font-Size="Large"></asp:Label>
                                               </div>
                                                                           <div class="col-md-12 col-sm-12">
                                                   <asp:Label ID="lblYesterdaySale" runat="server"  CssClass="text-dark" Font-Bold="true" Font-Size="Large"></asp:Label>

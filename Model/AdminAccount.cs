@@ -111,7 +111,7 @@ namespace WRS2big_Web.Model
         public string thirdparty_productQty { get; set; }
         public string thirdparty_productPrice { get; set; }
         public string thirdparty_unitStock { get; set; }
-        public int thirdparty_qtyStock { get; set; }
+        public string thirdparty_qtyStock { get; set; }
         public string thirdparty_productDiscount { get; set; }
         public string thirdparty_productImage { get; set; }
         public string addedBy { get; set; }
@@ -235,6 +235,7 @@ namespace WRS2big_Web.Model
         public string pro_refillPrice { get; set; }
         public string pro_stockUnit { get; set; }
         public string pro_stockQty { get; set; }
+        public string pro_stockBalance { get; set; }
         public string pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
         public DateTimeOffset dateUpdated { get; set; }
@@ -279,20 +280,20 @@ namespace WRS2big_Web.Model
         public DateTimeOffset rewardsDateAdded { get; set; }
         public string addedBy { get; set; }
     }
-    public class PromoOffered
+    public class DiscounCoupon
     {
-        public int promoId { get; set; }
+        public int couponId { get; set; }
         public int adminId { get; set; }
-        public string promoName { get; set; }
-        public int promoDiscountValue { get; set; }
-        public int promoPointsRequiredToClaim { get; set; }
-        public string promoDescription { get; set; }
-        public string promoAppliedToProductOffers { get; set; }
-        public string promoAppliedTo_productRefillUnitSizes { get; set; }
-        public string promoAppliedTo_otherProductUnitSizes { get; set; }
-        public DateTimeOffset promoExpirationFrom { get; set; }
-        public DateTimeOffset promoExpirationTo { get; set; }
-        public DateTimeOffset promoDateAdded { get; set; }
+        public string couponName { get; set; }
+        public int couponDiscountValue { get; set; }
+        public int couponPointsRequiredToClaim { get; set; }
+        public string couponDescription { get; set; }
+        public string couponAppliedToProductOffers { get; set; }
+        public string couponAppliedTo_productRefillUnitSizes { get; set; }
+        public string couponAppliedTo_thirdpartyProductUnitSizes { get; set; }
+        public DateTimeOffset couponExpirationFrom { get; set; }
+        public DateTimeOffset couponExpirationTo { get; set; }
+        public DateTimeOffset couponDateAdded { get; set; }
         public string addedBy { get; set; }
     }
 

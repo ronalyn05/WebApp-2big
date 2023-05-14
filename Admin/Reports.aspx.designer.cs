@@ -69,15 +69,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblOrders;
 
         /// <summary>
-        /// lblTodaysSale control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTodaysSale;
-
-        /// <summary>
         /// lbl_TodaysSale control.
         /// </summary>
         /// <remarks>
@@ -85,6 +76,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_TodaysSale;
+
+        /// <summary>
+        /// lblTodaysSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTodaysSale;
 
         /// <summary>
         /// lblYesterdaySale control.

@@ -175,7 +175,7 @@ namespace WRS2big_Web.Admin
 
 
             }
-            else if (selectedOption == "thirdparty Products")
+            else if (selectedOption == "Third Party Products")
             {
                 FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/");
                 Dictionary<string, thirdpartyProducts> otherproducts = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
@@ -185,7 +185,7 @@ namespace WRS2big_Web.Admin
                     if (otherproduct.adminId.ToString() == idno) // check if the product belongs to the current user
                     {
                         drdProdName.Items.Add(new ListItem(otherproduct.thirdparty_productName));
-                        drdUnit_Size.Items.Add(new ListItem(otherproduct.thirdparty_qtyStock + " " + otherproduct.thirdparty_unitStock));
+                        drdUnit_Size.Items.Add(new ListItem(otherproduct.thirdparty_productQty + " " + otherproduct.thirdparty_productUnitVolume));
                         // drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
                     }
                 }

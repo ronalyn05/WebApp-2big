@@ -380,15 +380,16 @@ namespace WRS2big_Web.Admin
                             entry.emp_dateHired, entry.emp_address, entry.emp_emergencycontact, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy,
                             dateStatusModified, entry.status_ModifiedBy);
 
-                        txtSearch.Text = entry.emp_id.ToString();
+                       
                     }
+                    lblSearhRecord.Text = " You search the record of " + " " + " employee " + " " + empSearch;
                 }
                 else
                 {
                     lblMessage.Text = "No employee data found for the given search query.";
                 }
 
-
+               
                 // Bind the DataTable to the GridView
                 gridEmp_Details.DataSource = employeeTable;
                 gridEmp_Details.DataBind();
@@ -409,14 +410,15 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#edit').modal();", true);
 
             string idno = (string)Session["idno"];
+
+            string empSearch = txtempId.Text;
             try
             {
-                string empSearch = txtempId.Text;
 
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(empSearch))
                 {
-                    Response.Write("<script>alert ('Please enter a valid employee ID !');</script>");
+                    Response.Write("<script>alert ('Please enter a valid employee ID or firstname!');</script>");
                     return;
                 }
                 // Retrieve all orders from the ORDERS table
@@ -426,9 +428,10 @@ namespace WRS2big_Web.Admin
                 // Filter the employee list based on the search query
                 if (response != null && response.ResultAs<Employee>() != null)
                 {
-                    var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch));
+                    //var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch));
+                    var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch ||
+                        d.emp_firstname.ToLower().Contains(empSearch.ToLower())));
 
-                    
 
                     //var filteredList = employeeList.Values.Where(d => d.adminId.ToString() == idno && (d.emp_id.ToString() == empSearch ||
                     //    d.emp_firstname.ToLower().Contains(empSearch.ToLower())));

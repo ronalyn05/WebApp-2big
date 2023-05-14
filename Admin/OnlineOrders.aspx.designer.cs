@@ -60,15 +60,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-
-        /// <summary>
         /// drdPaymentMode control.
         /// </summary>
         /// <remarks>
@@ -87,31 +78,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnView;
 
         /// <summary>
-        /// Label3 control.
+        /// drdDeliveryType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.DropDownList drdDeliveryType;
 
         /// <summary>
-        /// DropDownList1 control.
+        /// btnViewDeliveryType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
-
-        /// <summary>
-        /// Button1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btnViewDeliveryType;
 
         /// <summary>
         /// lblViewOrders control.
