@@ -40,20 +40,7 @@ namespace WRS2big_Web.Admin
             //METHODS TO DISPLAY THE IDs
             if (!IsPostBack)
             {
-                // Check which button was clicked
-                //if (btnAcceptGcashClicked || btnPaymentAccept.Clicked || btnDeclineGcash.Clicked)
-                //{
-                //    DisplayGcash_order();
-                //}
-                //else if (btnAcceptCODClicked || btnDeclineCODClicked)
-                //{
-                //    DisplayCOD_order();
-                //}
-                //else if (btnAcceptPointsClicked || btnDeclinePointsClicked || btnPaymentAcceptPointsClicked)
-                //{
-                //    DisplayRewardPoints_order();
-                //}
-
+              
                 DisplayRewardPoints_order();
                 lblViewOrders.Text = "COD ORDER";
                 DisplayGcash_order();
@@ -557,6 +544,7 @@ namespace WRS2big_Web.Admin
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
+
                 // Get the GridViewRow that contains the clicked button
                 Button btn = (Button)sender;
                 GridViewRow row = (GridViewRow)btn.NamingContainer;
@@ -568,8 +556,14 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
                 Order existingOrder = response.ResultAs<Order>();
 
+
                 if (response != null && response.ResultAs<Order>() != null)
                 {
+                    if (existingOrder.order_OrderStatus == "Accepted")
+                    {
+                        Response.Write("<script>alert ('Order has already been accepted!');</script>");
+                        return;
+                    }
                     // Check if the order already has a driver assigned
                     if (existingOrder.driverId != 0)
                     {
@@ -2118,66 +2112,6 @@ namespace WRS2big_Web.Admin
             }
         }
         //OPTION DISPLAY DELIVERY TYPES
-        protected void btnViewDeliveryType_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string selectedOption = drdDeliveryType.SelectedValue;
-
-                //if (selectedOption == "0")
-                //{
-                //    DisplayRewardPoints_order();
-                //    lblViewOrders.Text = "COD ORDER";
-                //    DisplayGcash_order();
-                //    lblViewGcashOrder.Text = "GCASH ORDER";
-                //    DisplayCOD_order();
-                //    lblViewRewardPoints.Text = "REWARD POINTS ORDER";
-
-                //}
-                //else if (selectedOption == "1")
-                //{
-                //    lblViewOrders.Text = "COD ORDER";
-                //    lblViewGcashOrder.Visible = false;
-                //    lblViewRewardPoints.Visible = false;
-                //    gridCOD_order.Visible = true;
-                //    gridGcash_order.Visible = false;
-                //    gridRewardPoints_order.Visible = false;
-                //    DisplayCOD_order();
-                //    lblGcashError.Visible = false;
-                //    lblPointsError.Visible = false;
-
-                //}
-                //else if (selectedOption == "2")
-                //{
-                //    lblViewOrders.Text = "GCASH ORDER";
-                //    lblViewGcashOrder.Visible = false;
-                //    lblViewRewardPoints.Visible = false;
-                //    gridGcash_order.Visible = true;
-                //    gridCOD_order.Visible = false;
-                //    gridRewardPoints_order.Visible = false;
-                //    DisplayGcash_order();
-                //    lblPointsError.Visible = false;
-                //    lblCodError.Visible = false;
-
-                //}
-                //else if (selectedOption == "3")
-                //{
-                //    lblViewOrders.Text = "REWARD POINTS ORDER";
-                //    lblViewGcashOrder.Visible = false;
-                //    lblViewRewardPoints.Visible = false;
-                //    gridRewardPoints_order.Visible = true;
-                //    gridGcash_order.Visible = false;
-                //    gridCOD_order.Visible = false;
-                //    DisplayRewardPoints_order();
-                //    lblGcashError.Visible = false;
-                //    lblCodError.Visible = false;
-                //}
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
-            }
-        }
-
+       
     }
 }

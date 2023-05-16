@@ -59,6 +59,9 @@ namespace WRS2big_Web.Model
         public DateTimeOffset dateOrderDelivered { get; set; }
         public DateTimeOffset dateDriverAssigned { get; set; }
         public string driverAssignedBy { get; set; }
+        public string order_deliveryReservationDeliveryReserveDate { get; set; }
+        public string order_deliveryReservationDeliveryReserveTime { get; set; }
+        public string order_deliveryReservationDeliveryTypeSelected { get; set; }
     }
 
     public class OrderProduct
