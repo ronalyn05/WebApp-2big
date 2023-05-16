@@ -469,7 +469,6 @@ namespace WRS2big_Web.Admin
 
         }
         //STORE TANK SUPPLY
-
         protected void btnAddSupply_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
