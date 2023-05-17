@@ -107,8 +107,6 @@ namespace WRS2big_Web.Admin
 
                     foreach (var order in filteredList)
                     {
-                        //if(selectedDeliveryType == order.order_DeliveryTypeValue)
-                        //{
                             if (order.order_Products != null)
                             {
                                 string productrefill_order = "";
@@ -124,7 +122,7 @@ namespace WRS2big_Web.Admin
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "thirdparty Product") 
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -133,11 +131,11 @@ namespace WRS2big_Web.Admin
                                 }
                                 string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                           order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                           order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
-                        }
-                        //}
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        
                        
                     }
 
