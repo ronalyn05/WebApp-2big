@@ -44,7 +44,7 @@ namespace WRS2big_Web.superAdmin
             var data = response.Body;
             Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
             
-            if (data != null)
+            if (data != null && subscribed != null)
             {
                 //creating the columns of the gridview
                 DataTable clientsTable = new DataTable();

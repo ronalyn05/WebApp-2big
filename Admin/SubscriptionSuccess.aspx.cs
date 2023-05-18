@@ -238,7 +238,7 @@ namespace WRS2big_Web.Admin
 
                                 }
                                 
-                                checkforRenewal();
+                                //checkforRenewal();
 
                             }
                 }

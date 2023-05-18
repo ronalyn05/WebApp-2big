@@ -58,7 +58,7 @@ namespace WRS2big_Web.Admin
         private void displayDelDetails()
         {
 
-            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2");
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS");
             Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
 
             if (details != null)
@@ -67,7 +67,7 @@ namespace WRS2big_Web.Admin
                 string idno = (string)Session["idno"];
 
                 // Retrieve all data from the DELIVERY_DETAILS table
-                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
                 Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
                 var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -171,7 +171,7 @@ namespace WRS2big_Web.Admin
        
         private void deliveryTypesGrid()
         {
-            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2");
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS");
             Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
 
             if (details != null)
@@ -180,7 +180,7 @@ namespace WRS2big_Web.Admin
                 string idno = (string)Session["idno"];
 
                 // Retrieve all data from the DELIVERY_DETAILS table
-                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
                 Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
                 var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -268,7 +268,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
 
 
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS2/");
+            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
             Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
 
@@ -285,7 +285,7 @@ namespace WRS2big_Web.Admin
             int deliveryIdno = (int)Session["deliveryID"];
 
             // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryIdno);
+            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
             Delivery delivery = null;
             if (resDelivery.Body != "null")
             {
@@ -383,7 +383,7 @@ namespace WRS2big_Web.Admin
                 }
             }
             // Save the updated delivery object to the database
-            FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS2/" + deliveryIdno, delivery);
+            FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryIdno, delivery);
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
             int logsId = (int)Session["logsId"];
@@ -489,7 +489,7 @@ namespace WRS2big_Web.Admin
             // int adminId = int.Parse(idno);
 
             // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
             Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
             var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -568,7 +568,7 @@ namespace WRS2big_Web.Admin
             // int adminId = int.Parse(idno);
 
             // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
             Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
             var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -649,7 +649,7 @@ namespace WRS2big_Web.Admin
             string empId = (string)Session["emp_id"];
             // int adminId = int.Parse(idno);
 
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2");
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
             Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
             var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -729,7 +729,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
 
 
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS2/");
+            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
             Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
 
@@ -747,7 +747,7 @@ namespace WRS2big_Web.Admin
 
           
             // Check if there is an existing delivery object for this admin
-            FirebaseResponse paymentResponse = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryIdno);
+            FirebaseResponse paymentResponse = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
             //Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
             Delivery payment = paymentResponse.ResultAs<Delivery>();
 
@@ -767,7 +767,7 @@ namespace WRS2big_Web.Admin
                 payment.paymentMethods = paymentMethods;
                 payment.gcashNumber = gcashnum.Text;
 
-                paymentResponse = twoBigDB.Update("DELIVERY_DETAILS2/" + deliveryIdno, payment);
+                paymentResponse = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, payment);
                 Response.Write("<script>alert ('Payment Methods successsfully added');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
             }
             else
@@ -791,7 +791,7 @@ namespace WRS2big_Web.Admin
             //    //Get the order ID from the first cell in the row
             //    int typeId = int.Parse(row.Cells[1].Text);
 
-            //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2/" + adminID);
+            //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + adminID);
             //    Model.DeliveryDetails delivery = response.ResultAs<Model.DeliveryDetails>();
 
             //    if (typeId == delivery.expressID)
@@ -872,7 +872,7 @@ namespace WRS2big_Web.Admin
                
 
                 SetResponse response;
-                response = twoBigDB.Set("DELIVERY_DETAILS2/" + idnum, delivery);
+                response = twoBigDB.Set("DELIVERY_DETAILS/" + idnum, delivery);
                 Delivery result = response.ResultAs<Delivery>();
                 //save the deliveryID in the session
                 Session["deliveryID"] = idnum;
@@ -898,7 +898,7 @@ namespace WRS2big_Web.Admin
                 if (int.TryParse(gridDeliveryDetails.Rows[row.RowIndex].Cells[1].Text, out deliveryTypeID))
                 {
                     // Retrieve the existing order object from the database
-                    FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryTypeID);
+                    FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryTypeID);
                     Model.Delivery typeDetails = getDetails.ResultAs<Model.Delivery>();
 
                     if (deliveryTypeID == typeDetails.standardID)
@@ -932,7 +932,7 @@ namespace WRS2big_Web.Admin
             int deliveryTypeID = int.Parse(row.Cells[2].Text);
 
             // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryTypeID);
+            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryTypeID);
             Model.Delivery customerDetails = response.ResultAs<Model.Delivery>();
 
             if (deliveryTypeID == customerDetails.expressID)
@@ -957,7 +957,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
 
 
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS2/");
+            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
             Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
 
@@ -974,7 +974,7 @@ namespace WRS2big_Web.Admin
             int deliveryIdno = (int)Session["deliveryID"];
 
             // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryIdno);
+            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
             Delivery delivery = null;
             if (resDelivery.Body != "null")
             {
@@ -1039,7 +1039,7 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Save the updated delivery object to the database
-                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS2/" + deliveryIdno, delivery);
+                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
                 Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
@@ -1072,7 +1072,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
 
 
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS2/");
+            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
             Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
 
@@ -1089,7 +1089,7 @@ namespace WRS2big_Web.Admin
             int deliveryIdno = (int)Session["deliveryID"];
 
             // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryIdno);
+            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
             Delivery delivery = null;
             if (resDelivery.Body != "null")
             {
@@ -1164,7 +1164,7 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Save the updated delivery object to the database
-                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS2/" + deliveryIdno, delivery);
+                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
@@ -1196,7 +1196,7 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
 
 
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS2/");
+            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
             Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
 
@@ -1213,7 +1213,7 @@ namespace WRS2big_Web.Admin
             int deliveryIdno = (int)Session["deliveryID"];
 
             // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS2/" + deliveryIdno);
+            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
             Delivery delivery = null;
             if (resDelivery.Body != "null")
             {
@@ -1276,7 +1276,7 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Save the updated delivery object to the database
-                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS2/" + deliveryIdno, delivery);
+                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 

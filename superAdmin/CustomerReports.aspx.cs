@@ -33,12 +33,57 @@ namespace WRS2big_Web.superAdmin
 
            displayCustomers();
            displayClients();
+           displayDriverUser();
 
             if (!IsPostBack)
             {
                 //BindData("");
             }
 
+        }
+        private void displayDriverUser()
+        {
+            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            Model.Employee admin = response.ResultAs<Model.Employee>();
+            var data = response.Body;
+            Dictionary<string, Model.Employee> employees = JsonConvert.DeserializeObject<Dictionary<string, Model.Employee>>(data);
+
+            if (employees != null)
+            {
+                DataTable customerTable = new DataTable();
+                //customerTable.Columns.Add("PROFILE");
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("ROLE");
+                customerTable.Columns.Add("STATUS");
+                customerTable.Columns.Add("NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("EMPLOYER");
+                customerTable.Columns.Add("DATE HIRED");
+                customerTable.Columns.Add("DATE ADDED");
+
+                foreach (KeyValuePair<string, Model.Employee> driver in employees)
+                {
+                    if (driver.Value.emp_role == "Driver" || driver.Value.emp_role == "Cashier")
+                    {
+                        customerTable.Rows.Add(
+                          //entry.Value.profile_image,
+                          driver.Value.emp_id,
+                          driver.Value.emp_role,
+                          driver.Value.emp_status,
+                           driver.Value.emp_firstname + " " + driver.Value.emp_lastname,
+                           driver.Value.emp_email,
+                          driver.Value.emp_address,
+                          driver.Value.emp_contactnum,
+                          driver.Value.addedBy,
+                          driver.Value.emp_dateHired,
+                          driver.Value.dateAdded); 
+                    }
+                }
+                adminEmployees.DataSource = customerTable;
+                adminEmployees.DataBind();
+            }
         }
         protected void displayClients()
         {
@@ -52,8 +97,9 @@ namespace WRS2big_Web.superAdmin
                 DataTable customerTable = new DataTable();
                 //customerTable.Columns.Add("PROFILE");
                 customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("FIRST NAME");
-                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("ROLE");
+                customerTable.Columns.Add("STATUS");
+                customerTable.Columns.Add("NAME");
                 customerTable.Columns.Add("EMAIL");
                 customerTable.Columns.Add("ADDRESS");
                 customerTable.Columns.Add("PHONE #");
@@ -69,21 +115,28 @@ namespace WRS2big_Web.superAdmin
 
                     FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
                     Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-                    customerTable.Rows.Add(
-                       //entry.Value.profile_image,
-                       entry.Value.idno,
-                        entry.Value.fname,
-                        entry.Value.lname,
-                        entry.Value.email,
-                       stations.stationAddress,
-                        entry.Value.phone,
-                        entry.Value.dateApproved,
-                        entry.Value.dateRegistered);
 
+                    if (stations != null)
+                    {
+                        customerTable.Rows.Add(
+                           //entry.Value.profile_image,
+                           entry.Value.idno,
+                           entry.Value.userRole,
+                           entry.Value.status,
+                            entry.Value.fname + " " + entry.Value.lname,
+                            entry.Value.email,
+                           stations.stationAddress,
+                            entry.Value.phone,
+                            entry.Value.dateApproved,
+                            entry.Value.dateRegistered);
+
+                    }
+                
                 }
                 // Bind DataTable to GridView control
                 clientReports.DataSource = customerTable;
                 clientReports.DataBind();
+
             }
 
            
@@ -95,40 +148,52 @@ namespace WRS2big_Web.superAdmin
 
             FirebaseResponse response = twoBigDB.Get("CUSTOMER");
             Model.Customer plan = response.ResultAs<Model.Customer>();
-            var data = response.Body;
-            Dictionary<string, Model.Customer> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
+            var customer = response.Body;
+            Dictionary<string, Model.Customer> customers = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(customer);
 
-            if (clients!= null)
+           
+
+            if (customers != null)
             {
                 DataTable customerTable = new DataTable();
                 customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("FIRST NAME");
-                customerTable.Columns.Add("LAST NAME");
+                customerTable.Columns.Add("ROLE");
+                customerTable.Columns.Add("STATUS");
+                customerTable.Columns.Add("NAME");
                 customerTable.Columns.Add("EMAIL");
                 customerTable.Columns.Add("ADDRESS");
                 customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE APPROVED");
+                customerTable.Columns.Add("DATE REGISTERED");
 
 
 
 
-                foreach (KeyValuePair<string, Model.Customer> entry in clients)
+                foreach (KeyValuePair<string, Model.Customer> entry in customers)
                 {
                     double lattitude = entry.Value.lattitudeLocation;
                     double longitude = entry.Value.longitudeLocation;
                     string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
+                    string role = "Customer";
 
                     string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
 
                     //customerProfile.ImageUrl = entry.Value.imageProof;
 
-                    customerTable.Rows.Add(
-                        //entry.Value.imageProof,
-                        entry.Value.cusId,
-                        entry.Value.firstName,
-                        entry.Value.lastName,
-                        entry.Value.email,
-                        address,
-                        entry.Value.phoneNumber);
+                    
+                        customerTable.Rows.Add(
+                                               //entry.Value.imageProof,
+                                               entry.Value.cusId,
+                                               role,
+                                               entry.Value.cus_status,
+                                               entry.Value.firstName + " " + entry.Value.lastName,
+                                               entry.Value.email,
+                                               address,
+                                               entry.Value.phoneNumber,
+                                               entry.Value.dateApproved,
+                                               entry.Value.dateRegistered);
+                    
+                   
 
                 }
                 // Bind DataTable to GridView control

@@ -70,10 +70,7 @@ namespace WRS2big_Web
 
          
         }
-        private void reminderCheck()
-        {
-            
-        }
+
         private void SubscriptionStatus()
         {
             string adminID = Session["idno"].ToString();
@@ -82,7 +79,6 @@ namespace WRS2big_Web
             {
                 Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
-
             else
             {
                

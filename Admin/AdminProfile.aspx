@@ -308,45 +308,26 @@
                                                                             <br /> 
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Id Number:</h5>
                                                                             <asp:Label ID="Lbl_Idno" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <br />
-                                                                           <%-- <asp:Label ID="Lbl_Idno" class=" btn waves-effect text-center" 
-                                                                                         style="width:700px" runat="server"></asp:Label>--%>
+                                                                            <br />A
                                                                           <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Firstname:</h5>
                                                                             <asp:Label ID="lblfname" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-
-                                                                             <%--<asp:TextBox ID="txtfname" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Middlename:</h5> 
                                                                              <asp:Label ID="lblmname" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <%-- <asp:TextBox ID="txtmname" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Lastname:</h5> 
                                                                           <asp:Label ID="lblLname" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                           <%--  <asp:TextBox ID="txtlname" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Birthdate: </h5>
                                                                              <asp:Label ID="lbldob" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <%--<asp:TextBox ID="txtdob" TextMode="Date" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                              <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Contact number:  </h5>
                                                                              <asp:Label ID="lblcontactnum" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                           <%-- <asp:TextBox ID="txtcontact" TextMode="Phone" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                               <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Email Address: </h5>
                                                                              <asp:Label ID="lblemail" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <%--<asp:TextBox ID="txtemail" TextMode="Email" class="btn waves-effect text-center" style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <hr />
-                                                                            <%--<asp:Button ID="btnEdit" class="btn btn-primary" style="background-color:#bae1ff; font-size:18px; color:black; font-family:Bahnschrift; margin-right: 800px;"
-                                                                                runat="server" Text="Update Information" OnClick="btnUpdate_Click"/>--%>
-                                                                            <%--<asp:Button ID="btnEdit" class="active btn btn-primary btn-sm waves-effect text-right"  style="margin-right: 800px;" runat="server" Text="Edit Info" OnClick="btnEditProfile_Click"/>
-                                           --%>
                                                                                <asp:Label ID="Label14" runat="server" Font-Bold="true" Font-Size="Large" Text="STATION DETAILS"></asp:Label>
                                                                              <hr />
                                                                             <br /> 
@@ -358,27 +339,14 @@
                                                                             <asp:Label ID="lblAddress" class=" btn btn-round waves-effect text-center" 
                                                                                         style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
                                                                             <br />
-                                                                          <%-- <asp:TextBox ID="txtaddress" class=" btn btn-round waves-effect text-center" 
-                                                                                         style="background-color:#bae1ff;font-size:18px;color:black;font-family:Bahnschrift;width:700px" runat="server">
-                                                                             </asp:TextBox> 
-                                                                            <br />--%>
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Operating Hours: </h5>
                                                                              <asp:Label ID="lblOperatingHours" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <%--<asp:TextBox ID="txtOperatngHours" class=" btn btn-round waves-effect text-center" 
-                                                                                        style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Business Days: </h5>
                                                                              <asp:Label ID="lblBusinessday" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px;font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                           <%-- <asp:TextBox ID="txtBssnessDay" class=" btn btn-round waves-effect text-center" 
-                                                                                        style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox> --%>
                                                                             <br />
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Status: </h5>
                                                                              <asp:Label ID="lblstatus" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle; " runat="server"></asp:Label>
-                                                                           <%-- <asp:TextBox ID="txt_Status" class=" btn btn-round waves-effect text-center" 
-                                                                                        style="width:364px; display: inline-block; margin-right: 100px;" runat="server">
-                                                                             </asp:TextBox>--%>
                                                                             <br />
                                                                             <br />
                                                                             <hr />

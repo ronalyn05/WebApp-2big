@@ -66,14 +66,14 @@
                                             <!-- Tab variant tab card start -->
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>CLIENT DETAILS</h5>
+                                                    <h5>CUSTOMER DETAILS</h5>
                                                 </div>
                                                 <div class="card-block tab-icon">
                                                     <!-- Row start -->
                                                     <div class="row">
                                                         <div class="col-lg-12 col-xl-12">
                                                             <center>
-                                                          <asp:Image runat="server" ID="clientImage" class="img-200 img-radius" style="width:350px"/> <br /> <br />
+                                                          <asp:Image runat="server" ID="clientImage" class="img-100" style="width:300px" Height="300px"/> <br /> <br />
                                                              <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
                                                             <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
                                                             </center>
