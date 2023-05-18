@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="CustomerRecord.aspx.cs" Inherits="WRS2big_Web.Admin.CustomerRecord" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        <script>
+    <script>
         window.onload = function () {
 
             var chart = new CanvasJS.Chart("chartContainer", {
@@ -23,7 +24,7 @@
             chart.render();
 
         }
-        </script>
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="pcoded" class="pcoded">
@@ -69,16 +70,36 @@
                                                         <div class="x_title">
                                                             <h2>List of Customer Record</h2>
                                                             <div class="clearfix">
-                                                               </div>
+                                                            </div>
                                                         </div>
 
-                                    <div class="clearfix"></div>
-                                    </div>
-                                     <div class="x_content">
-                                      <div class="row">
-                                       <div class="col-sm-12">
-                                        <div class="card-box table-responsive">
-                                        <table id="datatable1" class="table table-striped table-bordered f-1" style="width:100%">     
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="x_content">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="card-box table-responsive">
+                                                                    <div class="col-xl-12 col-md-12">
+                                                                        <div class="card">
+                                                                            <div class="card-header">
+                                                                                <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
+                                                                                    <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red" />
+                                                                                    <br />
+                                                                                    <asp:GridView runat="server" ID="gridCustomer_Details" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
+
+                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                    </asp:GridView>
+
+                                                                                </div>
+                                                                                <%-- <table id="datatable1" class="table table-striped table-bordered f-1" style="width:100%">     
                                          <thead>
                                          <tr class="bg-c-green text-light" id="trialtable">
                                               <th>CUSTOMER ID</th>
@@ -110,7 +131,13 @@
                                                             <asp:Label ID="lblCustomerPhonenumber" runat="server"/>
                                                         </td>
                                        </tbody>
-                                     </table>
+                                     </table>--%>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -121,8 +148,5 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 </asp:Content>
 

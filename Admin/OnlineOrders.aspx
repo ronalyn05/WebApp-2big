@@ -143,21 +143,46 @@
                                                 <asp:Label ID="Label2" runat="server" Text="ORDERS FROM CUSTOMER" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
 
                                                 <%-- dropdown in category for payment mode--%>
-                                                <asp:Label Style="text-align: center;" ID="Label1" runat="server" Text="View order base on customer's payment mode " ForeColor="Black" Font-Size="12"></asp:Label>
+
                                                 <%--<h5 style="text-align: center;">View order base on customer's payment mode to pay the order:</h5>--%>
                                                 <br>
-
-                                                <div style="display: flex; justify-content: center;">
-                                                    <asp:DropDownList ID="drdPaymentMode" CssClass="text-center" runat="server" Height="40px" Width="364px">
-                                                        <asp:ListItem Text="All Orders" Value="0"></asp:ListItem>
-                                                        <asp:ListItem Text="COD" Value="1"></asp:ListItem>
-                                                        <asp:ListItem Text="Gcash" Value="2"></asp:ListItem>
-                                                        <asp:ListItem Text="Reward Points" Value="3"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                    <asp:Button ID="btnView" runat="server" Text="View Orders" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
+                                                <div style="display: flex; justify-content: space-between;">
+                                                    <div>
+                                                       <%-- <asp:Label Style="text-align: left; margin-bottom: 10px;" ID="Label1" runat="server" Text="View order base on customer's payment mode " ForeColor="Black" Font-Size="12"></asp:Label>--%>
+                                                        <asp:DropDownList ID="drdPaymentMode" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                            <asp:ListItem Text="View order base on customer's payment mode" Selected="False"></asp:ListItem>
+                                                            <asp:ListItem Text="All Orders" Value="0"></asp:ListItem>
+                                                            <asp:ListItem Text="COD" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="Gcash" Value="2"></asp:ListItem>
+                                                            <asp:ListItem Text="Reward Points" Value="3"></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:Button ID="btnView" runat="server" Text="View Orders" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
+                                                    </div>
+                                                    <div>
+                                                        <asp:DropDownList ID="drdDeliveryType" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                            <asp:ListItem Text="View orders base on delivery types" Selected="False"></asp:ListItem>
+                                                            <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                            <asp:ListItem Text="Express" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
+                                                            <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:Button ID="btnViewDeliveryType" runat="server" Text="View" OnClick="btnViewDeliveryType_Click" CssClass="btn-primary" Height="40px" />
+                                                    </div>
                                                 </div>
-                                                <br />
 
+                                                <%--                                                <br />
+                                                --%>
+                                                <%-- <asp:Label Style="text-align: right;" ID="Label3" runat="server" Text="View order base on delivery type" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                <div style="display: flex; justify-content: right;">
+                                                    <asp:DropDownList ID="drdDeliveryType" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                        <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                        <asp:ListItem Text="Express" Value="1"></asp:ListItem>
+                                                        <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
+                                                        <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                    <asp:Button ID="btnViewDeliveryType" runat="server" Text="View" OnClick="btnViewDeliveryType_Click" CssClass="btn-primary" Height="40px" />
+                                                </div>--%>
+                                                <br />
                                                 <div class="card-header-right">
                                                     <ul class="list-unstyled card-option">
                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -172,10 +197,13 @@
                                                 <div class="table-responsive">
                                                     <div class="tab-content">
                                                         <div class="tab-pane active">
+
+
+
                                                             <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                 <asp:Label Style="text-align: center;" ID="lblViewOrders" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
                                                                 <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblCodError" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
+                                                                <asp:Label Style="text-align: center;" ID="lblCodError" runat="server" ForeColor="red" Font-Size="16"></asp:Label>
                                                                 <asp:GridView runat="server" ID="gridCOD_order" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                     BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
                                                                     ForeColor="Black" CellSpacing="20" Font-Size="14px">

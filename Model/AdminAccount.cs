@@ -101,19 +101,19 @@ namespace WRS2big_Web.Model
     }
 
 
-    public class otherProducts
+    public class thirdpartyProducts
     {
         public int adminId { get; set; }
-        public int other_productId { get; set; }
+        public int thirdparty_productId { get; set; }
         public string offerType { get; set; }
-        public string other_productName { get; set; }
-        public string other_productUnit { get; set; }
-        public string other_productSize { get; set; }
-        public string other_productPrice { get; set; }
-        public string other_unitStock { get; set; }
-        public int other_qtyStock { get; set; }
-        public int? other_productDiscount { get; set; }
-        public string other_productImage { get; set; }
+        public string thirdparty_productName { get; set; }
+        public string thirdparty_productUnitVolume { get; set; }
+        public string thirdparty_productQty { get; set; }
+        public string thirdparty_productPrice { get; set; }
+        public string thirdparty_unitStock { get; set; }
+        public string thirdparty_qtyStock { get; set; }
+        public string thirdparty_productDiscount { get; set; }
+        public string thirdparty_productImage { get; set; }
         public string addedBy { get; set; }
         public DateTimeOffset dateAdded { get; set; }
         public DateTimeOffset dateUpdated { get; set; }
@@ -230,10 +230,13 @@ namespace WRS2big_Web.Model
         public string offerType { get; set; }
         public string pro_refillWaterType { get; set; }
         public string pro_Image { get; set; }
-        public string pro_refillUnit { get; set; }
-        public string pro_refillSize { get; set; }
+        public string pro_refillUnitVolume { get; set; }
+        public string pro_refillQty { get; set; }
         public string pro_refillPrice { get; set; }
-        public int? pro_discount { get; set; }
+        public string pro_stockUnit { get; set; }
+        public string pro_stockQty { get; set; }
+        public string pro_stockBalance { get; set; }
+        public string pro_discount { get; set; }
         public DateTimeOffset dateAdded { get; set; }
         public DateTimeOffset dateUpdated { get; set; }
         public string addedBy { get; set; }
@@ -250,7 +253,7 @@ namespace WRS2big_Web.Model
         public int productQty { get; set; }
         public string productUnitSize { get; set; }
         public decimal productPrice { get; set; }
-        public decimal productDiscount { get; set; }
+        public string productDiscount { get; set; }
         public decimal totalAmount { get; set; }
         public string orderType { get; set; }
         public DateTimeOffset dateAdded { get; set; }
@@ -277,20 +280,20 @@ namespace WRS2big_Web.Model
         public DateTimeOffset rewardsDateAdded { get; set; }
         public string addedBy { get; set; }
     }
-    public class PromoOffered
+    public class DiscounCoupon
     {
-        public int promoId { get; set; }
+        public int couponId { get; set; }
         public int adminId { get; set; }
-        public string promoName { get; set; }
-        public int promoDiscountValue { get; set; }
-        public int promoPointsRequiredToClaim { get; set; }
-    public string promoDescription { get; set; }
-        public string promoAppliedToProductOffers { get; set; }
-        public string promoAppliedTo_productRefillUnitSizes { get; set; }
-        public string promoAppliedTo_otherProductUnitSizes { get; set; }
-        public DateTimeOffset promoExpirationFrom { get; set; }
-        public DateTimeOffset promoExpirationTo { get; set; }
-        public DateTimeOffset promoDateAdded { get; set; }
+        public string couponName { get; set; }
+        public int couponDiscountValue { get; set; }
+        public int couponPointsRequiredToClaim { get; set; }
+        public string couponDescription { get; set; }
+        public string couponAppliedToProductOffers { get; set; }
+        public string couponAppliedTo_productRefillUnitSizes { get; set; }
+        public string couponAppliedTo_thirdpartyProductUnitSizes { get; set; }
+        public DateTimeOffset couponExpirationFrom { get; set; }
+        public DateTimeOffset couponExpirationTo { get; set; }
+        public DateTimeOffset couponDateAdded { get; set; }
         public string addedBy { get; set; }
     }
 

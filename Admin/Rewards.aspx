@@ -41,7 +41,7 @@
                                    <!-- Page-body start -->
 
                                     <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addreward"><i class="fa fa-plus"></i> Set reward system </button>
-                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".setpromo"><i class="fa fa-plus"></i> Set promo offered </button>
+                                       <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".setpromo"><i class="fa fa-plus"></i> Set discount coupon offered </button>
                                     <br />
                                       <%-- MODAL FOR REWARD SYSTEM--%>
                                       <div class="modal fade addreward" tabindex="-1" role="dialog" aria-hidden="true">
@@ -153,54 +153,54 @@
                                             <div class="modal-content">
                                             <form id="demo-form1" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
-                                            <h4 class="modal-title" id="myModalLabel1"> PROMO OFFERED</h4>
+                                            <h4 class="modal-title" id="myModalLabel1"> DISCOUNT COUPON</h4>
                                                 <%--exit button--%>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
                                             <div class="modal-body">
                                             <div class="col-md-12 col-sm-12 ">
                                             <div class="x_content">
-                                                <h4 style="color:black;font-family:Bahnschrift"> Set your promo offered here:</h4>
+                                                <h4 style="color:black;font-family:Bahnschrift"> Set your discount coupon offered here:</h4>
                                                 <hr />
                                                  <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Name:</h5>
-                                            <asp:TextBox ID="txtpromoname" runat="server" ToolTip="eg: 10% discount coupon" class="form-control" placeholder="Enter reward promo offered (Ex:10% discount coupon )"></asp:TextBox>
+                                            <h5>Coupon Name:</h5>
+                                            <asp:TextBox ID="txtpromoname" runat="server" ToolTip="eg: 10% discount coupon" class="form-control" placeholder="Enter discount coupon offered (Ex:10% discount coupon )"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                    <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Discount Value :</h5>
-                                            <asp:TextBox ID="txtpromoDiscountValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter promo percentage in number base on the promo type you offered"></asp:TextBox>
+                                            <h5>Coupon Discount Value :</h5>
+                                            <asp:TextBox ID="txtpromoDiscountValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter discount percentage in number base on the coupon you offered"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoDiscountValue" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Description:</h5>
-                                            <asp:TextBox ID="txtpromodescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter promo description"></asp:TextBox>
+                                            <h5>Coupon Description:</h5>
+                                            <asp:TextBox ID="txtpromodescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter coupon description"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromodescription" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any product offers that applies to the promo you offered:</h5>
+                                                  <h5>Choose any product offers that applies to the coupon you offered:</h5>
                                                     <asp:CheckBoxList ID="checkPromo_productOffered" runat="server" RepeatDirection="Horizontal" AutoPostBack="false">
                                                         <asp:ListItem Text="Product Refill" Value="Product Refill" ID="pro_refillRadio" ></asp:ListItem>
-                                                        <asp:ListItem Text="other Product" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
+                                                        <asp:ListItem Text="Third Party Product" Value="Third Party Product" ID="otherproductRadio" ></asp:ListItem>
                                                     </asp:CheckBoxList>
                                             </div>
                                                     <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any unit and sizes of product refill offers that applies to the promo you offered:</h5>
+                                                  <h5>Choose any unit and sizes of product refill offers that applies to the coupon you offered:</h5>
                                                     <asp:CheckBoxList ID="chUnitSizes_proRefill" runat="server">
                                                     </asp:CheckBoxList>
                                             </div>
                                                 <div class="col-md-12 col-sm-12 ">
-                                                  <h5>Choose any unit and sizes of other product offers that applies to the promo you offered:</h5>
+                                                  <h5>Choose any unit and sizes of third party product offers that applies to the coupon you offered:</h5>
                                                     <asp:CheckBoxList ID="chUnitSizes_otherProduct" runat="server">
                                                     </asp:CheckBoxList>
                                             </div>
                                                  <div class="col-md-12 col-sm-12 ">
-                                            <h5>Points required to claim the reward:</h5>
-                                            <asp:TextBox ID="txtpromo_pointsToClaimReward" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the reward"></asp:TextBox>
+                                            <h5>Points required to claim the discount coupon:</h5>
+                                            <asp:TextBox ID="txtpromo_pointsToClaimReward" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the discount coupon"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromo_pointsToClaimReward" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
-                                            <h5>Promo Expiration:</h5>
+                                            <h5>Discount coupon expiration:</h5>
                                                          <br />
                                                           <strong> From:</strong>
                                              <asp:TextBox ID="txtpromoExpirationFrom" TextMode="Date" runat="server"></asp:TextBox>
@@ -236,10 +236,11 @@
                                              <div class="card">
                                                 <%--<div class="card" style="background-color:#f2e2ff">--%>
                                                     <div class="card-header">
-                                                         <asp:Label ID="Label1" runat="server" Text="PROMO REPORTS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                         <asp:Label ID="Label1" runat="server" Text="DISCOUNT COUPON & REWARD REPORTS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                        <hr />
                                                         <div style="float:right;"> 
-                                                            <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by promo name " ToolTip="enter promo name to view record" Height="40px" runat="server"></asp:TextBox>
-                                                            <asp:Button ID="btnSearchReports" runat="server" Text="Search Promo" OnClick="btnSearchReports_Click" CssClass="btn-primary" Height="40px"/>
+                                                            <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by coupon name " ToolTip="enter promo name to view record" Height="40px" runat="server"></asp:TextBox>
+                                                            <asp:Button ID="btnSearchReports" runat="server" Text="Search Coupon" OnClick="btnSearchReports_Click" CssClass="btn-primary" Height="40px"/>
                                                         
                                                         </div>
                                                          <div style="float:left;"> 
@@ -312,7 +313,7 @@
                         <div class="modal-content">
                           <form id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                             <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel4"> PROMO REPORTS: 
+                              <h4 class="modal-title" id="myModalLabel4"> DISCOUNT COUPON REPORTS: 
                                 
                               </h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
@@ -362,9 +363,9 @@
                     </div>
                                                     <div class="card-block">
                                                          <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                            <asp:ListItem Selected="False" Text="---View Reports -----"></asp:ListItem>
-                                                            <asp:ListItem Text="Reward System" Value="0"></asp:ListItem>
-                                                           <asp:ListItem Text="Promo Offered" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="---View All Reports -----" Value="0"></asp:ListItem>
+                                                            <asp:ListItem Text="Reward System" Value="1"></asp:ListItem>
+                                                           <asp:ListItem Text="Discount Coupon Offered" Value="2"></asp:ListItem>
                                                         </asp:DropDownList>
 
                                                         <asp:Button ID="btnDisplayReports" runat="server" Text="Search" OnClick="btnDisplayReports_Click" CssClass="btn-primary" Height="40px"/>
@@ -402,6 +403,8 @@
                                                             <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                             <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                         </asp:GridView>
+                                                                   <br />
+                                                                    <asp:Label ID="lblReward" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
                                                                    <asp:GridView runat="server" ID="gridRewardReport" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                                  

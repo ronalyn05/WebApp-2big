@@ -37,19 +37,19 @@ namespace WRS2big_Web.Admin
             Dictionary<string, ProductRefill> refillProducts = responseRefill.ResultAs<Dictionary<string, ProductRefill>>();
             var filteredRefillList = refillProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
 
-            var responseOther = twoBigDB.Get("otherPRODUCTS");
-            Dictionary<string, otherProducts> otherProducts = responseOther.ResultAs<Dictionary<string, otherProducts>>();
+            var responseOther = twoBigDB.Get("thirdparty_PRODUCTS");
+            Dictionary<string, thirdpartyProducts> otherProducts = responseOther.ResultAs<Dictionary<string, thirdpartyProducts>>();
             var filteredOtherList = otherProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
 
             // Add the unit and sizes data of refill products to the CheckBoxList
             List<string> refillUnitSizesList = new List<string>();
             foreach (var product in filteredRefillList)
             {
-                string unit = product.pro_refillUnit;
-                string size = product.pro_refillSize;
-                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                string unitofVolume = product.pro_refillUnitVolume;
+                string qty = product.pro_refillQty;
+                if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = size + "  " + unit;
+                    string unitSizes = qty + "  " + unitofVolume;
                     if (!refillUnitSizesList.Contains(unitSizes))
                     {
                         refillUnitSizesList.Add(unitSizes);
@@ -66,11 +66,11 @@ namespace WRS2big_Web.Admin
             List<string> otherUnitSizesList = new List<string>();
             foreach (var product in filteredOtherList)
             {
-                string unit = product.other_productUnit;
-                string size = product.other_productSize;
-                if (!string.IsNullOrEmpty(unit) && !string.IsNullOrEmpty(size))
+                string unitofVolume = product.thirdparty_productUnitVolume;
+                string qty = product.thirdparty_productQty;
+                if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = size + "  " + unit;
+                    string unitSizes = qty + "  " + unitofVolume;
                     if (!otherUnitSizesList.Contains(unitSizes))
                     {
                         otherUnitSizesList.Add(unitSizes);
@@ -97,7 +97,7 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
             Dictionary<string, RewardSystem> userReward = response.ResultAs<Dictionary<string, RewardSystem>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
+          
 
             // Create the DataTable to hold the orders
             DataTable rewardTable = new DataTable();
@@ -112,8 +112,9 @@ namespace WRS2big_Web.Admin
             //condition to fetch the product refill data
             if (response != null && response.ResultAs<RewardSystem>() != null)
             {
+                var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.rewardsDateAdded);
                 //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
-             //   var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
+                //   var filteredList = rewardList.Values.Where(d => d.adminId.ToString() == idno);
 
                 // Loop through the entries and add them to the DataTable
                 foreach (var entry in filteredList)
@@ -151,41 +152,43 @@ namespace WRS2big_Web.Admin
             int logsId = (int)Session["logsId"];
 
             // Retrieve all records from the PROMO_OFFERED table
-            FirebaseResponse response = twoBigDB.Get("PROMO_OFFERED/");
-            Dictionary<string, PromoOffered> userReward = response.ResultAs<Dictionary<string, PromoOffered>>();
+            FirebaseResponse response = twoBigDB.Get("DISCOUNTCOUPON/");
+            Dictionary<string, DiscounCoupon> userReward = response.ResultAs<Dictionary<string, DiscounCoupon>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.promoDateAdded);
             
 
             // Create the DataTable to hold the orders
             DataTable promoOfferedTable = new DataTable();
-            promoOfferedTable.Columns.Add("PROMO ID");
-            promoOfferedTable.Columns.Add("PROMO NAME");
-            promoOfferedTable.Columns.Add("PROMO DESCRIPTION");
-            promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT OFFERS");
-            promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT REFILL");
-            promoOfferedTable.Columns.Add("PROMO APPLIED TO OTHER PRODUCT");
-            promoOfferedTable.Columns.Add("PROMO EXPIRATION FROM");
-            promoOfferedTable.Columns.Add("PROMO EXPIRATION TO");
+            promoOfferedTable.Columns.Add("COUPON ID");
+            promoOfferedTable.Columns.Add("COUPON NAME");
+            promoOfferedTable.Columns.Add("COUPON DESCRIPTION");
+            promoOfferedTable.Columns.Add("COUPON APPLIED TO PRODUCT OFFERS");
+            promoOfferedTable.Columns.Add("COUPON APPLIED TO PRODUCT REFILL");
+            promoOfferedTable.Columns.Add("COUPON APPLIED TO THIRD PARTY PRODUCT");
+            promoOfferedTable.Columns.Add("COUPON EXPIRATION FROM");
+            promoOfferedTable.Columns.Add("COUPON EXPIRATION TO");
             promoOfferedTable.Columns.Add("DATE ADDED");
             promoOfferedTable.Columns.Add("ADDED BY");
 
            
             //condition to fetch the other product data
-            if (response != null && response.ResultAs<PromoOffered>() != null)
+            if (response != null && response.ResultAs<DiscounCoupon>() != null)
             {
-              //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+                //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
+
+                var filteredList = userReward.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.couponDateAdded);
 
                 // Loop through the entries and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                        string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string promoValidFrom = entry.promoExpirationFrom == DateTimeOffset.MinValue ? "" : entry.promoExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string promoValidUntil = entry.promoExpirationTo == DateTimeOffset.MinValue ? "" : entry.promoExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    string dateAdded = entry.couponDateAdded == DateTimeOffset.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidFrom = entry.couponExpirationFrom == DateTimeOffset.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidUntil = entry.couponExpirationTo == DateTimeOffset.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    promoOfferedTable.Rows.Add(entry.promoId, entry.promoName, entry.promoDescription, entry.promoAppliedToProductOffers,
-                             entry.promoAppliedTo_productRefillUnitSizes, entry.promoAppliedTo_otherProductUnitSizes, promoValidFrom,
+                    promoOfferedTable.Rows.Add(entry.couponId, entry.couponName, entry.couponDescription, entry.couponAppliedToProductOffers,
+                             entry.couponAppliedTo_productRefillUnitSizes, entry.couponAppliedTo_thirdpartyProductUnitSizes, promoValidFrom,
                              promoValidUntil, dateAdded, entry.addedBy);
                     
                 }
@@ -306,26 +309,26 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Add the reward promo to the database
-                var data = new PromoOffered
+                var data = new DiscounCoupon
                 {
-                    promoId = idnum,
+                    couponId = idnum,
                     adminId = int.Parse(idno),
-                    promoName = txtpromoname.Text,
-                    promoDiscountValue = percentageVAlue,
-                    promoDescription = txtpromodescription.Text,
-                    promoPointsRequiredToClaim = pointsRequired,
-                    promoAppliedToProductOffers = selectedPromo_productOffered,
-                    promoExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
-                    promoExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
-                    promoAppliedTo_otherProductUnitSizes = selectedUnitSizesOtherProduct,
-                    promoAppliedTo_productRefillUnitSizes = selectedUnitSizesproRefill,
-                    promoDateAdded = promoDateAdded,
+                    couponName = txtpromoname.Text,
+                    couponDiscountValue = percentageVAlue,
+                    couponDescription = txtpromodescription.Text,
+                    couponPointsRequiredToClaim = pointsRequired,
+                    couponAppliedToProductOffers = selectedPromo_productOffered,
+                    couponExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
+                    couponExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
+                    couponAppliedTo_thirdpartyProductUnitSizes = selectedUnitSizesOtherProduct,
+                    couponAppliedTo_productRefillUnitSizes = selectedUnitSizesproRefill,
+                    couponDateAdded = promoDateAdded,
                     addedBy = name
 
                 };
 
                 SetResponse response;
-                response = twoBigDB.Set("PROMO_OFFERED/" + data.promoId, data);
+                response = twoBigDB.Set("DISCOUNTCOUPON/" + data.couponId, data);
 
 
                 // Get the current date and time
@@ -338,7 +341,7 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "ADDED PROMO OFFERED",
+                    userActivity = "ADDED DISCOUNT COUPON OFFERED",
                 };
 
                 //Storing the  info
@@ -535,19 +538,30 @@ namespace WRS2big_Web.Admin
             {
                 string selectedOption = ddlSearchOptions.SelectedValue;
 
-
                 if (selectedOption == "0")
                 {
-                    lblreports.Text = "REWARD SYSTEM REPORT";
+                    lblreports.Text = "DISCOUNT COUPON REPORT";
+                    lblReward.Text = "REWARD SYSTEM REPORT";
                     gridRewardReport.Visible = true;
-                    gridPromoReports.Visible = false;
                     rewardReportsDisplay();
+                    gridPromoReports.Visible = true;
+                    promoOfferedReportsDisplay();
 
                 }
                 else if (selectedOption == "1")
                 {
-                    lblreports.Text = "PROMO OFFERED REPORT";
+                    lblreports.Text = "REWARD SYSTEM REPORT";
+                    gridRewardReport.Visible = true;
+                    gridPromoReports.Visible = false;
+                    lblReward.Visible = false;
+                    rewardReportsDisplay();
+
+                }
+                else if (selectedOption == "2")
+                {
+                    lblreports.Text = "DISCOUNT COUPON REPORT";
                     gridPromoReports.Visible = true;
+                    lblReward.Visible = false;
                     gridRewardReport.Visible = false;
                     promoOfferedReportsDisplay();
                     
@@ -564,14 +578,15 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#viewpromo').modal();", true);
 
             string idno = (string)Session["idno"];
+            string searchname = txtSearch.Text;
+
             try
             {
-                string searchname = txtSearch.Text;
-
+               
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(searchname))
                 {
-                    Response.Write("<script>alert ('Invalid promo name!');</script>");
+                    Response.Write("<script>alert ('Invalid coupon name!');</script>");
                     return;
                 }
 
@@ -580,40 +595,40 @@ namespace WRS2big_Web.Admin
                 //Dictionary<string, RewardSystem> rewardList = response.ResultAs<Dictionary<string, RewardSystem>>();
 
                 // Retrieve all orders from the ORDERS table
-                FirebaseResponse responselist = twoBigDB.Get("PROMO_OFFERED");
-                Dictionary<string, PromoOffered> promolist = responselist.ResultAs<Dictionary<string, PromoOffered>>();
+                FirebaseResponse responselist = twoBigDB.Get("DISCOUNTCOUPON");
+                Dictionary<string, DiscounCoupon> promolist = responselist.ResultAs<Dictionary<string, DiscounCoupon>>();
 
                 // Create the DataTable to hold the orders
                 DataTable promoOfferedTable = new DataTable();
-                promoOfferedTable.Columns.Add("PROMO ID");
-                promoOfferedTable.Columns.Add("PROMO NAME");
-                promoOfferedTable.Columns.Add("PROMO DESCRIPTION");
-                promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT OFFERS");
-                promoOfferedTable.Columns.Add("PROMO APPLIED TO PRODUCT REFILL");
-                promoOfferedTable.Columns.Add("PROMO APPLIED TO OTHER PRODUCT");
-                promoOfferedTable.Columns.Add("PROMO EXPIRATION FROM");
-                promoOfferedTable.Columns.Add("PROMO EXPIRATION TO");
+                promoOfferedTable.Columns.Add("COUPON ID");
+                promoOfferedTable.Columns.Add("COUPON NAME");
+                promoOfferedTable.Columns.Add("COUPON DESCRIPTION");
+                promoOfferedTable.Columns.Add("COUPON APPLIED TO PRODUCT OFFERS");
+                promoOfferedTable.Columns.Add("COUPON APPLIED TO PRODUCT REFILL");
+                promoOfferedTable.Columns.Add("COUPON APPLIED TO THIRD PARTY PRODUCT");
+                promoOfferedTable.Columns.Add("COUPON EXPIRATION FROM");
+                promoOfferedTable.Columns.Add("COUPON EXPIRATION TO");
                 promoOfferedTable.Columns.Add("DATE ADDED");
                 promoOfferedTable.Columns.Add("ADDED BY");
 
                 //condition to fetch the other product data
-                if (responselist != null && responselist.ResultAs<PromoOffered>() != null)
+                if (responselist != null && responselist.ResultAs<DiscounCoupon>() != null)
                 {
                     var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
 
                     // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        if (searchname == entry.promoName.ToString())
+                        if (searchname == entry.couponName.ToString())
                         {
 
-                            string dateAdded = entry.promoDateAdded == DateTimeOffset.MinValue ? "" : entry.promoDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string promoValidFrom = entry.promoExpirationFrom == DateTimeOffset.MinValue ? "" : entry.promoExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string promoValidUntil = entry.promoExpirationTo == DateTimeOffset.MinValue ? "" : entry.promoExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.couponDateAdded == DateTimeOffset.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidFrom = entry.couponExpirationFrom == DateTimeOffset.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidUntil = entry.couponExpirationTo == DateTimeOffset.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
                             //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            promoOfferedTable.Rows.Add(entry.promoId, entry.promoName, entry.promoDescription, entry.promoAppliedToProductOffers,
-                                     entry.promoAppliedTo_productRefillUnitSizes, entry.promoAppliedTo_otherProductUnitSizes, promoValidFrom,
+                            promoOfferedTable.Rows.Add(entry.couponId, entry.couponName, entry.couponDescription, entry.couponAppliedToProductOffers,
+                                     entry.couponAppliedTo_productRefillUnitSizes, entry.couponAppliedTo_thirdpartyProductUnitSizes, promoValidFrom,
                                      promoValidUntil, dateAdded, entry.addedBy);
                         }
                     }
@@ -645,9 +660,10 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
+            string searchname = txtSearchReward.Text;
             try
             {
-                string searchname = txtSearchReward.Text;
+                
 
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(searchname))
