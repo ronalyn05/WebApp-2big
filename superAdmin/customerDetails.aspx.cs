@@ -136,6 +136,7 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.cus_status = "Approved";
+            admin.firstName = admin.firstName;
             admin.dateApproved = DateTime.Now;
             adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 

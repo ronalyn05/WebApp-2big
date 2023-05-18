@@ -15,6 +15,7 @@
         overflow-y: auto;
          }
     </style>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -101,38 +102,32 @@
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                             <asp:Label class="form-control-round" id="firstName" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Middlename:</label>
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                             <asp:Label class="form-control-round" id="middleName" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                   <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Lastname:</label>
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                             <asp:Label class="form-control-round" id="lastName" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Birthdate:</label>
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                             <asp:Label class="form-control-round" id="clientBirthDate" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">Contact number:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
                                                                                                           <asp:Label  class="form-control-round" id="clientPhone" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">Valid ID:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
                                                                                                           <asp:Label  class="form-control-round" id="chosenValidID" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text" >
+
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">Government-issued ID:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
                                                                                                             <asp:Image runat="server" ID="clientValidID" class="img-500  " style="width:600px;height:600px" />
@@ -154,27 +149,30 @@
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="clientStationName" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
+                                                                                                   
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px">Refilling Station Address:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="clientStationAdd" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
+
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px">Proof of Business:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="chosenProof" runat="server"></asp:Label>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
+
                                                                                                         <asp:Label runat="server" class="col-sm-5 col-form-label" id="proofChosen" style="font-size:18px"></asp:Label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                             <asp:Image runat="server" ID="businessProofImg" class="img-500  " style="width:600px;height:600px" />
-                                                                                                            <asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                            <%--<asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
+                                                                                                           --%>
 
+                                                                                                        </div>
+<%--                                                                                                        <div id="pdfViewerContainer">
+                                                                                                            <iframe id="pdfViewer" runat="server" width="500" height="500"></iframe>
+                                                                                                            
+                                                                                                        </div>--%>
+
+                                                                                                    </div>
                                                                                             </div>
 
                                                                             </div>

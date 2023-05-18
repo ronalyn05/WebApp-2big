@@ -74,8 +74,8 @@ namespace WRS2big_Web.superAdmin
             
 
             //FILE 
-            string proofLink = admin.businessProofLnk;
-            fileProofLink.NavigateUrl = proofLink;
+            //string proofLink = admin.businessProofLnk;
+            //fileProofLink.NavigateUrl = proofLink;
 
 
 
@@ -93,17 +93,12 @@ namespace WRS2big_Web.superAdmin
             }
             if (admin.businessProofLnk != null)
             {
+                businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
+              
 
-                string fileExtension = Path.GetExtension(admin.businessProofLnk.ToString()).ToLower();
-
-                // Check if file is an image
-                if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
-                {
-                    businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
-                }
-
-                //businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
             }
+
+
 
 
 
@@ -116,6 +111,40 @@ namespace WRS2big_Web.superAdmin
             clientStationName.Text = station.stationName;
 
         }
+
+        //public string getProofLink()
+        //{
+        //    string proofLink = "";
+        //    FirebaseResponse proof = twoBigDB.Get("ADMIN/" + ClientID);
+        //    Model.AdminAccount businessproof = proof.ResultAs<Model.AdminAccount>();
+
+        //    if (businessproof != null)
+        //    {
+        //        proofLink = businessproof.businessProofLnk;
+
+        //        string extension = Path.GetExtension(proofLink);
+
+        //        if (extension.ToLower() == ".pdf")
+        //        {
+        //            // Set the data and type attributes of the pdfViewer element
+        //            pdfViewer.Attributes["data"] = proofLink;
+        //            pdfViewer.Attributes["type"] = "application/pdf";
+
+        //            // Return an empty string since the PDF is rendered using PDF.js
+        //            return "";
+        //        }
+        //        else if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+        //        {
+        //            // Set the src attribute of the imgViewer element
+        //            businessProofImg.Attributes["src"] = proofLink;
+
+        //            // Return an empty string since the image is rendered using an img element
+        //            return "";
+        //        }
+        //    }
+        //    return proofLink;
+        //}
+
 
         protected void approveButton_Click(object sender, EventArgs e)
         {

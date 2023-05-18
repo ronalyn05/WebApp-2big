@@ -260,6 +260,7 @@ namespace WRS2big_Web.superAdmin
 
 
                 customerDetails.cus_status = "Approved";
+                customerDetails.firstName = customerDetails.firstName;
                 customerDetails.dateApproved = DateTime.Now;
                 response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
 
