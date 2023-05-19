@@ -691,7 +691,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert('Data already exist'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
         }
-        //STORING DATA TO PRODUCT REFILL
+        //STORING DATA TO PRODUCT REFILL and other product offered
         protected async void btnSet_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -729,7 +729,7 @@ namespace WRS2big_Web.Admin
                     productStockUnit = " ";
                 }
                 // Get the selected values from the CheckBoxList
-                string offerType_selectedValues = "";
+                string offerType_selectedValues = " ";
                 foreach (ListItem item in radioType_productoffered.Items)
                 {
                     if (item.Selected)
