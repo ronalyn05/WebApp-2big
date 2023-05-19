@@ -161,10 +161,17 @@
                                                     <div>
                                                         <asp:DropDownList ID="drdDeliveryType" CssClass="text-center" runat="server" Height="40px" Width="364px">
                                                             <asp:ListItem Text="View orders base on delivery types" Selected="False"></asp:ListItem>
-                                                            <asp:ListItem Text="View All" Value="0"></asp:ListItem>
-                                                            <asp:ListItem Text="Express" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
-                                                            <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                           <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+                                                            <asp:ListItem Text="COD - Express" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="COD - Standard" Value="2"></asp:ListItem>
+                                                            <asp:ListItem Text="COD - Reservation" Value="3"></asp:ListItem>
+                                                              <asp:ListItem Text="GCASH - Express" Value="4"></asp:ListItem>
+                                                            <asp:ListItem Text="GCASH - Standard" Value="5"></asp:ListItem>
+                                                             <asp:ListItem Text="GCASH - Reservation" Value="6"></asp:ListItem>
+                                                              <asp:ListItem Text="POINTS - Express" Value="7"></asp:ListItem>
+                                                            <asp:ListItem Text="POINTS - Standard" Value="8"></asp:ListItem>
+                                                            <asp:ListItem Text="POINTS - Reservation" Value="9"></asp:ListItem>
+                                                           
                                                         </asp:DropDownList>
                                                         <asp:Button ID="btnViewDeliveryType" runat="server" Text="View" OnClick="btnViewDeliveryType_Click" CssClass="btn-primary" Height="40px" />
                                                     </div>

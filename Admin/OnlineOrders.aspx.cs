@@ -32,7 +32,6 @@ namespace WRS2big_Web.Admin
         };
         IFirebaseClient twoBigDB;
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -76,10 +75,9 @@ namespace WRS2big_Web.Admin
 
             try
             {
-
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-                
+
 
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
@@ -87,18 +85,20 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("DELIVERY TYPE SELECTED");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
                 ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STORE NAME");
-
 
 
                 if (response != null && response.ResultAs<Order>() != null)
@@ -107,6 +107,8 @@ namespace WRS2big_Web.Admin
 
                     foreach (var order in filteredList)
                     {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
                             if (order.order_Products != null)
                             {
                                 string productrefill_order = "";
@@ -119,25 +121,58 @@ namespace WRS2big_Web.Admin
 
                                     if (product.offerType == "Product Refill")
                                     {
-                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " ";
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") 
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
                                     }
 
                                 }
+
                                 string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
                             }
-                        
-                       
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
                     }
+
 
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -178,16 +213,19 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("DELIVERY TYPE SELECTED");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
                 ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STORE NAME");
 
 
@@ -197,8 +235,40 @@ namespace WRS2big_Web.Admin
 
                     foreach (var order in filteredList)
                     {
-                        
-                        if (order.order_Products != null)
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
                         {
                             string productrefill_order = "";
                             string otherproduct_order = "";
@@ -207,27 +277,30 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
+
                                 if (product.offerType == "Product Refill")
                                 {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " ";
-                                    productrefill_qty += product.qtyPerItem + " " + " ";
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "") // corrected spelling of "Other Product"
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
                                 }
 
                             }
+
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                                order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
                         }
-                        
                     }
+
 
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -297,6 +370,9 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("DELIVERY TYPE SELECTED");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
@@ -307,7 +383,6 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STORE NAME");
 
 
@@ -317,7 +392,40 @@ namespace WRS2big_Web.Admin
 
                     foreach (var order in filteredList)
                     {
-                        if (order.order_Products != null)
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
                         {
                             string productrefill_order = "";
                             string otherproduct_order = "";
@@ -326,15 +434,15 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-                                
+
                                 if (product.offerType == "Product Refill")
                                 {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " " ;
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
                                 else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
                                 {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " " ;
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
                                 }
 
@@ -343,11 +451,13 @@ namespace WRS2big_Web.Admin
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                                order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, 
-                               dateOrder, order.order_ReservationDate, order.order_StoreName);
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
                         }
                     }
+
 
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -371,91 +481,8 @@ namespace WRS2big_Web.Admin
                 lblPointsError.Text = "There was an error retrieving orders" + ex.Message;
                 lblPointsError.Visible = true;
             }
-        }
-       
-
-        //private void DisplayRewardPoints_order()
-        //{
-        //    string idno = (string)Session["idno"];
-
-        //    FirebaseResponse response = twoBigDB.Get("ORDERS");
-        //    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-        //    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points"));
-
-        //    DataTable ordersTable = new DataTable();
-        //    ordersTable.Columns.Add("ORDER ID");
-        //    ordersTable.Columns.Add("CUSTOMER ID");
-        //    ordersTable.Columns.Add("DRIVER ID");
-        //    ordersTable.Columns.Add("STORE NAME");
-        //    ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-        //    ordersTable.Columns.Add("OTHER PRODUCT ORDER ");
-        //    ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-        //    ordersTable.Columns.Add("OTHER PRODUCT  QUANTITY");
-        //    //  ordersTable.Columns.Add("OVERALL ORDER QUANTITY");
-        //    ordersTable.Columns.Add("DELIVERY TYPE");
-        //    ordersTable.Columns.Add("ORDER TYPE");
-        //    ordersTable.Columns.Add("PAYMENT METHOD");
-        //    ordersTable.Columns.Add("REFILL SELECTED OPTION");
-        //    ordersTable.Columns.Add("RESERVATION DATE");
-        //    ordersTable.Columns.Add("STATUS");
-        //    ordersTable.Columns.Add("TOTAL AMOUNT");
-
-
-        //    if (response != null && response.ResultAs<Order>() != null)
-        //    {
-        //        foreach (var order in filteredList)
-        //        {
-        //            if (order.order_Products != null)
-        //            {
-        //                string productrefill_order = "";
-        //                string otherproduct_order = "";
-        //                string productrefill_qty = "";
-        //                string otherproduct_qty = "";
-
-        //                foreach (var product in order.order_Products)
-        //                {
-        //                    //if(product.offerType == "Product Refill")
-        //                    //{
-        //                    //    productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-        //                    //    productrefill_qty = product.qtyPerItem;
-        //                    //}
-        //                    //if (product.offerType == "other Product")
-        //                    //{
-        //                    //    otherproduct_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-        //                    //    otherproduct_qty = product.qtyPerItem;
-        //                    //}
-
-        //                    if (product.offerType == "Product Refill")
-        //                    {
-        //                        productrefill_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-        //                        productrefill_qty += product.qtyPerItem;
-        //                    }
-        //                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-        //                    {
-        //                        otherproduct_order += product.order_size + " " + product.order_unit + " " + product.order_ProductName + " ";
-        //                        otherproduct_qty += product.qtyPerItem;
-        //                    }
-
-        //                }
-
-        //                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_StoreName, productrefill_order, otherproduct_order,
-        //                    productrefill_qty, otherproduct_qty, order.order_DeliveryTypeValue, order.order_OrderTypeValue, order.orderPaymentMethod,
-        //                    order.order_RefillSelectedOption, order.order_ReservationDate, order.order_OrderStatus, order.order_TotalAmount);
-        //            }
-        //            else
-        //            {
-        //                lblPointsError.Text = "No orders found";
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        lblPointsError.Text = "There was an error retrieving orders";
-        //    }
-
-        //    gridRewardPoints_order.DataSource = ordersTable;
-        //    gridRewardPoints_order.DataBind();
-        //}
+        } 
+   
         //ASSIGNING THE DRIVER
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -2051,10 +2078,11 @@ namespace WRS2big_Web.Admin
         //OPTION DISPLAY ORDERS
         protected void btnViewOrders_Click(object sender, EventArgs e)
         {
+            string selectedOption = drdPaymentMode.SelectedValue;
+
             try
             {
-                string selectedOption = drdPaymentMode.SelectedValue;
-
+               
                 if (selectedOption == "0")
                 {
                     DisplayRewardPoints_order();
@@ -2106,7 +2134,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/OnlineOrders.aspx';" + ex.Message);
             }
         }
         //OPTION DISPLAY DELIVERY TYPES
@@ -2116,63 +2144,129 @@ namespace WRS2big_Web.Admin
             string selectedOption = drdDeliveryType.SelectedValue;
             try
             {
-
-                if (selectedOption == "0")
+                if (selectedOption == "1")//cod - express
                 {
-                    displayExpress_order();
-                    lblViewOrders.Text = "EXPRESS";
-                    displayStandard_order();
-                    lblViewGcashOrder.Text = "STANDARD";
-                    displayReservation_order();
-                    lblViewRewardPoints.Text = "RESERVATION";
-                }
-                else if (selectedOption == "1")
-                {
-                    lblViewOrders.Text = "EXPRESS";
+                    lblViewOrders.Text = "COD / EXPRESS";
                     lblViewGcashOrder.Visible = false;
                     lblViewRewardPoints.Visible = false;
                     gridCOD_order.Visible = true;
                     gridGcash_order.Visible = false;
                     gridRewardPoints_order.Visible = false;
-                    displayExpress_order();
+                    COD_express();
                     lblGcashError.Visible = false;
                     lblPointsError.Visible = false;
 
                 }
-                else if (selectedOption == "2")
+                else if (selectedOption == "2") // cod - standard
                 {
-                    lblViewOrders.Text = "STANDARD";
+                    lblViewOrders.Text = "COD / STANDARD";
                     lblViewGcashOrder.Visible = false;
                     lblViewRewardPoints.Visible = false;
                     gridGcash_order.Visible = true;
                     gridCOD_order.Visible = false;
                     gridRewardPoints_order.Visible = false;
-                    displayStandard_order();
+                    COD_standard();
                     lblPointsError.Visible = false;
                     lblCodError.Visible = false;
 
                 }
-                else if (selectedOption == "3")
+                else if (selectedOption == "3") // cod -reservation
                 {
-                    lblViewOrders.Text = "RESERVATION";
+                    lblViewOrders.Text = "COD / RESERVATION";
                     lblViewGcashOrder.Visible = false;
                     lblViewRewardPoints.Visible = false;
                     gridRewardPoints_order.Visible = true;
                     gridGcash_order.Visible = false;
                     gridCOD_order.Visible = false;
-                    displayReservation_order();
+                    COD_reservation();
+                    lblGcashError.Visible = false;
+                    lblCodError.Visible = false;
+                }
+                else if (selectedOption == "1") // gcash - express
+                {
+                    lblViewOrders.Text = "GCASH / EXPRESS";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridCOD_order.Visible = true;
+                    gridGcash_order.Visible = false;
+                    gridRewardPoints_order.Visible = false;
+                    gcash_express();
+                    lblGcashError.Visible = false;
+                    lblPointsError.Visible = false;
+
+                }
+                else if (selectedOption == "2") // gcash - standard
+                {
+                    lblViewOrders.Text = "GCASH / STANDARD";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridGcash_order.Visible = true;
+                    gridCOD_order.Visible = false;
+                    gridRewardPoints_order.Visible = false;
+                    gcash_standard();
+                    lblPointsError.Visible = false;
+                    lblCodError.Visible = false;
+
+                }
+                else if (selectedOption == "3") // gcash - reservation
+                {
+                    lblViewOrders.Text = "GCASH / RESERVATION";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridRewardPoints_order.Visible = true;
+                    gridGcash_order.Visible = false;
+                    gridCOD_order.Visible = false;
+                    gcash_reservation();
+                    lblGcashError.Visible = false;
+                    lblCodError.Visible = false;
+                }
+                else if (selectedOption == "1") // points - express
+                {
+                    lblViewOrders.Text = "POINTS / EXPRESS";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridCOD_order.Visible = true;
+                    gridGcash_order.Visible = false;
+                    gridRewardPoints_order.Visible = false;
+                    points_express();
+                    lblGcashError.Visible = false;
+                    lblPointsError.Visible = false;
+
+                }
+                else if (selectedOption == "2") // points - standard
+                {
+                    lblViewOrders.Text = "POINTS / STANDARD";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridGcash_order.Visible = true;
+                    gridCOD_order.Visible = false;
+                    gridRewardPoints_order.Visible = false;
+                    points_standard();
+                    lblPointsError.Visible = false;
+                    lblCodError.Visible = false;
+
+                }
+                else if (selectedOption == "3") // points - reservation
+                {
+                    lblViewOrders.Text = "POINTS / RESERVATION";
+                    lblViewGcashOrder.Visible = false;
+                    lblViewRewardPoints.Visible = false;
+                    gridRewardPoints_order.Visible = true;
+                    gridGcash_order.Visible = false;
+                    gridCOD_order.Visible = false;
+                    points_reservation();
                     lblGcashError.Visible = false;
                     lblCodError.Visible = false;
                 }
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/Rewards.aspx';" + ex.Message);
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/OnlineOrders.aspx';" + ex.Message);
             }
         }
 
-        //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD
-        private void displayExpress_order()
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD by express delivery
+        private void COD_express()
         {
             string idno = (string)Session["idno"];
             //string selectedDeliveryType = drdDeliveryType.SelectedValue;
@@ -2183,36 +2277,68 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
                 ordersTable.Columns.Add("CUSTOMER ID");
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
                 ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STORE NAME");
-
 
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Express")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery" && d.order_DeliveryTypeValue == "Express")).OrderByDescending(d => d.orderDate);
 
                     foreach (var order in filteredList)
                     {
-                        //if(selectedDeliveryType == order.order_DeliveryTypeValue)
-                        //{
-                        if (order.order_Products != null)
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
                         {
                             string productrefill_order = "";
                             string otherproduct_order = "";
@@ -2224,7 +2350,7 @@ namespace WRS2big_Web.Admin
 
                                 if (product.offerType == "Product Refill")
                                 {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " ";
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
                                 else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
@@ -2234,14 +2360,15 @@ namespace WRS2big_Web.Admin
                                 }
 
                             }
+
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                           order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                           order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
                         }
-                        //}
-
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -2267,9 +2394,268 @@ namespace WRS2big_Web.Admin
                 lblCodError.Visible = true;
             }
         }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD by standard delivery
+        private void COD_standard()
+        {
+            string idno = (string)Session["idno"];
+            //string selectedDeliveryType = drdDeliveryType.SelectedValue;
 
-        //DISPLAY THE ORDER FROM THE CUSTOMER THRU GCASH
-        private void displayStandard_order()
+            try
+            {
+
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery" && d.order_DeliveryTypeValue == "Standard")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblCodError.Text = "No  Orders Found";
+                        lblCodError.Visible = true;
+                    }
+                    else
+                    {
+                        gridCOD_order.DataSource = ordersTable;
+                        gridCOD_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblCodError.Text = "No Orders Found";
+                    lblCodError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblCodError.Text = "There was an error retrieving orders" + ex.Message;
+                lblCodError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD by reservation
+        private void COD_reservation()
+        {
+            string idno = (string)Session["idno"];
+            //string selectedDeliveryType = drdDeliveryType.SelectedValue;
+
+            try
+            {
+
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery" && d.order_DeliveryTypeValue == "Reservation")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblCodError.Text = "No  Orders Found";
+                        lblCodError.Visible = true;
+                    }
+                    else
+                    {
+                        gridCOD_order.DataSource = ordersTable;
+                        gridCOD_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblCodError.Text = "No Orders Found";
+                    lblCodError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblCodError.Text = "There was an error retrieving orders" + ex.Message;
+                lblCodError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU GCASH by express
+        private void gcash_express()
         {
             string idno = (string)Session["idno"];
             try
@@ -2283,27 +2669,62 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
                 ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
                 ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("STORE NAME");
 
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Standard")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash" && d.order_DeliveryTypeValue == "Express")).OrderByDescending(d => d.orderDate);
 
                     foreach (var order in filteredList)
                     {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
 
-                        if (order.order_Products != null)
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
                         {
                             string productrefill_order = "";
                             string otherproduct_order = "";
@@ -2312,26 +2733,28 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
+
                                 if (product.offerType == "Product Refill")
                                 {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " ";
-                                    productrefill_qty += product.qtyPerItem + " " + " ";
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "") // corrected spelling of "Other Product"
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
                                 }
 
                             }
+
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                                order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_ReservationDate, order.order_StoreName);
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
                         }
-
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -2357,8 +2780,260 @@ namespace WRS2big_Web.Admin
                 lblGcashError.Visible = true;
             }
         }
-        //   DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS
-        private void displayReservation_order()
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU GCASH by standard
+        private void gcash_standard()
+        {
+            string idno = (string)Session["idno"];
+            try
+            {
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash" && d.order_DeliveryTypeValue == "Standard")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblGcashError.Text = "No  Orders Found";
+                        lblGcashError.Visible = true;
+                    }
+                    else
+                    {
+                        gridGcash_order.DataSource = ordersTable;
+                        gridGcash_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblGcashError.Text = "No Orders Found";
+                    lblGcashError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
+                lblGcashError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU GCASH by reservation
+        private void gcash_reservation()
+        {
+            string idno = (string)Session["idno"];
+            try
+            {
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash" && d.order_DeliveryTypeValue == "Reservation")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblGcashError.Text = "No  Orders Found";
+                        lblGcashError.Visible = true;
+                    }
+                    else
+                    {
+                        gridGcash_order.DataSource = ordersTable;
+                        gridGcash_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblGcashError.Text = "No Orders Found";
+                    lblGcashError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
+                lblGcashError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS by express
+        private void points_express()
         {
             string idno = (string)Session["idno"];
 
@@ -2391,7 +3066,7 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Reservation")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points" && d.order_DeliveryTypeValue == "Express")).OrderByDescending(d => d.orderDate);
 
                     foreach (var order in filteredList)
                     {
@@ -2412,7 +3087,259 @@ namespace WRS2big_Web.Admin
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "third party Product"
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblPointsError.Text = "No  Orders Found";
+                        lblPointsError.Visible = true;
+                    }
+                    else
+                    {
+                        gridRewardPoints_order.DataSource = ordersTable;
+                        gridRewardPoints_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblPointsError.Text = "No Orders Found";
+                    lblPointsError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblPointsError.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS by standard
+        private void points_standard()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points" && d.order_DeliveryTypeValue == "Standard")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+
+                                }
+
+                                string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                            }
+                        }
+                        else if (order.order_OrderTypeValue == "Delivery")
+                        {
+                            string productrefill_order = "";
+                            string otherproduct_order = "";
+                            string productrefill_qty = "";
+                            string otherproduct_qty = "";
+
+                            foreach (var product in order.order_Products)
+                            {
+
+                                if (product.offerType == "Product Refill")
+                                {
+                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    productrefill_qty += product.qtyPerItem;
+                                }
+                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+
+                            }
+
+                            string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                               dateOrder, order.order_StoreName);
+                        }
+                    }
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        lblPointsError.Text = "No  Orders Found";
+                        lblPointsError.Visible = true;
+                    }
+                    else
+                    {
+                        gridRewardPoints_order.DataSource = ordersTable;
+                        gridRewardPoints_order.DataBind();
+                    }
+                }
+                else
+                {
+                    lblPointsError.Text = "No Orders Found";
+                    lblPointsError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblPointsError.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsError.Visible = true;
+            }
+        }
+        //DISPLAY THE ORDER FROM THE CUSTOMER THRU REWARD POINTS by reservation
+        private void points_reservation()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("RESERVATION DATE");
+                ordersTable.Columns.Add("RESERVATION TIME");
+                ordersTable.Columns.Add("DELIVERY TYPE SELECTED");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE ");
+                ordersTable.Columns.Add("STORE NAME");
+
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points" && d.order_DeliveryTypeValue == "Reservation")).OrderByDescending(d => d.orderDate);
+
+                    foreach (var order in filteredList)
+                    {
+                        if (order.order_OrderTypeValue == "PickUp")
+                        {
+                            if (order.order_Products != null)
+                            {
+                                string productrefill_order = "";
+                                string otherproduct_order = "";
+                                string productrefill_qty = "";
+                                string otherproduct_qty = "";
+
+                                foreach (var product in order.order_Products)
+                                {
+
+                                    if (product.offerType == "Product Refill")
+                                    {
+                                        productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        productrefill_qty += product.qtyPerItem;
+                                    }
+                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2483,7 +3410,6 @@ namespace WRS2big_Web.Admin
                 lblPointsError.Text = "There was an error retrieving orders" + ex.Message;
                 lblPointsError.Visible = true;
             }
-        }
-
+        }    
     }
 }
