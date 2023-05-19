@@ -1,328 +1,304 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="WRSsuperAdmin.master.cs" Inherits="WRS2big_Web.WRSsuperAdmin" %>
+﻿    <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="WRSsuperAdmin.master.cs" Inherits="WRS2big_Web.WRSsuperAdmin" %>
 
-<!DOCTYPE html>
-<html>
-<head runat="server">
-    <title>2BiG: WRS Management System
-    </title>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
-    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 10]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-    <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-    <meta name="author" content="codedthemes" />
-    <!-- Favicon icon -->
-    <link rel="icon" href="/images/FinalLogo.PNG" type="image/x-icon">
-    <!-- Google font-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-    <!-- waves.css -->
-    <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-    <!-- Required Fremwork -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap/css/bootstrap.min.css">
-    <!-- waves.css -->
-    <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-    <!-- themify icon -->
-    <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
-    <!-- scrollbar.css -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
-    <!-- am chart export.css -->
-    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-    <!-- Style.css -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <!DOCTYPE html>
+    <html>
+    <head runat="server">
+        <title>2BiG: WRS Management System
+        </title>
+        <asp:ContentPlaceHolder ID="head" runat="server">
+        </asp:ContentPlaceHolder>
+        <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 10]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+          <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+        <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
+        <meta name="author" content="codedthemes" />
+        <!-- Favicon icon -->
+        <link rel="icon" href="/images/FinalLogo.PNG" type="image/x-icon">
+        <!-- Google font-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+        <!-- waves.css -->
+        <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+        <!-- Required Fremwork -->
+        <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap/css/bootstrap.min.css">
+        <!-- waves.css -->
+        <link rel="stylesheet" href="/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+        <!-- themify icon -->
+        <link rel="stylesheet" type="text/css" href="/assets/icon/themify-icons/themify-icons.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
+        <!-- scrollbar.css -->
+        <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
+        <!-- am chart export.css -->
+        <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+        <!-- Style.css -->
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 
-    <!-- Datatables css -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <!-- Datatables css -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-    <!-- Required Jquery -->
-    <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
-    <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
-    <!-- waves js -->
-    <script src="assets/pages/waves/js/waves.min.js"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
-    <!-- modernizr js -->
-    <script type="text/javascript" src="assets/js/SmoothScroll.js"></script>
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
-    <script src="assets/js/pcoded.min.js"></script>
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="assets/js/vertical-layout.min.js "></script>
-    <!-- Custom js -->
-    <script type="text/javascript" src="assets/js/script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/Scripts/viewer.min.js"></script>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div id="pcoded" class="pcoded">
-            <div class="pcoded-overlay-box"></div>
-            <div class="pcoded-container navbar-wrapper">
-                <nav class="navbar header-navbar pcoded-header">
-                    <div class="navbar-wrapper">
-                        <div class="navbar-logo">
-                            <div>
-                                <img src="/images/secLogo.png" style="width: 180px" alt="seclogo.png">
-                            </div>
-                            <a class="mobile-menu waves-effect waves-light text-left" id="mobile-collapse" href="#!">
-                                <i class="ti-menu"></i>
-                            </a>
-                            <div class="mobile-search waves-effect waves-light">
-                                <div class="header-search">
-                                    <div class="main-search morphsearch-search">
-                                        <div class="input-group">
-                                            <span class="input-group-addon search-close"><i class="ti-close"></i></span>
-                                            <input type="text" class="form-control" placeholder="Enter Keyword">
-                                            <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+        <!-- Required Jquery -->
+        <script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
+        <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
+        <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
+        <!-- waves js -->
+        <script src="assets/pages/waves/js/waves.min.js"></script>
+        <!-- jquery slimscroll js -->
+        <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
+        <!-- modernizr js -->
+        <script type="text/javascript" src="assets/js/SmoothScroll.js"></script>
+        <script src="assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+        <script src="assets/js/pcoded.min.js"></script>
+        <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="assets/js/vertical-layout.min.js "></script>
+        <!-- Custom js -->
+        <script type="text/javascript" src="assets/js/script.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="/Scripts/viewer.min.js"></script>
+    </head>
+    <body>
+        <form id="form1" runat="server">
+            <div id="pcoded" class="pcoded">
+                <div class="pcoded-overlay-box"></div>
+                <div class="pcoded-container navbar-wrapper">
+                    <nav class="navbar header-navbar pcoded-header">
+                        <div class="navbar-wrapper">
+                            <div class="navbar-logo">
+                                <div>
+                                    <img src="/images/secLogo.png" style="width: 180px" alt="seclogo.png">
+                                </div>
+                                <a class="mobile-menu waves-effect waves-light text-left" id="mobile-collapse" href="#!">
+                                    <i class="ti-menu"></i>
+                                </a>
+                                <div class="mobile-search waves-effect waves-light">
+                                    <div class="header-search">
+                                        <div class="main-search morphsearch-search">
+                                            <div class="input-group">
+                                                <span class="input-group-addon search-close"><i class="ti-close"></i></span>
+                                                <input type="text" class="form-control" placeholder="Enter Keyword">
+                                                <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <a class="mobile-options waves-effect waves-light">
+                                    <i class="ti-more"></i>
+                                </a>
                             </div>
-                            <a class="mobile-options waves-effect waves-light">
-                                <i class="ti-more"></i>
-                            </a>
-                        </div>
 
-                        <div class="navbar-container container-fluid">
-                            <ul class="nav-left">
-                                <li>
-                                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
-                                </li>
-                                <li>
-                                    <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
-                                        <i class="ti-fullscreen"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav-left">
-                                <li>
-                                    <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
-                                </li>
-                                <div class="text-center">
-                                    <img src="/images/imgLogo.png" style="width: 750px; padding-top: 5px;" alt="logo.png">
-                                </div>
-                            </ul>
+                            <div class="navbar-container container-fluid">
+                                <ul class="nav-left">
+                                    <li>
+                                        <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                                    </li>
+                                    <li>
+                                        <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
+                                            <i class="ti-fullscreen"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav-left">
+                                    <li>
+                                        <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
+                                    </li>
+                                    <div class="text-center">
+                                        <img src="/images/imgLogo.png" style="width: 750px; padding-top: 5px;" alt="logo.png">
+                                    </div>
+                                </ul>
 
-                            <!-- NOTIFICATIONS -->
-                            <ul class="nav-right">
-                                <li class="header-notification">
-                                    <a href="#!">
-                                        <i class="ti-bell"></i>
-                                        <asp:Label runat="server" ID="unread" class="badge bg-c-red"></asp:Label>
-                                    </a>
+                                <!-- NOTIFICATIONS -->
+                                <ul class="nav-right">
+                                    <li class="header-notification">
+                                        <a href="#!">
+                                            <i class="ti-bell"></i>
+                                            <asp:Label runat="server" ID="unread" class="badge bg-c-red"></asp:Label>
+                                        </a>
                                     
-                                    <asp:Repeater ID="rptNotifications" runat="server">
-                                        <HeaderTemplate>
+                                        <asp:Repeater ID="rptNotifications" runat="server">
+                                            <HeaderTemplate>
 
-                                            <ul class="show-notification" style="overflow-y: auto; height: 700px">
-                                                <li>
+                                                <ul class="show-notification" style="overflow-y: auto; height: 700px">
+                                                    <li>
 
-                                                    <div class=" header-notification;" style="position: fixed;">
-                                                        <h6 style="font-size: 16px;">Notifications</h6>
+                                                        <div class=" header-notification;" style="position: fixed;">
+                                                            <h6 style="font-size: 16px;">Notifications</h6>
                                                     
                                                       
-                                                    </div>
-                                                    <br />
+                                                        </div>
+                                                        <br />
                                                     
-                                                </li>
-                                        </HeaderTemplate>
-                                        <ItemTemplate>
+                                                    </li>
+                                            </HeaderTemplate>
+                                            <ItemTemplate>
                                             
-                                            <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #EEEEEE;": "" %>'>
+                                                <li style='<%# Eval("status").ToString() == "unread" ? "background-color: #EEEEEE;": "" %>'>
                                                  
-                                                <div class="media">
-                                                    <div class="media-body">
-                                                        <%--<asp:Label  runat="server" ID="noNotifications"></asp:Label>--%>
-                                                        <asp:LinkButton runat="server" Style="font-size: 19px; color: black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg"></asp:LinkButton>
-                                                        <br />
-                                                        <asp:Label runat="server" Style="font-size: 18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg"></asp:Label>
-                                                        <br />
-                                                        <asp:Label runat="server" ID="notifArrived" Text='<%# Eval("notificationDate") %>' class="notification-time"></asp:Label>
+                                                    <div class="media">
+                                                        <div class="media-body">
+                                                            <%--<asp:Label  runat="server" ID="noNotifications"></asp:Label>--%>
+                                                            <asp:LinkButton runat="server" Style="font-size: 19px; color: black" ID="Label1" Text='<%# Eval("title") %>' OnClick="notifMsg_Click" CommandArgument='<%# Eval("notificationID")%>' class="notification-msg"></asp:LinkButton>
+                                                            <br />
+                                                            <asp:Label runat="server" Style="font-size: 18px" ID="notifMsg" Text='<%# Eval("body") %>' class="notification-msg"></asp:Label>
+                                                            <br />
+                                                            <asp:Label runat="server" ID="notifArrived" Text='<%# Eval("notificationDate") %>' class="notification-time"></asp:Label>
+                                                        </div>
+
                                                     </div>
+                                                </li>
 
-                                                </div>
+
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                </ul>
+                                            </FooterTemplate>
+                                        </asp:Repeater>
+
+
+
+                                    </li>
+                                    <!-- NOTIFICATIONS END -->
+                                    <li class="user-profile header-notification">
+                                        <a href="#!" class="waves-effect waves-light">
+
+                                            <span>
+                                                <asp:Label runat="server" ID="superLbl"> </asp:Label>
+                                            </span>
+                                            <i class="ti-angle-down"></i>
+                                        </a>
+                                        <ul class="show-notification profile-notification">
+                                            <li class="waves-effect waves-light">
+                                                <a href="/superAdmin/Account">
+                                                    <i class="ti-layout-sidebar-left"></i>Logout
+                                                </a>
                                             </li>
-
-
-                                        </ItemTemplate>
-                                        <FooterTemplate>
-                                            </ul>
-                                        </FooterTemplate>
-                                    </asp:Repeater>
-
-
-
-                                </li>
-                                <!-- NOTIFICATIONS END -->
-                                <li class="user-profile header-notification">
-                                    <a href="#!" class="waves-effect waves-light">
-
-                                        <span>
-                                            <asp:Label runat="server" ID="superLbl"> </asp:Label>
-                                        </span>
-                                        <i class="ti-angle-down"></i>
-                                    </a>
-                                    <ul class="show-notification profile-notification">
-                                        <%--                                    <li class="waves-effect waves-light">
-                                        <a href="/superAdmin/SAdminProfile">
-                                            <i class="ti-user"></i> Profile
-                                        </a>
-                                    </li>--%>
-                                        <li class="waves-effect waves-light">
-                                            <a href="/superAdmin/Account">
-                                                <i class="ti-layout-sidebar-left"></i>Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <div>
-                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                    </asp:ContentPlaceHolder>
-                </div>
-                <%--            <div class="pcoded-main-container"  >--%>
-                <div class="pcoded-wrapper">
-                    <nav class="pcoded-navbar">
-                        <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
-                        <div class="pcoded-inner-navbar main-menu">
-                            <div class="">
-                                <div>
-                                    <img class="img-fluid" src="/images/FinalLogo.png" alt="Theme-Logo" style="width: 200px">
-                                    <!-- <div class="user-details">
-                                        <span id="more-details">Admin 1<i class="fa fa-caret-down"></i></span>
-                                    </div> -->
-                                </div>
-                                <!-- <div class="p-15 p-b-0">
-                                    <form class="form-material">
-                                        <div class="form-group form-primary">
-                                            <input type="text" name="footer-email" class="form-control" required="">
-                                            <span class="form-bar"></span>
-                                            <label class="float-label"><i class="fa fa-search m-r-10"></i>Search Friend</label>
-                                        </div>
-                                    </form>
-                                </div> -->
-                                <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">MAIN</div>
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <li class="">
-                                        <a href="/superAdmin/SAdminIndex" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
-                                <ul class="pcoded-item pcoded-left-item">
-                                    <%--                                    <li class="">
-                                        <a href="/Admin/AdminProfile" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="fa fa-user"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Profile </span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>--%>
-                                    <li>
-                                        <a href="/superAdmin/ManageWRSClients" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-user"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/superAdmin/ManagePackagePlans" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-credit-card"></i><b></b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Packages</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/superAdmin/ManageCustomers" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-user"></i><b></b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="pcoded-navigation-label pcoded-hasmenu" data-i18n="nav.category.forms">REPORTS</div>
-                                <ul class="pcoded-item pcoded-left-item ">
-                                    <li>
-                                        <a href="/superAdmin/CustomerReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-agenda"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Users </span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/superAdmin/SubscriptionReports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/superAdmin/Reports" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.form-components.main">History</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </nav>
+                    <div>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                    <div class="pcoded-wrapper">
+                        <nav class="pcoded-navbar">
+                            <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+                            <div class="pcoded-inner-navbar main-menu">
+                                <div class="">
+                                    <div>
+                                        <img class="img-fluid" src="/images/FinalLogo.png" alt="Theme-Logo" style="width: 200px">
+
+                                    </div>
+                                    <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">MAIN</div>
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li class="">
+                                            <a href="/superAdmin/SAdminIndex" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="pcoded-navigation-label" data-i18n="nav.category.forms">MANAGEMENT</div>
+                                    <ul class="pcoded-item pcoded-left-item">
+                                        <li>
+                                            <a href="/superAdmin/ManageWRSClients" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-user"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">Refilling Station Clients</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/superAdmin/ManagePackagePlans" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-credit-card"></i><b></b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription Packages</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/superAdmin/ManageCustomers" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-user"></i><b></b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">Customers</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="pcoded-navigation-label pcoded-hasmenu" data-i18n="nav.category.forms">REPORTS</div>
+                                    <ul class="pcoded-item pcoded-left-item ">
+                                        <li>
+                                            <a href="/superAdmin/CustomerReports" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-agenda"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">Users </span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/superAdmin/SubscriptionReports" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">Subscription</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/superAdmin/Reports" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="ti-book"></i><b>FC</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.form-components.main">History</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Warning Section Ends -->
-        <!-- Required Jquery -->
-        <script src="/assets/js/jquery/jquery.min.js"></script>
-        <script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
-        <script src="/assets/js/popper.js/popper.min.js"></script>
-        <script type="text/javascript" src="/assets/js/bootstrap/js/bootstrap.min.js "></script>
-        <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
-        <!-- waves js -->
-        <script src="assets/pages/waves/js/waves.min.js"></script>
-        <!-- jquery slimscroll js -->
-        <script type="text/javascript" src="/assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
-        <!-- modernizr js -->
-        <script type="text/javascript" src="/assets/js/modernizr/modernizr.js "></script>
-        <!-- slimscroll js -->
-        <script type="text/javascript" src="/assets/js/SmoothScroll.js"></script>
-        <script src="/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
-        <!-- Chart js -->
-        <script type="text/javascript" src="assets/js/chart.js/Chart.js"></script>
-        <!-- amchart js -->
-        <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-        <script src="/assets/pages/widget/amchart/gauge.js"></script>
-        <script src="/assets/pages/widget/amchart/serial.js"></script>
-        <script src="/assets/pages/widget/amchart/light.js"></script>
-        <script src="/assets/pages/widget/amchart/pie.min.js"></script>
-        <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-        <!-- menu js -->
-        <script src="/assets/js/pcoded.min.js"></script>
-        <script src="/assets/js/vertical-layout.min.js "></script>
-        <!-- custom js -->
-        <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
-        <script type="text/javascript" src="/assets/js/script.js "></script>
-        <script src="/Scripts/MyScript/Index.js"></script>
+            <!-- Warning Section Ends -->
+            <!-- Required Jquery -->
+            <script src="/assets/js/jquery/jquery.min.js"></script>
+            <script src="/assets/js/jquery-ui/jquery-ui.min.js"></script>
+            <script src="/assets/js/popper.js/popper.min.js"></script>
+            <script type="text/javascript" src="/assets/js/bootstrap/js/bootstrap.min.js "></script>
+            <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
+            <!-- waves js -->
+            <script src="assets/pages/waves/js/waves.min.js"></script>
+            <!-- jquery slimscroll js -->
+            <script type="text/javascript" src="/assets/js/jquery-slimscroll/jquery.slimscroll.js "></script>
+            <!-- modernizr js -->
+            <script type="text/javascript" src="/assets/js/modernizr/modernizr.js "></script>
+            <!-- slimscroll js -->
+            <script type="text/javascript" src="/assets/js/SmoothScroll.js"></script>
+            <script src="/assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+            <!-- Chart js -->
+            <script type="text/javascript" src="assets/js/chart.js/Chart.js"></script>
+            <!-- amchart js -->
+            <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+            <script src="/assets/pages/widget/amchart/gauge.js"></script>
+            <script src="/assets/pages/widget/amchart/serial.js"></script>
+            <script src="/assets/pages/widget/amchart/light.js"></script>
+            <script src="/assets/pages/widget/amchart/pie.min.js"></script>
+            <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+            <!-- menu js -->
+            <script src="/assets/js/pcoded.min.js"></script>
+            <script src="/assets/js/vertical-layout.min.js "></script>
+            <!-- custom js -->
+            <script type="text/javascript" src="/assets/pages/dashboard/custom-dashboard.js"></script>
+            <script type="text/javascript" src="/assets/js/script.js "></script>
+            <script src="/Scripts/MyScript/Index.js"></script>
 
-        <!-- DataTables JS -->
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    </form>
-</body>
-</html>
+            <!-- DataTables JS -->
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        </form>
+    </body>
+    </html>
 

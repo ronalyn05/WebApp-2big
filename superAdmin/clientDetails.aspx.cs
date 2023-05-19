@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -29,6 +30,26 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
+            int clientID = (int)Session["currentClient"];
+
+            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
+            Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+            if (admin != null)
+            {
+                if (admin.status == "Approved" || admin.status == "Declined")
+                {
+                    declineButton.Enabled = false;
+                    approveButton.Enabled = false;
+
+                }
+                else
+                {
+                    approveButton.Enabled = true;
+                    declineButton.Enabled = true;
+                }
+            }
+
             DisplayDetails();
         }
         private void DisplayDetails()
@@ -50,10 +71,11 @@ namespace WRS2big_Web.superAdmin
             chosenValidID.Text = admin.validID;
             chosenProof.Text = admin.businessProof;
             proofChosen.Text = admin.businessProof + " " + "File:";
+            
 
             //FILE 
-            string proofLink = admin.businessProofLnk;
-            fileProofLink.NavigateUrl = proofLink;
+            //string proofLink = admin.businessProofLnk;
+            //fileProofLink.NavigateUrl = proofLink;
 
 
 
@@ -69,6 +91,14 @@ namespace WRS2big_Web.superAdmin
             {
                 clientImage.ImageUrl = admin.profile_image.ToString();
             }
+            if (admin.businessProofLnk != null)
+            {
+                businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
+              
+
+            }
+
+
 
 
 
@@ -81,6 +111,40 @@ namespace WRS2big_Web.superAdmin
             clientStationName.Text = station.stationName;
 
         }
+
+        //public string getProofLink()
+        //{
+        //    string proofLink = "";
+        //    FirebaseResponse proof = twoBigDB.Get("ADMIN/" + ClientID);
+        //    Model.AdminAccount businessproof = proof.ResultAs<Model.AdminAccount>();
+
+        //    if (businessproof != null)
+        //    {
+        //        proofLink = businessproof.businessProofLnk;
+
+        //        string extension = Path.GetExtension(proofLink);
+
+        //        if (extension.ToLower() == ".pdf")
+        //        {
+        //            // Set the data and type attributes of the pdfViewer element
+        //            pdfViewer.Attributes["data"] = proofLink;
+        //            pdfViewer.Attributes["type"] = "application/pdf";
+
+        //            // Return an empty string since the PDF is rendered using PDF.js
+        //            return "";
+        //        }
+        //        else if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+        //        {
+        //            // Set the src attribute of the imgViewer element
+        //            businessProofImg.Attributes["src"] = proofLink;
+
+        //            // Return an empty string since the image is rendered using an img element
+        //            return "";
+        //        }
+        //    }
+        //    return proofLink;
+        //}
+
 
         protected void approveButton_Click(object sender, EventArgs e)
         {
@@ -105,6 +169,7 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.status = "Approved";
+            admin.dateApproved = DateTime.Now;
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             //SEND NOTIFICATION TO ADMIN 
@@ -180,6 +245,7 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.status = "Declined";
+            admin.dateDeclined = DateTime.Now;
             adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
 
             //SEND NOTIFICATION TO ADMIN 
@@ -191,7 +257,7 @@ namespace WRS2big_Web.superAdmin
                 sender = "Super Admin",
                 title = "Client Declined",
                 receiver = "Admin",
-                body = "Your application is Declined! The requirements submitted doesnt meet our requirements",
+                body = "Your application is Declined!",
                 notificationDate = DateTime.Now,
                 status = "unread",
                 notificationID = ID

@@ -30,6 +30,24 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
+            int customerID = (int)Session["currentCustomer"];
+
+            FirebaseResponse adminDet = twoBigDB.Get("CUSTOMER/" + customerID);
+            Model.Customer admin = adminDet.ResultAs<Model.Customer>();
+
+            if (admin != null)
+            {
+                if (admin.cus_status == "Approved" || admin.cus_status == "Declined")
+                {
+                    approveButton.Enabled = false;
+                    declineButton.Enabled = false;
+                }
+                else
+                {
+                    approveButton.Enabled = true;
+                    declineButton.Enabled = true;
+                }
+            }
             DisplayDetails();
         }
         private void DisplayDetails()
@@ -118,6 +136,8 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.cus_status = "Approved";
+            admin.firstName = admin.firstName;
+            admin.dateApproved = DateTime.Now;
             adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 
             //SEND NOTIFICATION TO CUSTOMER 
@@ -189,10 +209,31 @@ namespace WRS2big_Web.superAdmin
             }
 
             admin.cus_status = "Declined";
+            admin.dateDeclined = DateTime.Now;
             adminDet = twoBigDB.Update("ADMIN/" + customerID, admin);
 
-            Response.Write("<script>alert ('You declined the application! Notify the client ');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
-            //DIRI I-INSERT ANG PAGSAVE SA NOTIFICATION INTO DATABASE
+          
+            //SEND NOTIFICATION TO CUSTOMER 
+            Random rnd = new Random();
+            int ID = rnd.Next(1, 20000);
+            var Notification = new Model.Notification
+            {
+                cusId = customerID,
+                sender = "Super Admin",
+                title = "Application Declined",
+                receiver = "Customer",
+                body = "Your application is Declined!",
+                notificationDate = DateTime.Now,
+                status = "unread",
+                notificationID = ID
+
+            };
+
+            SetResponse notifResponse;
+            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+            Response.Write("<script>alert ('You declined the application! Notifying the client ');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
 
         }
     }
