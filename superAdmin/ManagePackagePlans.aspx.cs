@@ -40,7 +40,7 @@ namespace WRS2big_Web.superAdmin
         {
 
             
-            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
             Model.PackagePlans all = response.ResultAs<Model.PackagePlans>();
             var data = response.Body;
             
@@ -94,6 +94,7 @@ namespace WRS2big_Web.superAdmin
                     packageName = packageName.Text,
                     packageDescription = packageDescription.Text,
                     durationType = durationTypeSelected.SelectedValue,
+                    renewable = renewableDDL.SelectedValue,
                     packageDuration = int.Parse(packageDuration.Text),
                     packagePrice = int.Parse(packagePrice.Text),
                     packageLimit = int.Parse(packageOrderLimit.Text),
@@ -105,31 +106,33 @@ namespace WRS2big_Web.superAdmin
                 };
 
                 SetResponse response;
-                response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + data.packageID, data);//Storing data to the database
+                response = twoBigDB.Set("SUBSCRIPTION_PACKAGES/" + data.packageID, data);//Storing data to the database
                 Model.PackagePlans result = response.ResultAs<Model.PackagePlans>();//Database Result
 
+                //SAVE LOGS TO SUPER ADMIN
                 //Get the current date and time
-                DateTime logTime = DateTime.UtcNow;
+                DateTime logTime = DateTime.Now;
 
                 //generate a random number for users logged
                 //Random rnd = new Random();
                 int logID = rnd.Next(1, 10000);
 
-                string superName = (string)Session["name"];
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
 
                 //Store the login information in the USERLOG table
-                var log = new Model.UsersLogs
+                var log = new Model.superLogs
                 {
                     logsId = logID,
-                    //userIdnum = int.Parse(idno),
-                    userFullname = superName,
-                    userActivity = "CREATED NEW PACKAGE:" + " " + result.packageName,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "CREATED NEW PACKAGE:" + " " + result.packageName,
                     activityTime = logTime
                 };
 
                 //Storing the  info
                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
-                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
                 Response.Write("<script>alert ('New Subscription Package Added ! Package Name: " + result.packageName + " ');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
 
@@ -152,7 +155,7 @@ namespace WRS2big_Web.superAdmin
             int packageID = int.Parse(row.Cells[1].Text);
 
             // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID);
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
             Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
 
             int package = packageDetails.packageID;

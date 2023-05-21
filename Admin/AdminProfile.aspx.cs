@@ -79,6 +79,8 @@ namespace WRS2big_Web.Admin
                 //check if naka subscribe na ba ang admin 
                 if (subStatus == "Subscribed")
                 {
+                    subscribeBTN.Visible = false;
+
                     FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
                     Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
 
@@ -95,6 +97,8 @@ namespace WRS2big_Web.Admin
                         LblDateStarted.Text = subscriptionStart.ToString();
                         DateTimeOffset subscriptionEnd = end;
                         LblSubEnd.Text = subscriptionEnd.ToString();
+
+                       
                     }
 
 
@@ -102,7 +106,15 @@ namespace WRS2big_Web.Admin
                 }
                 else if (subStatus == "notSubscribed")
                 {
-
+                    subscriptionLabel.Text = "You haven't subscribed to a plan yet. Please proceed with the subscription now.";
+                    changePackage.Visible = false;
+                    renewBTN.Visible = false;
+                    Label1.Visible = false;
+                    LblSubPlan.Visible = false;
+                    Label5.Visible = false;
+                    LblDateStarted.Visible = false;
+                    Label6.Visible = false;
+                    LblSubEnd.Visible = false;
                     //Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
                 }
             }
@@ -618,29 +630,41 @@ namespace WRS2big_Web.Admin
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
             Model.Subscribed_Package package = adminDet.ResultAs<Model.Subscribed_Package>();
 
-            if (package.packageName == "Package A")
+            if (package != null)
             {
-                //SEND NOTIFICATION TO ADMIN 
-                Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Notification
+                adminDet = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package.packageID);
+                Model.PackagePlans subscribed = adminDet.ResultAs<Model.PackagePlans>();
+
+                //to check if the package is renewable or not
+                if (subscribed.renewable == "No")
                 {
-                    admin_ID = int.Parse(adminID),
-                    sender = "Super Admin",
-                    title = "Package Renewal",
-                    receiver = "Admin",
-                    body = package.packageName + " " + "is not renewable. You must subscribe to another package",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
+                    //renewBTN.Enabled = false;
+                    Response.Write("<script>alert ('Your current package is not RENEWABLE. Redirecting you to Subscription Packages now.');  window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
+                   
+                    //SEND NOTIFICATION TO ADMIN 
+                    Random rnd = new Random();
+                    int ID = rnd.Next(1, 20000);
+                    var Notification = new Notification
+                    {
+                        admin_ID = int.Parse(adminID),
+                        sender = "Super Admin",
+                        title = "Package Renewal",
+                        receiver = "Admin",
+                        body = package.packageName + " " + "is not renewable. You must subscribe to another package",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
 
-                };
+                    };
 
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+                }
 
-                Response.Write("<script> alert('Current plan is not renewable. Redirecting to Package B'); window.location.href = '/Admin/PackageBPage.aspx';</script>");
+              
+
+                
             }
             else if (package.packageName == "Package B")
             {

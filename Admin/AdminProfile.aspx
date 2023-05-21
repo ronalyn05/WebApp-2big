@@ -55,9 +55,10 @@
                                         <div class="modal-body">
                                         <div class="col-md-12 col-sm-12 ">
                                         <div class="x_content">
-                                             <h6>Subscription details</h6>
+                                            
                                             <hr>          
                                         </div>
+                                            <asp:Label runat="server" ID="subscriptionLabel" style="color:red; font-size:22px"></asp:Label>
                                              <div class="col-md-12 col-sm-12">
                                                    <%-- basic plan--%>
                                                 <asp:Label ID="Label1" runat="server" style="color:black; font-size:20px"> Subscription Plan: </asp:Label>
@@ -86,10 +87,7 @@
                                            
                                            <asp:LinkButton ID="subscribeBTN" href="SubscriptionPackages.aspx" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> Subscribe now </asp:LinkButton>
                                             <asp:LinkButton ID="renewBTN" OnClick="renewBTN_Click" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;">Renew </asp:LinkButton>
-                                            <%--<asp:LinkButton ID="cancelBTN" href="PremiumSubSuccess.aspx" class="active btn btn-danger waves-effect text-right" runat="server" style="font-size:18px;">Cancel Subscription </asp:LinkButton>--%>
-
-                                           <%--<asp:Button ID="btnSubscription" class="active btn btn-primary waves-effect text-right" runat="server" Text="Renew" style="font-size:18px;" OnClick="btnSubscription_Click"/>--%>
-                                            
+                                            <asp:LinkButton ID="changePackage" class="active btn btn-primary waves-effect text-right" runat="server" style="font-size:18px;"> Change Package </asp:LinkButton>
                                         </div>
                                            <%--</form>--%>
                                          </div>
@@ -308,7 +306,7 @@
                                                                             <br /> 
                                                                             <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Id Number:</h5>
                                                                             <asp:Label ID="Lbl_Idno" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
-                                                                            <br />A
+                                                                            <br />
                                                                           <h5 style="display: inline-block; font-size: 20px; vertical-align: middle;">Firstname:</h5>
                                                                             <asp:Label ID="lblfname" class="btn waves-effect text-center" style="display: inline-block; margin-right: 100px; font-size: 20px; vertical-align: middle;" runat="server"></asp:Label>
                                                                             <br />

@@ -25,6 +25,31 @@ namespace WRS2big_Web.Model
        // public string type { get; set; } //SUBSCRIPTION, RENEWAL
         
     }
+    public class SuperAccount
+    {
+        public int superIDno { get; set; }
+        public string lname { get; set; }
+        public string fname { get; set; }
+        public string mname { get; set; }
+        public string bdate { get; set; }
+        public string phone { get; set; }
+        public string email { get; set; }
+        public string pass { get; set; }
+        public string address { get; set; }
+        public DateTime dateRegistered { get; set; }
+        public string userRole { get; set; }
+
+
+    }
+    public class superLogs
+    {
+        public int logsId { get; set; }
+        public int superID { get; set; }
+        public string superFullname { get; set; }
+        public string superActivity { get; set; }
+        public DateTimeOffset activityTime { get; set; }
+
+    }
 
     public class SubscriptionPlans
     {
@@ -38,11 +63,11 @@ namespace WRS2big_Web.Model
     }
     public class Subscribed_Package
     {
-
-        public DateTimeOffset subStart { get; set; }
+        public int packageID { get; set; }
+        public DateTime subStart { get; set; }
         public string packageName { get; set; }
         public int packagePrice { get; set; }
-        public DateTimeOffset expiration { get; set; }
+        public DateTime expiration { get; set; }
         //public string currentSubscription { get; set; } //Active or Expired/Inactive
         public string subStatus { get; set; } //active or expired/inactive
         public string packageDescription { get; set; }
@@ -73,7 +98,7 @@ namespace WRS2big_Web.Model
         public int packageLimit { get; set; }
         public string messaging { get; set; }
         public int numberOfStations { get; set; }
-
+        public string renewable { get; set; }
         public List<string> features { get; set; } //to save the features in the db as a list
 
     }

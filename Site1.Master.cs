@@ -94,13 +94,13 @@ namespace WRS2big_Web
                         
                         if (subStatus != null)
                         {
-                            DateTimeOffset currentDate = DateTimeOffset.UtcNow.Date;
-                            DateTimeOffset reminderNotif = expiration.expiration.AddDays(-2); //2 days before the expiration
-                            DateTimeOffset expirationDate = expiration.expiration; //actual expiration date on database
-                            DateTimeOffset finalExpiration = expiration.expiration.AddDays(2); //final expiration !
+                        DateTime currentDate = DateTime.Now.Date;
+                        DateTime reminderNotif = expiration.expiration.AddDays(-2); //2 days before the expiration
+                        DateTime expirationDate = expiration.expiration; //actual expiration date on database
+                        DateTime finalExpiration = expiration.expiration.AddDays(2); //final expiration !
 
                             Debug.WriteLine($"NOW: {currentDate}");
-                            Debug.WriteLine($"REMINER: {reminderNotif}");
+                            Debug.WriteLine($"REMINDER: {reminderNotif}");
                             Debug.WriteLine($"EXPIRATION: {expirationDate}");
                             Debug.WriteLine($"final EXPIRATION: {finalExpiration}");
 
@@ -202,12 +202,12 @@ namespace WRS2big_Web
                                 client = twoBigDB.Update("ADMIN/" + adminID, clientstat);
 
                                 //fetch from superadmin table
-                                FirebaseResponse superAdmin = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID);
+                                FirebaseResponse superAdmin = twoBigDB.Get("SUBSCRIBED_CLIENTS/" + adminID);
                                 Model.superAdminClients subscribed = superAdmin.ResultAs<Model.superAdminClients>();
 
                                 //change the status in SUPERADMIN Table
                                 subscribed.currentSubStatus = "Expired";
-                                superAdmin = twoBigDB.Update("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID, subscribed);
+                                superAdmin = twoBigDB.Update("SUBSCRIBED_CLIENTS/" + adminID, subscribed);
 
                                 //SEND LAST NOTIFICATION TO ADMIN FOR SUBSCRIPTION REMINDER
                                 Random rnd = new Random();
@@ -607,7 +607,7 @@ namespace WRS2big_Web
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             //Get the current date and time
-            DateTimeOffset addedTime = DateTimeOffset.UtcNow;
+            DateTime addedTime = DateTime.Now;
 
             // Log user activity
             var log = new UsersLogs

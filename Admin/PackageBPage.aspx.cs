@@ -38,7 +38,7 @@ namespace WRS2big_Web.Admin
         public double ShowpackagePrice()
         {
             double packagePrice = 0;
-            FirebaseResponse features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+            FirebaseResponse features = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
             var list = features.Body;
             Dictionary<string, Model.PackagePlans> allFeatures = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(list);
 
@@ -59,7 +59,7 @@ namespace WRS2big_Web.Admin
         }
         private void loadFeatures()
         {
-            FirebaseResponse features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+            FirebaseResponse features = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
             var list = features.Body;
             Dictionary<string, Model.PackagePlans> allFeatures = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(list);
 
@@ -76,7 +76,7 @@ namespace WRS2big_Web.Admin
                         packageBPrice.Text = entry.Value.packagePrice.ToString();
                         durationB.Text = "for" + " " + entry.Value.packageDuration + " " + entry.Value.durationType;
 
-                        features = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID + "/features");
+                        features = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID + "/features");
                         var featuresList = JsonConvert.DeserializeObject<List<string>>(features.Body);
 
                         //save the package ID into session 

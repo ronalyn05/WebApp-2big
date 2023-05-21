@@ -39,7 +39,7 @@ namespace WRS2big_Web.superAdmin
 
         private void loadSubscriptions()
         {
-            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
             Model.superAdminClients all = response.ResultAs<Model.superAdminClients>();
             var data = response.Body;
             Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
