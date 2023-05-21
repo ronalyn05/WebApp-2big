@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
@@ -331,7 +330,7 @@ namespace WRS2big_Web.LandingPage
                         }
 
                         //Get the current date and time
-                        DateTime loginTime = DateTime.UtcNow;
+                        DateTime loginTime = DateTime.Now;
 
                         //Store the login information in the USERLOG table
                         var data = new UsersLogs

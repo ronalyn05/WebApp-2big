@@ -71,7 +71,7 @@ namespace WRS2big_Web.superAdmin
             }
             
 
-            response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
+            response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
             Dictionary<string, superAdminClients> subscribed = response.ResultAs<Dictionary<string, superAdminClients>>();
 
             if (subscribed != null)

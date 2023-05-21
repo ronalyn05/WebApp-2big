@@ -325,7 +325,7 @@ namespace WRS2big_Web.Admin
 
                                 int standardID = new Random().Next(1, 10000);
                                 delivery.stanDeliverytype = "Standard";
-                                delivery.standardDateAdded = DateTimeOffset.UtcNow;
+                                delivery.standardDateAdded = DateTime.Now;
                                 delivery.standardID = standardID;
                                 delivery.stanDeliveryFee = DeliveryFee.Text;
                                 delivery.stanDeliveryTime = standardSchedule;
@@ -349,7 +349,7 @@ namespace WRS2big_Web.Admin
                             {
                                 int reserveID = new Random().Next(1, 10000);
                                 delivery.resDeliveryType = "Reservation";
-                                delivery.reservationdateAdded = DateTimeOffset.UtcNow;
+                                delivery.reservationdateAdded = DateTime.Now;
                                 delivery.reservationID = reserveID;
                                 delivery.resDeliveryFee = resDelFee.Text;
                                 delivery.resDistanceFree = resFreeDel.Text;
@@ -370,7 +370,7 @@ namespace WRS2big_Web.Admin
                                 int expressID = new Random().Next(1, 10000);
                                 delivery.exDeliveryType = "Express";
                                 delivery.expressDistance = int.Parse(expressDistance.Text);
-                                delivery.expressdateAdded = DateTimeOffset.UtcNow;
+                                delivery.expressdateAdded = DateTime.Now;
                                 delivery.expressID = expressID;
                                 delivery.exDeliveryFee = expressdeliveryFee.Text;
                                 delivery.exEstimatedDelivery = estimatedTime.Text;
@@ -392,7 +392,7 @@ namespace WRS2big_Web.Admin
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             // Get the current date and time
-            DateTime addedTime = DateTime.UtcNow;
+            DateTime addedTime = DateTime.Now;
 
             // Log user activity
             var log = new UsersLogs
@@ -1049,7 +1049,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -1174,7 +1174,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -1286,7 +1286,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs

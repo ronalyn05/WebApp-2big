@@ -175,8 +175,9 @@
                                         </a>
                                         <ul class="show-notification profile-notification">
                                             <li class="waves-effect waves-light">
-                                                <a href="/superAdmin/Account">
-                                                    <i class="ti-layout-sidebar-left"></i>Logout
+                                                <a>
+                                                    
+                                                       <asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" class="ti-layout-sidebar-left" Text="LOGOUT" BorderColor="Transparent" BackColor="Transparent" />
                                                 </a>
                                             </li>
                                         </ul>

@@ -45,7 +45,7 @@ namespace WRS2big_Web.Admin
             //POPULATE THE PACKAGE DETAILS IN THE CONFIRMATION PAGE
             int packageID = (int)Session["currentPackage"];
 
-            FirebaseResponse getPackage = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID);
+            FirebaseResponse getPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
             Model.PackagePlans package = getPackage.ResultAs<Model.PackagePlans>();
 
             if (package != null)
@@ -70,7 +70,7 @@ namespace WRS2big_Web.Admin
                             // FOR NEW SUBSCRIPTIONS
                             int packageID = (int)Session["currentPackage"];
 
-                            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+                            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
                             Dictionary<string, Model.PackagePlans> plans = response.ResultAs<Dictionary<string, Model.PackagePlans>>();
 
                             if (plans != null)
@@ -83,7 +83,7 @@ namespace WRS2big_Web.Admin
                                     //check what plan does the packageID matches
                                     if (packageID == planID)
                                     {
-                                        FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID);
+                                        FirebaseResponse res = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                                         Model.PackagePlans package = res.ResultAs<Model.PackagePlans>();
 
                                         //var adminID = Session["idno"].ToString();
@@ -92,148 +92,152 @@ namespace WRS2big_Web.Admin
                                         FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
                                         Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
 
-                                        update.subStatus = "Subscribed";
-                                        update.currentSubscription = "Active";
-                                        //subscriptionStatus.subStatus = "Subscribed";
-
-                                        updateAdmin = twoBigDB.Update("ADMIN/" + adminID, update);
-
-
-
-                                        //declaration of the attributes
-                                        DateTime now = DateTime.Now;
-
-                                        var data = new Model.Subscribed_Package();
-
-                                        //data.currentSubscription = "Active";
-                                        data.expiration = DateTime.Now.AddMonths(package.packageDuration); //add the current month to the duration saved in the database
-                                        data.packageName = package.packageName;
-                                        data.packageDescription = package.packageDescription;
-                                        data.packagePrice = (int)package.packagePrice;
-                                        data.subStart = DateTime.Now;
-                                        data.subStatus = "Active";
-                                        data.orderLimit = package.packageLimit;
-
-
-                                        //SAVE THE SUBSCRIPTION PLAN DETAILS SA ADMIN NGA TABLE
-                                        twoBigDB.Update("ADMIN/" + adminID + "/Subscribed_Package/", data);
-
-                                        DateTime subExpired = now.AddMonths(package.packageDuration);
-
-                                        //end for the ADMIN
-
-                                        //SAVING TO SUPERADMIN TABLE - DETAILS OF THE ADMIN AND THE PACKAGE SUBSCRIBED
-                                        //to generate random ID for the SUPERADMIN TABLE
-                                        Random rnd = new Random();
-                                        int clientNo = rnd.Next(1, 10000);
-
-                                        //ISAVE SA SUPERADMIN NGA DATABASE ANG AMGA CLIENTS NGA NISUBSCRIBE 
-                                        var newClients = new Model.superAdminClients
+                                        if (update.subStatus == "Subscribed" || update.subStatus == "Expired")
                                         {
-                                            subscriptionID = clientNo,
-                                            clientID = int.Parse(adminID),
-                                            fullname = update.fname + " " + update.mname + " " + update.lname,
-                                            email = update.email,
-                                            phone = update.phone,
-                                            amount = (int)package.packagePrice,
-                                            plan = package.packageName,
-                                            currentSubStatus = "Active",
-                                            dateSubscribed = DateTime.Now,
-                                            subExpiration = subExpired,
-                                            paymentStatus = "Completed",
-                                            status = "Subscribed"
-
-                                        };
-
-                                        SetResponse clientres;
-                                        //Storing the info of the admin nga ni subscribe to superadmin
-                                        clientres = twoBigDB.Set("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID, newClients);//Storing data to the database
-                                        Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
-
-                                        //SEND ANOTHER NOTIFICATION FOR THE INSTRUCTIONS
-                                        int newID = rnd.Next(1, 20000);
-                                        var newNotif = new Model.Notification
+                                            checkforRenewal();
+                                        }
+                                        else
                                         {
-                                            admin_ID = client.clientID,
-                                            sender = "Super Admin",
-                                            title = "Subscription Success",
-                                            receiver = "Admin",
-                                            body = "Thankyou for Subscribing to our platform. You subscribed to" + " " + package.packageName + ". Set-up your Profile and Refilling Station now to start growing your business!",
-                                            notificationDate = DateTime.Now,
-                                            status = "unread",
-                                            notificationID = newID
+                                            update.subStatus = "Subscribed";
+                                            update.currentSubscription = "Active";
+                                            //subscriptionStatus.subStatus = "Subscribed";
 
-                                        };
-                                        SetResponse notifResponse;
-                                        notifResponse = twoBigDB.Set("NOTIFICATION/" + newID, newNotif);//Storing data to the database
-                                        Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
-
-                                        //SEND NOTIFICATION TO SUPER ADMIN
-                                        int notifID = rnd.Next(1, 20000);
-                                        var superNotif = new Model.Notification
-                                        {
-                                            admin_ID = int.Parse(adminID),
-                                            sender = "Admin",
-                                            title = "Client Subscription",
-                                            receiver = "Super Admin",
-                                            body = "CLIENT" + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + package.packageName,
-                                            notificationDate = DateTime.Now,
-                                            status = "unread",
-                                            notificationID = notifID
-
-                                        };
-                                        SetResponse superResponse;
-                                        superResponse = twoBigDB.Set("NOTIFICATION/" + newID, superNotif);//Storing data to the database
-                                        Model.Notification notifsuper = superResponse.ResultAs<Model.Notification>();//Database Result
-
-
-                                        //create logs
-                                        int logsId = (int)Session["logsId"];
-                                        // Retrieve the existing Users log object from the database
-                                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
-                                        Model.UsersLogs existingLog = resLog.ResultAs<Model.UsersLogs>();
-
-                                        // Get the current date and time
-                                        DateTime addedTime = DateTime.UtcNow;
-
-                                        // Log user activity
-                                        var log = new Model.UsersLogs
-                                        {
-                                            userIdnum = int.Parse(adminID),
-                                            logsId = logsId,
-                                            userFullname = (string)Session["fullname"],
-                                            userActivity = "SUBSCRIBED TO" + " " + package.packageName,
-                                            activityTime = addedTime
-                                        };
-
-                                        twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                                            updateAdmin = twoBigDB.Update("ADMIN/" + adminID, update);
 
 
 
-                                        //SEND USERS LOG TO SUPERADMIN
-                                        DateTime logTime = DateTime.UtcNow; //Get the current date and time
+                                            //declaration of the attributes
+                                            DateTime now = DateTime.Now;
 
-                                        //generate a random number for users logged
-                                        //Random rnd = new Random();
-                                        int idnum = rnd.Next(1, 10000);
+                                            var data = new Model.Subscribed_Package();
 
-                                        string superName = (string)Session["name"];
+                                            //data.currentSubscription = "Active";
+                                            data.expiration = DateTime.Now.AddMonths(package.packageDuration); //add the current month to the duration saved in the database
+                                            data.packageName = package.packageName;
+                                            data.packageDescription = package.packageDescription;
+                                            data.packagePrice = (int)package.packagePrice;
+                                            data.subStart = DateTime.Now;
+                                            data.subStatus = "Active";
+                                            data.packageID = package.packageID;
+                                            data.orderLimit = package.packageLimit;
 
-                                        //Store the login information in the USERLOG table
-                                        var superLog = new Model.UsersLogs
-                                        {
-                                            logsId = idnum,
-                                            //userIdnum = int.Parse(idno),
-                                            userFullname = superName,
-                                            userActivity = "CLIENT " + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + package.packageName,
-                                            activityTime = logTime
-                                        };
 
-                                        //Storing the  info
-                                        response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
-                                        Model.UsersLogs superRes = response.ResultAs<Model.UsersLogs>();//Database Result
+                                            //SAVE THE SUBSCRIPTION PLAN DETAILS SA ADMIN NGA TABLE
+                                            twoBigDB.Update("ADMIN/" + adminID + "/Subscribed_Package/", data);
 
-                                        Response.Write("<script>alert ('Subscription Success!'); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                                            DateTime subExpired = now.AddMonths(package.packageDuration);
+
+                                            //end for the ADMIN
+
+                                            //SAVING TO SUPERADMIN TABLE - DETAILS OF THE ADMIN AND THE PACKAGE SUBSCRIBED
+                                            //to generate random ID for the SUPERADMIN TABLE
+                                            Random rnd = new Random();
+                                            int clientNo = rnd.Next(1, 10000);
+
+                                            //ISAVE SA SUPERADMIN NGA DATABASE ANG AMGA CLIENTS NGA NISUBSCRIBE 
+                                            var newClients = new Model.superAdminClients
+                                            {
+                                                subscriptionID = clientNo,
+                                                clientID = int.Parse(adminID),
+                                                fullname = update.fname + " " + update.mname + " " + update.lname,
+                                                email = update.email,
+                                                phone = update.phone,
+                                                amount = (int)package.packagePrice,
+                                                plan = package.packageName,
+                                                currentSubStatus = "Active",
+                                                dateSubscribed = DateTime.Now,
+                                                subExpiration = subExpired,
+                                                paymentStatus = "Completed",
+                                                status = "Subscribed"
+
+                                            };
+
+                                            SetResponse clientres;
+                                            //Storing the info of the admin nga ni subscribe to superadmin
+                                            clientres = twoBigDB.Set("SUBSCRIBED_CLIENTS/" + adminID, newClients);//Storing data to the database
+                                            Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
+
+                                            //SEND ANOTHER NOTIFICATION FOR THE INSTRUCTIONS
+                                            int newID = rnd.Next(1, 20000);
+                                            var newNotif = new Model.Notification
+                                            {
+                                                admin_ID = client.clientID,
+                                                sender = "Super Admin",
+                                                title = "Subscription Success",
+                                                receiver = "Admin",
+                                                body = "Thankyou for Subscribing to our platform. You subscribed to" + " " + package.packageName + ". Set-up your Profile and Refilling Station now to start growing your business!",
+                                                notificationDate = DateTime.Now,
+                                                status = "unread",
+                                                notificationID = newID
+
+                                            };
+                                            SetResponse notifResponse;
+                                            notifResponse = twoBigDB.Set("NOTIFICATION/" + newID, newNotif);//Storing data to the database
+                                            Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+                                            //SEND NOTIFICATION TO SUPER ADMIN
+                                            int notifID = rnd.Next(1, 20000);
+                                            var superNotif = new Model.Notification
+                                            {
+                                                admin_ID = int.Parse(adminID),
+                                                sender = "Admin",
+                                                title = "Client Subscription",
+                                                receiver = "Super Admin",
+                                                body = "CLIENT"+ " " + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + " " + package.packageName,
+                                                notificationDate = DateTime.Now,
+                                                status = "unread",
+                                                notificationID = notifID
+
+                                            };
+                                            SetResponse superResponse;
+                                            superResponse = twoBigDB.Set("NOTIFICATION/" + notifID, superNotif);//Storing data to the database
+                                            Model.Notification notifsuper = superResponse.ResultAs<Model.Notification>();//Database Result
+
+
+                                            int logsID = rnd.Next(1, 10000);
+                                            // Get the current date and time
+                                            DateTime addedTime = DateTime.Now;
+
+                                            // Log user activity
+                                            var log = new Model.UsersLogs
+                                            {
+                                                userIdnum = int.Parse(adminID),
+                                                logsId = logsID,
+                                                userFullname = (string)Session["fullname"],
+                                                userActivity = "SUBSCRIBED TO" + " " + package.packageName,
+                                                activityTime = addedTime
+                                            };
+
+                                            twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                                            Model.UsersLogs subsLog = response.ResultAs<Model.UsersLogs>();
+
+
+                                            //SEND USERS LOG TO SUPERADMIN
+                                            DateTime logTime = DateTime.UtcNow; //Get the current date and time
+
+                                            //generate a random number for users logged
+                                            //Random rnd = new Random();
+                                            int idnum = rnd.Next(1, 10000);
+
+                                            string superName = (string)Session["name"];
+
+                                            //Store the login information in the USERLOG table
+                                            var superLog = new Model.UsersLogs
+                                            {
+                                                logsId = idnum,
+                                                //userIdnum = int.Parse(idno),
+                                                userFullname = superName,
+                                                userActivity = "CLIENT " + update.fname + " " + update.lname + " " + "SUBSCRIBED TO" + package.packageName,
+                                                activityTime = logTime
+                                            };
+
+                                            //Storing the  info
+                                            response = twoBigDB.Set("SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
+                                            Model.UsersLogs superRes = response.ResultAs<Model.UsersLogs>();//Database Result
+
+                                            Response.Write("<script>alert ('Subscription Success!'); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                                }
+                                        
                                     }
 
                                 }
@@ -255,20 +259,20 @@ namespace WRS2big_Web.Admin
 
         }
 
+        //TO PERFORM RENEWAL
         private void checkforRenewal()
         {
             var adminID = Session["idno"].ToString();
 
-            FirebaseResponse currentStat = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS/");
+            FirebaseResponse currentStat = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
             Dictionary<string, Model.superAdminClients> subscribed = currentStat.ResultAs<Dictionary<string, Model.superAdminClients>>();
 
             if (subscribed != null)
             {
-
-                    //RENEWAL
+                    
                     int packageID = (int)Session["currentPackage"];
 
-                    FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES");
+                    FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
                     Dictionary<string, Model.PackagePlans> plans = response.ResultAs<Dictionary<string, Model.PackagePlans>>();
 
                     foreach (var packages in plans)
@@ -279,15 +283,19 @@ namespace WRS2big_Web.Admin
                         //check what plan does the packageID matches
                         if (packageID == planID)
                         {
-                            FirebaseResponse res = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageID);
+                            FirebaseResponse res = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                             Model.PackagePlans package = res.ResultAs<Model.PackagePlans>();
 
-                            // var adminID = Session["idno"].ToString();
+                        //FirebaseResponse current = twoBigDB.Get("ADMIN/" + adminID);
+                        //Model.AdminAccount checkStat = current.ResultAs<Model.AdminAccount>();
+                        FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
+                        Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
 
-                            //to ADD the subscription Status to admin table
-                            FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
-                            Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
-
+                        //TO CHECK IF THAT ADMIN IS FOR RENEWAL OR NEW SUBSCRIPTION
+                        if (update.subStatus == "Subscribed" || update.subStatus == "Expired")
+                            {
+                            //PERFORM RENEWAL
+                            //to ADD the NEW subscription Status to admin table
                             update.subStatus = "Subscribed";
                             update.currentSubscription = "Active";
                             //subscriptionStatus.subStatus = "Subscribed";
@@ -344,8 +352,8 @@ namespace WRS2big_Web.Admin
                             //SetResponse clientres;
                             //Storing the info of the admin nga ni subscribe to superadmin
                             //twoBigDB.Update("ADMIN/" + adminID + "/Subscribed_Package/", data);
-                            twoBigDB.Update("SUPERADMIN/SUBSCRIBED_CLIENTS/" + adminID, updateClients);//Storing data to the database
-                                                                                                       //Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
+                            twoBigDB.Update("SUBSCRIBED_CLIENTS/" + adminID, updateClients);//Storing data to the database
+                                                                                            //Model.superAdminClients client = clientres.ResultAs<Model.superAdminClients>();//Database Result
 
                             //SEND ANOTHER NOTIFICATION FOR THE INSTRUCTIONS
                             int newID = rnd.Next(1, 20000);
@@ -372,7 +380,7 @@ namespace WRS2big_Web.Admin
                             Model.UsersLogs existingLog = resLog.ResultAs<Model.UsersLogs>();
 
                             // Get the current date and time
-                            DateTime addedTime = DateTime.UtcNow;
+                            DateTime addedTime = DateTime.Now;
 
                             // Log user activity
                             var log = new Model.UsersLogs
@@ -405,7 +413,7 @@ namespace WRS2big_Web.Admin
                             };
 
                             //Storing the  info
-                            response = twoBigDB.Set("SUPERADMIN/SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
+                            response = twoBigDB.Set("SUBSCRIPTION_LOGS/" + superLog.logsId, superLog);//Storing data to the database
                             Model.UsersLogs superRes = response.ResultAs<Model.UsersLogs>();//Database Result
 
 
@@ -428,6 +436,9 @@ namespace WRS2big_Web.Admin
                             Model.Notification notifsuper = superResponse.ResultAs<Model.Notification>();//Database Result
 
                             Response.Write("<script>alert ('Renewal Success!'); window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                        }
+
+ 
                         }
 
                     }

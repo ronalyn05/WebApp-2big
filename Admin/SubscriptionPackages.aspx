@@ -162,14 +162,12 @@
                     </div>
                     
                     <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center">
-
                         <!--PACKAGE A HERE-->
-                        <div class="col-lg-5 mb-3 mb-lg-0">
+<%--                        <div class="col-lg-5 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="1"
                                 data-max-seats="4">
-                                <div
-                                    class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
-                                    <div class="px-3 pt-4 pb-3">
+                                <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
+                                    <div class="px-3 pt-4 pb-3" id="packagesPanel" runat="server">
                                         <asp:Label class="mb-2 h5-mktg" ID="packageAName" runat="server"> </asp:Label>
                                         <br />
                                         <br />
@@ -181,7 +179,7 @@
                                             <h3 class="mb-0">
                                                 <span class="d-flex flex-justify-center flex-items-center">
                                                     <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
-                                                        <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
+                                                        <sup class="f3 color-fg-muted v-align-middle mr-1"></sup>
                                                         <asp:Label runat="server" class="js-computed-value" ID="packageAPrice"></asp:Label>
                                                         <br />
                                                     </span>
@@ -192,8 +190,7 @@
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
+                                    <div class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
                                         <br />
                                         <h4>Features:</h4>
                                         <br />
@@ -217,12 +214,12 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
 
 
 
                         <!--PACKAGE B HERE-->
-                        <div class="col-lg-5 mb-3 mb-lg-0">
+<%--                        <div class="col-lg-5 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="5" data-max-seats="10">
                                 <p class="position-absolute left-0 right-0 h5 text-center text-uppercase color-text-white js-recommended-plan-caption" hidden style="top: 6px;">Most popular</p>
                                 <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
@@ -270,11 +267,11 @@
                                         <div class="mt-2">
                                             <a class="btn-mktg d-block btn-muted-mktg" href="PackageBPage.aspx">View Package details
                                             </a>
-                                        </div>
+                                        </div> <br />
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
                         <!--PACKAGE C HERE-->
 <%--                        <div class="col-lg-4 mb-3 mb-lg-0">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="11"
@@ -332,7 +329,7 @@
                     </div>
 
 
-
+                        
 
                 </div>
             </div>

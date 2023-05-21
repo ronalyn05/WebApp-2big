@@ -45,7 +45,7 @@ namespace WRS2big_Web.superAdmin
         {
             int package = (int)Session["currentPackage"];
 
-            FirebaseResponse response = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + package);
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package);
             Model.PackagePlans packageDets = response.ResultAs<Model.PackagePlans>();
 
             packageID.Text = packageDets.packageID.ToString();
@@ -55,8 +55,8 @@ namespace WRS2big_Web.superAdmin
             packageDuration.Text = packageDets.packageDuration.ToString() + " " + packageDets.durationType;
             packageLimit.Text = packageDets.packageLimit.ToString();
             numofStations.Text = packageDets.numberOfStations.ToString();
-
-            FirebaseResponse featuresponse = twoBigDB.Get("SUPERADMIN/SUBSCRIPTION_PACKAGES/" + packageDets.packageID + "/features");
+            renewable.Text = packageDets.renewable;
+            FirebaseResponse featuresponse = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageDets.packageID + "/features");
             List<string> listOfFeatures = featuresponse.ResultAs<List<string>>();
 
             // Bind the features to the ListBox control

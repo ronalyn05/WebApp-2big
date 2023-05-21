@@ -193,27 +193,28 @@ namespace WRS2big_Web.superAdmin
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
             //Get the current date and time
-            DateTime logTime = DateTime.UtcNow;
+            DateTime logTime = DateTime.Now;
 
             //generate a random number for users logged
             //Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
 
-            string superName = (string)Session["name"];
+            string superName = (string)Session["superAdminName"];
+            var idno = (string)Session["SuperIDno"];
 
             //Store the login information in the USERLOG table
-            var data = new UsersLogs
+            var data = new superLogs
             {
                 logsId = idnum,
-                //userIdnum = int.Parse(idno),
-                userFullname = superName,
-                userActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                superID = int.Parse(idno),
+                superFullname = superName,
+                superActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
                 activityTime = logTime
             };
 
             //Storing the  info
             FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
-            UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+            superLogs res = response.ResultAs<superLogs>();//Database Result
 
             Response.Write("<script>alert ('Client Approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 
@@ -269,27 +270,27 @@ namespace WRS2big_Web.superAdmin
             Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
             //Get the current date and time
-            DateTime logTime = DateTime.UtcNow;
+            DateTime logTime = DateTime.Now;
 
             //generate a random number for users logged
             //Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
-
+            var idno = (string)Session["SuperIDno"];
             string superName = (string)Session["name"];
 
             //Store the login information in the USERLOG table
-            var data = new UsersLogs
+            var data = new superLogs
             {
                 logsId = idnum,
-                //userIdnum = int.Parse(idno),
-                userFullname = superName,
-                userActivity = "DECLINED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                superID = int.Parse(idno),
+                superFullname = superName,
+                superActivity = "DECLINED CLIENT:" + " " + admin.fname + " " + admin.lname,
                 activityTime = logTime
             };
 
             //Storing the  info
             FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
-            UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+            superLogs res = response.ResultAs<superLogs>();//Database Result
 
             Response.Write("<script>alert ('You declined the application! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 
