@@ -18,6 +18,7 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
 using WRS2big_Web.Model;
+using System.Drawing; 
 //using AutoMapper;
 
 namespace WRS2big_Web.Admin
@@ -63,9 +64,12 @@ namespace WRS2big_Web.Admin
             }
 
             response = twoBigDB.Get("ORDERS");
-            Order order = response.ResultAs<Order>();
+            Order existingOrder = response.ResultAs<Order>();
 
-            Session["orderID"] = order.orderID;
+            Session["orderID"] = existingOrder.orderID;
+            // Retrieve the existing order object from the database
+
+           
         }
         //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD
         private void DisplayCOD_order()
@@ -172,7 +176,6 @@ namespace WRS2big_Web.Admin
                                dateOrder, order.order_StoreName);
                         }
                     }
-
 
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -581,6 +584,15 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
                 Order existingOrder = response.ResultAs<Order>();
 
+                // Check if the order status is "Accepted", "Payment Received", or "Delivered"
+                if (existingOrder.order_OrderStatus != "Pending")
+                {
+                    // Disable the button
+                    btn.Enabled = false;
+
+                    // Store the disabled state in the session
+                    Session["DisabledButton_" + orderID] = true;
+                }
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
@@ -2316,13 +2328,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2353,7 +2369,12 @@ namespace WRS2big_Web.Admin
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2395,7 +2416,7 @@ namespace WRS2big_Web.Admin
             }
         }
         //DISPLAY THE ORDER FROM THE CUSTOMER THRU COD by standard delivery
-        private void COD_standard()
+        private void COD_standard()  
         {
             string idno = (string)Session["idno"];
             //string selectedDeliveryType = drdDeliveryType.SelectedValue;
@@ -2452,7 +2473,12 @@ namespace WRS2big_Web.Admin
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2477,13 +2503,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2582,7 +2612,12 @@ namespace WRS2big_Web.Admin
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2607,13 +2642,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2708,7 +2747,12 @@ namespace WRS2big_Web.Admin
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2733,13 +2777,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2828,13 +2876,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2859,13 +2911,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2954,13 +3010,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -2985,13 +3045,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -3081,13 +3145,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -3118,7 +3186,12 @@ namespace WRS2big_Web.Admin
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -3207,13 +3280,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -3244,12 +3321,16 @@ namespace WRS2big_Web.Admin
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";
                                 }
-
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
                             }
 
                             string dateOrder = order.orderDate == DateTimeOffset.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
@@ -3333,13 +3414,17 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
-
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         productrefill_qty += product.qtyPerItem;
                                     }
-                                    else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                    else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                    {
+                                        otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                        otherproduct_qty += product.qtyPerItem + " " + " ";
+                                    }
+                                    else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                     {
                                         otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                         otherproduct_qty += product.qtyPerItem + " " + " ";
@@ -3364,13 +3449,17 @@ namespace WRS2big_Web.Admin
 
                             foreach (var product in order.order_Products)
                             {
-
                                 if (product.offerType == "Product Refill")
                                 {
                                     productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     productrefill_qty += product.qtyPerItem;
                                 }
-                                else if (product.offerType == "thirdparty Product") // corrected spelling of "Other Product"
+                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                {
+                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                    otherproduct_qty += product.qtyPerItem + " " + " ";
+                                }
+                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
                                 {
                                     otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
                                     otherproduct_qty += product.qtyPerItem + " " + " ";

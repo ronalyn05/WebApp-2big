@@ -223,16 +223,8 @@
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                     </Columns>
-                                                                    <%--   <Columns>
-                                                        <asp:TemplateField HeaderText="PAYMENT">
-                                                          <ItemTemplate>
-                                                              <asp:Button ID="btnPaymentAccept" runat="server" Text="Payment Received" OnClick="btnPaymentAccept_Click"  style="background-color:transparent;font-size:18px;border-color:darkblue;border-style:solid"/>
-                                                             
-                                                         </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                    
-                                            </Columns>--%>
-
+                                                                   
+                                                                   
                                                                     <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                     <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                     <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
