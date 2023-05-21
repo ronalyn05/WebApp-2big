@@ -14,13 +14,15 @@ namespace WRS2big_Web.Model
         public string receiver { get; set; }
         public int notificationID { get; set; }
         public string body { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
+        public DateTime notificationDate { get; set; }
         public int orderID { get; set; }
         public int cusId { get; set; }
         public int driverId { get; set; }
-        public string title { get; set; }
+        public string title { get; set; }      
+       public DateTime scheduledSent { get; set; }
+
         //public int unreadCount { get; set; }
-        
+
     }
     public class scheduledNotification
     {
@@ -30,7 +32,7 @@ namespace WRS2big_Web.Model
         public string receiver { get; set; }
         public int notificationID { get; set; }
         public string body { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
+        public DateTime notificationDate { get; set; }
         public int orderID { get; set; }
         public int cusId { get; set; }
         public string title { get; set; }

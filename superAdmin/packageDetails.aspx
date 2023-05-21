@@ -66,7 +66,7 @@
                                             <!-- Tab variant tab card start -->
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h5>CLIENT DETAILS</h5>
+                                                    
                                                 </div>
                                                 <div class="card-block tab-icon">
                                                     <!-- Row start -->
@@ -152,7 +152,15 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
+                                                                                            <div class="form-material" style="margin-left:100px">
 
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Renewable:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:Label  class="form-control-round" id="renewable" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>
                                                                             </div>
                                                                          </div>
                                                                         </div>

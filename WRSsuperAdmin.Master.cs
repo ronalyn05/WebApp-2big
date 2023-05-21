@@ -25,14 +25,14 @@ namespace WRS2big_Web
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            string name = (string)Session["name"];
+            string name = (string)Session["superAdminName"];
             if (name == null)
             {
-                Response.Write("<script>alert('Please Login your account first'); window.location.href = '/superAdmin/Account.aspx'; </script>");
+                Response.Write("<script>alert('Please Login your account first'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
             }
             else
             {
-                superLbl.Text = Session["name"].ToString();
+                superLbl.Text = "SUPER ADMIN:" + " " +Session["fname"].ToString();
             }
 
             loadNotifications();
@@ -165,5 +165,42 @@ namespace WRS2big_Web
 
         }
 
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+           
+
+            //SAVE LOGS TO SUPER ADMIN
+            //Get the current date and time
+            DateTime logTime = DateTime.Now;
+
+            //generate a random number for users logged
+            Random rnd = new Random();
+            int logID = rnd.Next(1, 10000);
+
+            var idno = (string)Session["SuperIDno"];
+            string superName = (string)Session["superAdminName"];
+
+            //Store the login information in the USERLOG table
+            var log = new Model.superLogs
+            {
+                logsId = logID,
+                superID = int.Parse(idno),
+                superFullname = superName,
+                superActivity = "LOGGED OUT",
+                activityTime = logTime
+            };
+
+            //Storing the  info
+            FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+            Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+
+            Session.Abandon();
+            Session.RemoveAll();
+            Session["SuperIDno"] = null;
+            Session["password"] = null;
+            Session.Clear();
+            Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
+        }
     }
 }

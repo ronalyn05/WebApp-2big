@@ -15,6 +15,15 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
+        /// subscriptionLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label subscriptionLabel;
+
+        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -85,6 +94,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton renewBTN;
+
+        /// <summary>
+        /// changePackage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton changePackage;
 
         /// <summary>
         /// Label4 control.

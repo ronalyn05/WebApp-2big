@@ -284,28 +284,29 @@ namespace WRS2big_Web.superAdmin
                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                 Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
+                //SAVE LOGS TO SUPER ADMIN
                 //Get the current date and time
-                DateTime logTime = DateTime.UtcNow;
+                DateTime logTime = DateTime.Now;
 
                 //generate a random number for users logged
                 //Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
-
-                string superName = (string)Session["name"];
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
 
                 //Store the login information in the USERLOG table
-                var data = new Model.UsersLogs
+                var data = new Model.superLogs
                 {
                     logsId = idnum,
-                    //userIdnum = int.Parse(idno),
-                    userFullname = superName,
-                    userActivity = "APPROVED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "APPROVED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
                     activityTime = logTime
                 };
 
                 //Storing the  info
                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
-                Model.UsersLogs res = response.ResultAs<Model.UsersLogs>();//Database Result
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
                 Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }
@@ -370,6 +371,29 @@ namespace WRS2big_Web.superAdmin
                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                 Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
 
+                //SAVE LOGS TO SUPER ADMIN
+                //Get the current date and time
+                DateTime logTime = DateTime.Now;
+
+                //generate a random number for users logged
+                //Random rnd = new Random();
+                int idnum = rnd.Next(1, 10000);
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
+
+                //Store the login information in the USERLOG table
+                var data = new Model.superLogs
+                {
+                    logsId = idnum,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "DECLINED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
                 Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
             }
         }

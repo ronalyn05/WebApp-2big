@@ -189,6 +189,7 @@
                                                                                                                 <asp:ListItem> &nbsp; Loyalty Program </asp:ListItem>
                                                                                                                 <asp:ListItem> &nbsp; Customer Reviews </asp:ListItem>
                                                                                                                 <asp:ListItem> &nbsp; Online Subscription </asp:ListItem>
+                                                                                                               <asp:ListItem> &nbsp; Walk-in Orders </asp:ListItem>
                                                                                                           </asp:CheckBoxList>
                                                                                                         </div>
                                                                                                     </div>
@@ -198,7 +199,14 @@
                                                                                                           <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageOrderLimit" runat="server"> </asp:TextBox>
                                                                                                         </div>
                                                                                                     </div>
-
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">RENEWABLE:</label>
+                                                                                                           <asp:DropDownList class="form-control" runat="server" style="border-style: solid; border-width: thin; border-color: darkgrey;" ID="renewableDDL">
+                                                                                                                <asp:ListItem></asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Yes">YES</asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="No">NO</asp:ListItem>
+                                                                                                           </asp:DropDownList>
+                                                                                                    </div>
                                                                                             </div>
 
                                                                             </div>
