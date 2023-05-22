@@ -87,15 +87,15 @@ namespace WRS2big_Web.Admin
                     if (subscription != null)
                     {
                         string subscribedPlan = subscription.packageName;
-                        DateTimeOffset start = subscription.subStart;
-                        DateTimeOffset end = subscription.expiration;
+                        DateTime start = subscription.subStart;
+                        DateTime end = subscription.expiration;
 
                         //populate the textboxes for the subscription details
                         LblSubPlan.Text = subscribedPlan;
 
-                        DateTimeOffset subscriptionStart = start;
+                        DateTime subscriptionStart = start;
                         LblDateStarted.Text = subscriptionStart.ToString();
-                        DateTimeOffset subscriptionEnd = end;
+                        DateTime subscriptionEnd = end;
                         LblSubEnd.Text = subscriptionEnd.ToString();
 
                        
@@ -309,7 +309,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Personal info has successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow; ;
+                DateTime addedTime = DateTime.Now; ;
 
 
                 //Store the login information in the USERLOG table
@@ -378,7 +378,7 @@ namespace WRS2big_Web.Admin
             }
 
             // Get the current date and time
-            DateTime addedTime = DateTime.UtcNow; ;
+            DateTime addedTime = DateTime.Now; ;
 
 
             //Store the login information in the USERLOG table
@@ -435,7 +435,7 @@ namespace WRS2big_Web.Admin
                 station.addLongitude = obj.addLongitude;
                 station.dateAdded = obj.dateAdded;
                 station.stationAddress = obj.stationAddress;
-                station.dateUpdated = DateTimeOffset.UtcNow;
+                station.dateUpdated = DateTime.Now;
 
                 if (!string.IsNullOrEmpty(Request.Form[txtOperatingHrsFrom.UniqueID].ToString()))
                 {
@@ -493,7 +493,7 @@ namespace WRS2big_Web.Admin
                 //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -531,8 +531,8 @@ namespace WRS2big_Web.Admin
                 newObj.operatingHrsTo = operatingHrsTo12Hr;
                 newObj.businessDaysFrom = drdBusinessDaysFrom.SelectedValue;
                 newObj.businessDaysTo = drdBusinessDaysTo.SelectedValue;
-                newObj.dateAdded = DateTimeOffset.UtcNow;
-                newObj.dateUpdated = DateTimeOffset.UtcNow;
+                newObj.dateAdded = DateTime.Now;
+                newObj.dateUpdated = DateTime.Now;
                 //NOT EDITABLE
                 newObj.stationAddress = obj.stationAddress;
                 newObj.stationName = obj.stationName;
@@ -604,7 +604,7 @@ namespace WRS2big_Web.Admin
                 //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs

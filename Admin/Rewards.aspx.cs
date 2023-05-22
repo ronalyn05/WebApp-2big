@@ -120,7 +120,7 @@ namespace WRS2big_Web.Admin
                 foreach (var entry in filteredList)
                 {
                     
-                        string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateAdded = entry.rewardsDateAdded == DateTime.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
@@ -182,9 +182,9 @@ namespace WRS2big_Web.Admin
                 foreach (var entry in filteredList)
                 {
 
-                    string dateAdded = entry.couponDateAdded == DateTimeOffset.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string promoValidFrom = entry.couponExpirationFrom == DateTimeOffset.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string promoValidUntil = entry.couponExpirationTo == DateTimeOffset.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAdded = entry.couponDateAdded == DateTime.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidFrom = entry.couponExpirationFrom == DateTime.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string promoValidUntil = entry.couponExpirationTo == DateTime.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     promoOfferedTable.Rows.Add(entry.couponId, entry.couponName, entry.couponDescription, entry.couponAppliedToProductOffers,
@@ -208,11 +208,13 @@ namespace WRS2big_Web.Admin
        // STORE PROMO OFFERED
         protected void btnAddPromoOffered_Click(object sender, EventArgs e)
         {
+
+            string idno = (string)Session["idno"];
+            int logsId = (int)Session["logsId"];
+            string name = (string)Session["fullname"];
+
             try
             {
-                string idno = (string)Session["idno"];
-                int logsId = (int)Session["logsId"];
-                string name = (string)Session["fullname"];
 
                 // Generate reward id number to make as the unique key
                 Random rnd = new Random();
@@ -244,14 +246,14 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Get the current UTC date and time as a DateTimeOffset object
-                DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
+                DateTime currentDateTime = DateTime.Now;
 
 
                 // Define the format of the date string
                 string format = "MMMM, dd yyyy";
 
                 // Convert the date string to a DateTimeOffset using ParseExact
-                DateTimeOffset promoDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
+                DateTime promoDateAdded = DateTime.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
 
                 // Get the selected values from the CheckBoxList
                 string selectedPromo_productOffered = "";
@@ -318,8 +320,8 @@ namespace WRS2big_Web.Admin
                     couponDescription = txtpromodescription.Text,
                     couponPointsRequiredToClaim = pointsRequired,
                     couponAppliedToProductOffers = selectedPromo_productOffered,
-                    couponExpirationFrom = DateTimeOffset.Parse(txtpromoExpirationFrom.Text),
-                    couponExpirationTo = DateTimeOffset.Parse(txtpromoExpirationTo.Text),
+                    couponExpirationFrom = DateTime.Parse(txtpromoExpirationFrom.Text),
+                    couponExpirationTo = DateTime.Parse(txtpromoExpirationTo.Text),
                     couponAppliedTo_thirdpartyProductUnitSizes = selectedUnitSizesOtherProduct,
                     couponAppliedTo_productRefillUnitSizes = selectedUnitSizesproRefill,
                     couponDateAdded = promoDateAdded,
@@ -332,7 +334,7 @@ namespace WRS2big_Web.Admin
 
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 //Store the login information in the USERLOG table
                 var promoLog = new UsersLogs
@@ -380,14 +382,14 @@ namespace WRS2big_Web.Admin
                 int idnum = rnd.Next(1, 10000);
 
                 // Get the current UTC date and time as a DateTimeOffset object
-                DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
+                DateTime currentDateTime = DateTime.Now;
 
 
                 // Define the format of the date string
                 string format = "MMMM, dd yyyy";
 
                 // Convert the date string to a DateTimeOffset using ParseExact
-                DateTimeOffset rewardsDateAdded = DateTimeOffset.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
+                DateTime rewardsDateAdded = DateTime.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
 
 
                
@@ -486,7 +488,7 @@ namespace WRS2big_Web.Admin
 
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 //Store the login information in the USERLOG table
                 var rewardLog = new UsersLogs
@@ -622,9 +624,9 @@ namespace WRS2big_Web.Admin
                         if (searchname == entry.couponName.ToString())
                         {
 
-                            string dateAdded = entry.couponDateAdded == DateTimeOffset.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string promoValidFrom = entry.couponExpirationFrom == DateTimeOffset.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string promoValidUntil = entry.couponExpirationTo == DateTimeOffset.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.couponDateAdded == DateTime.MinValue ? "" : entry.couponDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidFrom = entry.couponExpirationFrom == DateTime.MinValue ? "" : entry.couponExpirationFrom.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string promoValidUntil = entry.couponExpirationTo == DateTime.MinValue ? "" : entry.couponExpirationTo.ToString("MMMM dd, yyyy hh:mm:ss tt");
                             //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             promoOfferedTable.Rows.Add(entry.couponId, entry.couponName, entry.couponDescription, entry.couponAppliedToProductOffers,
@@ -697,7 +699,7 @@ namespace WRS2big_Web.Admin
                         if (searchname == entry.rewardWaysToEarn.ToString())
                         {
 
-                            string dateAdded = entry.rewardsDateAdded == DateTimeOffset.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.rewardsDateAdded == DateTime.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                             //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
