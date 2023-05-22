@@ -46,18 +46,18 @@ namespace WRS2big_Web.Model
         public string status { get; set; }
         public string businessDaysFrom { get; set; }
         public string businessDaysTo { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
-        public DateTimeOffset dateUpdated { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
     }
 
     public class SubscribedPlan
     {
         public int adminID { get; set; }
-        public DateTimeOffset subStart { get; set; }
+        public DateTime subStart { get; set; }
         public string subPlan { get; set; }
         public string subDescription { get; set; }
         public int price { get; set; }
-        public DateTimeOffset subEnd { get; set; }
+        public DateTime subEnd { get; set; }
 
 
     }
@@ -81,11 +81,11 @@ namespace WRS2big_Web.Model
         public string emp_status { get; set; }
         public string emp_availability { get; set; }
         public string addedBy { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public DateTime dateAdded { get; set; }
         public string updatedBy { get; set; }
-        public DateTimeOffset dateUpdated { get; set; }
+        public DateTime dateUpdated { get; set; }
         public string status_ModifiedBy { get; set; }
-        public DateTimeOffset statusDateModified { get; set; }
+        public DateTime statusDateModified { get; set; }
     }
 
     public class TankSupply
@@ -96,8 +96,8 @@ namespace WRS2big_Web.Model
         public string tankVolume { get; set; }
         public string tankBalance { get; set; }
         public string addedBy { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
-        public DateTimeOffset dateUpdated { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
     }
 
 
@@ -115,8 +115,8 @@ namespace WRS2big_Web.Model
         public string thirdparty_productDiscount { get; set; }
         public string thirdparty_productImage { get; set; }
         public string addedBy { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
-        public DateTimeOffset dateUpdated { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
         public string updatedBy { get; set; }
     }
     public class Delivery
@@ -154,7 +154,7 @@ namespace WRS2big_Web.Model
 
 
         //EXRPESS
-        public DateTimeOffset expressdateAdded { get; set; }
+        public DateTime expressdateAdded { get; set; }
         public int expressID { get; set; }
         public string exDeliveryFee { get; set; }
         public string exEstimatedDelivery { get; set; }
@@ -174,7 +174,7 @@ namespace WRS2big_Web.Model
         public string reserveProducts { get; set; }
         //public string resOrderType { get; set; }
         public string resDeliveryType { get; set; }
-        public DateTimeOffset reservationdateAdded { get; set; }
+        public DateTime reservationdateAdded { get; set; }
         public string addedBy { get; set; }
         //public string reserveSwapOptions { get; set; }
 
@@ -237,8 +237,8 @@ namespace WRS2big_Web.Model
         public string pro_stockQty { get; set; }
         public string pro_stockBalance { get; set; }
         public string pro_discount { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
-        public DateTimeOffset dateUpdated { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
         public string addedBy { get; set; }
         public string updatedBy { get; set; }
     }
@@ -256,7 +256,7 @@ namespace WRS2big_Web.Model
         public string productDiscount { get; set; }
         public decimal totalAmount { get; set; }
         public string orderType { get; set; }
-        public DateTimeOffset dateAdded { get; set; }
+        public DateTime dateAdded { get; set; }
         public string addedBy { get; set; }
     }
     public class UsersLogs
@@ -265,7 +265,7 @@ namespace WRS2big_Web.Model
         public int userIdnum { get; set; }
         public string userFullname { get; set; }
         public string userActivity { get; set; }
-        public DateTimeOffset activityTime { get; set; }
+        public DateTime activityTime { get; set; }
 
     }
 
@@ -277,7 +277,7 @@ namespace WRS2big_Web.Model
         public string rewardPointsToEarn { get; set; }
         public string reward_minRange_perAmount { get; set; }
         public string reward_maxRange_perAmount { get; set; }
-        public DateTimeOffset rewardsDateAdded { get; set; }
+        public DateTime rewardsDateAdded { get; set; }
         public string addedBy { get; set; }
     }
     public class DiscounCoupon
@@ -291,9 +291,9 @@ namespace WRS2big_Web.Model
         public string couponAppliedToProductOffers { get; set; }
         public string couponAppliedTo_productRefillUnitSizes { get; set; }
         public string couponAppliedTo_thirdpartyProductUnitSizes { get; set; }
-        public DateTimeOffset couponExpirationFrom { get; set; }
-        public DateTimeOffset couponExpirationTo { get; set; }
-        public DateTimeOffset couponDateAdded { get; set; }
+        public DateTime couponExpirationFrom { get; set; }
+        public DateTime couponExpirationTo { get; set; }
+        public DateTime couponDateAdded { get; set; }
         public string addedBy { get; set; }
     }
 

@@ -147,33 +147,33 @@
                                                 <%--<h5 style="text-align: center;">View order base on customer's payment mode to pay the order:</h5>--%>
                                                 <br>
                                                 <div style="display: flex; justify-content: space-between;">
-                                                    <div>
-                                                       <%-- <asp:Label Style="text-align: left; margin-bottom: 10px;" ID="Label1" runat="server" Text="View order base on customer's payment mode " ForeColor="Black" Font-Size="12"></asp:Label>--%>
+                                                   <%-- <div>
                                                         <asp:DropDownList ID="drdPaymentMode" CssClass="text-center" runat="server" Height="40px" Width="364px">
                                                             <asp:ListItem Text="View order base on customer's payment mode" Selected="False"></asp:ListItem>
                                                             <asp:ListItem Text="All Orders" Value="0"></asp:ListItem>
-                                                            <asp:ListItem Text="COD" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="Gcash" Value="2"></asp:ListItem>
-                                                            <asp:ListItem Text="Reward Points" Value="3"></asp:ListItem>
+                                                            
                                                         </asp:DropDownList>
                                                         <asp:Button ID="btnView" runat="server" Text="View Orders" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
-                                                    </div>
+                                                    </div>--%>
                                                     <div>
-                                                        <asp:DropDownList ID="drdDeliveryType" CssClass="text-center" runat="server" Height="40px" Width="364px">
-                                                            <asp:ListItem Text="View orders base on delivery types" Selected="False"></asp:ListItem>
-                                                           <%-- <asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
-                                                            <asp:ListItem Text="COD - Express" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="COD - Standard" Value="2"></asp:ListItem>
-                                                            <asp:ListItem Text="COD - Reservation" Value="3"></asp:ListItem>
-                                                              <asp:ListItem Text="GCASH - Express" Value="4"></asp:ListItem>
-                                                            <asp:ListItem Text="GCASH - Standard" Value="5"></asp:ListItem>
-                                                             <asp:ListItem Text="GCASH - Reservation" Value="6"></asp:ListItem>
-                                                              <asp:ListItem Text="POINTS - Express" Value="7"></asp:ListItem>
-                                                            <asp:ListItem Text="POINTS - Standard" Value="8"></asp:ListItem>
-                                                            <asp:ListItem Text="POINTS - Reservation" Value="9"></asp:ListItem>
+                                                        <asp:DropDownList ID="drdViewOrders" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                            <asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>
+                                                            <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                            <asp:ListItem Text="Express" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
+                                                            <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                            <%--<asp:ListItem Text="COD - Express" Value="4"></asp:ListItem>
+                                                            <asp:ListItem Text="COD - Standard" Value="5"></asp:ListItem>
+                                                            <asp:ListItem Text="COD - Reservation" Value="6"></asp:ListItem>
+                                                              <asp:ListItem Text="GCASH - Express" Value="7"></asp:ListItem>
+                                                            <asp:ListItem Text="GCASH - Standard" Value="8"></asp:ListItem>
+                                                             <asp:ListItem Text="GCASH - Reservation" Value="9"></asp:ListItem>
+                                                              <asp:ListItem Text="POINTS - Express" Value="10"></asp:ListItem>
+                                                            <asp:ListItem Text="POINTS - Standard" Value="11"></asp:ListItem>
+                                                            <asp:ListItem Text="POINTS - Reservation" Value="12"></asp:ListItem>--%>
                                                            
                                                         </asp:DropDownList>
-                                                        <asp:Button ID="btnViewDeliveryType" runat="server" Text="View" OnClick="btnViewDeliveryType_Click" CssClass="btn-primary" Height="40px" />
+                                                        <asp:Button ID="btnViewOrders" runat="server" Text="View" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
                                                     </div>
                                                 </div>
 
@@ -210,15 +210,16 @@
                                                             <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                 <asp:Label Style="text-align: center;" ID="lblViewOrders" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
                                                                 <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblCodError" runat="server" ForeColor="red" Font-Size="16"></asp:Label>
-                                                                <asp:GridView runat="server" ID="gridCOD_order" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                <asp:Label Style="text-align: center;" ID="lblError" runat="server" ForeColor="red" Font-Size="16"></asp:Label>
+                                                                <asp:GridView runat="server" ID="gridView_order" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                     BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
                                                                     ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                     <Columns>
                                                                         <asp:TemplateField HeaderText="ACTION">
                                                                             <ItemTemplate>
                                                                                 <asp:Button ID="btnAcceptCOD" runat="server" Text="Accept" OnClick="btnAcceptCOD_Click" Style="background-color: transparent; font-size: 18px; border-color: green; border-style: solid" />
-                                                                                <asp:Button ID="btnDeclineCOD" runat="server" Text="Decline" OnClick="btnDeclineCOD_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
+                                                                                 <button type="button" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" data-toggle="modal" data-target="#decline"><i class="fa fa-eraser"></i>Decline</button>
+                                                                             <%--   <asp:Button ID="btnDeclineCOD" runat="server" Text="Decline" OnClick="btnDeclineCOD_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />--%>
                                                                                 <%-- <asp:Button runat="server" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> --%>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
@@ -235,90 +236,7 @@
                                                                     <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                 </asp:GridView>
                                                                 <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblViewGcashOrder" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
-                                                                <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblGcashError" runat="server" ForeColor="Red" Font-Size="16"></asp:Label>
-                                                                <asp:GridView runat="server" ID="gridGcash_order" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
-                                                                    BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
-                                                                    ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                    <Columns>
-                                                                        <asp:TemplateField HeaderText="ACTION">
-                                                                            <ItemTemplate>
-                                                                                <asp:Button ID="btnAcceptGcash" runat="server" Text="Accept" OnClick="btnAcceptGcash_Click" Style="background-color: transparent; font-size: 18px; border-color: green; border-style: solid" />
-                                                                                <asp:Button ID="btnDeclineGcash" runat="server" Text="Decline" OnClick="btnDeclineGcash_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
-                                                                                <%-- <asp:Button runat="server" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> --%>
-                                                                            </ItemTemplate>
-                                                                        </asp:TemplateField>
-                                                                    </Columns>
-                                                                    <Columns>
-                                                                        <asp:TemplateField HeaderText="PAYMENT">
-                                                                            <ItemTemplate>
-                                                                                <asp:Button ID="btnPaymentAccept" runat="server" Text="Payment Received" OnClick="btnPaymentAcceptGcash_Click" Style="background-color: transparent; font-size: 18px; border-color: darkblue; border-style: solid" />
 
-                                                                            </ItemTemplate>
-                                                                        </asp:TemplateField>
-
-                                                                    </Columns>
-                                                                    <%--<Columns>
-                                                        <asp:TemplateField HeaderText="GCash Proof of Payment">
-                                                          <ItemTemplate>
-                                                            <asp:ImageButton ID="imgbtnPaymentProof" runat="server" ImageUrl='<%# Eval("order_GcashProofOfPayment") %>' OnClick="imgbtnPaymentProof_Click" CommandArgument='<%# Eval("order_GcashProofOfPayment") %>' />
-                                                          </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>--%>
-                                                                    <Columns>
-                                                                        <asp:TemplateField HeaderText="GCASH PROOF PAYMENT">
-                                                                            <ItemTemplate>
-                                                                                <asp:Button ID="btnPaymentProof" runat="server" Text="View Payment Proof" OnClick="btnPaymentProof_Click" Style="background-color: transparent; font-size: 18px; border-color: green; border-style: solid" data-toggle="modal" data-target="#viewPaymentProof" />
-
-                                                                            </ItemTemplate>
-                                                                        </asp:TemplateField>
-                                                                    </Columns>
-
-                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                </asp:GridView>
-                                                                <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblViewRewardPoints" runat="server" ForeColor="Black" Font-Size="16"></asp:Label>
-                                                                <br />
-                                                                <asp:Label Style="text-align: center;" ID="lblPointsError" runat="server" ForeColor="Red" Font-Size="16"></asp:Label>
-                                                                <asp:GridView runat="server" ID="gridRewardPoints_order" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
-                                                                    BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
-                                                                    ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                    <Columns>
-                                                                        <asp:TemplateField HeaderText="ACTION">
-                                                                            <ItemTemplate>
-                                                                                <asp:Button ID="btnAcceptPoints" runat="server" Text="Accept" OnClick="btnAcceptPoints_Click" Style="background-color: transparent; font-size: 18px; border-color: green; border-style: solid" />
-                                                                                <asp:Button ID="btnDeclinePoints" runat="server" Text="Decline" OnClick="btnDeclinePoints_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
-                                                                                <%-- <asp:Button runat="server" Text="View" style="background-color:transparent;font-size:16px;"  class="active btn waves-effect text-center"/> --%>
-                                                                            </ItemTemplate>
-                                                                        </asp:TemplateField>
-                                                                    </Columns>
-                                                                    <Columns>
-                                                                        <asp:TemplateField HeaderText="PAYMENT">
-                                                                            <ItemTemplate>
-                                                                                <asp:Button ID="btnPaymentAcceptPoints" runat="server" Text="Payment Received" OnClick="btnPaymentAcceptPoints_Click" Style="background-color: transparent; font-size: 18px; border-color: darkblue; border-style: solid" />
-
-                                                                            </ItemTemplate>
-                                                                        </asp:TemplateField>
-
-                                                                    </Columns>
-
-                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                </asp:GridView>
                                                             </div>
                                                         </div>
                                                         <!--/tab-pane-->
@@ -327,14 +245,56 @@
                                                     <%--TAB end --%>
                                                 </div>
                                             </div>
-                                            <div class="card-footer">
-                                                <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
-                                                --%>
-                                            </div>
+                                           
                                         </div>
                                     </div>
 
+                                     <%-- MODAL FOR UPDATE RECORDS --%>
+                                        <div class="modal fade" id="decline" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="myModalLabel2">DECLINE ORDER </h5>
+                                                            <%--exit button--%>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="col-md-12 col-sm-12 ">
+                                                                <div class="x_content">
+                                                                    <h5 style="color: black; font-family: Bahnschrift">Enter your reasons here to let the customer's know on why you are declining the order:</h5>
+                                                                    <hr />
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                         <h6>What is your reasons of declining customer's order?</h6>
+                                                                        <div style="display: flex;">
+                                                                         <asp:DropDownList ID="drdOrderId" runat="server" class="text-center" Height="40px" Width="364px" >
+                                                                           <asp:ListItem Selected="False" Text="Select order id to decline"></asp:ListItem>
+                                                                       </asp:DropDownList>
+                                                                             </div>
+                                                                        <h6>What is your reasons of declining customer's order?</h6>
+                                                                        <div style="display: flex;">
+                                                                            <asp:TextBox ID="txtdeclineOrder" runat="server" ToolTip="Enter your reasons why you are declining the order" class="form-control" placeholder="Enter your reasons why you are declining the order to let the customer know" Height="40px"></asp:TextBox>
+                                                                            <%-- <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />--%>
+                                                                        </div>
+                                                                        
 
+                                                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                    </div>
+                                                                    <br />
+                                                                  
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <%--  BUTTON SUBMIT RECORD HERE--%>
+                                                                <%--   <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click"/>--%>
+                                                                  <asp:Button ID="btnDecline" runat="server" Text="Submit" OnClick="btnDecline_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%-- end for modal assigning drivers--%>
                                     <!-- page content -->
                                     <!-- Page-body end -->
 

@@ -73,15 +73,15 @@ namespace WRS2big_Web.Admin
                     //{
 
                     //}
-                    string dateAccepted = entry.dateOrderAccepted == DateTimeOffset.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDeclined = entry.dateOrderDeclined == DateTimeOffset.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDelivered = entry.dateOrderDelivered == DateTimeOffset.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string datePayment = entry.datePaymentReceived == DateTimeOffset.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDriverAssigned = entry.dateDriverAssigned == DateTimeOffset.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                             dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclineddBy, dateDriverAssigned, entry.driverAssignedBy,
+                             dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
                              dateDelivered, datePayment, entry.paymentReceivedBy);
                 }
                 if (ordersTable.Rows.Count == 0)
@@ -151,7 +151,7 @@ namespace WRS2big_Web.Admin
                         discount /= 100;
                     }
 
-                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
                     //    entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
@@ -259,7 +259,7 @@ namespace WRS2big_Web.Admin
                                 // Convert discount from percentage to decimal
                                 discount /= 100;
                             }
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
                                 entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
@@ -283,15 +283,15 @@ namespace WRS2big_Web.Admin
                     {
                         if (ordernum == entry.orderID.ToString())
                         {
-                            string dateAccepted = entry.dateOrderAccepted == DateTimeOffset.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateDeclined = entry.dateOrderDeclined == DateTimeOffset.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateDelivered = entry.dateOrderDelivered == DateTimeOffset.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string datePayment = entry.datePaymentReceived == DateTimeOffset.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateDriverAssigned = entry.dateDriverAssigned == DateTimeOffset.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                                     dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclineddBy, dateDriverAssigned, entry.driverAssignedBy,
+                                     dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
                                      dateDelivered, datePayment, entry.paymentReceivedBy);
                         }
                     }

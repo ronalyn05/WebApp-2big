@@ -97,9 +97,7 @@ namespace WRS2big_Web.Admin
                 if (supply != null)
                 {
                     // Filter the list of orders by the owner's ID and the order status and delivery type
-                    var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
-
-
+                    var filteredSupply = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.Now.Date);
 
                     if (filteredSupply != null)
                     {
@@ -236,7 +234,7 @@ namespace WRS2big_Web.Admin
                                 tankVolume = filteredSupply.tankVolume,
                                 tankUnit = filteredSupply.tankUnit,
                                 tankBalance = remainingSupply.ToString() + ' ' + "gallons", // Update the remaining supply field
-                                dateUpdated = DateTimeOffset.UtcNow
+                                dateUpdated = DateTime.Now
                             };
 
                             FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
@@ -259,7 +257,7 @@ namespace WRS2big_Web.Admin
                                 tankUnit = filteredSupply.tankUnit,
                                 addedBy = filteredSupply.addedBy,
                                 tankBalance = remainingSupply.ToString("N2") + ' ' + "gallons", // Update the remaining supply field
-                                dateUpdated = DateTimeOffset.UtcNow
+                                dateUpdated = DateTime.Now
                             };
 
                             FirebaseResponse tankResponse = twoBigDB.Update("TANKSUPPLY/" + filteredSupply.tankId, tankSupply);
@@ -333,8 +331,8 @@ namespace WRS2big_Web.Admin
                     }
 
                     // Convert the dates to strings using a standard format
-                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
                                                  discount, entry.pro_stockQty + " " + entry.pro_stockUnit, entry.pro_stockBalance, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
@@ -400,8 +398,8 @@ namespace WRS2big_Web.Admin
                     //string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     //string dateUpdated = entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty,
                                                entry.thirdparty_productUnitVolume, entry.thirdparty_productPrice,
@@ -446,7 +444,7 @@ namespace WRS2big_Web.Admin
                 {
                     string dateAdded = entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    if (DateTimeOffset.Parse(dateAdded) == DateTimeOffset.MinValue)
+                    if (DateTime.Parse(dateAdded) == DateTime.MinValue)
                     {
                         dateAdded = " ";
                     }
@@ -486,7 +484,7 @@ namespace WRS2big_Web.Admin
                 if (supply != null) // Add this null check
                 {
                     // Filter the list of orders by the owner's ID and the order status and delivery type
-                    var filteredList = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.UtcNow.Date);
+                    var filteredList = supply.Values.FirstOrDefault(d => d.adminId.ToString() == idno && d.dateAdded.Date == DateTime.Now.Date);
 
                     if (filteredList != null)
                     {
@@ -516,7 +514,7 @@ namespace WRS2big_Web.Admin
                     tankUnit = drdTankUnit.SelectedValue,
                     tankVolume = tankSize.Text,
                     addedBy = name,
-                    dateAdded = DateTimeOffset.UtcNow
+                    dateAdded = DateTime.Now
                 };
 
                 SetResponse response;
@@ -765,7 +763,7 @@ namespace WRS2big_Web.Admin
                     pro_stockUnit = productStockUnit,
                     pro_stockQty = productStockQty,
                     addedBy = name,
-                    dateAdded = DateTime.UtcNow
+                    dateAdded = DateTime.Now
                 };
 
                 //UPLOADING THE IMAGE TO THE STORAGE
@@ -817,7 +815,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -921,7 +919,7 @@ namespace WRS2big_Web.Admin
 
                 }
                 updatedProduct.updatedBy = name;
-                updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
+                updatedProduct.dateUpdated = DateTime.Now;
 
                 // Update the existing employee object in the database
                 response = twoBigDB.Update("PRODUCTREFILL/" + productID, updatedProduct);
@@ -934,7 +932,7 @@ namespace WRS2big_Web.Admin
                 txt_productId.Text = null;
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -1049,7 +1047,7 @@ namespace WRS2big_Web.Admin
                 //    }
                 //}
                 updatedProduct.updatedBy = name;
-                updatedProduct.dateUpdated = DateTimeOffset.UtcNow;
+                updatedProduct.dateUpdated = DateTime.Now;
 
                 // Update the existing employee object in the database
                 response = twoBigDB.Update("thirdparty_PRODUCTS/" + productID, updatedProduct);
@@ -1062,7 +1060,7 @@ namespace WRS2big_Web.Admin
                 txt_productId.Text = null;
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -1194,8 +1192,8 @@ namespace WRS2big_Web.Admin
                                 discount /= 100;
                             }
                             // Convert the dates to strings using a standard format
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
 
                             productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
@@ -1231,8 +1229,8 @@ namespace WRS2big_Web.Admin
                             }
                             
 
-                            string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty,
                                                        entry.thirdparty_productUnitVolume, entry.thirdparty_productPrice,

@@ -73,7 +73,7 @@ namespace WRS2big_Web.Admin
                     //{
                     //    timestamp = " ";
                     //}
-                    string timestamp = entry.activityTime == DateTimeOffset.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
                    
@@ -148,7 +148,7 @@ namespace WRS2big_Web.Admin
                         // Loop through the entries and add them to the DataTable
                         foreach (var entry in filteredList)
                         {
-                            string timestamp = entry.activityTime == DateTimeOffset.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
                            // string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, timestamp);

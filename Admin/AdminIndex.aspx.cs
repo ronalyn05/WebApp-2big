@@ -129,7 +129,7 @@ namespace WRS2big_Web.Admin
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             //Get the current date and time
-            DateTimeOffset addedTime = DateTimeOffset.UtcNow;
+            DateTime addedTime = DateTime.Now;
 
             // Log user activity
             var log = new UsersLogs
