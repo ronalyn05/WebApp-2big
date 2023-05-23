@@ -77,32 +77,33 @@ namespace WRS2big_Web.Admin
 
 
         }
+        //Fetch the employee 'driver' and get the id 
         private void PopulateOrderDropdown()
         {
-            // Fetch all the order IDs from the database
-            FirebaseResponse response = twoBigDB.Get("ORDERS");
-            Dictionary<string, Order> orders = response.ResultAs<Dictionary<string, Order>>();
+            // Fetch all the employees from the database
+            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            Dictionary<string, Employee> employees = response.ResultAs<Dictionary<string, Employee>>();
 
-            if (response != null && response.ResultAs<Order>() != null)
+            if (response != null && employees != null)
             {
-                // Create a list to store the order IDs
-                List<int> orderIDs = new List<int>();
+                // Create a list to store the driver employee IDs
+                List<int> empDriver = new List<int>();
 
-                // Iterate over the orders and add the IDs with "Pending" status to the list
-                foreach (var order in orders.Values)
+                // Iterate over the employees and add the IDs for employees with the role "Driver" to the list
+                foreach (var employee in employees.Values)
                 {
-                    if (order.order_OrderStatus == "Pending")
+                    if (employee.emp_role != null && employee.emp_role.ToLower() == "driver")
                     {
-                        orderIDs.Add(order.orderID);
+                        empDriver.Add(employee.emp_id);
                     }
                 }
 
-                // Bind the order IDs to the dropdown
-                drdOrderId.DataSource = orderIDs;
-                drdOrderId.DataBind();
+                // Bind the driver employee IDs to the dropdown
+                drdAssignDriver.DataSource = empDriver;
+                drdAssignDriver.DataBind();
 
                 // Set a default item as the first item in the dropdown
-                drdOrderId.Items.Insert(0, new ListItem("Select order id to decline", ""));
+                drdAssignDriver.Items.Insert(0, new ListItem("Select driver to assign", ""));
             }
         }
 
@@ -180,12 +181,23 @@ namespace WRS2big_Web.Admin
                                 //string dateOrder = order.order_deliveryReservationDeliveryReserveDate == DateTime.MinValue ? "" : order.order_deliveryReservationDeliveryReserveDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
                                 //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
                                 //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                                if (order.order_DeliveryTypeValue == "Reservation")
+                                {
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                    order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_StoreName);
+                                }
+                                else
+                                {
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                   order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                  order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                  order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                  dateOrder, order.order_StoreName);
+                                }
+                              
                             }
                         }
                         else if (order.order_OrderTypeValue == "Delivery")
@@ -279,8 +291,6 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("TOTAL AMOUNT");
                 ordersTable.Columns.Add("ORDER DATE ");
                 ordersTable.Columns.Add("STORE NAME");
-
-
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
@@ -599,7 +609,7 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                              order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                              order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                              order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
                              order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
                              dateOrder, order.order_StoreName);
@@ -672,79 +682,8 @@ namespace WRS2big_Web.Admin
             }
         }
 
-        //ASSIGNING THE DRIVER
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            //  generate a random number for employee logged
-            Random rnd = new Random();
-            int idnum = rnd.Next(1, 10000);
-
-            // Get the admin ID from the session
-            string idno = (string)Session["idno"];
-            string name = (string)Session["fullname"];
-
-            try
-            {
-                string orderId = txtOrderId.Text.Trim();
-                string driverId = txtDriverId.Text.Trim();
-
-                FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderId);
-                Order existingOrder = response.ResultAs<Order>();
-
-                if (existingOrder == null)
-                {
-                    // Show error message if the order ID entered is invalid
-                    Response.Write("<script>alert ('Invalid order ID! Order ID you entered does not exist.');</script>");
-                    return;
-                }
-
-                // Check if the driver ID is valid
-                if (string.IsNullOrEmpty(driverId))
-                {
-                    Response.Write("<script>alert ('Please enter a valid driver ID!');</script>");
-                    return;
-                }
-
-                // Update the existing order object with the new driver ID
-                existingOrder.driverId = int.Parse(driverId);
-                existingOrder.dateDriverAssigned = DateTime.Now;
-                existingOrder.driverAssignedBy = name;
-
-                // Update the existing order object in the database
-                response = twoBigDB.Update("ORDERS/" + orderId, existingOrder);
-
-
-                // Show success message
-                Response.Write("<script>alert('You have successfully assigned driver " + driverId + " to order number " + orderId + "'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                var log = new UsersLogs
-                {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    activityTime = addedTime,
-                    userActivity = "ASSIGNED THE DRIVER TO DELIVER THE ORDER",
-                    // userActivity = UserActivityType.UpdatedEmployeeRecords
-                };
-                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
-
-                displayAll_order();
-                displayExpress_order();
-                displayReservation_order();
-                displayStandard_order();
-
-            }
-            catch (Exception ex)
-            {
-                // Show error message
-                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
-            }
-        }
         //UPDATING THE STATUS ORDER FOR COD IF ACCEPTED
-        protected void btnAcceptCOD_Click(object sender, EventArgs e)
+        protected void btnAccept_Click(object sender, EventArgs e)
         {
 
             // Get the admin ID from the session
@@ -767,7 +706,7 @@ namespace WRS2big_Web.Admin
                 GridViewRow row = (GridViewRow)btn.NamingContainer;
 
                 // Get the order ID from the first cell in the row
-                int orderID = int.Parse(row.Cells[1].Text);
+                int orderID = int.Parse(row.Cells[2].Text);
 
                 // Retrieve the existing order object from the database
                 FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1259,111 +1198,207 @@ namespace WRS2big_Web.Admin
             }
 
         }
-        //UPDATING THE STATUS ORDER IF DECLINE
-        protected void btnDecline_Click(object sender, EventArgs e)
+        //SAVING ORDER ID FOR ASSIGNING THE DRIVER
+        protected void btnAssignDriverClick(object sender, EventArgs e)
         {
-            // Get the admin ID from the session
-            string idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-            string name = (string)Session["fullname"];
-            // Get the log ID from the session 
-            int logsId = (int)Session["logsId"];
-            //INSERT DATA TO TABLE
+            // Retrieve the button that was clicked
+            Button btnAssign = (Button)sender;
+            // Get the order ID from the command argument
+            //int orderID = int.Parse(btnDecline.CommandArgument);
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnAssign.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 2; //  the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Store the order ID in a hidden field for later use
+            hfAssignDriver.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "assignDriver", "$('#assignDriver').modal('show');", true);
+            //// Get the admin ID from the session
+            //string idno = (string)Session["idno"];
+            //int adminId = int.Parse(idno);
+            //string name = (string)Session["fullname"];
+            //// Get the log ID from the session 
+            //int logsId = (int)Session["logsId"];
+
+            //// Retrieve the button that was clicked
+            //Button btnDecline = (Button)sender;
+            //// Find the GridView row containing the button
+            //GridViewRow row = (GridViewRow)btnDecline.NamingContainer;
+            //// Get the order ID from the first cell in the row
+            //int orderID = int.Parse(row.Cells[1].Text); // Assuming the order ID is in the first cell
+
+            //// Register the script to open the modal
+            //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#decline').modal();", true);
+            ////ScriptManager.RegisterStartupScript(this, GetType(), "OpenReasonModal", "$('#reasonModal').modal('show');", true);
+        }
+        //ASSIGNING THE DRIVER
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            //  generate a random number for employee logged
             Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
 
+            // Get the admin ID from the session
+            string idno = (string)Session["idno"];
+            string name = (string)Session["fullname"];
 
-            string orderID = drdOrderId.SelectedValue;
-            string reasons = txtdeclineOrder.Text;
-            // Find the GridView control
-            //GridView gridView = (GridView)((Button)sender).NamingContainer.FindControl("gridView_order");
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfAssignDriver.Value);
 
-            //// Check if a row is selected
-            //if (gridView.SelectedRow != null)
-            //{
-            //    // Get the selected row from the GridView
-            //    GridViewRow row = gridView.SelectedRow;
+            // Get the reason input value
+            string driverId = drdAssignDriver.SelectedValue;
 
-            // Get the order ID from the first cell in the row
-            //int orderID = int.Parse(row.Cells[1].Text);
+            try
+            {
 
-            // Get the GridViewRow that contains the clicked button
-            //Button btn = (Button)sender;
-            //GridViewRow row = (GridViewRow)btn.Parent.Parent;
+                // Retrieve the existing order object from the database
+                FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+                Order existingOrder = response.ResultAs<Order>();
 
-            ////GridViewRow row = (GridViewRow)btn.NamingContainer;
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    // Update the existing order object with the new driver ID
+                    existingOrder.driverId = int.Parse(driverId);
+                    existingOrder.dateDriverAssigned = DateTime.Now;
+                    existingOrder.driverAssignedBy = name;
 
-            //// Get the order ID from the first cell in the row
-            //int orderID = int.Parse(row.Cells[1].Text);
+                    // Update the existing order object in the database
+                    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+                }
+
+                // Show success message
+                Response.Write("<script>alert('You have successfully assigned driver " + driverId + " to order number " + orderID + ". You can now proceed to accept the order.'); </script>");
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.Now;
+
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    activityTime = addedTime,
+                    userActivity = "ASSIGNED THE DRIVER TO DELIVER THE ORDER",
+                    // userActivity = UserActivityType.UpdatedEmployeeRecords
+                };
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+
+                displayAll_order();
+                displayExpress_order();
+                displayReservation_order();
+                displayStandard_order();
+
+            }
+            catch (Exception ex)
+            {
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
+            }
+        }
+        //UPDATING THE STATUS ORDER IF DECLINE
+        protected void btnDecline_Click(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnDecline = (Button)sender;
+            // Get the order ID from the command argument
+            //int orderID = int.Parse(btnDecline.CommandArgument);
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnDecline.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 2; //  the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Store the order ID in a hidden field for later use
+            hfDeclineOrderID.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "declineModal", "$('#declineModal').modal('show');", true);
+        }
+        //DECLINE ORDER
+        protected void btnSubmitDecline_Click(object sender, EventArgs e)
+        {
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfDeclineOrderID.Value);
+
+            // Get the reason input value
+            string reason = reasonInput.Value;
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
-                Order existingOrder = response.ResultAs<Order>();
+            Order existingOrder = response.ResultAs<Order>();
 
-
-                // Update the order status in the existing object
-                //existingOrder.orderID = int.Parse(orderID);
+            if (response != null && existingOrder != null)
+            {
+                // Update the order status and other details
                 existingOrder.order_OrderStatus = "Declined";
-                existingOrder.driverId = existingOrder.driverId; // clear the driver ID
+                existingOrder.driverId = 0; // Clear the driver ID
                 existingOrder.dateOrderDeclined = DateTime.Now;
-                existingOrder.orderDeclinedBy = name;
-
-                //existingOrder.driverId = (int)driverId; // clear the driver ID
+                existingOrder.orderDeclinedBy = (string)Session["fullname"];
 
                 // Update the existing order object in the database
                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-
-                //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
-                //Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Model.Notification
+                // Store the entered reasons in the NOTIFICATION table
+                Random rnd = new Random();
+                int notificationID = rnd.Next(1, 20000);
+                var notification = new Model.Notification
                 {
-                    admin_ID = adminId,
+                    admin_ID = int.Parse((string)Session["idno"]),
                     sender = "Admin",
-                    orderID = int.Parse(orderID),
+                    orderID = orderID,
                     cusId = existingOrder.cusId,
                     receiver = "Customer",
                     title = "Order Declined",
                     driverId = existingOrder.driverId,
-                    body = reasons,
+                    body = reason,
                     notificationDate = DateTime.Now,
                     status = "unread",
-                    notificationID = ID
-
+                    notificationID = notificationID
                 };
 
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+                SetResponse notifResponse = twoBigDB.Set("NOTIFICATION/" + notificationID, notification);
 
-                //SEND NOTIFICATION TO DRIVER FOR ORDER BEING DECLINED
-
-                var driverNotif = new Model.Notification
+                // Notify the driver if a driver is assigned to the order
+                if (!string.IsNullOrEmpty(existingOrder.driverId.ToString()))
                 {
-                    admin_ID = adminId,
-                    sender = "Admin",
-                    orderID = int.Parse(orderID),
-                    cusId = existingOrder.cusId,
-                    receiver = "Driver",
-                    title = "Order Declined",
-                    driverId = existingOrder.driverId,
-                    body = reasons,
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
+                    // Retrieve the driver object from the database
+                    FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES/" + existingOrder.driverId);
+                    Employee driver = driverResponse.ResultAs<Employee>();
 
-                };
+                    if (driverResponse != null && driver != null)
+                    {
+                        // Create a notification for the driver
+                        var driverNotification = new Model.Notification
+                        {
+                            admin_ID = int.Parse((string)Session["idno"]),
+                            sender = "Admin",
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            receiver = "Driver",
+                            title = "Order Declined",
+                            driverId = existingOrder.driverId,
+                            body = "Your assigned order has been declined. Reason: " + reason,
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = rnd.Next(1, 20000)
+                        };
 
-                SetResponse notificationResponse;
-                notificationResponse = twoBigDB.Set("NOTIFICATION/" + ID, driverNotif);//Storing data to the database
-                Notification notifres = notificationResponse.ResultAs<Notification>();//Database Result
+                        SetResponse driverNotifResponse = twoBigDB.Set("NOTIFICATION/" + driverNotification.notificationID, driverNotification);
+                    }
+                }
+
+                // Perform  additional actions or display messages as needed
+
+                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
 
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
@@ -1371,24 +1406,24 @@ namespace WRS2big_Web.Admin
                 // Log user activity
                 var log = new UsersLogs
                 {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
+                    userIdnum = int.Parse((string)Session["idno"]),
+                    logsId = rnd.Next(1, 10000),
                     userFullname = (string)Session["fullname"],
                     userActivity = "DECLINED ORDER",
                     activityTime = addedTime
                 };
 
                 twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+            }
 
-                displayAll_order();
-                displayExpress_order();
-                displayReservation_order();
-                displayStandard_order();
-            //}
+            displayAll_order();
+            displayExpress_order();
+            displayReservation_order();
+            displayStandard_order();
         }
-      
-      
-        //OPTION DISPLAY DELIVERY TYPES
+
+
+
         protected void btnViewOrders_Click(object sender, EventArgs e)
         {
 
@@ -1398,28 +1433,28 @@ namespace WRS2big_Web.Admin
                 if (selectedOption == "0")
                 {
                     displayAll_order();
-                    lblViewOrders.Text = "ALL ORDER";
+                    //lblViewOrders.Text = "ALL ORDER";
 
                 }
                 else if (selectedOption == "1")
                 {
-                    lblViewOrders.Text = "EXPRESS ORDER";
+                    //lblViewOrders.Text = "EXPRESS ORDER";
                     displayExpress_order();
-                    lblError.Visible = false;
+                    //lblError.Visible = false;
 
                 }
                 else if (selectedOption == "2")
                 {
-                    lblViewOrders.Text = "STANDARD ORDER";
+                    //lblViewOrders.Text = "STANDARD ORDER";
                     displayStandard_order();
-                    lblError.Visible = false;
+                    //lblError.Visible = false;
 
                 }
                 else if (selectedOption == "3")
                 {
-                    lblViewOrders.Text = "RESERVATION ORDER";
+                    //lblViewOrders.Text = "RESERVATION ORDER";
                     displayReservation_order();
-                    lblError.Visible = false;
+                    //lblError.Visible = false;
                 }
                 
             }
