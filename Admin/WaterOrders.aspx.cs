@@ -27,88 +27,17 @@ namespace WRS2big_Web.Admin
 
             if (!IsPostBack)
             {
-                onlineordersDisplay();
-                lblOrder.Text = "LIST OF ONLINE ORDERS";
+                //onlineordersDisplay();
+                //lblOrder.Text = "LIST OF ONLINE ORDERS";
                 walkinordersDisplay();
+                //displayAllCOD_order();
+                //displayAllGcash_order();
+                //displayAllPoints_order();
                 //lblWalkIn.Text = "LIST OF WALKIN ORDERS";
             }
 
         }
-        //DISPLAY ONLINE ORDERS
-        private void onlineordersDisplay()
-        {
-            string idno = (string)Session["idno"];
-
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("ORDERS");
-            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-            
-
-            // Create the DataTable to hold the orders
-            DataTable ordersTable = new DataTable();
-            ordersTable.Columns.Add("ORDER ID");
-            ordersTable.Columns.Add("CUSTOMER ID");
-            ordersTable.Columns.Add("DRIVER ID");
-            ordersTable.Columns.Add("STATUS");
-            ordersTable.Columns.Add("STORE NAME");
-            ordersTable.Columns.Add("PAYMENT MODE");
-            ordersTable.Columns.Add("TOTAL AMOUNT");
-            ordersTable.Columns.Add("ORDER DATE");
-            ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
-            ordersTable.Columns.Add("ORDER ACCEPTED BY");
-            ordersTable.Columns.Add("DATE OF ORDER DECLINED");
-            ordersTable.Columns.Add("ORDER DECLINED BY");
-            ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
-            ordersTable.Columns.Add("DRIVER ASSIGNED BY");
-            ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
-            ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
-            ordersTable.Columns.Add("PAYMENT RECEIVED BY");
-
-            if (response != null && response.ResultAs<Order>() != null)
-            {
-                var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno &&
-                (d.order_OrderStatus == "Payment Received" || d.order_OrderStatus == "Received"));
-                //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && d.order_OrderStatus == "Delivered");
-                // Loop through the orders and add them to the DataTable
-                foreach (var entry in filteredList)
-                {
-                    //if(entry.orderPaymentMethod == "CashOnDelivery")
-                    //{
-
-                    //}
-                    string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                    ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                             dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
-                             dateDelivered, datePayment, entry.paymentReceivedBy);
-                }
-                if (ordersTable.Rows.Count == 0)
-                {
-                    lblMessage.Text = "No record of successful order found  ";
-                    lblMessage.Visible = true;
-                }
-                else
-                {
-                    // Bind the DataTable to the GridView
-                    gridOrder.DataSource = ordersTable;
-                    gridOrder.DataBind();
-                }
-              
-            }
-            else
-            {
-                // Handle null response or invalid selected value
-                lblMessage.Text = "No record found";
-            }
-
-            
-        }
-
+      
         //DISPLAY WALKIN ORDERS
         private void walkinordersDisplay()
         {
@@ -167,8 +96,8 @@ namespace WRS2big_Web.Admin
 
                 if (walkInordersTable.Rows.Count == 0)
                 {
-                    lblMessage.Text = "No record found";
-                    lblMessage.Visible = true;
+                    lblWalkinError.Text = "No record found";
+                    lblWalkinError.Visible = true;
                 }
                 else
                 {
@@ -181,7 +110,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblMessage.Text = "No record found";
+                lblWalkinError.Text = "No record found";
             }
         }
         //SEARCH REPORTS
@@ -319,7 +248,7 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
+                Response.Write("<script>alert('There was an error retrieving orders'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>" + ex.Message);
             }
         }
         //DISPLAY ALL COD ORDER 
@@ -372,7 +301,7 @@ namespace WRS2big_Web.Admin
                         string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
                                  dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
@@ -380,23 +309,28 @@ namespace WRS2big_Web.Admin
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No record of successful order found  ";
+                        gridOrder.DataSource = null;
+                        gridOrder.DataBind();
+                        gridStatusAccepted.DataSource = null;
+                        gridStatusAccepted.DataBind();
+                        lblMessage.Text = "No Accepted Orders Found";
                         lblMessage.Visible = true;
                     }
                     else
                     {
-                        // Bind the DataTable to the GridView
                         gridOrder.DataSource = ordersTable;
                         gridOrder.DataBind();
+                        gridOrder.Visible = true;
+                        gridStatusAccepted.Visible = false;
+                        lblMessage.Visible = false;
                     }
-
+                    //gridStatusAccepted.Visible = false;
                 }
                 else
                 {
                     // Handle null response or invalid selected value
-                    lblMessage.Text = "No record found";
+                    lblMessage.Text = "No Accepted Order found";
                 }
-               
             }
             catch (Exception ex)
             {
@@ -404,7 +338,7 @@ namespace WRS2big_Web.Admin
                 lblMessage.Visible = true;
             }
         }
-        //DISPLAY THE ACCEPTED ORDER
+        //DISPLAY THE COD ACCEPTED ORDER
         private void displayAccepted_order()
         {
             string idno = (string)Session["idno"];
@@ -442,29 +376,38 @@ namespace WRS2big_Web.Admin
                         {
                             string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
                             string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
                            dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No Delivered Orders Found";
+                        gridOrder.DataSource = null;
+                        gridOrder.DataBind();
+                        gridStatusAccepted.DataSource = null;
+                        gridStatusAccepted.DataBind();
+                        lblMessage.Text = "No Accepted Orders Found";
                         lblMessage.Visible = true;
                     }
                     else
                     {
                         gridStatusAccepted.DataSource = ordersTable;
                         gridStatusAccepted.DataBind();
+                        gridStatusAccepted.Visible = true;
+                        gridOrder.Visible = false;
+                        lblMessage.Visible = false;
                     }
+                     //gridOrder.Visible = false;
                 }
                 else
                 {
                    // Handle null response or invalid selected value
                    lblMessage.Text = "No Accepted Order found";
+                    lblMessage.Visible = true;
                 }
 
-                displayDeclined_order();
+                
 
             }
             catch (Exception ex)
@@ -473,7 +416,7 @@ namespace WRS2big_Web.Admin
                 lblMessage.Visible = true;
             }
         }
-        //UPDATING THE STATUS ORDER IF DECLINE
+        //UPDATING THE STATUS OF COD ORDER IF DECLINE
         protected void btnDecline_Click(object sender, EventArgs e)
         {
             // Retrieve the button that was clicked
@@ -493,7 +436,7 @@ namespace WRS2big_Web.Admin
             // Show the modal popup
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "declineModal", "$('#declineModal').modal('show');", true);
         }
-        //DECLINE ORDER
+        //DECLINE COD ORDER
         protected void btnSubmitDecline_Click(object sender, EventArgs e)
         {
             // Get the order ID from the hidden field
@@ -568,7 +511,7 @@ namespace WRS2big_Web.Admin
 
                 // Perform  additional actions or display messages as needed
 
-                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                Response.Write("<script>alert ('Order Declined!'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx';</script>");
 
                 // Retrieve the existing Users log object from the database
                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
@@ -589,10 +532,12 @@ namespace WRS2big_Web.Admin
 
                 twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
             }
-
             displayDeclined_order();
+            gridOrder.Visible = true;
+            gridStatusAccepted.Visible = false;
+
         }
-        //   DISPLAY THE DECLINED ORDER
+        //   DISPLAY THE COD DECLINED ORDER
         private void displayDeclined_order()
         {
             string idno = (string)Session["idno"];
@@ -630,7 +575,7 @@ namespace WRS2big_Web.Admin
                     {
                         string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
                            dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
@@ -638,19 +583,29 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
+                        gridOrder.DataSource = null;
+                        gridOrder.DataBind();
+                        gridStatusAccepted.DataSource = null;
+                        gridStatusAccepted.DataBind();
+
                         lblMessage.Text = "No Delivered Orders Found";
                         lblMessage.Visible = true;
                     }
                     else
                     {
+
                         gridOrder.DataSource = ordersTable;
                         gridOrder.DataBind();
+                        gridOrder.Visible = true;
+                        gridStatusAccepted.Visible = false;
+                        lblMessage.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
                     lblMessage.Text = "No Declined Order found";
+                    lblMessage.Visible = true;
                 }
 
             }
@@ -660,7 +615,7 @@ namespace WRS2big_Web.Admin
                 lblMessage.Visible = true;
             }
         }
-        //   DISPLAY THE DELIVERED ORDER
+        //   DISPLAY THE COD DELIVERED ORDER
         private void displayDelivered_order()
         {
             string idno = (string)Session["idno"];
@@ -690,14 +645,14 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery") && (d.order_OrderStatus == "Declined")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery") && (d.order_OrderStatus == "Delivered")).OrderByDescending(d => d.orderDate);
 
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
                         string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, 
                             entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
@@ -705,6 +660,10 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
+                        gridOrder.DataSource = null;
+                        gridOrder.DataBind();
+                        gridStatusAccepted.DataSource = null;
+                        gridStatusAccepted.DataBind();
                         lblMessage.Text = "No Delivered Orders Found";
                         lblMessage.Visible = true;
                     }
@@ -712,14 +671,18 @@ namespace WRS2big_Web.Admin
                     {
                         gridOrder.DataSource = ordersTable;
                         gridOrder.DataBind();
+                        gridOrder.Visible = true;
+                        gridStatusAccepted.Visible = false;
+                        lblMessage.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
                     lblMessage.Text = "No Delivered Order found";
+                    lblMessage.Visible = true;
                 }
-
+                
             }
             catch (Exception ex)
             {
@@ -727,7 +690,7 @@ namespace WRS2big_Web.Admin
                 lblMessage.Visible = true;
             }
         }
-        //   DISPLAY THE PAYMENT RECEIVED ORDER
+        //   DISPLAY THE COD PAYMENT RECEIVED ORDER
         private void displayPaymentReceived_order()
         {
             string idno = (string)Session["idno"];
@@ -766,7 +729,7 @@ namespace WRS2big_Web.Admin
                     {
                         string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
                         string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
                             entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
@@ -774,6 +737,10 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
+                        gridOrder.DataSource = null;
+                        gridOrder.DataBind();
+                        gridStatusAccepted.DataSource = null;
+                        gridStatusAccepted.DataBind();
                         lblMessage.Text = "No Payment Received Found";
                         lblMessage.Visible = true;
                     }
@@ -781,12 +748,16 @@ namespace WRS2big_Web.Admin
                     {
                         gridOrder.DataSource = ordersTable;
                         gridOrder.DataBind();
+                        gridOrder.Visible = true;
+                        gridStatusAccepted.Visible = false;
+                        lblMessage.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
                     lblMessage.Text = "No  Payment Received found";
+                    lblMessage.Visible = true;
                 }
 
             }
@@ -854,6 +825,12 @@ namespace WRS2big_Web.Admin
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
+                        gridGcash_order.DataSource = null;
+                        gridGcash_order.DataBind();
+                        gridDelivered.DataSource = null;
+                        gridDelivered.DataBind();
+                        gridGcashAccepted_order.DataSource = null;
+                        gridGcashAccepted_order.DataBind();
                         lblGcashError.Text = "No Orders Found";
                         lblGcashError.Visible = true;
                     }
@@ -861,12 +838,17 @@ namespace WRS2big_Web.Admin
                     {
                         gridGcash_order.DataSource = ordersTable;
                         gridGcash_order.DataBind();
+                        gridGcash_order.Visible = true;
+                        gridDelivered.Visible = false;
+                        gridGcashAccepted_order.Visible = false;
+                        lblGcashError.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
                     lblGcashError.Text = "No Orders found";
+                    lblGcashError.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -920,58 +902,68 @@ namespace WRS2big_Web.Admin
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No Delivered Orders Found";
+                        gridGcash_order.DataSource = null;
+                        gridGcash_order.DataBind();
+                        gridDelivered.DataSource = null;
+                        gridDelivered.DataBind();
+                        gridGcashAccepted_order.DataSource = null;
+                        gridGcashAccepted_order.DataBind();
+                        lblMessage.Text = "No Accepted Orders Found";
                         lblMessage.Visible = true;
                     }
                     else
                     {
                         gridGcashAccepted_order.DataSource = ordersTable;
                         gridGcashAccepted_order.DataBind();
+                        gridGcashAccepted_order.Visible = true;
+                        gridDelivered.Visible = false;
+                        gridGcash_order.Visible = false;
+                        lblGcashError.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
-                    lblMessage.Text = "No Accepted Order found";
+                    lblGcashError.Text = "No Accepted Order found";
+                    lblGcashError.Visible = true;
                 }
 
-                displayDeclinedGcash_order();
 
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "There was an error retrieving orders" + ex.Message;
-                lblMessage.Visible = true;
+                lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
+                lblGcashError.Visible = true;
             }
         }
-        //UPDATING THE STATUS ORDER IF DECLINE
+        //UPDATING THE STATUS OF GCASH ORDER IF DECLINE
         protected void btnDeclineGcash_Click(object sender, EventArgs e)
         {
             // Retrieve the button that was clicked
-            Button btnDecline = (Button)sender;
+            Button btnDeclineGcash = (Button)sender;
             // Get the order ID from the command argument
             //int orderID = int.Parse(btnDecline.CommandArgument);
             // Find the GridView row containing the button
-            GridViewRow row = (GridViewRow)btnDecline.NamingContainer;
+            GridViewRow row = (GridViewRow)btnDeclineGcash.NamingContainer;
 
             // Get the order ID from the specific column
             int orderIDColumnIndex = 1; //  the actual column index of the order ID
             int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
 
             // Store the order ID in a hidden field for later use
-            hfDeclineOrderID.Value = orderID.ToString();
+            hfDeclineGcashOrderID.Value = orderID.ToString();
 
             // Show the modal popup
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "declineModal", "$('#declineModal').modal('show');", true);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "declineGcashModal", "$('#declineGcashModal').modal('show');", true);
         }
         //DECLINE ORDER
-        protected void btnSubmitDecline_Click(object sender, EventArgs e)
+        protected void btnSubmitDeclineGcash_Click(object sender, EventArgs e)
         {
             // Get the order ID from the hidden field
-            int orderID = int.Parse(hfDeclineOrderID.Value);
+            int orderID = int.Parse(hfDeclineGcashOrderID.Value);
 
             // Get the reason input value
-            string reason = reasonInput.Value;
+            string reason = reasonGcashInput.Value;
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1039,7 +1031,7 @@ namespace WRS2big_Web.Admin
 
                 // Perform  additional actions or display messages as needed
 
-                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/WaterOrders.aspx';</script>");
 
                 // Retrieve the existing Users log object from the database
                 FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
@@ -1059,11 +1051,16 @@ namespace WRS2big_Web.Admin
                 };
 
                 twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+
+                displayDeclinedGcash_order();
+                gridGcash_order.Visible = true;
+                gridDelivered.Visible = false;
+                gridGcashAccepted_order.Visible = false;
+
             }
 
-            displayDeclinedGcash_order();
         }
-        //   DISPLAY THE DECLINED ORDER
+        //   DISPLAY THE GCASH DECLINED ORDER
         private void displayDeclinedGcash_order()
         {
             string idno = (string)Session["idno"];
@@ -1094,7 +1091,7 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery") && (d.order_OrderStatus == "Declined")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash") && (d.order_OrderStatus == "Declined")).OrderByDescending(d => d.orderDate);
 
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
@@ -1109,30 +1106,41 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No Delivered Orders Found";
-                        lblMessage.Visible = true;
+                        gridGcash_order.DataSource = null;
+                        gridGcash_order.DataBind();
+                        gridDelivered.DataSource = null;
+                        gridDelivered.DataBind();
+                        gridGcashAccepted_order.DataSource = null;
+                        gridGcashAccepted_order.DataBind();
+                        lblGcashError.Text = "No Declined Orders Found";
+                        lblGcashError.Visible = true;
                     }
                     else
                     {
-                        gridOrder.DataSource = ordersTable;
-                        gridOrder.DataBind();
+                        gridGcash_order.DataSource = ordersTable;
+                        gridGcash_order.DataBind();
+                        gridGcash_order.Visible = true;
+                        gridDelivered.Visible = false;
+                        gridGcashAccepted_order.Visible = false;
+                        lblGcashError.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
-                    lblMessage.Text = "No Declined Order found";
+                    lblGcashError.Text = "No Declined Order found";
+                    lblGcashError.Visible = true;
                 }
 
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "There was an error retreiving orders" + ex.Message;
-                lblMessage.Visible = true;
+                lblGcashError.Text = "There was an error retreiving orders" + ex.Message;
+                lblGcashError.Visible = true;
             }
         }
-        //   DISPLAY THE DELIVERED ORDER
-        private void displayDelivered_order()
+        //   DISPLAY THE GCASH DELIVERED ORDER
+        private void displayGcashDelivered_order()
         {
             string idno = (string)Session["idno"];
 
@@ -1161,7 +1169,7 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery") && (d.order_OrderStatus == "Declined")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash") && (d.order_OrderStatus == "Delivered")).OrderByDescending(d => d.orderDate);
 
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
@@ -1176,30 +1184,41 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No Delivered Orders Found";
-                        lblMessage.Visible = true;
+                        gridGcash_order.DataSource = null;
+                        gridGcash_order.DataBind();
+                        gridDelivered.DataSource = null;
+                        gridDelivered.DataBind();
+                        gridGcashAccepted_order.DataSource = null;
+                        gridGcashAccepted_order.DataBind();
+                        lblGcashError.Text = "No Delivered Orders Found";
+                        lblGcashError.Visible = true;
                     }
                     else
                     {
-                        gridOrder.DataSource = ordersTable;
-                        gridOrder.DataBind();
+                        gridDelivered.DataSource = ordersTable;
+                        gridDelivered.DataBind();
+                        gridDelivered.Visible = true;
+                        gridGcash_order.Visible = false;
+                        gridGcashAccepted_order.Visible = false;
+                        lblGcashError.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
-                    lblMessage.Text = "No Delivered Order found";
+                    lblGcashError.Text = "No Delivered Order found";
+                    lblGcashError.Visible = true;
                 }
 
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "There was an error retrieving orders" + ex.Message;
-                lblMessage.Visible = true;
+                lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
+                lblGcashError.Visible = true;
             }
         }
-        //   DISPLAY THE PAYMENT RECEIVED ORDER
-        private void displayPaymentReceived_order()
+        //   DISPLAY THE GCASH PAYMENT RECEIVED ORDER
+        private void displayGcashPaymentReceived_order()
         {
             string idno = (string)Session["idno"];
 
@@ -1230,7 +1249,7 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "CashOnDelivery") && (d.order_OrderStatus == "Payment Received")).OrderByDescending(d => d.orderDate);
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash") && (d.order_OrderStatus == "Payment Received")).OrderByDescending(d => d.orderDate);
 
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
@@ -1245,26 +1264,561 @@ namespace WRS2big_Web.Admin
 
                     if (ordersTable.Rows.Count == 0)
                     {
-                        lblMessage.Text = "No Payment Received Found";
-                        lblMessage.Visible = true;
+                        gridGcash_order.DataSource = null;
+                        gridGcash_order.DataBind();
+                        gridDelivered.DataSource = null;
+                        gridDelivered.DataBind();
+                        gridGcashAccepted_order.DataSource = null;
+                        gridGcashAccepted_order.DataBind();
+                        lblGcashError.Text = "No Payment Received Found";
+                        lblGcashError.Visible = true;
                     }
                     else
                     {
-                        gridOrder.DataSource = ordersTable;
-                        gridOrder.DataBind();
+                        gridGcash_order.DataSource = ordersTable;
+                        gridGcash_order.DataBind();
+                        gridGcash_order.Visible = true;
+                        gridDelivered.Visible = false;
+                        gridGcashAccepted_order.Visible = false;
+                        lblGcashError.Visible = false;
                     }
                 }
                 else
                 {
                     // Handle null response or invalid selected value
-                    lblMessage.Text = "No  Payment Received found";
+                    lblGcashError.Text = "No  Payment Received found";
                 }
 
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "There was an error retrieving orders" + ex.Message;
-                lblMessage.Visible = true;
+                lblGcashError.Text = "There was an error retrieving orders" + ex.Message;
+                lblGcashError.Visible = true;
+            }
+        }
+
+        //DISPLAY ALL POINTS ORDER 
+        private void displayAllPoints_order()
+        {
+
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                // Create the DataTable to hold the orders
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("STORE NAME");
+                ordersTable.Columns.Add("PAYMENT MODE");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE");
+                ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
+                ordersTable.Columns.Add("ORDER ACCEPTED BY");
+                ordersTable.Columns.Add("DATE OF ORDER DECLINED");
+                ordersTable.Columns.Add("ORDER DECLINED BY");
+                ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+                ordersTable.Columns.Add("DRIVER ASSIGNED BY");
+                ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
+                ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
+                ordersTable.Columns.Add("PAYMENT RECEIVED BY");
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points") && (d.order_OrderStatus != "Pending")).OrderByDescending(d => d.orderDate);
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        //if(entry.orderPaymentMethod == "CashOnDelivery")
+                        //{
+
+                        //}
+                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                 dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
+                                 dateDelivered, datePayment, entry.paymentReceivedBy);
+                    }
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = null;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridorder_DeclineAccepted.DataSource = null;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridPointsOrder.DataSource = null;
+                        gridPointsOrder.DataBind();
+                        lblPointsErrorMessage.Text = "No Orders Found";
+                        lblPointsErrorMessage.Visible = true;
+                    }
+                    else
+                    {
+                        gridPointsOrder.DataSource = ordersTable;
+                        gridPointsOrder.DataBind();
+                        gridPointsOrder.Visible = true;
+                        gridReceivedPaymentPoints_order.Visible = false;
+                        gridorder_DeclineAccepted.Visible = false;
+                        lblPointsErrorMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    lblPointsErrorMessage.Text = "No Orders found";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblPointsErrorMessage.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsErrorMessage.Visible = true;
+            }
+        }
+        //DISPLAY THE POINTS ACCEPTED ORDER
+        private void displayAcceptedPoints_order()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                // Create the DataTable to hold the orders
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("STORE NAME");
+                ordersTable.Columns.Add("PAYMENT MODE");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE");
+                ordersTable.Columns.Add("DATE OF ORDER ACCEPTED");
+                ordersTable.Columns.Add("ORDER ACCEPTED BY");
+                ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+                ordersTable.Columns.Add("DRIVER ASSIGNED BY");
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points") && (d.order_OrderStatus == "Accepted")).OrderByDescending(d => d.orderDate);
+
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                           dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                    }
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = null;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridorder_DeclineAccepted.DataSource = null;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridPointsOrder.DataSource = null;
+                        gridPointsOrder.DataBind();
+                        lblPointsErrorMessage.Text = "No Accepted Orders Found";
+                        lblPointsErrorMessage.Visible = true;
+                    }
+                    else
+                    {
+                        gridorder_DeclineAccepted.DataSource = ordersTable;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridorder_DeclineAccepted.Visible = true;
+                        gridReceivedPaymentPoints_order.Visible = false;
+                        gridPointsOrder.Visible = false;
+                        lblPointsErrorMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    lblPointsErrorMessage.Text = "No Accepted Order found";
+                }
+
+                //displayDeclinedPoints_order();
+
+            }
+            catch (Exception ex)
+            {
+                lblPointsErrorMessage.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsErrorMessage.Visible = true;
+            }
+        }
+        //UPDATING THE STATUS OF POINTS ORDER IF DECLINE
+        protected void btnDeclinePoints_Click(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnDeclinePoints = (Button)sender;
+            // Get the order ID from the command argument
+            //int orderID = int.Parse(btnDecline.CommandArgument);
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnDeclinePoints.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 1; //  the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Store the order ID in a hidden field for later use
+            hfDeclinePointsOrderID.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "declinePointsModal", "$('#declinePointsModal').modal('show');", true);
+        }
+        //DECLINE ORDER
+        protected void btnSubmitDeclinePoints_Click(object sender, EventArgs e)
+        {
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfDeclinePointsOrderID.Value);
+
+            // Get the reason input value
+            string reason = reasonPointsInput.Value;
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            Order existingOrder = response.ResultAs<Order>();
+
+            if (response != null && existingOrder != null)
+            {
+                // Update the order status and other details
+                existingOrder.order_OrderStatus = "Declined";
+                existingOrder.driverId = 0; // Clear the driver ID
+                existingOrder.dateOrderDeclined = DateTime.Now;
+                existingOrder.orderDeclinedBy = (string)Session["fullname"];
+
+                // Update the existing order object in the database
+                response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                // Store the entered reasons in the NOTIFICATION table
+                Random rnd = new Random();
+                int notificationID = rnd.Next(1, 20000);
+                var notification = new Model.Notification
+                {
+                    admin_ID = int.Parse((string)Session["idno"]),
+                    sender = "Admin",
+                    orderID = orderID,
+                    cusId = existingOrder.cusId,
+                    receiver = "Customer",
+                    title = "Order Declined",
+                    driverId = existingOrder.driverId,
+                    body = reason,
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = notificationID
+                };
+
+                SetResponse notifResponse = twoBigDB.Set("NOTIFICATION/" + notificationID, notification);
+
+                // Notify the driver if a driver is assigned to the order
+                if (!string.IsNullOrEmpty(existingOrder.driverId.ToString()))
+                {
+                    // Retrieve the driver object from the database
+                    FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES/" + existingOrder.driverId);
+                    Employee driver = driverResponse.ResultAs<Employee>();
+
+                    if (driverResponse != null && driver != null)
+                    {
+                        // Create a notification for the driver
+                        var driverNotification = new Model.Notification
+                        {
+                            admin_ID = int.Parse((string)Session["idno"]),
+                            sender = "Admin",
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            receiver = "Driver",
+                            title = "Order Declined",
+                            driverId = existingOrder.driverId,
+                            body = "Your assigned order has been declined. Reason: " + reason,
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = rnd.Next(1, 20000)
+                        };
+
+                        SetResponse driverNotifResponse = twoBigDB.Set("NOTIFICATION/" + driverNotification.notificationID, driverNotification);
+                    }
+                }
+
+                // Perform  additional actions or display messages as needed
+
+                Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/WaterOrders.aspx';</script>");
+
+                // Retrieve the existing Users log object from the database
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
+                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                // Get the current date and time
+                DateTime addedTime = DateTime.Now;
+
+                // Log user activity
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse((string)Session["idno"]),
+                    logsId = rnd.Next(1, 10000),
+                    userFullname = (string)Session["fullname"],
+                    userActivity = "DECLINED ORDER",
+                    activityTime = addedTime
+                };
+
+                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+            }
+
+            displayDeclinedPoints_order();
+            gridPointsOrder.Visible = true;
+            gridReceivedPaymentPoints_order.Visible = false;
+            gridorder_DeclineAccepted.Visible = false;
+        }
+        //   DISPLAY THE POINTS DECLINED ORDER
+        private void displayDeclinedPoints_order()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                // Create the DataTable to hold the orders
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("STORE NAME");
+                ordersTable.Columns.Add("PAYMENT MODE");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE");
+                ordersTable.Columns.Add("DATE OF ORDER DECLINED");
+                ordersTable.Columns.Add("ORDER DECLINED BY");
+                ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+                ordersTable.Columns.Add("DRIVER ASSIGNED BY");
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points") && (d.order_OrderStatus == "Declined")).OrderByDescending(d => d.orderDate);
+
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                           dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = null;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridorder_DeclineAccepted.DataSource = null;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridPointsOrder.DataSource = null;
+                        gridPointsOrder.DataBind();
+                        lblPointsErrorMessage.Text = "No Declined Orders Found";
+                        lblPointsErrorMessage.Visible = true;
+                    }
+                    else
+                    {
+                        gridPointsOrder.DataSource = ordersTable;
+                        gridPointsOrder.DataBind();
+                        gridPointsOrder.Visible = true;
+                        gridReceivedPaymentPoints_order.Visible = false;
+                        gridorder_DeclineAccepted.Visible = false;
+                        lblPointsErrorMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    lblPointsErrorMessage.Text = "No Declined Order found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lblPointsErrorMessage.Text = "There was an error retreiving orders" + ex.Message;
+                lblPointsErrorMessage.Visible = true;
+            }
+        }
+        //   DISPLAY THE POINTS DELIVERED ORDER
+        private void displayPointsDelivered_order()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                // Create the DataTable to hold the orders
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("STORE NAME");
+                ordersTable.Columns.Add("PAYMENT MODE");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE");
+                ordersTable.Columns.Add("DATE OF ORDER DELIVERED");
+                ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+                ordersTable.Columns.Add("DRIVER ASSIGNED BY");
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points") && (d.order_OrderStatus == "Delivered")).OrderByDescending(d => d.orderDate);
+
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = null;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridorder_DeclineAccepted.DataSource = null;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridPointsOrder.DataSource = null;
+                        gridPointsOrder.DataBind();
+                        lblPointsErrorMessage.Text = "No Delivered Orders Found";
+                        lblPointsErrorMessage.Visible = true;
+                    }
+                    else
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = ordersTable;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridReceivedPaymentPoints_order.Visible = true;
+                        gridPointsOrder.Visible = false;
+                        gridorder_DeclineAccepted.Visible = false;
+                        lblPointsErrorMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    lblPointsErrorMessage.Text = "No Delivered Order found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lblPointsErrorMessage.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsErrorMessage.Visible = true;
+            }
+        }
+        //   DISPLAY THE POINTS PAYMENT RECEIVED ORDER
+        private void displayPointsPaymentReceived_order()
+        {
+            string idno = (string)Session["idno"];
+
+            try
+            {
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("ORDERS");
+                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+                // Create the DataTable to hold the orders
+                DataTable ordersTable = new DataTable();
+                ordersTable.Columns.Add("ORDER ID");
+                ordersTable.Columns.Add("CUSTOMER ID");
+                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("STATUS");
+                ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("ORDER TYPE");
+                ordersTable.Columns.Add("STORE NAME");
+                ordersTable.Columns.Add("PAYMENT MODE");
+                ordersTable.Columns.Add("TOTAL AMOUNT");
+                ordersTable.Columns.Add("ORDER DATE");
+                ordersTable.Columns.Add("DATE OF PAYMENT RECEIVED");
+                ordersTable.Columns.Add("PAYMENT RECEIVED BY");
+                ordersTable.Columns.Add("DATE OF DRIVER ASSIGNED");
+                ordersTable.Columns.Add("DRIVER ASSIGNED BY");
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points") && (d.order_OrderStatus == "Payment Received")).OrderByDescending(d => d.orderDate);
+
+                    // Loop through the orders and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+                        string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                    }
+
+                    if (ordersTable.Rows.Count == 0)
+                    {
+                        gridReceivedPaymentPoints_order.DataSource = null;
+                        gridReceivedPaymentPoints_order.DataBind();
+                        gridorder_DeclineAccepted.DataSource = null;
+                        gridorder_DeclineAccepted.DataBind();
+                        gridPointsOrder.DataSource = null;
+                        gridPointsOrder.DataBind();
+                        lblPointsErrorMessage.Text = "No Payment Received Found";
+                        lblPointsErrorMessage.Visible = true;
+                    }
+                    else
+                    {
+                        gridPointsOrder.DataSource = ordersTable;
+                        gridPointsOrder.DataBind();
+                        gridPointsOrder.Visible = true;
+                        gridReceivedPaymentPoints_order.Visible = false;
+                        gridorder_DeclineAccepted.Visible = false;
+                        lblPointsErrorMessage.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    lblPointsErrorMessage.Text = "No  Payment Received found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lblPointsErrorMessage.Text = "There was an error retrieving orders" + ex.Message;
+                lblPointsErrorMessage.Visible = true;
             }
         }
 
@@ -1279,33 +1833,35 @@ namespace WRS2big_Web.Admin
                 if (selectedOption == "0")
                 {
                     displayAllCOD_order();
-
+                    //gridStatusAccepted.Visible = false;
+                    //lblMessage.Visible = false;
 
                 }
                 else if (selectedOption == "1")
                 {
 
                     displayAccepted_order();
-
+                   
                 }
                 else if (selectedOption == "2")
                 {
 
                     displayDeclined_order();
+                   
                 }
                 else if (selectedOption == "3")
                 {
 
                     displayDelivered_order();
+                   
 
                 }
                 else if (selectedOption == "4")
                 {
                     displayPaymentReceived_order();
-
+                    
                 }
-               
-
+                
             }
             catch (Exception ex)
             {
@@ -1323,34 +1879,35 @@ namespace WRS2big_Web.Admin
 
                 if (selectedOption == "0")
                 {
+                    displayAllPoints_order();
                     
-
-
                 }
                 else if (selectedOption == "1")
                 {
+                    displayAcceptedPoints_order();
+                   
 
-                  
 
                 }
                 else if (selectedOption == "2")
                 {
+                    displayDeclinedPoints_order();
+                   
 
-                  
                 }
                 else if (selectedOption == "3")
                 {
 
-                    
-
+                    displayPointsDelivered_order();
+                   
                 }
                 else if (selectedOption == "4")
                 {
-                    
 
+                    displayPointsPaymentReceived_order();
+                  
                 }
-
-
+                
             }
             catch (Exception ex)
             {
@@ -1368,33 +1925,30 @@ namespace WRS2big_Web.Admin
 
                 if (selectedOption == "0")
                 {
-
-
-
+                    displayAllGcash_order();
+                    
                 }
                 else if (selectedOption == "1")
                 {
-
-
-
+                    displayAcceptedGcash_order();
+                   
                 }
                 else if (selectedOption == "2")
                 {
-
-
+                    displayDeclinedGcash_order();
+                 
                 }
                 else if (selectedOption == "3")
                 {
-
-
-
+                    displayGcashDelivered_order();
+                  
                 }
                 else if (selectedOption == "4")
                 {
-
-
+                    displayGcashPaymentReceived_order();
+                   
                 }
-
+                
 
             }
             catch (Exception ex)
@@ -1416,7 +1970,7 @@ namespace WRS2big_Web.Admin
 
             // Retrieve the order id from the data source
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[3].Text);
+            int orderID = int.Parse(row.Cells[1].Text);
             //int orderId = Convert.ToInt32(((DataRowView)row.DataItem)["orderID"]);
 
             // Retrieve the existing order object from the database
@@ -1448,7 +2002,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[3].Text);
+            int orderID = int.Parse(row.Cells[1].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1472,7 +2026,7 @@ namespace WRS2big_Web.Admin
 
                 if (existingOrder.order_OrderStatus == "Payment Received")
                 {
-                    Response.Write("<script>alert ('Payment of this order has already been received!');</script>");
+                    Response.Write("<script>alert ('Payment of this order has already been received!'); </script>");
                     return;
                 }
 
@@ -1559,7 +2113,7 @@ namespace WRS2big_Web.Admin
                     else
                     {
                         // Display an error messaged
-                        Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                        Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx';</script>");
                     }
 
                     //SEND SCHEDULED NOTIFICATION
@@ -1590,7 +2144,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1620,7 +2174,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1650,7 +2204,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1680,17 +2234,19 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
+                    displayGcashPaymentReceived_order();
+                   
                 }
             }
         }
 
-    //    UPDATING THE STATUS ORDERS FOR REWARD POINTS IN RECEIVEING GCASH PAYMENT
+    //    UPDATING THE STATUS ORDERS POINTS IN RECEIVEING POINTS PAYMENT
         protected void btnPaymentAcceptPoints_Click(object sender, EventArgs e)
         {
             // Get the admin ID from the session
@@ -1818,13 +2374,12 @@ namespace WRS2big_Web.Admin
 
                         twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
-                        gridRewardPoints_order.Visible = true;
-                        //DisplayGcash_order();
+                        displayPointsPaymentReceived_order();
                     }
                     else
                     {
                         // Display an error messaged
-                        Response.Write("<script>alert ('Make sure order is successfully delivered.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                        Response.Write("<script>alert ('Make sure order is successfully delivered.'); </script>");
                     }
 
 
@@ -1856,7 +2411,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1886,7 +2441,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1916,7 +2471,7 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
@@ -1946,13 +2501,13 @@ namespace WRS2big_Web.Admin
 
                         };
                         SetResponse scheduledNotification;
-                        scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
                         scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-
+                    displayPointsPaymentReceived_order();
                 }
             }
 
