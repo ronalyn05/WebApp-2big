@@ -40,8 +40,8 @@ namespace WRS2big_Web.superAdmin
                 DisplayPending();
                 DisplayApproved();
                 DisplayDeclined();
-               
 
+               
                 pendingGridView.Visible = false;
                 approvedGridView.Visible = false;
                 declinedGridView.Visible = false;
@@ -50,9 +50,9 @@ namespace WRS2big_Web.superAdmin
                 approveButton.Visible = false;
                 declineButton.Visible = false;
 
-              
 
-               
+
+
             }
         }
 
