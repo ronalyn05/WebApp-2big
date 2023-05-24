@@ -215,6 +215,18 @@
                                                                                                              <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageDuration" runat="server"></asp:TextBox>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">ORDER TRANSACTION LIMIT:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageOrderLimit" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">MANAGEABLE STATIONS:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageMangeStation" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                             </div>
 
                                                                             </div>
@@ -224,8 +236,13 @@
                                                                                            <div style="background-color:#018cff;color:white" class="card card-block">
 	                                                                                           <h7>PACKAGE DETAILS</h7>
                                                                                            </div>
-                                                                                            <div class="form-material" style="margin-left:50px">
-
+                                                                                            <div class="form-material" style="margin-left:50px"> <br /><br />
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">PRODUCT LIMIT:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageProductLimit" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE FEATURES:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:40px;font-size:18px;color:black">
@@ -249,18 +266,7 @@
                                                                                                           </asp:CheckBoxList>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">ORDER TRANSACTION LIMIT:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageOrderLimit" runat="server"> </asp:TextBox>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">PRODUCT LIMIT:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;" id="packageProductLimit" runat="server"> </asp:TextBox>
-                                                                                                        </div>
-                                                                                                    </div>
+
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">RENEWABLE:</label>
                                                                                                            <asp:DropDownList class="form-control" runat="server" style="border-style: solid; border-width: thin; border-color: darkgrey;" ID="renewableDDL">

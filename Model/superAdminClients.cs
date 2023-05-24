@@ -101,7 +101,7 @@ namespace WRS2big_Web.Model
         public string renewable { get; set; }
         public List<string> features { get; set; } //to save the features in the db as a list
         public string status { get; set; }
-
+       public DateTime dateUpdated { get; set; }
     }
 
     public class SuperAdminNotification

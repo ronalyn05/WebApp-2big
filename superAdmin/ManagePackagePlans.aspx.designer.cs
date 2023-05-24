@@ -96,6 +96,33 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.TextBox packageDuration;
 
         /// <summary>
+        /// packageOrderLimit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox packageOrderLimit;
+
+        /// <summary>
+        /// packageMangeStation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox packageMangeStation;
+
+        /// <summary>
+        /// packageProductLimit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox packageProductLimit;
+
+        /// <summary>
         /// selectAll control.
         /// </summary>
         /// <remarks>
@@ -112,24 +139,6 @@ namespace WRS2big_Web.superAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList featuresCheckbox;
-
-        /// <summary>
-        /// packageOrderLimit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox packageOrderLimit;
-
-        /// <summary>
-        /// packageProductLimit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox packageProductLimit;
 
         /// <summary>
         /// renewableDDL control.
