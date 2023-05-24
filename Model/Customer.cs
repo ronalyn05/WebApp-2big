@@ -49,16 +49,16 @@ namespace WRS2big_Web.Model
         public string order_RefillSelectedOption { get; set; }
         // public DateTimeOffset orderDate { get; set; }
         public DateTime orderDate { get; set; }
-        public DateTimeOffset dateOrderAccepted { get; set; }
+        public DateTime dateOrderAccepted { get; set; }
         public string orderAcceptedBy { get; set; }
-        public DateTimeOffset datePaymentReceived { get; set; }
+        public DateTime datePaymentReceived { get; set; }
         public string paymentReceivedBy { get; set; }
         public string paymentGcashReceivedBy { get; set; }
         public string paymentPointsReceivedBy { get; set; }
-        public DateTimeOffset dateOrderDeclined { get; set; }
-        public string orderDeclineddBy { get; set; }
-        public DateTimeOffset dateOrderDelivered { get; set; }
-        public DateTimeOffset dateDriverAssigned { get; set; }
+        public DateTime dateOrderDeclined { get; set; }
+        public string orderDeclinedBy { get; set; }
+        public DateTime dateOrderDelivered { get; set; }
+        public DateTime dateDriverAssigned { get; set; }
         public string driverAssignedBy { get; set; }
         public string order_deliveryReservationDeliveryReserveDate { get; set; }
         public string order_deliveryReservationDeliveryReserveTime { get; set; }
@@ -90,7 +90,7 @@ namespace WRS2big_Web.Model
        // public string title { get; set; }
         public int admin_ID { get; set; }
         public int cusId { get; set; }
-        public DateTimeOffset notificationDate { get; set; }
+        public DateTime notificationDate { get; set; }
     }
 
     public class StoreReview

@@ -78,9 +78,9 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                    string dateStatusModified = entry.statusDateModified == DateTimeOffset.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string dateStatusModified = entry.statusDateModified == DateTime.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     employeesTable.Rows.Add(entry.emp_status, entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
                         entry.emp_gender, entry.emp_role,  entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, entry.emp_emergencycontact,
@@ -152,7 +152,7 @@ namespace WRS2big_Web.Admin
                     emp_role = drdrole.Text,
                     emp_status = Drd_status.Text,
                     addedBy = name,
-                    dateAdded = DateTimeOffset.UtcNow
+                    dateAdded = DateTime.Now
                 };
 
                 SetResponse response;
@@ -167,7 +167,7 @@ namespace WRS2big_Web.Admin
                 UsersLogs existingLog = res.ResultAs<UsersLogs>();
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -261,19 +261,19 @@ namespace WRS2big_Web.Admin
                 if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)  
                 {
                     updatedEmp.emp_role = newPosition;
-                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.dateUpdated = DateTime.Now;
                     updatedEmp.updatedBy = name;
                 }
                 else if(!string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum)
                 {
                     updatedEmp.emp_contactnum = contactnumber;
-                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.dateUpdated = DateTime.Now;
                     updatedEmp.updatedBy = name;
                 }
                 else if (!string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
                 {
                     updatedEmp.emp_email = email;
-                    updatedEmp.dateUpdated = DateTimeOffset.UtcNow;
+                    updatedEmp.dateUpdated = DateTime.Now;
                     updatedEmp.updatedBy = name;
                 }
 
@@ -288,7 +288,7 @@ namespace WRS2big_Web.Admin
                 if (!string.IsNullOrEmpty(newStatus) && newStatus != existingEmp.emp_status)
                 {
                     updatedEmp.emp_status = newStatus;
-                    updatedEmp.statusDateModified = DateTimeOffset.UtcNow;
+                    updatedEmp.statusDateModified = DateTime.Now;
                     updatedEmp.status_ModifiedBy = name;
                 }
 
@@ -300,7 +300,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Employee " + empID + " has been successfully updated!'); location.reload(); window.location.href = '/Admin/EmployeeRecord.aspx';</script>");
 
                 // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
+                DateTime addedTime = DateTime.Now;
 
                 // Log user activity
                 var log = new UsersLogs
@@ -371,9 +371,9 @@ namespace WRS2big_Web.Admin
                     // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateAdded = entry.dateAdded == DateTimeOffset.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateStatusModified = entry.statusDateModified == DateTimeOffset.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateStatusModified = entry.statusDateModified == DateTime.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                         employeeTable.Rows.Add(entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
                             entry.emp_gender, entry.emp_role, entry.emp_status, entry.emp_contactnum, entry.emp_email,

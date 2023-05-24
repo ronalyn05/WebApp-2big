@@ -15,42 +15,6 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
-        /// txtOrderId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtOrderId;
-
-        /// <summary>
-        /// txtDriverId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDriverId;
-
-        /// <summary>
-        /// btnSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-
-        /// <summary>
-        /// imgGcashProof control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgGcashProof;
-
-        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -60,40 +24,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// drdPaymentMode control.
+        /// drdViewOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdPaymentMode;
+        protected global::System.Web.UI.WebControls.DropDownList drdViewOrders;
 
         /// <summary>
-        /// btnView control.
+        /// btnViewOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnView;
-
-        /// <summary>
-        /// drdDeliveryType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdDeliveryType;
-
-        /// <summary>
-        /// btnViewDeliveryType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnViewDeliveryType;
+        protected global::System.Web.UI.WebControls.Button btnViewOrders;
 
         /// <summary>
         /// lblViewOrders control.
@@ -105,75 +51,75 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label lblViewOrders;
 
         /// <summary>
-        /// lblCodError control.
+        /// lblError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCodError;
+        protected global::System.Web.UI.WebControls.Label lblError;
 
         /// <summary>
-        /// gridCOD_order control.
+        /// gridView_order control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridCOD_order;
+        protected global::System.Web.UI.WebControls.GridView gridView_order;
 
         /// <summary>
-        /// lblViewGcashOrder control.
+        /// drdAssignDriver control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblViewGcashOrder;
+        protected global::System.Web.UI.WebControls.DropDownList drdAssignDriver;
 
         /// <summary>
-        /// lblGcashError control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGcashError;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
 
         /// <summary>
-        /// gridGcash_order control.
+        /// hfAssignDriver control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridGcash_order;
+        protected global::System.Web.UI.WebControls.HiddenField hfAssignDriver;
 
         /// <summary>
-        /// lblViewRewardPoints control.
+        /// reasonInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblViewRewardPoints;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea reasonInput;
 
         /// <summary>
-        /// lblPointsError control.
+        /// btnSub_decline control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPointsError;
+        protected global::System.Web.UI.WebControls.Button btnSub_decline;
 
         /// <summary>
-        /// gridRewardPoints_order control.
+        /// hfDeclineOrderID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridRewardPoints_order;
+        protected global::System.Web.UI.WebControls.HiddenField hfDeclineOrderID;
     }
 }
