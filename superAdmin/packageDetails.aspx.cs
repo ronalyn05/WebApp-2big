@@ -34,6 +34,7 @@ namespace WRS2big_Web.superAdmin
             if (response.Body != null)
             {
                 DisplayDetails();
+                loadModalDetails();
             }
             else
             {
@@ -41,10 +42,63 @@ namespace WRS2big_Web.superAdmin
             }
            
         }
+        private void loadModalDetails()
+        {
+            int package = (int)Session["currentPackage"];
+
+            if (Session["currentPackage"] == null)
+            {
+                Response.Write("<script>alert ('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+            }
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package);
+            Model.PackagePlans packageDets = response.ResultAs<Model.PackagePlans>();
+
+            //updatepackageName.Text = packageDets.packageName;
+            updatepackageName.Attributes["placeholder"] = packageDets.packageName;
+
+            //updatePackageDes.Text = packageDets.packageDescription;
+            updatePackageDes.Attributes["placeholder"] = packageDets.packageDescription;
+
+            //updatePackagePrice.Text = packageDets.packagePrice.ToString();
+            updatePackagePrice.Attributes["placeholder"] = packageDets.packagePrice.ToString();
+
+            //updateProductLimit.Text = packageDets.packageLimit.ToString();
+            updateProductLimit.Attributes["placeholder"] = packageDets.packageLimit.ToString();
+            
+            //updateProductLimit.Text = packageDets.productLimit.ToString();
+            updateProductLimit.Attributes["placeholder"] = packageDets.productLimit.ToString();
+
+            //updateOrderLimit.Text = packageDets.packageLimit.ToString();
+            updateOrderLimit.Attributes["placeholder"] = packageDets.packageLimit.ToString();
+
+            //updateDuration.Text = packageDets.packageDuration.ToString();
+            updateDuration.Attributes["placeholder"] = packageDets.packageDuration.ToString();
+
+            //updateManagebleStation.Text = packageDets.numberOfStations.ToString();
+            updateManagebleStation.Attributes["placeholder"] = packageDets.numberOfStations.ToString();
+
+            updateRenewable.SelectedValue = packageDets.renewable;
+            updateDurationType.SelectedValue = packageDets.durationType;
+
+            // Retrieve the data from the database
+            response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package + "/features");
+            List<string> packageFeatures = response.ResultAs<List<string>>();
+
+            // Bind the features to the ListBox control
+            existingFeatures.DataSource = packageFeatures;
+            existingFeatures.DataBind();
+
+
+
+        }
         private void DisplayDetails()
         {
             int package = (int)Session["currentPackage"];
 
+            if (Session["currentPackage"] == null || package == 0)
+            {
+                Response.Write("<script>alert ('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+            }
             FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package);
             Model.PackagePlans packageDets = response.ResultAs<Model.PackagePlans>();
 
@@ -54,10 +108,12 @@ namespace WRS2big_Web.superAdmin
             packageDescription.Text = packageDets.packageDescription;
             packagePrice.Text = packageDets.packagePrice.ToString();
             packageDuration.Text = packageDets.packageDuration.ToString() + " " + packageDets.durationType;
+            manageableStation.Text = packageDets.numberOfStations.ToString();
             packageLimit.Text = packageDets.packageLimit.ToString();
-            numofStations.Text = packageDets.numberOfStations.ToString();
+            productLimit.Text = packageDets.productLimit.ToString();
             renewable.Text = packageDets.renewable;
             status.Text = packageDets.status;
+
             FirebaseResponse featuresponse = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageDets.packageID + "/features");
             List<string> listOfFeatures = featuresponse.ResultAs<List<string>>();
 
@@ -90,22 +146,260 @@ namespace WRS2big_Web.superAdmin
 
                 packageDetails.status = "Active";
                 response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
-            
+
+                //SAVE LOGS TO SUPER ADMIN
+                //Get the current date and time
+                DateTime logTime = DateTime.Now;
+
+                //generate a random number for users logged
+                Random rnd = new Random();
+                int logID = rnd.Next(1, 10000);
+
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
+
+                //Store the login information in the USERLOG table
+                var log = new Model.superLogs
+                {
+                    logsId = logID,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "RESTORED PACKAGE:" + " " + packageDetails.packageName,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
 
-            Response.Write("<script>alert (' Subscription Package restored');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+            Response.Write("<script>alert ('Subscription Package restored');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
         }
 
+        //protected void archivePackage_Click(object sender, EventArgs e)
+        //{
+        //    int packageID = (int)Session["currentPackage"];
+
+        //    FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
+
+        //    if (subscribed != null)
+        //    {
+        //        Dictionary<string, Model.superAdminClients> all = subscribed.ResultAs<Dictionary<string, Model.superAdminClients>>();
+
+        //        foreach (var clients in all)
+        //        {
+        //            if (clients.Value.currentSubStatus == "Active")
+        //            {
+        //                if(clients.Value.plan == packageID.ToString())
+        //                {
+        //                    Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+        //                }
+        //                else
+        //                {
+        //                    // Retrieve the existing order object from the database
+        //                    FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+        //                    Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
+
+        //                    packageDetails.status = "Archived";
+        //                    response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
+        //                    Response.Write("<script>alert (' Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+        //                }
+        //            }
+        //        }
+        //    }
+
+
+        //}
         protected void archivePackage_Click(object sender, EventArgs e)
         {
             int packageID = (int)Session["currentPackage"];
-            // Retrieve the existing order object from the database
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
-            Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
 
-            packageDetails.status = "Archived";
-            response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
-            Response.Write("<script>alert (' Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+            FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
+
+            if (subscribed != null)
+            {
+                Dictionary<string, Model.superAdminClients> all = subscribed.ResultAs<Dictionary<string, Model.superAdminClients>>();
+
+                bool isClientSubscribed = false; // Flag variable to track if a subscribed client is found
+
+                foreach (var client in all)
+                {
+                    if (client.Value.currentSubStatus == "Active" && client.Value.plan == packageID.ToString())
+                    {
+                        isClientSubscribed = true;
+                        break; // Exit the loop since a subscribed client is found
+                    }
+                }
+                        
+                if (isClientSubscribed)
+                {
+                    Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+                }
+                else
+                {
+                    // Retrieve the existing order object from the database
+                    FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+                    Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
+
+                    packageDetails.status = "Archived";
+                    response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
+
+                    //SAVE LOGS TO SUPER ADMIN
+                    //Get the current date and time
+                    DateTime logTime = DateTime.Now;
+
+                    //generate a random number for users logged
+                    Random rnd = new Random();
+                    int logID = rnd.Next(1, 10000);
+
+                    var idno = (string)Session["SuperIDno"];
+                    string superName = (string)Session["superAdminName"];
+
+                    //Store the login information in the USERLOG table
+                    var log = new Model.superLogs
+                    {
+                        logsId = logID,
+                        superID = int.Parse(idno),
+                        superFullname = superName,
+                        superActivity = "ARCHIVED PACKAGE:" + " " + packageDetails.packageName,
+                        activityTime = logTime
+                    };
+
+                    //Storing the  info
+                    response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                    Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                    Response.Write("<script>alert ('Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+                }
+            }
         }
+
+        protected void updatePackagebtn_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                int package = (int)Session["currentPackage"];
+
+                if (Session["currentPackage"] == null)
+                {
+                    Response.Write("<script>alert ('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+                }
+                var response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + package);
+                Model.PackagePlans packageDets = response.ResultAs<Model.PackagePlans>();
+
+                var data = new Model.PackagePlans();
+                data.packageID = packageDets.packageID;
+                data.packageName = packageDets.packageName;
+                data.packageDescription = packageDets.packageDescription;
+                data.packageDuration = packageDets.packageDuration;
+                data.packageLimit = packageDets.packageLimit;
+                data.packagePrice = packageDets.packagePrice;
+                data.numberOfStations = packageDets.numberOfStations;
+                data.productLimit = packageDets.productLimit;
+                data.durationType = packageDets.durationType;
+                data.renewable = packageDets.renewable;
+
+                List<string> features = new List<string>();
+
+                // Check if the checkbox list has a selected value
+                if (updatefeaturesCheckbox != null && !string.IsNullOrEmpty(Request.Form[updatefeaturesCheckbox.UniqueID]?.ToString()))
+                {
+                    // Retrieve the newly selected items from the checkbox list
+                    features = updatefeaturesCheckbox.Items.Cast<ListItem>()
+                        .Where(li => li.Selected)
+                        .Select(li => li.Value)
+                        .ToList();
+                }
+                else
+                {
+                    // No new features selected, keep the existing features
+                    features = packageDets.features;
+                }
+
+                // Update the features with the combined list of previously selected items and newly selected items
+                data.features = features;
+                data.status = packageDets.status;
+                data.dateUpdated = DateTime.Now;
+
+                // Update the fields that have changed
+                if (!string.IsNullOrEmpty(updatepackageName.Text))
+                {
+                    data.packageName = updatepackageName.Text;
+                }
+                if (!string.IsNullOrEmpty(updatePackageDes.Text))
+                {
+                    data.packageDescription = updatePackageDes.Text;
+                }
+                if (!string.IsNullOrEmpty(updatePackagePrice.Text))
+                {
+                    data.packagePrice = int.Parse(updatePackagePrice.Text);
+                }
+                if (!string.IsNullOrEmpty(updateDuration.Text))
+                {
+                    data.packageDuration = int.Parse(updateDuration.Text);
+                }
+                if (!string.IsNullOrEmpty(updateOrderLimit.Text))
+                {
+                    data.packageLimit = int.Parse(updateOrderLimit.Text);
+                }
+                if (!string.IsNullOrEmpty(updateProductLimit.Text))
+                {
+                    data.productLimit = int.Parse(updateProductLimit.Text);
+                }
+                if (!string.IsNullOrEmpty(updateManagebleStation.Text))
+                {
+                    data.numberOfStations = int.Parse(updateManagebleStation.Text);
+                }
+
+                if (!string.IsNullOrEmpty(Request.Form[updateDurationType.UniqueID].ToString()))
+                {
+                    data.durationType = Request.Form[updateDurationType.UniqueID].ToString();
+                }
+                if (!string.IsNullOrEmpty(Request.Form[updateRenewable.UniqueID].ToString()))
+                {
+                    data.renewable = Request.Form[updateRenewable.UniqueID].ToString();
+                }
+                
+
+
+                FirebaseResponse updateRes = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + package, data);
+
+                //SAVE LOGS TO SUPER ADMIN
+                //Get the current date and time
+                DateTime logTime = DateTime.Now;
+
+                //generate a random number for users logged
+                Random rnd = new Random();
+                int logID = rnd.Next(1, 10000);
+
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
+
+                //Store the login information in the USERLOG table
+                var log = new Model.superLogs
+                {
+                    logsId = logID,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "UPDATED PACKAGE DETAILS: " + " " + data.packageName,
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                Response.Write("<script>alert ('Package details successfully updated!');window.location.href = '/superAdmin/packageDetails.aspx';</script>");
+            }
+            catch
+            {
+                Response.Write("<script>alert('Subscription Name already exist'); window.location.href = '/superAdmin/ManageSubscription.aspx'; </script>");
+            }
+        }
+
+
+
+     
     }
 }

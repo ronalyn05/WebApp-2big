@@ -57,8 +57,136 @@
                                     <!-- page content -->
                                     <div class="right_col" role="main">
                                         <div class="">
-                                            <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
+                                        
                                             <div class="clearfix">
+                                             <div class="modal fade updatePackage  col-md-12 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered modal-md col-md-10 col-md-15">
+                                                        <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
+                                                            <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="update"></h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                   <div class="col-xl-5 col-md-8">
+                                                                        <div class="x_content">
+                                                                            <%-- <div class="item form-group">--%>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">PACKAGE DETAILS</h4>
+
+                                                                                            <div class="form-material" style="margin-left:20px">
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE NAME:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
+                                                                                                             <asp:TextBox type="text" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updatepackageName" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE DESCRIPTION:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
+                                                                                                            
+                                                                                                            <asp:TextBox type="text" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updatePackageDes" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                   <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE PRICE:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
+                                                                                                            <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updatePackagePrice"  runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                   <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">DURATION TYPE:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
+                                                                                                           <asp:DropDownList class="form-control" runat="server" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" ID="updateDurationType">
+                                                                                                                <asp:ListItem></asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Month">Monthly</asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Year">Yearly</asp:ListItem>
+                                                                                                           </asp:DropDownList>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE DURATION:</label>
+                                                                                                        <div class="col-sm-10 form-control-round" style="margin-left:70px">  
+                                                                                                             <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateDuration" runat="server"></asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">ORDER TRANSACTION LIMIT:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateOrderLimit" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">PRODUCT LIMIT:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateProductLimit" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">MANAGEABLE STATIONS:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateManagebleStation" runat="server"> </asp:TextBox>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                           <div class="col-xl-5 col-md-8">
+                                                                              <div class="card-block">
+                                                                                            <div class="form-material" style="margin-left:50px"> <br /><br />
+                                                                                                 <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE FEATURES:</label> 
+                                                                                                    <div class="form-group row text"  >
+                                                                                                       
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:14px;color:black;margin-left:70px;">Existing Features:
+                                                                                                        </label>
+                                                                                                         <asp:ListBox runat="server" ID="existingFeatures" style="text-align:center; font-size:18px;margin-left:150px;" Height="230px" Width="300px"> </asp:ListBox> <br /><br />
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:40px;font-size:18px;color:black">
+                                                                                                            <%--<asp:CheckBox runat="server" Text="Select All" ID="selectAll"/>--%>
+                                                                                                        </div>
+                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:40px;font-size:18px;color:black"> 
+                                                                                                        
+                                                                                                        </div>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px;font-size:18px;color:black"> 
+                                                                                                          <asp:CheckBoxList runat="server" ID="updatefeaturesCheckbox" Height="318px" Width="327px" >
+                                                                                                                <asp:ListItem> &nbsp; Account Management </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Employee Management </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Product Management </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Refilling Station Management </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Online Orders </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Reports </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Loyalty Program </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Customer Reviews </asp:ListItem>
+                                                                                                                <asp:ListItem> &nbsp; Online Subscription </asp:ListItem>
+                                                                                                               <asp:ListItem> &nbsp; Walk-in Orders </asp:ListItem>
+                                                                                                          </asp:CheckBoxList>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">RENEWABLE:</label>
+                                                                                                           <asp:DropDownList class="form-control" runat="server" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" ID="updateRenewable">
+                                                                                                                <asp:ListItem></asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="Yes">YES</asp:ListItem>
+                                                                                                               <asp:ListItem style="color:black;font-size:18px" Value="No">NO</asp:ListItem>
+                                                                                                           </asp:DropDownList>
+                                                                                                    </div>
+
+                                                                                            </div>
+
+                                                                            </div>
+                                                                         </div>
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON ADD PAYMENT METHOD--%>
+                                                                        <asp:Button ID="updatePackagebtn" runat="server" Text="Update" OnClick="updatePackagebtn_Click" class="btn btn-primary btn-sm"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                      <!--MAIN CONTENT-->
                                     <div class="row">
@@ -125,6 +253,12 @@
                                                                                                           <asp:Label  class="form-control-round" id="packageLimit" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                    <div class="form-group row text" >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">MANAGEABLE STATIONS:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:90px">  
+                                                                                                          <asp:Label  class="form-control-round" id="manageableStation" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                             </div>
 
                                                                             </div>
@@ -138,6 +272,7 @@
 
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px">FEATURES:</label>
+
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:ListBox runat="server" ID="featuresList" style="text-align:center; font-size:18px" Height="248px" Width="421px"> </asp:ListBox>
                                                                                                         </div>
@@ -146,16 +281,16 @@
                                                                                             <div class="form-material" style="margin-left:100px">
 
                                                                                                     <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">number of Manageable Stations:</label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">PRODUCT LIMIT:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                          <asp:Label  class="form-control-round" id="numofStations" runat="server"></asp:Label>
+                                                                                                          <asp:Label  class="form-control-round" id="productLimit" runat="server"></asp:Label>
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
                                                                                             <div class="form-material" style="margin-left:100px">
 
                                                                                                     <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Renewable:</label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">RENEWABLE:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="renewable" runat="server"></asp:Label>
                                                                                                         </div>
@@ -164,7 +299,7 @@
                                                                                             <div class="form-material" style="margin-left:100px">
 
                                                                                                     <div class="form-group row text"  >
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Status:</label>
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">STATUS:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="status" runat="server"></asp:Label>
                                                                                                         </div>
@@ -174,7 +309,9 @@
                                                                          </div>
                                                                         </div>
                                                                             <asp:Button runat="server" Text="Archive" ID="archivePackage" style="font-size:16px;margin-left:10px" OnClick="archivePackage_Click" class="btn btn-primary btn-sm text-center"/>
-                                                                              <asp:Button runat="server" Text="Restore" ID="restorePackage" style="font-size:16px;margin-left:10px" OnClick="restorePackage_Click" class="btn btn-primary btn-sm text-center"/>
+                                                                             <asp:Button runat="server" Text="Restore" ID="restorePackage" style="font-size:16px;margin-left:10px" OnClick="restorePackage_Click" class="btn btn-primary btn-sm text-center"/>
+                                                                           
+                                                                         <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updatePackage">Update</button>
                                                                         </div>
                                                                     </div>
                                                                     <!-- Tab variant tab card start -->
