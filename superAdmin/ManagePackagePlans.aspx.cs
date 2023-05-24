@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using FireSharp;
 using FireSharp.Config;
@@ -15,6 +16,8 @@ namespace WRS2big_Web.superAdmin
 {
     public partial class ManagePackagePlans : System.Web.UI.Page
     {
+        private DataTable packagesTable = new DataTable();
+
         //Initialize the FirebaseClient with the database URL and secret key.
         IFirebaseConfig config = new FirebaseConfig
         {
@@ -24,6 +27,7 @@ namespace WRS2big_Web.superAdmin
         };
         IFirebaseClient twoBigDB;
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -32,26 +36,38 @@ namespace WRS2big_Web.superAdmin
             if (!IsPostBack)
             {
                 DisplayPackages();
+                loadArchived();
+
+               
+                
             }
-          
+
+            deletePackage.Visible = false;
+            viewPackageDetails.Visible = false;
+            //restorePackage.Visible = true;
+            //viewArchived.Visible = true;
+
+
 
         }
-        private void DisplayPackages()
+
+        private void loadArchived()
         {
 
-            
+
             FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
             Model.PackagePlans all = response.ResultAs<Model.PackagePlans>();
             var data = response.Body;
-            
-            
-                Dictionary<string, Model.PackagePlans> allPackages = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(data);
 
-             if (allPackages != null)
+
+            Dictionary<string, Model.PackagePlans> allPackages = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(data);
+
+            if (allPackages != null)
             {
                 //creating the columns of the gridview
-                DataTable packagesTable = new DataTable();
+                packagesTable = new DataTable();
                 packagesTable.Columns.Add("PACKAGE ID");
+                packagesTable.Columns.Add("STATUS");
                 packagesTable.Columns.Add("PACKAGE NAME");
                 packagesTable.Columns.Add("PACKAGE DESCRIPTION");
                 packagesTable.Columns.Add("PACKAGE PRICE");
@@ -60,18 +76,67 @@ namespace WRS2big_Web.superAdmin
 
                 foreach (KeyValuePair<string, Model.PackagePlans> entry in allPackages)
                 {
+                    if (entry.Value.status == "Archived")
+                    {
+                        packagesTable.Rows.Add(entry.Value.packageID,entry.Value.status, entry.Value.packageName, entry.Value.packageDescription, entry.Value.packagePrice, entry.Value.packageDuration + " " + entry.Value.durationType, entry.Value.packageLimit);
 
-                    packagesTable.Rows.Add(entry.Value.packageID, entry.Value.packageName, entry.Value.packageDescription, entry.Value.packagePrice, entry.Value.packageDuration + " " + entry.Value.durationType, entry.Value.packageLimit);
+                    }
+
+                }
+                // Bind DataTable to GridView control
+                archivedGrid.DataSource = packagesTable;
+                archivedGrid.DataBind();
+            }
+        }
+        private void DisplayPackages()
+        {
+
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES");
+            Model.PackagePlans all = response.ResultAs<Model.PackagePlans>();
+            var data = response.Body;
+            
+            
+            Dictionary<string, Model.PackagePlans> allPackages = JsonConvert.DeserializeObject<Dictionary<string, Model.PackagePlans>>(data);
+
+             if (allPackages != null)
+            {
+                //creating the columns of the gridview
+                packagesTable = new DataTable();
+                packagesTable.Columns.Add("PACKAGE ID");
+                packagesTable.Columns.Add("STATUS");
+                packagesTable.Columns.Add("PACKAGE NAME");
+                packagesTable.Columns.Add("PACKAGE DESCRIPTION");
+                packagesTable.Columns.Add("PACKAGE PRICE");
+                packagesTable.Columns.Add("PACKAGE DURATION");
+                packagesTable.Columns.Add("ORDER LIMIT");
+
+                foreach (KeyValuePair<string, Model.PackagePlans> entry in allPackages)
+                {
+                    if (entry.Value.status != "Archived")
+                    {
+                        packagesTable.Rows.Add(entry.Value.packageID,entry.Value.status, entry.Value.packageName, entry.Value.packageDescription, entry.Value.packagePrice, entry.Value.packageDuration + " " + entry.Value.durationType, entry.Value.packageLimit);
+
+                    }
 
                 }
                 // Bind DataTable to GridView control
                 packagesGridview.DataSource = packagesTable;
                 packagesGridview.DataBind();
-            }
                
+            }
+        }
 
+        protected void selectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox selectAll = (CheckBox)sender;
+            //CheckBoxList allFeatures = (CheckBoxList)Page.FindControl("featuresCheckbox");
+            CheckBoxList allFeatures = (CheckBoxList)selectAll.NamingContainer.FindControl("featuresCheckbox");
 
-
+            foreach (ListItem item in allFeatures.Items)
+            {
+                item.Selected = selectAll.Checked;
+                //select.Checked = selectAll.Checked;
+            }
         }
 
         protected void createPackage_Click(object sender, EventArgs e)
@@ -98,6 +163,8 @@ namespace WRS2big_Web.superAdmin
                     packageDuration = int.Parse(packageDuration.Text),
                     packagePrice = int.Parse(packagePrice.Text),
                     packageLimit = int.Parse(packageOrderLimit.Text),
+                    productLimit = int.Parse(packageProductLimit.Text),
+                    status = "Active",
                     //messaging = messagingOption.SelectedValue,
                     //numberOfStations = int.Parse(numofStations.Text),
                     features = features
@@ -147,6 +214,109 @@ namespace WRS2big_Web.superAdmin
         protected void viewPackageDetails_Click(object sender, EventArgs e)
         {
 
+            List<int> selectedPackage = new List<int>();
+
+            foreach (GridViewRow row in packagesGridview.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("selectedDeleted");
+                if (chk != null && chk.Checked)
+                {
+                    //get the package ID using the index of the gridview
+                    int packageID = int.Parse(row.Cells[1].Text);
+
+                    //add the selected into the list
+                    selectedPackage.Add(packageID);
+                }
+            }
+
+            foreach(int packageID in selectedPackage)
+            {
+                if (selectedPackage.Count == 1)
+                {
+
+                    // Retrieve the existing order object from the database
+                    FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+                    Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
+
+                    int package = packageDetails.packageID;
+                    Session["currentPackage"] = package;
+
+                    Response.Write("<script>window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+
+                }
+                if (selectedPackage.Count == 0)
+                {
+                    Response.Write("<script>alert ('Please select at least one package to delete'); </script>");
+                    return;
+                }
+                if (selectedPackage.Count >= 2)
+                {
+                    Response.Write("<script>alert ('Please choose only 1 package to view its full details'); window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
+                    return;
+                }
+            }
+            
+           
+        }
+
+
+        protected void selectedDeleted_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox selected = (CheckBox)sender;
+
+            CheckBox toDelete = (CheckBox)selected.NamingContainer.FindControl("selectedDeleted");
+
+           if (toDelete != null && toDelete.Checked)
+           {
+                deletePackage.Visible = true;
+                viewPackageDetails.Visible = true;
+           }
+
+        }
+
+        protected void deletePackage_Click(object sender, EventArgs e)
+        {
+
+            List<int> selectedPackage = new List<int>();
+
+            foreach (GridViewRow row in packagesGridview.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("selectedDeleted");
+                if (chk != null && chk.Checked)
+                {
+                    int clientID = int.Parse(row.Cells[1].Text);
+                    selectedPackage.Add(clientID);
+                }
+            }
+
+            if (selectedPackage.Count == 0)
+            {
+                Response.Write("<script>alert ('Please select at least one package to delete'); </script>");
+                return;
+            }
+            
+            foreach (int packageID in selectedPackage)
+            {
+               
+                // Retrieve the existing order object from the database
+                FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+                Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
+
+                packageDetails.status = "Archived";
+                response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
+            }
+
+
+            Response.Write("<script>alert (' Subscription Package deleted');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
+        }
+
+
+
+
+
+
+        protected void viewArchived_Click(object sender, EventArgs e)
+        {
             //Get the GridViewRow that contains the clicked button
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;

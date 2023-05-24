@@ -161,10 +161,20 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
+                                                                                            <div class="form-material" style="margin-left:100px">
+
+                                                                                                    <div class="form-group row text"  >
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Status:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
+                                                                                                          <asp:Label  class="form-control-round" id="status" runat="server"></asp:Label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>
                                                                             </div>
                                                                          </div>
                                                                         </div>
-
+                                                                            <asp:Button runat="server" Text="Archive" ID="archivePackage" style="font-size:16px;margin-left:10px" OnClick="archivePackage_Click" class="btn btn-primary btn-sm text-center"/>
+                                                                              <asp:Button runat="server" Text="Restore" ID="restorePackage" style="font-size:16px;margin-left:10px" OnClick="restorePackage_Click" class="btn btn-primary btn-sm text-center"/>
                                                                         </div>
                                                                     </div>
                                                                     <!-- Tab variant tab card start -->

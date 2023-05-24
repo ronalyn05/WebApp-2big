@@ -94,12 +94,13 @@ namespace WRS2big_Web.Model
         public double packagePrice { get; set; }
         public string durationType { get; set; }
         public int packageDuration { get; set; }
-
+        public int productLimit { get; set; }
         public int packageLimit { get; set; }
         public string messaging { get; set; }
         public int numberOfStations { get; set; }
         public string renewable { get; set; }
         public List<string> features { get; set; } //to save the features in the db as a list
+        public string status { get; set; }
 
     }
 
