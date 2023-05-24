@@ -125,15 +125,15 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("RESERVATION TIME");
                 ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
@@ -184,18 +184,16 @@ namespace WRS2big_Web.Admin
                                 if (order.order_DeliveryTypeValue == "Reservation")
                                 {
                                     ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                    order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                   dateOrder, order.order_StoreName);
+                                        order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, 
+                                        order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                        order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
                                 }
                                 else
                                 {
-                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                   order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                  order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                  order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                  dateOrder, order.order_StoreName);
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
+                                   order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, 
+                                   order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                   order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
                                 }
                               
                             }
@@ -230,11 +228,10 @@ namespace WRS2big_Web.Admin
 
                             string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
+                                order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, 
+                                order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
                         }
                     }
 
@@ -277,15 +274,15 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("RESERVATION TIME");
                 ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
@@ -330,10 +327,10 @@ namespace WRS2big_Web.Admin
 
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod, order.order_OrderTypeValue,
                                 order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
                                dateOrder, order.order_StoreName);
                             }
                         }
@@ -367,11 +364,11 @@ namespace WRS2big_Web.Admin
 
                             string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod, order.order_OrderTypeValue,
+                                 order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                 productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                 order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                dateOrder, order.order_StoreName);
                         }
                     }
 
@@ -415,15 +412,15 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("RESERVATION TIME");
                 ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
@@ -471,10 +468,11 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                               order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                              order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                              order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                              dateOrder, order.order_StoreName);
+                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
+                                    order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                    productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                    order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                    dateOrder, order.order_StoreName);
                             }
                         }
                         else if (order.order_OrderTypeValue == "Delivery")
@@ -508,9 +506,10 @@ namespace WRS2big_Web.Admin
                             string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
+                                order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                               order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
                                dateOrder, order.order_StoreName);
                         }
                     }
@@ -553,15 +552,15 @@ namespace WRS2big_Web.Admin
                 ordersTable.Columns.Add("DRIVER ID");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
+                ordersTable.Columns.Add("PAYMENT METHOD");
+                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("RESERVATION DATE");
                 ordersTable.Columns.Add("RESERVATION TIME");
                 ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("ORDER TYPE");
                 ordersTable.Columns.Add("PRODUCT REFILL ORDER");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
                 ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
                 ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("PAYMENT METHOD");
                 ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
                 ordersTable.Columns.Add("GALLON CONDITION / OPTION");
                 ordersTable.Columns.Add("TOTAL AMOUNT");
@@ -609,10 +608,11 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                              order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                             order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                             order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                             dateOrder, order.order_StoreName);
+                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate, 
+                                    order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                    productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                    order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                    dateOrder, order.order_StoreName);
 
                                 //ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
                                 //   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
@@ -651,9 +651,10 @@ namespace WRS2big_Web.Admin
                             string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                             ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                               order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
+                                order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
                                dateOrder, order.order_StoreName);
                         }
                     }
@@ -792,132 +793,6 @@ namespace WRS2big_Web.Admin
                         Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
 
                         Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-
-                        //SEND SCHEDULED NOTIFICATION
-                        int schedNotifID = rnd.Next(1, 20000);
-
-                        //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                        if (existingOrder.order_OverallQuantities <= 2)
-                        {
-                            //get the ordered date from the order
-                            DateTime orderedDate = existingOrder.orderDate;
-                            //add two days from the orderedDate to set the scheduled date
-                            DateTime schedule = orderedDate.AddDays(2);
-
-                            var scheduleNotif = new Model.scheduledNotification
-                            {
-
-                                admin_ID = adminId,
-                                orderID = orderID,
-                                cusId = existingOrder.cusId,
-                                sender = "Admin",
-                                title = "Order Reminder",
-                                receiver = "Customer",
-                                body = "It's been 2 days since your last tubig order! Order again to earn points!",
-                                notificationDate = DateTime.Now,
-                                status = "unread",
-                                scheduledSent = schedule,
-                                notificationID = schedNotifID
-
-                            };
-                            SetResponse scheduledNotification;
-                            scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
-                            scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
-
-                            Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                            Debug.WriteLine($"SCHEDULE: {schedule}");
-                        }
-                        else if (existingOrder.order_OverallQuantities > 2 && existingOrder.order_OverallQuantities <= 5)
-                        {
-                            //get the ordered date from the order
-                            DateTime orderedDate = existingOrder.orderDate;
-                            //add two days from the orderedDate to set the scheduled date
-                            DateTime schedule = orderedDate.AddDays(4);
-
-                            var scheduleNotif = new Model.scheduledNotification
-                            {
-
-                                admin_ID = adminId,
-                                orderID = orderID,
-                                cusId = existingOrder.cusId,
-                                sender = "Admin",
-                                title = "Order Reminder",
-                                receiver = "Customer",
-                                body = "It's been 4 days since your last tubig order! Order again to earn points!",
-                                notificationDate = DateTime.Now,
-                                status = "unread",
-                                scheduledSent = schedule,
-                                notificationID = schedNotifID
-
-                            };
-                            SetResponse scheduledNotification;
-                            scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
-                            scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
-
-                            Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                            Debug.WriteLine($"SCHEDULE: {schedule}");
-                        }
-                        else if (existingOrder.order_OverallQuantities > 5 && existingOrder.order_OverallQuantities <= 8)
-                        {
-                            //get the ordered date from the order
-                            DateTime orderedDate = existingOrder.orderDate;
-                            //add two days from the orderedDate to set the scheduled date
-                            DateTime schedule = orderedDate.AddDays(7);
-
-                            var scheduleNotif = new Model.scheduledNotification
-                            {
-
-                                admin_ID = adminId,
-                                orderID = orderID,
-                                cusId = existingOrder.cusId,
-                                sender = "Admin",
-                                title = "Order Reminder",
-                                receiver = "Customer",
-                                body = "It's been a week since your last tubig order! Order again to earn points!",
-                                notificationDate = DateTime.Now,
-                                status = "unread",
-                                scheduledSent = schedule,
-                                notificationID = schedNotifID
-
-                            };
-                            SetResponse scheduledNotification;
-                            scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
-                            scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
-
-                            Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                            Debug.WriteLine($"SCHEDULE: {schedule}");
-                        }
-                        else if (existingOrder.order_OverallQuantities > 8 && existingOrder.order_OverallQuantities <= 15)
-                        {
-                            //get the ordered date from the order
-                            DateTime orderedDate = existingOrder.orderDate;
-                            //add two days from the orderedDate to set the scheduled date
-                            DateTime schedule = orderedDate.AddDays(7);
-
-                            var scheduleNotif = new Model.scheduledNotification
-                            {
-
-                                admin_ID = adminId,
-                                orderID = orderID,
-                                cusId = existingOrder.cusId,
-                                sender = "Admin",
-                                title = "Order Reminder",
-                                receiver = "Customer",
-                                body = "We miss you! It's been a long time since your last 2Big order! Order again to earn points!",
-                                notificationDate = DateTime.Now,
-                                status = "unread",
-                                scheduledSent = schedule,
-                                notificationID = schedNotifID
-
-                            };
-                            SetResponse scheduledNotification;
-                            scheduledNotification = twoBigDB.Set("SCHEDULED_NOTIFICATION/" + schedNotifID, scheduleNotif);
-                            scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
-
-                            Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                            Debug.WriteLine($"SCHEDULE: {schedule}");
-                        }
-
 
                         // Retrieve the existing Users log object from the database
                         FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
@@ -1217,23 +1092,7 @@ namespace WRS2big_Web.Admin
 
             // Show the modal popup
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "assignDriver", "$('#assignDriver').modal('show');", true);
-            //// Get the admin ID from the session
-            //string idno = (string)Session["idno"];
-            //int adminId = int.Parse(idno);
-            //string name = (string)Session["fullname"];
-            //// Get the log ID from the session 
-            //int logsId = (int)Session["logsId"];
-
-            //// Retrieve the button that was clicked
-            //Button btnDecline = (Button)sender;
-            //// Find the GridView row containing the button
-            //GridViewRow row = (GridViewRow)btnDecline.NamingContainer;
-            //// Get the order ID from the first cell in the row
-            //int orderID = int.Parse(row.Cells[1].Text); // Assuming the order ID is in the first cell
-
-            //// Register the script to open the modal
-            //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#decline').modal();", true);
-            ////ScriptManager.RegisterStartupScript(this, GetType(), "OpenReasonModal", "$('#reasonModal').modal('show');", true);
+           
         }
         //ASSIGNING THE DRIVER
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -1261,17 +1120,30 @@ namespace WRS2big_Web.Admin
 
                 if (response != null && response.ResultAs<Order>() != null)
                 {
-                    // Update the existing order object with the new driver ID
-                    existingOrder.driverId = int.Parse(driverId);
-                    existingOrder.dateDriverAssigned = DateTime.Now;
-                    existingOrder.driverAssignedBy = name;
+                    if(existingOrder.order_OrderTypeValue == "Delivery")
+                    {
+                        // Update the existing order object with the new driver ID
+                        existingOrder.driverId = int.Parse(driverId);
+                        existingOrder.dateDriverAssigned = DateTime.Now;
+                        existingOrder.driverAssignedBy = name;
 
-                    // Update the existing order object in the database
-                    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+                        // Update the existing order object in the database
+                        response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                        // Show success message
+                        Response.Write("<script>alert('You have successfully assigned driver " + driverId + " to order number " + orderID + ". You can now proceed to accept the order.'); </script>");
+                    }
+                    else
+                    {
+                        // Show  message
+                        Response.Write("<script>alert('You are not allowed to assign driver since order wil be pick up by the customer.'); </script>");
+                    }
+                    
+
+                  
                 }
 
-                // Show success message
-                Response.Write("<script>alert('You have successfully assigned driver " + driverId + " to order number " + orderID + ". You can now proceed to accept the order.'); </script>");
+              
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
@@ -1288,9 +1160,9 @@ namespace WRS2big_Web.Admin
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 displayAll_order();
-                displayExpress_order();
-                displayReservation_order();
-                displayStandard_order();
+                //displayExpress_order();
+                //displayReservation_order();
+                //displayStandard_order();
 
             }
             catch (Exception ex)
@@ -1417,13 +1289,11 @@ namespace WRS2big_Web.Admin
             }
 
             displayAll_order();
-            displayExpress_order();
-            displayReservation_order();
-            displayStandard_order();
+           
         }
 
 
-
+        //METHOD IN CHOOSING TO VIEW ORDER BASE ON DELIVERY TYPES
         protected void btnViewOrders_Click(object sender, EventArgs e)
         {
 

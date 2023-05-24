@@ -263,7 +263,7 @@
                                     <li class="">
                                         <a href="/Admin/UsersLog" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-list"></i><b>FC</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">History</span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Activity</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
