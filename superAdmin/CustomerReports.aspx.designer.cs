@@ -33,6 +33,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Button searchButton;
 
         /// <summary>
+        /// closeButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button closeButton;
+
+        /// <summary>
         /// sortDropdown control.
         /// </summary>
         /// <remarks>
@@ -60,48 +69,48 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label customersLabel;
 
         /// <summary>
-        /// customerReports control.
+        /// allCustomers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView customerReports;
+        protected global::System.Web.UI.WebControls.GridView allCustomers;
 
         /// <summary>
-        /// clientsLabel control.
+        /// declinedLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label clientsLabel;
+        protected global::System.Web.UI.WebControls.Label declinedLabel;
 
         /// <summary>
-        /// clientReports control.
+        /// declinedCustomers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView clientReports;
+        protected global::System.Web.UI.WebControls.GridView declinedCustomers;
 
         /// <summary>
-        /// Label1 control.
+        /// approvedLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label approvedLabel;
 
         /// <summary>
-        /// adminEmployees control.
+        /// approvedCustomers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView adminEmployees;
+        protected global::System.Web.UI.WebControls.GridView approvedCustomers;
     }
 }

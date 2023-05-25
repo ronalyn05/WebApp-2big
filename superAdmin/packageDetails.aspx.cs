@@ -11,6 +11,8 @@ using FireSharp.Response;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Data;
+using System.Diagnostics;
+
 namespace WRS2big_Web.superAdmin
 {
     public partial class packageDetails : System.Web.UI.Page
@@ -172,7 +174,7 @@ namespace WRS2big_Web.superAdmin
                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
                 Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
-
+             Debug.WriteLine($"RESTORE LOG ID: {logID}");
             Response.Write("<script>alert ('Subscription Package restored');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
         }
 
@@ -214,6 +216,9 @@ namespace WRS2big_Web.superAdmin
         {
             int packageID = (int)Session["currentPackage"];
 
+            FirebaseResponse currentPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+            Model.PackagePlans current = currentPackage.ResultAs<Model.PackagePlans>();
+
             FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
 
             if (subscribed != null)
@@ -224,7 +229,7 @@ namespace WRS2big_Web.superAdmin
 
                 foreach (var client in all)
                 {
-                    if (client.Value.currentSubStatus == "Active" && client.Value.plan == packageID.ToString())
+                    if (client.Value.currentSubStatus == "Active" && client.Value.plan == current.packageName)
                     {
                         isClientSubscribed = true;
                         break; // Exit the loop since a subscribed client is found
@@ -269,6 +274,7 @@ namespace WRS2big_Web.superAdmin
                     response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
                     Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
+                    Debug.WriteLine($"ARCHIVE LOG ID: {logID}");
                     Response.Write("<script>alert ('Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
                 }
             }
@@ -389,6 +395,8 @@ namespace WRS2big_Web.superAdmin
                 //Storing the  info
                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
                 Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                Debug.WriteLine($"UPDATE PACKAGE LOG ID: {logID}");
 
                 Response.Write("<script>alert ('Package details successfully updated!');window.location.href = '/superAdmin/packageDetails.aspx';</script>");
             }

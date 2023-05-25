@@ -79,14 +79,14 @@
                                                                     <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by station name"> </asp:TextBox>
                                                                     <asp:Button runat="server" ID="searchButton" class="btn btn-primary" Height="40" Text="search" OnClick="searchButton_Click" />
                                                                     <asp:Button runat="server" ID="closeButton" Text="X" OnClick="closeButton_Click" BorderColor="Transparent" BackColor="Transparent"/> 
-                                                                    <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
+                                                                   <%-- <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
                                                                         <asp:ListItem Value="All"> All </asp:ListItem>
                                                                         <asp:ListItem Value="Pending"> Pending Clients </asp:ListItem>
                                                                         <asp:ListItem Value="Approved"> Approved Clients </asp:ListItem>
                                                                         <asp:ListItem Value="Declined"> Declined Clients </asp:ListItem>
 
                                                                     </asp:DropDownList>
-                                                                    <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" OnClick="viewSorted_Click" />
+                                                                    <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" OnClick="viewSorted_Click" />--%>
                                                                 </div>
 
 
@@ -101,9 +101,9 @@
                                                                         <div class="card table-card">
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
-                                                                                    <br />
+                                                                                    
                                                                                    
-                                                                                    <asp:GridView runat="server" ID="AllGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+<%--                                                                                    <asp:GridView runat="server" ID="AllGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
@@ -120,7 +120,8 @@
                                                                                         <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>
+                                                                                    </asp:GridView>--%>
+                                                                                   <asp:Label runat="server" style="margin-left:10px" id="pendingLabel"></asp:Label>
                                                                                     <asp:GridView runat="server" ID="pendingGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
@@ -139,8 +140,8 @@
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                                     </asp:GridView>
-                                                                                    <asp:GridView runat="server" ID="approvedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                        <%--<asp:ImageButton ID="ImageButton_new" class="img-100 img-radius" style="width:200px" runat="server" /> --%>
+<%--                                                                                    <asp:GridView runat="server" ID="approvedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                       
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
@@ -156,9 +157,9 @@
                                                                                         <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>
-                                                                                    <asp:GridView runat="server" ID="declinedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                        <%--<asp:ImageButton ID="ImageButton_new" class="img-100 img-radius" style="width:200px" runat="server" /> --%>
+                                                                                    </asp:GridView>--%>
+<%--                                                                                    <asp:GridView runat="server" ID="declinedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                       
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
@@ -174,7 +175,7 @@
                                                                                         <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>
+                                                                                    </asp:GridView>--%> <br /><br />
                                                                                             <asp:CheckBox runat="server" ID="selectAll" Text=" Select All" Style="font-size: 18px;margin-left:50px" OnCheckedChanged="selectAll_CheckedChanged" AutoPostBack="true"/>
                                                                                 <br />
 
@@ -189,6 +190,10 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Row end -->
+                                                            <br /><br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Clients</asp:Label> <br />
+                                                             <asp:LinkButton runat="server" Text="Registered Clients" class="btn btn-primary" style="font-size:18px;margin-left:40px" href="RefillingStationReports.aspx"></asp:LinkButton> 
+                                                             
                                                         </div>
                                                     </div>
                                                     <!-- Tab variant tab card start -->

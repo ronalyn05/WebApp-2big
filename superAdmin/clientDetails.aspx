@@ -77,9 +77,12 @@
                                                             <center>
                                                           <asp:Image runat="server" ID="clientImage" class="img-200 img-radius" style="width:350px"/> <br /> <br />
                                                              <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
+                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label> <br /> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="Label23" style="font-size:20px;color:dimgray;">STATUS:</asp:Label> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="clientStatus" style="font-size:20px;color:black;"></asp:Label>
                                                             </center>
-
+                                                             <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Clients</asp:Label> <br />
+                                                              <asp:LinkButton runat="server" Text="View All Clients" class="btn btn-primary" style="font-size:18px" href="RefillingStationReports.aspx"></asp:LinkButton>
                                                                <br /> <br />
                                                             <div class="row">
                                                                 <div class="col-sm-12">
@@ -188,7 +191,9 @@
                                                             <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
                                                             <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
                                                               <br /><br />
-                                                              <asp:LinkButton runat="server" Text="View Client List" style="font-size:18px" href="ManageWRSClients.aspx"></asp:LinkButton>
+                                                             <asp:Label   class="form-control-round" runat="server" id="Label1" style="font-size:16px;color:dimgray;"> Visit Pending Clients</asp:Label> <br />
+                                                              <asp:LinkButton runat="server" Text="Pending Client List" class="btn btn-primary" style="font-size:18px;margin-left:40px" href="ManageWRSClients.aspx"></asp:LinkButton> 
+                                                            
                                                         </div>
 
                                                     </div>
