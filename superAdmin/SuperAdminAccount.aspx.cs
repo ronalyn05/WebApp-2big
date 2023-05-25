@@ -259,10 +259,10 @@ namespace WRS2big_Web.superAdmin
                 
 
             }
-            catch (Exception ex)
+            catch
             {
                 // Handle the exception and log the error message
-                string errorMessage = "An error occurred while trying to login: " + ex.Message;
+                Response.Write("<script>alert('Something went wrong!');</script>");
             }
         }
     }

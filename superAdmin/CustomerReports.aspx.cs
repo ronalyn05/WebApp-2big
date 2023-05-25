@@ -31,127 +31,32 @@ namespace WRS2big_Web.superAdmin
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-           displayCustomers();
-           displayClients();
-           displayDriverUser();
+          
+          
 
             if (!IsPostBack)
             {
-                //BindData("");
-            }
+                displayCustomers();
+                displayApproved();
+                displayDeclined();
 
-        }
-        private void displayDriverUser()
-        {
-            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
-            Model.Employee admin = response.ResultAs<Model.Employee>();
-            var data = response.Body;
-            Dictionary<string, Model.Employee> employees = JsonConvert.DeserializeObject<Dictionary<string, Model.Employee>>(data);
-
-            if (employees != null)
-            {
-                DataTable customerTable = new DataTable();
-                //customerTable.Columns.Add("PROFILE");
-                customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("ROLE");
-                customerTable.Columns.Add("STATUS");
-                customerTable.Columns.Add("NAME");
-                customerTable.Columns.Add("EMAIL");
-                customerTable.Columns.Add("ADDRESS");
-                customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("EMPLOYER");
-                customerTable.Columns.Add("DATE HIRED");
-                customerTable.Columns.Add("DATE ADDED");
-
-                foreach (KeyValuePair<string, Model.Employee> driver in employees)
-                {
-                    if (driver.Value.emp_role == "Driver" || driver.Value.emp_role == "Cashier")
-                    {
-                        customerTable.Rows.Add(
-                          //entry.Value.profile_image,
-                          driver.Value.emp_id,
-                          driver.Value.emp_role,
-                          driver.Value.emp_status,
-                           driver.Value.emp_firstname + " " + driver.Value.emp_lastname,
-                           driver.Value.emp_email,
-                          driver.Value.emp_address,
-                          driver.Value.emp_contactnum,
-                          driver.Value.addedBy,
-                          driver.Value.emp_dateHired,
-                          driver.Value.dateAdded); 
-                    }
-                }
-                adminEmployees.DataSource = customerTable;
-                adminEmployees.DataBind();
-            }
-        }
-        protected void displayClients()
-        {
-            FirebaseResponse response = twoBigDB.Get("ADMIN");
-            Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
-            var data = response.Body;
-            Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
-
-           if (clients != null)
-            {
-                DataTable customerTable = new DataTable();
-                //customerTable.Columns.Add("PROFILE");
-                customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("ROLE");
-                customerTable.Columns.Add("STATUS");
-                customerTable.Columns.Add("NAME");
-                customerTable.Columns.Add("EMAIL");
-                customerTable.Columns.Add("ADDRESS");
-                customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("DATE APPROVED");
-                customerTable.Columns.Add("DATE REGISTERED");
-
-
-
-
-                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
-                {
-                    //clientProfile.ImageUrl = entry.Value.profile_image;
-
-                    FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                    Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-
-                    if (stations != null)
-                    {
-                        customerTable.Rows.Add(
-                           //entry.Value.profile_image,
-                           entry.Value.idno,
-                           entry.Value.userRole,
-                           entry.Value.status,
-                            entry.Value.fname + " " + entry.Value.lname,
-                            entry.Value.email,
-                           stations.stationAddress,
-                            entry.Value.phone,
-                            entry.Value.dateApproved,
-                            entry.Value.dateRegistered);
-
-                    }
-                
-                }
-                // Bind DataTable to GridView control
-                clientReports.DataSource = customerTable;
-                clientReports.DataBind();
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+                approvedCustomers.Visible = false;
+                approvedLabel.Visible = false;
 
             }
 
-           
         }
-
-
-        protected void displayCustomers()
+        
+     
+        //APPROVED CUSTOMERS
+        private void displayApproved()
         {
-
             FirebaseResponse response = twoBigDB.Get("CUSTOMER");
             Model.Customer plan = response.ResultAs<Model.Customer>();
             var customer = response.Body;
             Dictionary<string, Model.Customer> customers = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(customer);
-
-           
 
             if (customers != null)
             {
@@ -166,67 +71,143 @@ namespace WRS2big_Web.superAdmin
                 customerTable.Columns.Add("DATE APPROVED");
                 customerTable.Columns.Add("DATE REGISTERED");
 
+                foreach (KeyValuePair<string, Model.Customer> entry in customers)
+                {
+                    string role = "Customer";
+                    if (entry.Value.cus_status == "Approved")
+                    {
+                        customerTable.Rows.Add(
+                           entry.Value.cusId,
+                           role,
+                           entry.Value.cus_status,
+                           entry.Value.firstName + " " + entry.Value.lastName,
+                           entry.Value.email,
+                           entry.Value.address,
+                           entry.Value.phoneNumber,
+                           entry.Value.dateApproved,
+                           entry.Value.dateRegistered);
+                    }
 
+                }
+                if (customerTable.Rows.Count == 0)
+                {
+                    approvedLabel.Text = "NO 'APPROVED CUSTOMERS' FOUND";
+                    approvedLabel.Style["font-size"] = "24px";
+                    approvedLabel.Style["color"] = "red";
+                }
+                // Bind DataTable to GridView control
+                approvedCustomers.DataSource = customerTable;
+                approvedCustomers.DataBind();
+            }
+        }
+        //DECLINED CUSTOMERS
+        private void displayDeclined()
+        {
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer plan = response.ResultAs<Model.Customer>();
+            var customer = response.Body;
+            Dictionary<string, Model.Customer> customers = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(customer);
 
+            if (customers != null)
+            {
+                DataTable customerTable = new DataTable();
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("ROLE");
+                customerTable.Columns.Add("STATUS");
+                customerTable.Columns.Add("NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE APPROVED");
+                customerTable.Columns.Add("DATE REGISTERED");
 
                 foreach (KeyValuePair<string, Model.Customer> entry in customers)
                 {
-                    double lattitude = entry.Value.lattitudeLocation;
-                    double longitude = entry.Value.longitudeLocation;
-                    string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
                     string role = "Customer";
-
-                    string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
-
-                    //customerProfile.ImageUrl = entry.Value.imageProof;
-
-                    
+                    if (entry.Value.cus_status == "Declined")
+                    {
                         customerTable.Rows.Add(
-                                               //entry.Value.imageProof,
-                                               entry.Value.cusId,
-                                               role,
-                                               entry.Value.cus_status,
-                                               entry.Value.firstName + " " + entry.Value.lastName,
-                                               entry.Value.email,
-                                               address,
-                                               entry.Value.phoneNumber,
-                                               entry.Value.dateApproved,
-                                               entry.Value.dateRegistered);
-                    
-                   
+                           entry.Value.cusId,
+                           role,
+                           entry.Value.cus_status,
+                           entry.Value.firstName + " " + entry.Value.lastName,
+                           entry.Value.email,
+                           entry.Value.address,
+                           entry.Value.phoneNumber,
+                           entry.Value.dateApproved,
+                           entry.Value.dateRegistered);
+                    }
 
                 }
+                if (customerTable.Rows.Count == 0)
+                {
+                    declinedLabel.Text = "NO 'DECLINED CUSTOMERS' FOUND";
+                    declinedLabel.Style["font-size"] = "24px";
+                    declinedLabel.Style["color"] = "red";
+                }
                 // Bind DataTable to GridView control
-                customerReports.DataSource = customerTable;
-                customerReports.DataBind();
+                declinedCustomers.DataSource = customerTable;
+                declinedCustomers.DataBind();
             }
-
-           
-
         }
-
-
-        //TO REVERSE THE COORDINATES INTO ADDRESS
-        public static string GetAddressFromLatLong(double latitude, double longitude, string apiKey)
+        //ALL CUSTOMERS 
+        protected void displayCustomers()
         {
-            string url = string.Format("https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&key={2}", latitude, longitude, apiKey);
-            string result = string.Empty;
 
-            using (var client = new WebClient())
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER");
+            Model.Customer plan = response.ResultAs<Model.Customer>();
+            var customer = response.Body;
+            Dictionary<string, Model.Customer> customers = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(customer);
+
+            if (customers != null)
             {
-                result = client.DownloadString(url);
+                DataTable customerTable = new DataTable();
+                customerTable.Columns.Add("USER ID");
+                customerTable.Columns.Add("ROLE");
+                customerTable.Columns.Add("STATUS");
+                customerTable.Columns.Add("NAME");
+                customerTable.Columns.Add("EMAIL");
+                customerTable.Columns.Add("ADDRESS");
+                customerTable.Columns.Add("PHONE #");
+                customerTable.Columns.Add("DATE APPROVED");
+                customerTable.Columns.Add("DATE REGISTERED");
+
+                foreach (KeyValuePair<string, Model.Customer> entry in customers)
+                {
+                    string role = "Customer";
+                    if (entry.Value.cus_status != "Pending")
+                    {
+                        customerTable.Rows.Add(
+                           entry.Value.cusId,
+                           role,
+                           entry.Value.cus_status,
+                           entry.Value.firstName + " " + entry.Value.lastName,
+                           entry.Value.email,
+                           entry.Value.address,
+                           entry.Value.phoneNumber,
+                           entry.Value.dateApproved,
+                           entry.Value.dateRegistered);
+                    }
+
+                }
+                if (customerTable.Rows.Count == 0)
+                {
+                    customersLabel.Text = "NO 'CUSTOMERS' FOUND";
+                    customersLabel.Style["font-size"] = "24px";
+                    customersLabel.Style["color"] = "red";
+                }
+                // Bind DataTable to GridView control
+                allCustomers.DataSource = customerTable;
+                allCustomers.DataBind();
             }
-
-            JObject json = JObject.Parse(result);
-            string address = json["results"][0]["formatted_address"].ToString();
-
-            return address;
         }
+
+
 
         protected void searchButton_Click(object sender, EventArgs e)
         {
             string searched = search.Text;
-
+            string selectedValue = sortDropdown.SelectedValue;
 
             //FETCH IN CUSTOMERS
             FirebaseResponse response = twoBigDB.Get("CUSTOMER");
@@ -246,13 +227,9 @@ namespace WRS2big_Web.superAdmin
 
             foreach (KeyValuePair<string, Model.Customer> entry in clients)
             {
-                if (searched == entry.Value.firstName)
+                if ((selectedValue == "All" || selectedValue == entry.Value.cus_status) &&
+                  (searched == entry.Value.firstName || searched == entry.Value.lastName || searched == entry.Value.email || searched == entry.Key))
                 {
-                    double lattitude = entry.Value.lattitudeLocation;
-                    double longitude = entry.Value.longitudeLocation;
-                    string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
-
-                    string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
 
                     customerTable.Rows.Add(
                     //entry.Value.imageProof,
@@ -260,67 +237,58 @@ namespace WRS2big_Web.superAdmin
                     entry.Value.firstName,
                     entry.Value.lastName,
                     entry.Value.email,
-                    address,
+                    entry.Value.address,
                     entry.Value.phoneNumber);
+                }
 
-                    customerReports.Visible = true;
-                    clientReports.Visible = false;
-                    clientsLabel.Visible = false;
-                    customersLabel.Visible = true;
-                }
-                else
-                {
-                    checkClient();
-                }
+            }
+            if (customerTable.Rows.Count == 0)
+            {
+                Response.Write("<script>alert ('Client not found!'); window.location.href = '/superAdmin/RefillingStationReports.aspx'; </script>");
+
             }
 
-            // Bind DataTable to GridView control
-            customerReports.DataSource = customerTable;
-            customerReports.DataBind();
+            if (selectedValue == "All")
+            {
+                allCustomers.DataSource = customerTable;
+                allCustomers.DataBind();
+                allCustomers.Visible = true;
+
+
+                customersLabel.Visible = true;
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+                approvedCustomers.Visible = false;
+                approvedLabel.Visible = false;
+                //declinedGridView.Visible = false;
+            }
+            else if (selectedValue == "Declined")
+            {
+                declinedCustomers.DataSource = customerTable;
+                declinedCustomers.DataBind();
+                declinedCustomers.Visible = true;
+                declinedLabel.Visible = true;
+
+                approvedCustomers.Visible = false;
+                approvedLabel.Visible = false;
+                allCustomers.Visible = false;
+                customersLabel.Visible = false;
+            }
+            else if (selectedValue == "Approved")
+            {
+                approvedCustomers.DataSource = customerTable;
+                approvedCustomers.DataBind();
+                approvedCustomers.Visible = true;
+
+                approvedLabel.Visible = true;
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+                allCustomers.Visible = false;
+                customersLabel.Visible = false;
+            }
         }
        
-        private void checkClient()
-        {
-            string searched = search.Text;
-
-            //FETCH THE CLIENTS
-            FirebaseResponse clientsResponse = twoBigDB.Get("ADMIN");
-            Model.AdminAccount admin = clientsResponse.ResultAs<Model.AdminAccount>();
-            var clientData = clientsResponse.Body;
-            Dictionary<string, Model.AdminAccount> clientAdmin = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(clientData);
-
-            DataTable customerTable = new DataTable();
-            customerTable.Columns.Add("USER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
-            customerTable.Columns.Add("EMAIL");
-            customerTable.Columns.Add("ADDRESS");
-            customerTable.Columns.Add("PHONE #");
-
-            foreach (KeyValuePair<string, Model.AdminAccount> adminEntry in clientAdmin)
-            {
-                if (searched == adminEntry.Value.fname)
-                {
-                    customerTable.Rows.Add(
-                  //entry.Value.profile_image,
-                  adminEntry.Value.idno,
-                   adminEntry.Value.fname,
-                   adminEntry.Value.lname,
-                   adminEntry.Value.email,
-                   adminEntry.Value.address,
-                  adminEntry.Value.phone
-                  );
-
-                    customerReports.Visible = false;
-                    clientReports.Visible = true;
-                    clientsLabel.Visible = true;
-                    customersLabel.Visible = false;
-                }
-            }
-            // Bind DataTable to GridView control
-            clientReports.DataSource = customerTable;
-            clientReports.DataBind();
-        }
+       
 
         protected void viewSorted_Click(object sender, EventArgs e)
         {
@@ -328,193 +296,80 @@ namespace WRS2big_Web.superAdmin
           
             if (selectedValue == "All")
             {
-                customerReports.Visible = true;
-                clientReports.Visible = true;
-                clientsLabel.Visible = true;   
+                allCustomers.Visible = true;
+                //clientReports.Visible = true;
+                //clientsLabel.Visible = true;   
                 customersLabel.Visible = true;
+
+                approvedCustomers.Visible = false;
+                approvedLabel.Visible = false;
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+
+
             }
-            else if (selectedValue == "Registered Customers")
+            else if (selectedValue == "Approved")
             {
-                customerReports.Visible = true;
-                clientReports.Visible = false;
-                clientsLabel.Visible = false;
-                customersLabel.Visible = true;
-            }
-            else if (selectedValue == "Registered Clients")
-            {
-                customerReports.Visible = false;
-                clientsLabel.Visible = true;
+                approvedCustomers.Visible = true;
+                approvedLabel.Visible = true;
+
+
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+                allCustomers.Visible = false;
                 customersLabel.Visible = false;
-                clientReports.Visible = true;
             }
-            else if (selectedValue == "Subscribed Clients")
+         
+            else if (selectedValue == "Declined")
             {
-                //hide other grids
-                customerReports.Visible = false;
+                approvedCustomers.Visible = false;
+                allCustomers.Visible = false;
                 customersLabel.Visible = false;
+                approvedLabel.Visible = false;
 
-
-
-                FirebaseResponse response = twoBigDB.Get("ADMIN");
-                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
-                var data = response.Body;
-                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
-
-
-                //response = twoBigDB.Get("SUPERADMIN/SUBSCRIBED_CLIENTS");
-                //Model.superAdminClients subscribedClients = response.ResultAs<Model.superAdminClients>();
-                //var clientData = response.Body;
-                //Dictionary<string, Model.superAdminClients> subscribed = response.ResultAs<Dictionary<string, Model.superAdminClients>>();
-
-
-                DataTable customerTable = new DataTable();
-                //customerTable.Columns.Add("PROFILE");
-                customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("FIRST NAME");
-                customerTable.Columns.Add("LAST NAME");
-                customerTable.Columns.Add("EMAIL");
-                customerTable.Columns.Add("ADDRESS");
-                customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("DATE REGISTERED");
-                customerTable.Columns.Add("DATE SUBSCRIBED");
-                customerTable.Columns.Add("PACKAGE");
-
-
-                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
-                {
-                    //clientProfile.ImageUrl = entry.Value.profile_image;
-                    if (entry.Value.subStatus == "Subscribed")
-                    {
-                        FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                        Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-
-                        station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/Subscribed_Package");
-                        Model.Subscribed_Package package = station.ResultAs<Model.Subscribed_Package>();
-
-
-                        customerTable.Rows.Add(
-                           //entry.Value.profile_image,
-                           entry.Value.idno,
-                            entry.Value.fname,
-                            entry.Value.lname,
-                            entry.Value.email,
-                           stations.stationAddress,
-                            entry.Value.phone,
-                            entry.Value.dateRegistered,
-                            package.subStart,
-                            package.packageName);
-                    }
-
-                }
-                // Bind DataTable to GridView control
-                clientReports.DataSource = customerTable;
-                clientReports.DataBind();
+                declinedCustomers.Visible = true;
+                declinedLabel.Visible = true;
             }
-            else if (selectedValue == "Declined Customers")
+
+
+        }
+
+        protected void closeButton_Click(object sender, EventArgs e)
+        {
+            search.Text = "";
+            string selectedValue = sortDropdown.SelectedValue;
+
+
+            if (selectedValue == "Declined")
             {
-                //hide other grids
-                clientReports.Visible = false;
-                clientsLabel.Visible = false;
+                displayDeclined();
 
-                FirebaseResponse response = twoBigDB.Get("CUSTOMER");
-                Model.Customer plan = response.ResultAs<Model.Customer>();
-                var data = response.Body;
-                Dictionary<string, Model.Customer> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.Customer>>(data);
-
-
-                DataTable customerTable = new DataTable();
-                customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("FIRST NAME");
-                customerTable.Columns.Add("LAST NAME");
-                customerTable.Columns.Add("EMAIL");
-                customerTable.Columns.Add("ADDRESS");
-                customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("USER STATUS");
-
-
-
-                foreach (KeyValuePair<string, Model.Customer> entry in clients)
-                {
-                    if (entry.Value.cus_status == "Declined")
-                    {
-                        double lattitude = entry.Value.lattitudeLocation;
-                        double longitude = entry.Value.longitudeLocation;
-                        string apiKey = "AIzaSyBqKUBIswNi5uO3xOh4Boo8kSJyJ3DLkhk";
-
-                        string address = GetAddressFromLatLong(lattitude, longitude, apiKey);
-
-                        //customerProfile.ImageUrl = entry.Value.imageProof;
-
-                        customerTable.Rows.Add(
-                            //entry.Value.imageProof,
-                            entry.Value.cusId,
-                            entry.Value.firstName,
-                            entry.Value.lastName,
-                            entry.Value.email,
-                            address,
-                            entry.Value.phoneNumber,
-                            entry.Value.cus_status);
-
-                    }
-
-                }
-                // Bind DataTable to GridView control
-                customerReports.DataSource = customerTable;
-                customerReports.DataBind();
-            }
-            else if (selectedValue == "Declined Clients")
-            {
-                //hide other grids
-                customerReports.Visible = false;
+                allCustomers.Visible = false;
                 customersLabel.Visible = false;
 
-                FirebaseResponse response = twoBigDB.Get("ADMIN");
-                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
-                var data = response.Body;
-                Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+                declinedLabel.Visible = true;
+                declinedCustomers.Visible = true;
 
 
+            }
+            else if (selectedValue == "Approved")
+            {
+                displayApproved();
 
-                DataTable customerTable = new DataTable();
-                //customerTable.Columns.Add("PROFILE");
-                customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("FIRST NAME");
-                customerTable.Columns.Add("LAST NAME");
-                customerTable.Columns.Add("EMAIL");
-                customerTable.Columns.Add("ADDRESS");
-                customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("DATE REGISTERED");
-                customerTable.Columns.Add("USER STATUS");
-                
-
-
-                foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
-                {
-                    //clientProfile.ImageUrl = entry.Value.profile_image;
-                    if (entry.Value.status == "Declined")
-                    {
-                        FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                        Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-
-                        
-
-                        customerTable.Rows.Add(
-                           //entry.Value.profile_image,
-                           entry.Value.idno,
-                            entry.Value.fname,
-                            entry.Value.lname,
-                            entry.Value.email,
-                           stations.stationAddress,
-                            entry.Value.phone,
-                            entry.Value.dateRegistered,
-                            entry.Value.status
-                            );
-                    }
-
-                }
-                // Bind DataTable to GridView control
-                clientReports.DataSource = customerTable;
-                clientReports.DataBind();
+                customersLabel.Visible = false;
+                allCustomers.Visible = false;
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
+                approvedLabel.Visible = true;
+                approvedCustomers.Visible = true;
+            }
+            else if (selectedValue == "All")
+            {
+                displayCustomers();
+                approvedCustomers.Visible = false;
+                approvedLabel.Visible = false;
+                declinedCustomers.Visible = false;
+                declinedLabel.Visible = false;
             }
 
 

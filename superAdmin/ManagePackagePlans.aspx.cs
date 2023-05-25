@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -202,6 +203,9 @@ namespace WRS2big_Web.superAdmin
                 response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
                 Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
+               
+                Debug.WriteLine($"CREATE LOG ID: {logID}");
+
                 Response.Write("<script>alert ('New Subscription Package Added ! Package Name: " + result.packageName + " ');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
 
             }
@@ -299,13 +303,8 @@ namespace WRS2big_Web.superAdmin
             foreach (int packageID in selectedPackage)
             {
 
-                //// Retrieve the existing order object from the database
-                //FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
-                //Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
-
-                //packageDetails.status = "Archived";
-                //response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
-                //int packageID = (int)Session["currentPackage"];
+                FirebaseResponse currentPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+                Model.PackagePlans current = currentPackage.ResultAs<Model.PackagePlans>();
 
                 FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
 
@@ -317,7 +316,7 @@ namespace WRS2big_Web.superAdmin
 
                     foreach (var client in all)
                     {
-                        if (client.Value.currentSubStatus == "Active" && client.Value.plan == packageID.ToString())
+                        if (client.Value.currentSubStatus == "Active" && client.Value.plan == current.packageName)
                         {
                             isClientSubscribed = true;
                             break; // Exit the loop since a subscribed client is found
@@ -326,7 +325,7 @@ namespace WRS2big_Web.superAdmin
 
                     if (isClientSubscribed)
                     {
-                        Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+                        Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
                     }
                     else
                     {
@@ -361,6 +360,8 @@ namespace WRS2big_Web.superAdmin
                         //Storing the  info
                         response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
                         Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                        Debug.WriteLine($"ARCHIVE LOG ID: {logID}");
 
                         Response.Write("<script>alert ('Subscription Package archived');window.location.href = '/superAdmin/ManagePackagePlans.aspx'; </script>");
                     }

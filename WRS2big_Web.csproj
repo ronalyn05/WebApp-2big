@@ -588,7 +588,6 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
-    <Content Include="superAdmin\Account.aspx" />
     <Content Include="superAdmin\clientDetails.aspx" />
     <Content Include="superAdmin\ClientReports.aspx" />
     <Content Include="superAdmin\customerDetails.aspx" />
@@ -597,6 +596,7 @@
     <Content Include="superAdmin\ManagePackagePlans.aspx" />
     <Content Include="superAdmin\ManageWRSClients.aspx" />
     <Content Include="superAdmin\packageDetails.aspx" />
+    <Content Include="superAdmin\RefillingStationReports.aspx" />
     <Content Include="superAdmin\Reports.aspx" />
     <Content Include="superAdmin\SAdminIndex.aspx" />
     <Content Include="superAdmin\SubscriptionReports.aspx" />
@@ -826,13 +826,6 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="superAdmin\Account.aspx.cs">
-      <DependentUpon>Account.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="superAdmin\Account.aspx.designer.cs">
-      <DependentUpon>Account.aspx</DependentUpon>
-    </Compile>
     <Compile Include="superAdmin\clientDetails.aspx.cs">
       <DependentUpon>clientDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -888,6 +881,13 @@
     </Compile>
     <Compile Include="superAdmin\packageDetails.aspx.designer.cs">
       <DependentUpon>packageDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\RefillingStationReports.aspx.cs">
+      <DependentUpon>RefillingStationReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\RefillingStationReports.aspx.designer.cs">
+      <DependentUpon>RefillingStationReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="superAdmin\Reports.aspx.cs">
       <DependentUpon>Reports.aspx</DependentUpon>

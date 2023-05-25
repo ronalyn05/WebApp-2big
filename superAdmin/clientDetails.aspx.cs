@@ -59,7 +59,8 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
-         
+
+            clientStatus.Text = admin.status;
             clientFullName.Text = admin.fname + " " + admin.mname + " " + admin.lname ;
             //clientAddress.Text = admin.
             clientEmail.Text = admin.email;
