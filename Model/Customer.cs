@@ -24,9 +24,15 @@ namespace WRS2big_Web.Model
         public DateTime dateDeclined { get; set; }
         public DateTime dateRegistered { get; set; }
         public string userRole { get; set; }
-       // public string CusSecurityQuestion { get; set; }
+        public List<StationCustomerAccess> orderedStore { get; set; }
+        // public string CusSecurityQuestion { get; set; }
 
 
+    }
+    public class StationCustomerAccess
+    {
+        public int adminId { get; set; }
+      
     }
 
     public class Order

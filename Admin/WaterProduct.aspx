@@ -56,7 +56,7 @@
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i>Add Product Refill Offers</button>
                                                 <%--  <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>--%>
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i>Add Tank Supply</button>
-                                                <button type="button" style="font-size: 14px; float: right" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i>Edit Product Details</button>
+                                               <%-- <button type="button" style="font-size: 14px; float: right" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i>Edit Product Details</button>--%>
                                                 <%--VIEW BUTTON --%>
                                           &nbsp;
                                        <%-- MODAL FOR TANK SUPPLY --%>
@@ -106,7 +106,7 @@
                                                     </div>
                                                 </div>
 
-                                                <%-- MODAL FOR ADD PRODUCT--%>
+                                                <%-- MODAL FOR ADD third party PRODUCT--%>
                                                 <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
@@ -141,9 +141,9 @@
                                                                                 <strong>Product Unit of Volume:</strong>
                                                                                 <asp:DropDownList ID="drdprodUnitVolume" runat="server" Height="40px" Width="464px">
                                                                                     <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                                                    <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
-                                                                                    <asp:ListItem Text="ML" Value="ml"></asp:ListItem>
-                                                                                    <asp:ListItem Text="Liters" Value="liter/s"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Liters" Value="liters"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Milliliters" Value="ml"></asp:ListItem>
                                                                                 </asp:DropDownList>
                                                                             </div>
                                                                             <br />
@@ -219,11 +219,11 @@
                                                                             <hr />
                                                                             <div class="col-md-12 col-sm-12">
                                                                                  <strong>Choose only one that is applicable to your product offered</strong>
-                                                    <asp:RadioButtonList ID="radioType_productoffered" runat="server" RepeatDirection="Horizontal">
-                                                <asp:ListItem Text="Product Refill" Value="Product Refill" />
-                                                <asp:ListItem Text="other Product" Value="other Product" />
-                                              </asp:RadioButtonList>
-                                                    </div>
+                                                                            <asp:RadioButtonList ID="radioType_productoffered" runat="server" RepeatDirection="Horizontal">
+                                                                        <asp:ListItem Text="Product Refill" Value="Product Refill" />
+                                                                        <asp:ListItem Text="other Product" Value="other Product" />
+                                                                      </asp:RadioButtonList>
+                                                                            </div>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Product Name:</strong>
                                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -276,9 +276,9 @@
                                                                                 <strong>Unit</strong>
                                                                                 <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="464px">
                                                                                 <asp:ListItem Selected="False">--- Select one unit applicable for product stock ----</asp:ListItem>
-                                                                                <asp:ListItem Text="Bottle" Value="bottle"></asp:ListItem>
-                                                                                <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
-                                                                                <asp:ListItem Text="Box/Case" Value="box/case"></asp:ListItem>
+                                                                                <asp:ListItem Text="Gallon" Value="gallon" Selected="True"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Liters" Value="liter/s"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Mililiters" Value="mililiter/s"></asp:ListItem>
                                                                             </asp:DropDownList>
 
                                                                               <%--  <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="364px" AppendDataBoundItems="false">
@@ -309,25 +309,66 @@
                                                     </div>
                                                 </div>
                                                 <%-- end set product refill --%>
+                                                  <!-- MODAL FOR EDITING PRODUCT DETAILS -->
+                                                <div class="modal fade" id="editproduct" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Edit Product Details</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">X</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                     <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                          
+                                                                            <div class="col-md-12 col-sm-12 ">
+                                                                                <strong>Price:</strong>
+                                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                <asp:TextBox ID="txtproductprice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="col-md-12 col-sm-12 ">
+                                                                                <strong>Discounts</strong>
+                                                                                <br />
+                                                                                <h7>Please enter the discount percentage (%) you offer for this product</h7>
+                                                                                <asp:TextBox ID="txtproductdiscount" Height="40px" Width="464px" TextMode="Number" Placeholder="Enter discount offered you want to update" runat="server"></asp:TextBox>
+                                                                            </div>
+                                                                            <br />
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <asp:Button ID="btnEditDetails" runat="server" Text="Update" class="btn btn-primary btn-sm" OnClick="btnEditProductDetails_Click" />
+                                                                <%-- <button type="button" class="btn btn-primary" runat="server" id="btnSubmitDecline" OnClick="btnSubmitDecline_Click">Submit</button>--%>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <asp:HiddenField runat="server" ID="hfeditProductDetails" />
+                                                </div>
                                                 <%-- MODAL FOR update product details --%>
-                                                <div class="modal fade edit" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal fade" id="editthirdpartyproduct" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
                                                             <form id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title" id="myModalLabel4">Edit product details here:</h4>
+                                                                    <h4 class="modal-title" id="myModalLabel4">Edit third party product details here:</h4>
                                                                     <%--exit button--%>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
-                                                                            <div class="col-md-12 col-sm-12 ">
+                                                                          <%--  <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Product Id:</strong>
                                                                                 <br />
                                                                                 <asp:TextBox ID="txt_productId" Height="40px" Width="464px" TextMode="Number" Placeholder="Enter product id you want to update" runat="server"></asp:TextBox>
                                                                             </div>
-                                                                            <br />
+                                                                            <br />--%>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Price:</strong>
                                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
@@ -347,10 +388,11 @@
                                                                         <%--  BUTTON PrODUCT EDIT HERE--%>
                                                                         <div style="float: right;">
                                                                             <asp:Button ID="btnUpdateDetails" runat="server" Text="Update third party product details" class="btn btn-primary btn-sm" OnClick="btnUpdateOtherProductDetails_Click" />
-                                                                            <asp:Button ID="btnEditDetails" runat="server" Text="Update product refill details" class="btn btn-primary btn-sm" OnClick="btnEditProductDetails_Click" />
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                 <asp:HiddenField runat="server" ID="hfThirdpartyProduct" />
                                                         </div>
                                                         <%--  </form>--%>
                                                     </div>
@@ -470,13 +512,7 @@
                                                             <div class="card-header">
 
                                                                 <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="PRODUCTS DATA"></asp:Label>
-                                                                <div style="float: right;">
-
-                                                                    <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by product id ...." ToolTip="enter product id number to search and view record" Height="40px" runat="server"></asp:TextBox>
-                                                                    <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchProduct_Click" CssClass="btn-primary" Height="40px" />
-                                                                    <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
-                                                                    <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
-                                                                </div>
+                                                               
                                                                 <div class="card-header-right">
                                                                     <ul class="list-unstyled card-option">
                                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -490,10 +526,10 @@
                                                             <div class="card-block">
                                                                 <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
                                                                     <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
-                                                                    <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
-                                                                    <asp:ListItem Text="Product Refill" Value="0"></asp:ListItem>
-                                                                    <asp:ListItem Text="Third Party Product" Value="1"></asp:ListItem>
-                                                                    <asp:ListItem Text="Tank Supply" Value="2"></asp:ListItem>
+                                                                    <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                                    <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
+                                                                    <asp:ListItem Text="Third Party Product" Value="2"></asp:ListItem>
+                                                                    <asp:ListItem Text="Tank Supply" Value="3"></asp:ListItem>
 
                                                                 </asp:DropDownList>
 
@@ -504,25 +540,32 @@
                                                                             <hr />
                                                                             <%-- PRODUCTS REFILL NI DIRI--%>
                                                                             <%-- <h5> Products Refill</h5>--%>
+                                                                             <div style="float: right;">
+
+                                                                    <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                                    <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchProduct_Click" CssClass="btn-primary" Height="40px" />
+                                                                    <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
+                                                                    <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
+                                                                </div> <div style="float: right;">
+
+                                                                    <asp:TextBox ID="txtSearchThirdParty" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                                    <asp:Button ID="btnSearchThirdParty" runat="server" Text="Search" OnClick="btnSearchThirdParty_Click" CssClass="btn-primary" Height="40px" />
+                                                                    <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
+                                                                    <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
+                                                                </div>
                                                                             <div style="text-align: center;">
                                                                                 <asp:Label ID="lblProductData" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
                                                                             </div>
-
-                                                                            <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
-                                                                 <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
                                                                             <br />
-                                                                            <%--the gridview starts here--%>
-                                                                            <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
                                                                             <asp:GridView runat="server" ID="gridProductRefill" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                 BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                <%--  <Columns>
-                                                        <asp:TemplateField>
-                                                          <ItemTemplate>
-                                                           <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
-                                                                                <%-- <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>--%>
-                                                                                <%-- </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>--%>
+                                                                                    <Columns>
+                                                                                    <asp:TemplateField HeaderText="ACTION">
+                                                                                        <ItemTemplate>
+                                                                                            <asp:Button ID="btnEditProduct" runat="server" Text="Edit" OnClick="btnEditProduct_Click" CssClass="btn-primary" Height="40px" />
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
+                                                                                </Columns>
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                 <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
@@ -532,25 +575,20 @@
                                                                                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
-
-                                                                            <%--</div>--%> <%--Gridview ends here--%>
-                                                                            <%--  <hr />--%>
-                                                                            <%-- OTHER PRODUCTS NI DIRI--%>
-                                                                            <%-- <h5> Other Products</h5>--%>
-                                                                            <%-- <br />--%>
-                                                                            <%--  <asp:Label ID="lblotherProduct" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                                            <%--the gridview starts here--%>
-                                                                            <%--  <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
+                                                                             <br />
+                                                                            <div style="text-align: center;">
+                                                                                <asp:Label ID="lblThirdparty" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                            </div>
+                                                                            <br />
                                                                             <asp:GridView runat="server" ID="gridotherProduct" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                 BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                <%-- <Columns>
-                                                        <asp:TemplateField>
-                                                          <ItemTemplate>--%>
-                                                                                <%-- <asp:LinkButton ID="selectButton" runat="server" data-toggle="modal" CssClass="fa-edit" data-target=".updateModal" Text="Update" CommandName="Update"/>--%>
-                                                                                <%-- <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>--%>
-                                                                                <%--</ItemTemplate>
-                                                        </asp:TemplateField>
-                                                      </Columns>--%>
+                                                                                <Columns>
+                                                                                    <asp:TemplateField HeaderText="ACTION">
+                                                                                        <ItemTemplate>
+                                                                                            <asp:Button ID="btnthirdpartyProduct" runat="server" Text="Edit" OnClick="btnthirdpartyProduct_Click" CssClass="btn-primary" Height="40px" />
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
+                                                                                </Columns>
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                 <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
@@ -561,6 +599,11 @@
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
                                                                             <%--Gridview ends here--%>
+                                                                             <br />
+                                                                             <div style="text-align: center;">
+                                                                                <asp:Label ID="lbl_tankSupply" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                            </div>
+                                                                              <br />
                                                                             <asp:GridView runat="server" ID="gridTankSupply" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                 BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
 

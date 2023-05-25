@@ -75,14 +75,7 @@
                                                 <%--<h5 style="text-align: center;">View order base on customer's payment mode to pay the order:</h5>--%>
                                                 <br>
                                                 <div style="display: flex; justify-content: space-between;">
-                                                   <%-- <div>
-                                                        <asp:DropDownList ID="drdPaymentMode" CssClass="text-center" runat="server" Height="40px" Width="364px">
-                                                            <asp:ListItem Text="View order base on customer's payment mode" Selected="False"></asp:ListItem>
-                                                            <asp:ListItem Text="All Orders" Value="0"></asp:ListItem>
-                                                            
-                                                        </asp:DropDownList>
-                                                        <asp:Button ID="btnView" runat="server" Text="View Orders" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
-                                                    </div>--%>
+                                                  
                                                     <div>
                                                         <asp:DropDownList ID="drdViewOrders" CssClass="text-center" runat="server" Height="40px" Width="364px">
                                                             <%--<asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>--%>
@@ -90,15 +83,6 @@
                                                             <asp:ListItem Text="Express" Value="1"></asp:ListItem>
                                                             <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
                                                             <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
-                                                            <%--<asp:ListItem Text="COD - Express" Value="4"></asp:ListItem>
-                                                            <asp:ListItem Text="COD - Standard" Value="5"></asp:ListItem>
-                                                            <asp:ListItem Text="COD - Reservation" Value="6"></asp:ListItem>
-                                                              <asp:ListItem Text="GCASH - Express" Value="7"></asp:ListItem>
-                                                            <asp:ListItem Text="GCASH - Standard" Value="8"></asp:ListItem>
-                                                             <asp:ListItem Text="GCASH - Reservation" Value="9"></asp:ListItem>
-                                                              <asp:ListItem Text="POINTS - Express" Value="10"></asp:ListItem>
-                                                            <asp:ListItem Text="POINTS - Standard" Value="11"></asp:ListItem>
-                                                            <asp:ListItem Text="POINTS - Reservation" Value="12"></asp:ListItem>--%>
                                                            
                                                         </asp:DropDownList>
                                                         <asp:Button ID="btnViewOrders" runat="server" Text="View" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
