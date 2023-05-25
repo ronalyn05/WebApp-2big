@@ -51,9 +51,72 @@
                                             <div class="clearfix">
                                                 <%-- add employee button--%>
                                                 <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i>Add Employee</button>
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i>Edit Employee Details</button>
+                                                <%--  <button type="button" style="font-size: 14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i>Edit Employee Details</button>--%>
                                                 &nbsp;
-                                       <%-- MODAL FOR ADD EMPLOYEE--%>
+                                                 <!-- MODAL FOR EDITING EMPLOYEE DETAILS -->
+                                                <div class="modal fade" id="editEmpDetails" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Edit Employee Details</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">X</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>Address:</strong>
+                                                                        <div style="display: flex;">
+                                                                            <asp:TextBox ID="txt_address" runat="server" ToolTip="Enter the employee address you want to update" class="form-control" placeholder="Enter Employee address" Height="40px" Width="300px"></asp:TextBox>
+                                                                            <%-- <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />--%>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>Contact Number:</strong>
+                                                                        <asp:TextBox ID="txt_contactNumber" runat="server" ToolTip="Enter contact number you want to update (e.g Format: 09XXXXXXXXX (must be 11 digit))" placeholder="Enter contact number to update (Format: 09XXXXXXXXX (must be 11 digit))" class="form-control" TextMode="Phone"></asp:TextBox>
+                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txt_contactNumber" ForeColor="Red" ErrorMessage="Invalid phone number format and (it must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
+
+                                                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>Email Address:</strong>
+                                                                        <asp:TextBox ID="txtEmail_address" runat="server" ToolTip="Enter email address you want to update" placeholder="Enter email address to update" class="form-control"></asp:TextBox>
+                                                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>Position:</strong>
+                                                                        <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
+                                                                            <%--<asp:ListItem Selected="False" > ------ Update Employee Position ------ </asp:ListItem>--%>
+                                                                            <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                                                            <asp:ListItem Text="Driver" Value="Driver"></asp:ListItem>
+                                                                            <asp:ListItem Text="Water Refiller" Value="Water Refiller"></asp:ListItem>
+                                                                            <asp:ListItem Text="WRS Helper" Value="WRS Helper"></asp:ListItem>
+                                                                        </asp:DropDownList>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>Status:</strong>
+                                                                        <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
+                                                                            <%--<asp:ListItem Selected="False" > ------ Update Employee Status ------ </asp:ListItem>--%>
+                                                                            <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
+                                                                            <asp:ListItem Text="Inactive" Value="Inactive"></asp:ListItem>
+                                                                        </asp:DropDownList>
+                                                                    </div>
+                                                                    <br />
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <%--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>--%>
+                                                                <asp:Button ID="btnSubmitEdit" runat="server" Text="Edit" class="btn btn-primary btn-sm" OnClick="btnEditEmployeeDetails_Click" />
+                                                                <%-- <button type="button" class="btn btn-primary" runat="server" id="btnSubmitDecline" OnClick="btnSubmitDecline_Click">Submit</button>--%>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <asp:HiddenField runat="server" ID="hfeditEmployeeDetails" />
+                                                </div>
+                                                <%-- MODAL FOR ADD EMPLOYEE--%>
                                                 <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
@@ -113,36 +176,36 @@
 
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Contact Number:</strong>
-                                                                                <asp:TextBox ID="txtcontactnum" ToolTip ="e.g Format: 09XXXXXXXXX (must be 11 digit)" runat="server" class="form-control" placeholder="Employees' Contact number (Format: 09XXXXXXXXX) (must be 11 digit) " TextMode="Phone" Value=""></asp:TextBox>
+                                                                                <asp:TextBox ID="txtcontactnum" ToolTip="e.g Format: 09XXXXXXXXX (must be 11 digit)" runat="server" class="form-control" placeholder="Employees' Contact number (Format: 09XXXXXXXXX) (must be 11 digit) " TextMode="Phone" Value=""></asp:TextBox>
                                                                                 <asp:RegularExpressionValidator ID="RegexValidator" ValidationGroup="a" runat="server" ControlToValidate="txtcontactnum" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
                                                                                 <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" ValidationGroup="a" runat="server" ControlToValidate="txtcontactnum" ForeColor="Red" ErrorMessage="Invalid phone number format" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>--%>
                                                                             </div>
-                                                                           
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <%-- email--%>
-                                                                            <strong>Email Address:</strong>
-                                                                            <asp:TextBox ID="txtemail" runat="server" class="form-control" placeholder="Employees' email@example.com"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="reqemail" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemail"></asp:RequiredFieldValidator>
-                                                                            <%-- </div>--%>
-                                                                        </div>
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Password:</strong>
-                                                                            <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>
-                                                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server" 
-                                                                                ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
-                                                                            <%-- @*Show Password checkbox*@--%>
-                                                                           <%-- <div class="checkbox-fade fade-in-primary">
+
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <%-- email--%>
+                                                                                <strong>Email Address:</strong>
+                                                                                <asp:TextBox ID="txtemail" runat="server" class="form-control" placeholder="Employees' email@example.com"></asp:TextBox>
+                                                                                <asp:RequiredFieldValidator ID="reqemail" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemail"></asp:RequiredFieldValidator>
+                                                                                <%-- </div>--%>
+                                                                            </div>
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>Password:</strong>
+                                                                                <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password"></asp:TextBox>
+                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>
+                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
+                                                                                    ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
+                                                                                <%-- @*Show Password checkbox*@--%>
+                                                                                <%-- <div class="checkbox-fade fade-in-primary">
                                                                                 <label>
                                                                                     <input type="checkbox" value="" id="togglePassword">
                                                                                     <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
                                                                                     <span class="text-inverse">Show Password</span>
                                                                                 </label>
                                                                             </div>--%>
-                                                                        </div>
+                                                                            </div>
 
 
-                                                                        <%--  <div class="col-md-12 col-sm-12">
+                                                                            <%--  <div class="col-md-12 col-sm-12">
                                                                                     <div class="checkbox-fade fade-in-primary">
                                                                                         <label>
                                                                                             <input type="checkbox" value="" id="togglePassword">
@@ -151,252 +214,201 @@
                                                                                         </label>
                                                                                     </div>
                                                                                 </div>--%>
-                                                                        <%-- @*Show Password script*@--%>
-                                                                        <script>
-                                                                            const togglePassword = document.querySelector('#togglePassword');
-                                                                            const password = document.querySelector('#txtpass');
+                                                                            <%-- @*Show Password script*@--%>
+                                                                            <script>
+                                                                                const togglePassword = document.querySelector('#togglePassword');
+                                                                                const password = document.querySelector('#txtpass');
 
-                                                                            togglePassword.addEventListener('click', function (e) {
-                                                                                // toggle the type attribute
-                                                                                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-                                                                                password.setAttribute('type', type);
-                                                                                // toggle the eye slash icon
-                                                                                this.classList.toggle('fa-eye-slash');
-                                                                            });
-                                                                        </script>
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <%-- date hired--%>
-                                                                            <strong>Date Hired:</strong>
-                                                                            <asp:TextBox ID="txtdateHired" TextMode="Date" runat="server" class="form-control" placeholder="Employees' Date Hired"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="reqdoh" runat="server" ValidationGroup="a" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdateHired"></asp:RequiredFieldValidator>
+                                                                                togglePassword.addEventListener('click', function (e) {
+                                                                                    // toggle the type attribute
+                                                                                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                    password.setAttribute('type', type);
+                                                                                    // toggle the eye slash icon
+                                                                                    this.classList.toggle('fa-eye-slash');
+                                                                                });
+                                                                            </script>
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <%-- date hired--%>
+                                                                                <strong>Date Hired:</strong>
+                                                                                <asp:TextBox ID="txtdateHired" TextMode="Date" runat="server" class="form-control" placeholder="Employees' Date Hired"></asp:TextBox>
+                                                                                <asp:RequiredFieldValidator ID="reqdoh" runat="server" ValidationGroup="a" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtdateHired"></asp:RequiredFieldValidator>
 
-                                                                        </div>
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <%--emergency contact--%>
-                                                                            <strong>In case of emergency, Contact:</strong>
-                                                                            <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>
-                                                                        </div>
-
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <%--role--%>
-                                                                            <strong>Position:</strong>
-                                                                            <asp:DropDownList ID="drdrole" runat="server" Height="40px" Width="450px">
-                                                                                <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                                                <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
-                                                                                <asp:ListItem Text="Driver" Value="Driver"></asp:ListItem>
-                                                                                <asp:ListItem Text="Water Refiller" Value="Water Refiller"></asp:ListItem>
-                                                                                <asp:ListItem Text="WRS Helper" Value="WRS Helper"></asp:ListItem>
-                                                                            </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole"></asp:RequiredFieldValidator>
-                                                                              </div>
-                                                                             <br />
-                                                                              <div class="col-md-12 col-sm-12">
-                                                                            <strong>Status:</strong>
-                                                                            <asp:DropDownList ID="Drd_status" runat="server" Height="40px" Width="450px">
-                                                                                <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
-                                                                                <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                                                <%--<asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>--%>
-                                                                            </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status"></asp:RequiredFieldValidator>
-                                                                        </div>
-                                                                        <br />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <%--  BUTTON ADD EMPLOYEE HERE--%>
-                                                                <%--<asp:Button ID="btnAdd" runat="server" Text="Add Data" class="btn btn-primary btn-sm" ValidationGroup="a" OnClick="btnAdd_Click" AutoPostBack="false"/>--%>
-                                                                <asp:Button ID="btnAdd" runat="server" Text="Add Data" ValidationGroup="a" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <%-- MODAL FOR UPDATE RECORDS --%>
-                                            <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                    <div class="modal-content">
-                                                        <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="myModalLabel3">Edit employee records using their id number here: </h5>
-                                                                <%--exit button--%>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-md-12 col-sm-12 ">
-                                                                    <div class="x_content">
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Employee ID:</strong>
-                                                                            <div style="display: flex;">
-                                                                                <asp:TextBox ID="txtempId" runat="server" ToolTip="Enter the employee ID or firstname you want to update" class="form-control" placeholder="Enter Employee ID or firstname" Height="40px" Width="300px"></asp:TextBox>
-                                                                                <asp:Button ID="btnSearchDetails" runat="server" Text="Search Details" OnClick="btnSearchEmpDetails_Click" CssClass="btn-primary" Height="40px" />
+                                                                            </div>
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <%--emergency contact--%>
+                                                                                <strong>In case of emergency, Contact:</strong>
+                                                                                <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
+                                                                                <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>
                                                                             </div>
 
-                                                                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <%--role--%>
+                                                                                <strong>Position:</strong>
+                                                                                <asp:DropDownList ID="drdrole" runat="server" Height="40px" Width="450px">
+                                                                                    <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                                                    <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Driver" Value="Driver"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Water Refiller" Value="Water Refiller"></asp:ListItem>
+                                                                                    <asp:ListItem Text="WRS Helper" Value="WRS Helper"></asp:ListItem>
+                                                                                </asp:DropDownList>
+                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole"></asp:RequiredFieldValidator>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>Status:</strong>
+                                                                                <asp:DropDownList ID="Drd_status" runat="server" Height="40px" Width="450px">
+                                                                                    <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
+                                                                                    <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
+                                                                                    <%--<asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>--%>
+                                                                                </asp:DropDownList>
+                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status"></asp:RequiredFieldValidator>
+                                                                            </div>
+                                                                            <br />
                                                                         </div>
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Contact Number:</strong>
-                                                                            <asp:TextBox ID="txt_contactNumber" runat="server" ToolTip="Enter contact number you want to update (e.g Format: 09XXXXXXXXX (must be 11 digit))" placeholder="Enter contact number to update (Format: 09XXXXXXXXX (must be 11 digit))" class="form-control" TextMode="Phone"></asp:TextBox>
-                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txt_contactNumber" ForeColor="Red" ErrorMessage="Invalid phone number format and (it must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
-                                                                         
-                                                                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
-                                                                        </div>
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Email Address:</strong>
-                                                                            <asp:TextBox ID="txtEmail_address" runat="server" ToolTip="Enter email address you want to update" placeholder="Enter email address to update" class="form-control"></asp:TextBox>
-                                                                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
-                                                                        </div>
-                                                                        <br />
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Position:</strong>
-                                                                            <asp:DropDownList ID="drd_empPosition" runat="server" Height="40px" Width="364px">
-                                                                                <%--<asp:ListItem Selected="False" > ------ Update Employee Position ------ </asp:ListItem>--%>
-                                                                                <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
-                                                                                <asp:ListItem Text="Driver" Value="Driver"></asp:ListItem>
-                                                                                <asp:ListItem Text="Water Refiller" Value="Water Refiller"></asp:ListItem>
-                                                                                <asp:ListItem Text="WRS Helper" Value="WRS Helper"></asp:ListItem>
-                                                                            </asp:DropDownList>
-                                                                        </div>
-                                                                        <br />
-                                                                        <div class="col-md-12 col-sm-12">
-                                                                            <strong>Status:</strong>
-                                                                            <asp:DropDownList ID="drd_empStatus" runat="server" Height="40px" Width="364px">
-                                                                                <%--<asp:ListItem Selected="False" > ------ Update Employee Status ------ </asp:ListItem>--%>
-                                                                                <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                                                <asp:ListItem Text="Inactive" Value="Inactive"></asp:ListItem>
-                                                                            </asp:DropDownList>
-                                                                        </div>
-                                                                        <br />
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <%--  BUTTON UPDATE RECORD HERE--%>
-                                                                    <%--   <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click"/>--%>
-                                                                    <asp:Button ID="btnUpdateRecord" runat="server" Text="Edit Record" class="btn btn-primary btn-sm" OnClick="btnUpdateEmpRecord_Click" />
+                                                                    <%--  BUTTON ADD EMPLOYEE HERE--%>
+                                                                    <%--<asp:Button ID="btnAdd" runat="server" Text="Add Data" class="btn btn-primary btn-sm" ValidationGroup="a" OnClick="btnAdd_Click" AutoPostBack="false"/>--%>
+                                                                    <asp:Button ID="btnAdd" runat="server" Text="Add Data" ValidationGroup="a" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <%-- end for modal update records--%>
-                                            <br />
-                                            <%-- MODAL TO VIEW CERTAIN RECORDS --%>
-                                            <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                                                    <div class="modal-content">
-                                                        <form id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title" id="myModalLabel5">EMPLOYEE DETAILS
+
+                                                <br />
+                                                <%-- MODAL TO VIEW CERTAIN RECORDS --%>
+                                                <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                        <div class="modal-content">
+                                                            <form id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="myModalLabel5">EMPLOYEE DETAILS
                                 
-                                                                </h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-xl-12 col-xl-12 ">
-                                                                    <div class="x_content">
-                                                                        <%-- EMPLOYEE DETAILS REPORTS--%>
-                                                                        <div class="card-block">
-                                                                            <div class="table-responsive">
-                                                                                <div class="tab-content">
-                                                                                    <div class="tab-pane active">
-                                                                                        <asp:Label ID="lblSearhRecord" runat="server" Font-Underline="true" ForeColor="black" />
-                                                                                        <%--the gridview starts here--%>
-                                                                                        <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
-                                                                                            <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red" />
-                                                                                            <br />
-                                                                                            <asp:GridView runat="server" ID="gridEmp_Details" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
-                                                                                                SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
+                                                                    </h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-xl-12 col-xl-12 ">
+                                                                        <div class="x_content">
+                                                                            <%-- EMPLOYEE DETAILS REPORTS--%>
+                                                                            <div class="card-block">
+                                                                                <div class="table-responsive">
+                                                                                    <div class="tab-content">
+                                                                                        <div class="tab-pane active">
+                                                                                            <asp:Label ID="lblSearhRecord" runat="server" Font-Underline="true" ForeColor="black" />
+                                                                                            <%--the gridview starts here--%>
+                                                                                            <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
+                                                                                                <asp:Label ID="lblMessage" runat="server" Font-Underline="true" ForeColor="red" />
+                                                                                                <br />
+                                                                                                <asp:GridView runat="server" ID="gridEmp_Details" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                                                    SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
 
-                                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                            </asp:GridView>
+                                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                                </asp:GridView>
 
+                                                                                            </div>
+
+                                                                                            <%--Gridview ends here--%>
                                                                                         </div>
-
-                                                                                        <%--Gridview ends here--%>
+                                                                                        <!--/tab-pane-->
                                                                                     </div>
-                                                                                    <!--/tab-pane-->
+                                                                                    <!--/tab-content-->
+                                                                                    <%--TAB end --%>
                                                                                 </div>
-                                                                                <!--/tab-content-->
-                                                                                <%--TAB end --%>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <%-- end for modal view--%>
-                                            <br />
-                                            <!--PAGE CONTENTS-->
-                                            <div class="col-xl-12 col-xl-12 h-100">
-                                                <div class="card">
-                                                    <%--<div class="card" style="background-color:#f2e2ff">--%>
-                                                    <div class="card-header">
-                                                        <asp:Label ID="Label1" runat="server" Text="LIST OF EMPLOYEE RECORDS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
-                                                        <div style="float: right;">
+                                                <%-- end for modal view--%>
+                                                <br />
+                                                <!--PAGE CONTENTS-->
+                                                <div class="col-xl-12 col-xl-12 h-100">
+                                                    <div class="card">
+                                                        <%--<div class="card" style="background-color:#f2e2ff">--%>
+                                                        <div class="card-header">
+                                                            <asp:Label ID="Label1" runat="server" Text="LIST OF EMPLOYEE RECORDS" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                            <hr />
 
-                                                            <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by employee id or by firstname...." ToolTip="enter employee id number or firstname to search and view record" Height="40px" runat="server"></asp:TextBox>
-                                                            <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtSearch" ValidationGroup="a"></asp:RequiredFieldValidator>--%>
-                                                            <asp:Button ID="btnSearchEmployee" runat="server" Text="Search" OnClick="btnSearchEmployee_Click" CssClass="btn-primary" Height="40px" />
+                                                            <div style="display: flex; justify-content: space-between;">
 
-                                                        </div>
-                                                        <div class="card-header-right">
-                                                            <ul class="list-unstyled card-option">
-                                                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                <li><i class="fa fa-trash close-card"></i></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <%--   GRIDVIEW --%>
-                                                    <div class="card-footer">
-                                                        <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
-                                                        --%>
-                                                        <div class="table-responsive">
-                                                            <div class="tab-content">
-                                                                <div class="tab-pane active">
-                                                                    <%--the gridview starts here--%>
-                                                                    <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
-                                                                        <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1"
-                                                                            SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
-                                                                            <%-- <Columns>
-                                                                                                <asp:TemplateField>
-                                                                                                  <ItemTemplate>
-                                                                                                     <asp:Button ID="btnUpdate" runat="server" Text="Edit" OnClick="btnupdateData_Click" Font-Bold="true" class="btn btn-primary btn-md" data-toggle="modal" 
-                                                                                                            data-target="#editModal" BorderStyle="None" ForeColor="White"/>
-                                                                                                  </ItemTemplate>
-                                                                                                </asp:TemplateField>
-                                                                                              </Columns>--%>
-                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                        </asp:GridView>
-                                                                    </div>
+                                                                <div>
+                                                                    <asp:DropDownList ID="drdEmpStatus" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                                        <asp:ListItem Text="View employee records by its status" Selected="False"></asp:ListItem>
+                                                                        <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                                        <asp:ListItem Text="Active Employee" Value="1"></asp:ListItem>
+                                                                        <asp:ListItem Text="Inactive Employee" Value="2"></asp:ListItem>
 
-                                                                    <%--Gridview ends here--%>
+                                                                    </asp:DropDownList>
+                                                                    <asp:Button ID="btnViewEmployee" runat="server" Text="View" OnClick="btnViewEmployee_Click" CssClass="btn-primary" Height="40px" />
                                                                 </div>
-                                                                <!--/tab-pane-->
                                                             </div>
-                                                            <!--/tab-content-->
+                                                            <div style="float: right;">
+
+                                                                <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by employee id or by firstname...." ToolTip="enter employee id number or firstname to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                                <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtSearch" ValidationGroup="a"></asp:RequiredFieldValidator>--%>
+                                                                <asp:Button ID="btnSearchEmployee" runat="server" Text="Search" OnClick="btnSearchEmployee_Click" CssClass="btn-primary" Height="40px" />
+
+                                                            </div>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                    <li><i class="fa fa-trash close-card"></i></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <%--   GRIDVIEW --%>
+                                                        <div class="card-footer">
+                                                            <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
+                                                            --%>
+                                                            <div class="table-responsive">
+                                                                <div class="tab-content">
+                                                                    <div class="tab-pane active">
+                                                                        <%--the gridview starts here--%>
+                                                                        <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
+                                                                            <asp:Label Style="text-align: center;" ID="lblError" runat="server" ForeColor="red" Font-Size="16"></asp:Label>
+                                                                            <br />
+                                                                            <asp:GridView runat="server" ID="GridView1" CellPadding="3" Width="975px" CssClass="auto-style1"
+                                                                                SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
+                                                                                <Columns>
+                                                                                    <asp:TemplateField HeaderText="ACTION">
+                                                                                        <ItemTemplate>
+                                                                                            <asp:Button ID="btnEditEmp" runat="server" Text="Edit" OnClick="btnEditEmp_Click" CssClass="btn-primary" Height="40px" />
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
+                                                                                </Columns>
+                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                            </asp:GridView>
+                                                                        </div>
+
+                                                                        <%--Gridview ends here--%>
+                                                                    </div>
+                                                                    <!--/tab-pane-->
+                                                                </div>
+                                                                <!--/tab-content-->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -410,6 +422,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </asp:Content>

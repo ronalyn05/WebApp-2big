@@ -44,16 +44,19 @@ namespace WRS2big_Web.Admin
                 //deliveryExpressDisplay();
                 //displayTankSupply();
                 displayTankSupply();
+                
             }
-           
+            btnSearchOrder.Visible = false;
+            txtSearch.Visible = false;
+            btnSearchThirdParty.Visible = false;
+            txtSearchThirdParty.Visible = false;
 
             string idno = (string)Session["idno"];
 
-            // Retrieve all orders from the product refill table
             FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
             Dictionary<string, ProductRefill> productrefillList = response.ResultAs<Dictionary<string, ProductRefill>>();
 
-            if (response != null && response.ResultAs<ProductRefill>() != null)
+            if (response != null && productrefillList != null)
             {
                 var filteredList = productrefillList.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
 
@@ -76,11 +79,58 @@ namespace WRS2big_Web.Admin
                             twoBigDB.Update("PRODUCTREFILL/" + productRefill.pro_refillId, productRefill);
                         }
                     }
+                    else
+                    {
+                        decimal stockQty;
+                        decimal refillQty;
+                        decimal stockBalance = 0;
+
+                        if (decimal.TryParse(entry.pro_stockQty, out stockQty) && decimal.TryParse(entry.pro_refillQty, out refillQty))
+                        {
+                            // Check the unit of volume
+                            string refillUnit = entry.pro_refillUnitVolume.ToLower();
+                            string stockUnit = entry.pro_stockUnit.ToLower();
+
+                            // Convert refill quantity to gallons if needed
+                            if (refillUnit == "liters")
+                            {
+                                refillQty /= 3.78541m; // Convert liters to gallons
+                            }
+                            else if (refillUnit == "mililiters")
+                            {
+                                refillQty /= 3785.41m; // Convert milliliters to gallons
+                            }
+
+                            // Convert stock quantity to gallons if needed
+                            if (stockUnit == "liters")
+                            {
+                                stockQty /= 3.78541m; // Convert liters to gallons
+                            }
+                            else if (stockUnit == "mililiters")
+                            {
+                                stockQty /= 3785.41m; // Convert milliliters to gallons
+                            }
+
+                            stockBalance = stockQty - refillQty;
+                            entry.pro_stockBalance = (stockBalance < 0) ? "0" : stockBalance.ToString("0.00"); // Convert the balance to gallons and format it
+
+                            // Store the updated stock balance in the database
+                            ProductRefill productRefill = entry;
+                            productRefill.pro_stockBalance = entry.pro_stockBalance;
+                            twoBigDB.Update("PRODUCTREFILL/" + productRefill.pro_refillId, productRefill);
+                        }
+                        else
+                        {
+                            // Handle parsing errors for stock quantity or refill quantity
+                            Console.WriteLine("Invalid stock quantity or refill quantity for entry with ID: " + entry.pro_refillId);
+                        }
+                    }
                 }
             }
+            //calculateThirdpartyBalance();
 
         }
-
+       
         //DISPLAY TANK SUPPLY NI DIRI
         private void displayTankSupply()
         {
@@ -307,6 +357,7 @@ namespace WRS2big_Web.Admin
             productRefillTable.Columns.Add("PRODUCT DISCOUNT");
             productRefillTable.Columns.Add("OTHER PRODUCT STOCK");
             productRefillTable.Columns.Add("OTHER PRODUCT STOCK BALANCE");
+            productRefillTable.Columns.Add("PRODUCT OFFER TYPE");
             productRefillTable.Columns.Add("DATE ADDED");
             productRefillTable.Columns.Add("ADDED BY");
             productRefillTable.Columns.Add("DATE UPDATED");
@@ -335,7 +386,7 @@ namespace WRS2big_Web.Admin
                     string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                     productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
-                                                 discount, entry.pro_stockQty + " " + entry.pro_stockUnit, entry.pro_stockBalance, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+                                                 discount, entry.pro_stockQty + " " + entry.pro_stockUnit, entry.pro_stockBalance, entry.offerType, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                 }
 
             }
@@ -549,6 +600,10 @@ namespace WRS2big_Web.Admin
 
                 tankSize.Text = null;
 
+
+                tankSupplyDisplay();
+                lblProductData.Text = "TANK SUPPLY";
+                lblProductData.Visible = true;
             }
 
             catch (Exception ex)
@@ -683,6 +738,10 @@ namespace WRS2big_Web.Admin
                 };
 
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+
+                thirdpartyProductsDisplay();
+                lblProductData.Text = "THIRDPARTY PRODUCT";
+                lblProductData.Visible = true;
             }
             catch (Exception ex)
             {
@@ -828,13 +887,55 @@ namespace WRS2big_Web.Admin
                 };
 
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+
+                productRefillDisplay();
+                lblProductData.Text = "PRODUCT REFILL";
+                lblProductData.Visible = true;
             }
             catch (Exception ex)
             {
                 Response.Write(ex.Message);
             }
         }
-        //UPDATE PRODUCT REFILL DETAILS
+        //STORE THE PRODUCT ID FOR LATER USE AND UPDATE 
+        protected void btnEditProduct_Click(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnEditProduct = (Button)sender;
+
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnEditProduct.NamingContainer;
+
+            // Get the product ID from the specific column
+            int productIDColumnIndex = 1; //  the actual column index of the product ID
+            int productID = int.Parse(row.Cells[productIDColumnIndex].Text);
+
+            // Store the product ID in a hidden field for later use
+            hfeditProductDetails.Value = productID.ToString();
+
+            // Retrieve the existing product object from the database using the productID entered
+            FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/" + productID);
+            ProductRefill existingproduct = response.ResultAs<ProductRefill>();
+
+            if (response == null || existingproduct == null)
+            {
+                // Show error message if the response or existingproduct is null
+                Response.Write("<script>alert ('An error occurred while retrieving the product details.');</script>");
+                return;
+            }
+
+            // Assign the values to the UI controls
+            txtproductprice.Text = existingproduct.pro_refillPrice;
+            txtproductdiscount.Text = existingproduct.pro_discount;
+
+
+            // Store the product ID in a hidden field for later use
+            hfeditProductDetails.Value = productID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "editproduct", "$('#editproduct').modal('show');", true);
+        }
+        //PERFORM THE PRODUCT ID TO UPDATE HERE
         protected void btnEditProductDetails_Click(object sender, EventArgs e)
         {
             //  generate a random number for employee logged
@@ -843,93 +944,53 @@ namespace WRS2big_Web.Admin
 
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
-            int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
-            //  int adminId = int.Parse(idno);
+
+            // Get the product ID from the hidden field
+            int productID = int.Parse(hfeditProductDetails.Value);
+
+            // Get the new price and discount from the DropDownList in the modal popup
+            string newprice = txtproductprice.Text;
+            string newdiscount = txtproductdiscount.Text;
+          
+
             try
             {
-                string productID = txt_productId.Text.Trim();
 
-                // Check if the employee ID is valid
-                if (string.IsNullOrEmpty(productID))
-                {
-                    Response.Write("<script>alert ('Please enter a valid product ID!');</script>");
-                    return;
-                }
-                // Retrieve the existing product object from the database using the empID entered
+                // Retrieve the existing product object from the database using the productID entered
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/" + productID);
-                ProductRefill existingProduct = response.ResultAs<ProductRefill>();
+                ProductRefill existingproduct = response.ResultAs<ProductRefill>();
 
-                if (existingProduct == null)
+                if (response == null || existingproduct == null)
                 {
-                    // Show error message if the empID entered is invalid
-                    Response.Write("<script>alert ('Invalid product ID!');</script>");
+                    // Show error message if the response or existingproduct is null
+                    Response.Write("<script>alert ('An error occurred while retreiving the product details.');</script>");
                     return;
                 }
-
-                // Check if the current user has permission to edit the employee data
-                if (existingProduct.adminId != int.Parse(idno))
-                {
-                    // Show error message if the user does not have permission to edit the employee data
-                    Response.Write("<script>alert ('You do not have permission to edit this product data!');</script>");
-                    return;
-                }
-
-                // Get the new status and position from the DropDownList in the modal popup
-                string newPrice = txt_price.Text;
-                string newDiscount = txt_discount.Text;
-
-                // Create a new employee object with the updated data
-                ProductRefill updatedProduct = new ProductRefill
-                {
-                    adminId = existingProduct.adminId,
-                    pro_discount = existingProduct.pro_discount,
-                    pro_Image = existingProduct.pro_Image,
-                    pro_refillId = existingProduct.pro_refillId,
-                    pro_refillPrice = existingProduct.pro_refillPrice,
-                    pro_refillQty = existingProduct.pro_refillQty,
-                    pro_refillUnitVolume = existingProduct.pro_refillUnitVolume,
-                    pro_refillWaterType = existingProduct.pro_refillWaterType,
-                    pro_stockQty = existingProduct.pro_stockQty,
-                    pro_stockUnit = existingProduct.pro_stockUnit,
-                    dateAdded = existingProduct.dateAdded,
-                    offerType = existingProduct.offerType,
-                    addedBy = existingProduct.addedBy
-                };
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.pro_refillPrice)
+                if (!string.IsNullOrEmpty(newdiscount) && newdiscount != existingproduct.pro_discount)
                 {
-                    updatedProduct.pro_refillPrice = newPrice;
+                    existingproduct.pro_discount = newdiscount;
+                    existingproduct.dateUpdated = DateTime.Now;
+                    existingproduct.updatedBy = name;
                 }
-                //if (!string.IsNullOrEmpty(newDiscount) && int.TryParse(newDiscount, out int discountValue) && discountValue != updatedProduct.pro_discount)
-                //{
-                //    updatedProduct.pro_discount = discountValue;
-                //}
-
-                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.pro_discount.ToString())
+                else if (!string.IsNullOrEmpty(newprice) && newprice != existingproduct.pro_refillPrice)
                 {
-                    int discountValue;
-
-                    if (int.TryParse(newDiscount, out discountValue))
-                    {
-                        updatedProduct.pro_discount = discountValue.ToString();
-                    }
-
-
+                    existingproduct.pro_refillPrice = newprice;
+                    existingproduct.dateUpdated = DateTime.Now;
+                    existingproduct.updatedBy = name;
                 }
-                updatedProduct.updatedBy = name;
-                updatedProduct.dateUpdated = DateTime.Now;
+
 
                 // Update the existing employee object in the database
-                response = twoBigDB.Update("PRODUCTREFILL/" + productID, updatedProduct);
+                response = twoBigDB.Update("PRODUCTREFILL/" + productID, existingproduct);
 
                 // Show success message
                 Response.Write("<script>alert ('Product " + productID + " has been successfully updated!'); </script>");
 
                 txt_price.Text = null;
                 txt_discount.Text = null;
-                txt_productId.Text = null;
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
@@ -947,14 +1008,54 @@ namespace WRS2big_Web.Admin
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 productRefillDisplay();
+                lblProductData.Text = "PRODUCT REFILL";
+                lblProductData.Visible = true;
             }
             catch (Exception ex)
             {
-                Response.Write("<pre>" + ex.ToString() + "</pre>");
-
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
-        //UPDATE OTHER PRODUCT DETAILS
+        //STORE THE THIRD PARTY PRODUCT ID FOR LATER USE AND UPDATE 
+        protected void btnthirdpartyProduct_Click(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnthirdpartyProduct = (Button)sender;
+
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnthirdpartyProduct.NamingContainer;
+
+            // Get the product ID from the specific column
+            int productIDColumnIndex = 1; //  the actual column index of the product ID
+            int productID = int.Parse(row.Cells[productIDColumnIndex].Text);
+
+            // Store the product ID in a hidden field for later use
+            hfThirdpartyProduct.Value = productID.ToString();
+
+            // Retrieve the existing product object from the database using the productID entered
+            FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/" + productID);
+            thirdpartyProducts existingproduct = response.ResultAs<thirdpartyProducts>();
+
+            if (response == null || existingproduct == null)
+            {
+                // Show error message if the response or existingproduct is null
+                Response.Write("<script>alert ('An error occurred while retrieving the product details.');</script>");
+                return;
+            }
+
+            // Assign the values to the UI controls
+            txt_price.Text = existingproduct.thirdparty_productPrice;
+            txt_discount.Text = existingproduct.thirdparty_productDiscount;
+
+
+            // Store the product ID in a hidden field for later use
+            hfThirdpartyProduct.Value = productID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "editthirdpartyproduct", "$('#editthirdpartyproduct').modal('show');", true);
+        }
+        //PERFORM THE THIRD PARTY PRODUCT ID TO UPDATE HERE
         protected void btnUpdateOtherProductDetails_Click(object sender, EventArgs e)
         {
             //  generate a random number for employee logged
@@ -963,101 +1064,51 @@ namespace WRS2big_Web.Admin
 
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
-            int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
-            //  int adminId = int.Parse(idno);
+
+            // Get the product ID from the hidden field
+            int productID = int.Parse(hfThirdpartyProduct.Value);
+
+            // Get the new price and discount from the DropDownList in the modal popup
+            string newprice = txt_price.Text;
+            string newdiscount = txt_discount.Text;
+
             try
             {
-                string productID = txt_productId.Text.Trim();
-
-                // Check if the employee ID is valid
-                if (string.IsNullOrEmpty(productID))
-                {
-                    Response.Write("<script>alert ('Please enter a valid product ID!');</script>");
-                    return;
-                }
-                // Retrieve the existing product object from the database using the empID entered
+                // Retrieve the existing product object from the database using the productID entered
                 FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/" + productID);
-                thirdpartyProducts existingProduct = response.ResultAs<thirdpartyProducts>();
+                thirdpartyProducts existingproduct = response.ResultAs<thirdpartyProducts>();
 
-                if (existingProduct == null)
+                if (response == null || existingproduct == null)
                 {
-                    // Show error message if the empID entered is invalid
-                    Response.Write("<script>alert ('Invalid product ID!');</script>");
+                    // Show error message if the response or existingproduct is null
+                    Response.Write("<script>alert ('An error occurred while retreiving the third party product details.');</script>");
                     return;
                 }
-
-                // Check if the current user has permission to edit the employee data
-                if (existingProduct.adminId != int.Parse(idno))
-                {
-                    // Show error message if the user does not have permission to edit the employee data
-                    Response.Write("<script>alert ('You do not have permission to edit this product data!');</script>");
-                    return;
-                }
-
-                // Get the new status and position from the DropDownList in the modal popup
-                string newPrice = txt_price.Text;
-                string newDiscount = txt_discount.Text;
-
-                // Create a new employee object with the updated data
-                thirdpartyProducts updatedProduct = new thirdpartyProducts
-                {
-                    adminId = existingProduct.adminId,
-                    thirdparty_productDiscount = existingProduct.thirdparty_productDiscount,
-                    thirdparty_productId = existingProduct.thirdparty_productId,
-                    thirdparty_productImage = existingProduct.thirdparty_productImage,
-                    thirdparty_productName = existingProduct.thirdparty_productName,
-                    thirdparty_productPrice = existingProduct.thirdparty_productPrice,
-                    thirdparty_productQty = existingProduct.thirdparty_productQty,
-                    thirdparty_productUnitVolume = existingProduct.thirdparty_productUnitVolume,
-                    thirdparty_qtyStock = existingProduct.thirdparty_qtyStock,
-                    thirdparty_unitStock = existingProduct.thirdparty_unitStock,
-                    offerType = existingProduct.offerType,
-                    dateAdded = existingProduct.dateAdded,
-                    addedBy = existingProduct.addedBy
-
-                };
 
                 // Update the fields that have changed
-                if (!string.IsNullOrEmpty(newPrice) && newPrice != updatedProduct.thirdparty_productPrice)
+                if (!string.IsNullOrEmpty(newdiscount) && newdiscount != existingproduct.thirdparty_productDiscount)
                 {
-                    updatedProduct.thirdparty_productPrice = newPrice;
+                    existingproduct.thirdparty_productDiscount = newdiscount;
+                    existingproduct.dateUpdated = DateTime.Now;
+                    existingproduct.updatedBy = name;
                 }
-                //if (!string.IsNullOrEmpty(newDiscount) && int.TryParse(newDiscount, out int discountValue) && discountValue != updatedProduct.pro_discount)
-                //{
-                //    updatedProduct.pro_discount = discountValue;
-                //}
-                if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.thirdparty_productDiscount.ToString())
+                else if (!string.IsNullOrEmpty(newprice) && newprice != existingproduct.thirdparty_productPrice)
                 {
-                    int discountValue;
-
-                    if (int.TryParse(newDiscount, out discountValue))
-                    {
-                        updatedProduct.thirdparty_productDiscount = discountValue.ToString();
-                    }
-
-
+                    existingproduct.thirdparty_productPrice = newprice;
+                    existingproduct.dateUpdated = DateTime.Now;
+                    existingproduct.updatedBy = name;
                 }
-                //if (!string.IsNullOrEmpty(newDiscount) && newDiscount != updatedProduct.thirdparty_productDiscount.ToString())
-                //{
-                //    int discountValue;
-                //    if (int.TryParse(newDiscount, out discountValue))
-                //    {
-                //        updatedProduct.thirdparty_productDiscount = discountValue;
-                //    }
-                //}
-                updatedProduct.updatedBy = name;
-                updatedProduct.dateUpdated = DateTime.Now;
+
 
                 // Update the existing employee object in the database
-                response = twoBigDB.Update("thirdparty_PRODUCTS/" + productID, updatedProduct);
+                response = twoBigDB.Update("thirdparty_PRODUCTS/" + productID, existingproduct);
 
                 // Show success message
-                Response.Write("<script>alert ('Other Product " + productID + " has been successfully updated!'); </script>");
+                Response.Write("<script>alert ('Product " + productID + " has been successfully updated!'); </script>");
 
                 txt_price.Text = null;
                 txt_discount.Text = null;
-                txt_productId.Text = null;
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
@@ -1069,17 +1120,19 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
-                    userActivity = "UPDATED OTHER PRODUCT DETAILS",
+                    userActivity = "UPDATED PRODUCT REFILL DETAILS",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                 thirdpartyProductsDisplay();
+                lblProductData.Text = "THIRD PARTY PRODUCT";
+                lblProductData.Visible = true;
             }
             catch (Exception ex)
             {
-                Response.Write("<pre>" + ex.ToString() + "</pre>");
-
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
 
@@ -1094,22 +1147,44 @@ namespace WRS2big_Web.Admin
                 if (selectedOption == "0")
                 {
                     lblProductData.Text = "PRODUCT REFILL";
+                    lblThirdparty.Text = "THIRDPARTY PRODUCT";
+                    lbl_tankSupply.Text = "TANK SUPPLY";
+                    productRefillDisplay();
+                    thirdpartyProductsDisplay();
+                    tankSupplyDisplay();
+                    gridProductRefill.Visible = true;
+                    gridTankSupply.Visible = true;
+                    gridotherProduct.Visible = true;
+                }
+                else if (selectedOption == "1")
+                {
+                    lblProductData.Text = "PRODUCT REFILL";
+                    lblThirdparty.Visible = false;
+                    lbl_tankSupply.Visible = false;
                     gridProductRefill.Visible = true;
                     gridTankSupply.Visible = false;
                     gridotherProduct.Visible = false;
                     productRefillDisplay();
+                    btnSearchOrder.Visible = true;
+                    txtSearch.Visible = true;
                 }
-                else if (selectedOption == "1")
+                else if (selectedOption == "2")
                 {
                     lblProductData.Text = "THIRDPARTY PRODUCT";
+                    lblThirdparty.Visible = false;
+                    lbl_tankSupply.Visible = false;
                     gridProductRefill.Visible = false;
                     gridTankSupply.Visible = false;
                     gridotherProduct.Visible = true;
                     thirdpartyProductsDisplay();
+                    btnSearchThirdParty.Visible = true;
+                    txtSearchThirdParty.Visible = true;
                 }
-                else if (selectedOption == "2")
+                else if (selectedOption == "3")
                 {
                     lblProductData.Text = "TANK SUPPLY";
+                    lblThirdparty.Visible = false;
+                    lbl_tankSupply.Visible = false;
                     gridProductRefill.Visible = false;
                     gridotherProduct.Visible = false;
                     gridTankSupply.Visible = true;
@@ -1127,8 +1202,16 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string productnum = txtSearch.Text;
+            string productSearch = txtSearch.Text;
             decimal discount;
+
+
+            // Check if the product is valid
+            if (string.IsNullOrEmpty(productSearch))
+            {
+                Response.Write("<script>alert ('Please enter a valid product ID or name!');</script>");
+                return;
+            }
 
             try
             {
@@ -1136,10 +1219,6 @@ namespace WRS2big_Web.Admin
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL");
                 Dictionary<string, ProductRefill> productsList = response.ResultAs<Dictionary<string, ProductRefill>>();
-
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse responselist = twoBigDB.Get("thirdparty_PRODUCTS");
-                Dictionary<string, thirdpartyProducts> otherProductlist = responselist.ResultAs<Dictionary<string, thirdpartyProducts>>();
 
                 // Create the DataTable to hold the orders
                 DataTable productRefillTable = new DataTable();
@@ -1155,31 +1234,19 @@ namespace WRS2big_Web.Admin
                 productRefillTable.Columns.Add("DATE UPDATED");
                 productRefillTable.Columns.Add("UPDATED BY");
 
-                // Create the DataTable to hold the orders
-                DataTable otherProductTable = new DataTable();
-                otherProductTable.Columns.Add("PRODUCT ID");
-                otherProductTable.Columns.Add("PRODUCT NAME");
-                otherProductTable.Columns.Add("PRODUCT QUANTITY");
-                otherProductTable.Columns.Add("PRODUCT UNIT OF VOLUME");
-                otherProductTable.Columns.Add("PRODUCT PRICE");
-                otherProductTable.Columns.Add("PRODUCT STOCK");
-                otherProductTable.Columns.Add("PRODUCT DISCOUNT");
-                otherProductTable.Columns.Add("DATE ADDED");
-                otherProductTable.Columns.Add("ADDED BY");
-                otherProductTable.Columns.Add("DATE UPDATED");
-                otherProductTable.Columns.Add("UPDATED BY");
-
                 //condition to fetch the product refill data
                 if (response != null && response.ResultAs<ProductRefill>() != null)
                 {
                     //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productnum));
-                    var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
+                    //var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno);
+                    var filteredList = productsList.Values.Where(d => d.adminId.ToString() == idno && (d.pro_refillId.ToString() == productSearch)
+                   || (d.pro_refillWaterType == productSearch));
 
                     // Loop through the entries and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        if (productnum == entry.pro_refillId.ToString())
-                        {
+                        //if ((productSearch == entry.pro_refillId.ToString()) || (productSearch == entry.pro_refillWaterType))
+                        //{
                             if (!decimal.TryParse(entry.pro_discount, out discount))
                             {
                                 // If the discount value is not a valid decimal, assume it is zero
@@ -1199,63 +1266,43 @@ namespace WRS2big_Web.Admin
                             productRefillTable.Rows.Add(entry.pro_refillId, entry.pro_refillWaterType, entry.pro_refillQty, entry.pro_refillUnitVolume, entry.pro_refillPrice,
                                                  discount, entry.pro_stockQty + " " + entry.pro_stockUnit, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
                         }
-                    }
-                    lblViewSearch.Text = " You search the record of product with id number " + " " +  productnum;
-                }
-                else
-                {
-                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
-                    lblMessage.Text = "No data found for product with id number" + productnum;
-                }
-                //condition to fetch the other product data
-                if (responselist != null && responselist.ResultAs<thirdpartyProducts>() != null)
-                {
-                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno && (d.thirdparty_productId.ToString() == productnum));
-
-                    // Loop through the entries and add them to the DataTable
-                    foreach (var entry in filteredList)
+                    //}
+                    if (productRefillTable.Rows.Count == 0)
                     {
-                        if (productnum == entry.thirdparty_productId.ToString())
-                        {
-                            if (!decimal.TryParse(entry.thirdparty_productDiscount.ToString(), out discount))
-                            {
-                                // If the discount value is not a valid decimal, assume it is zero
-                                discount = 0;
-                            }
-                            else
-                            {
-                                // Convert discount from percentage to decimal
-                                discount /= 100;
-                            }
-                            
+                        // Handle null response or invalid selected value
+                        GridotherProduct_Details.DataSource = null;
+                        GridotherProduct_Details.DataBind();
+                        GridPro_Details.DataSource = null;
+                        GridPro_Details.DataBind();
+                        lblMessage.Text = " No record found for product with id number/name" + " " + productSearch;
 
-                            string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty,
-                                                       entry.thirdparty_productUnitVolume, entry.thirdparty_productPrice,
-                                                       entry.thirdparty_qtyStock + " " + entry.thirdparty_unitStock,
-                                                       discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
-                        }
+                        lblMessage.Visible = true;
+                        lblViewSearch.Visible = false;
                     }
-                    lblViewSearch.Text = " You search the record of third party product with id number " + " " + productnum;
+                    else
+                    {
+                        // Bind the DataTable to the GridView
+                        lblViewSearch.Text = " You search the record of product with id number/name" + " " + productSearch;
+                        GridPro_Details.DataSource = productRefillTable;
+                        GridPro_Details.DataBind();
+                        lblMessage.Visible = false;
+                        lblViewSearch.Visible = true;
+                        GridotherProduct_Details.DataSource = null;
+                        GridotherProduct_Details.DataBind();
+                    }
                 }
                 else
                 {
                     //Response.Write("<script>alert('Error retrieving product data.');</script>");
-                    lblMessage.Text = "No data found for product with id number" + productnum;
+                    lblMessage.Text = "No record found for product with id number/name" + " " + productSearch;
+                    lblViewSearch.Visible = false;
                 }
 
-                // Bind the DataTable to the GridView
-                GridPro_Details.DataSource = productRefillTable;
-                GridPro_Details.DataBind();
-
-                GridotherProduct_Details.DataSource = otherProductTable;
-                GridotherProduct_Details.DataBind();
-                // lblProductId.Text = productnum;
-
-                //  Response.Write("<script> location.reload(); window.location.href = '/Admin/WaterOrders.aspx'; </script>");
                 txtSearch.Text = null;
+                btnSearchOrder.Visible = true;
+                txtSearch.Visible = true;
+                txtSearchThirdParty.Visible = false;
+                btnSearchThirdParty.Visible = false;
 
             }
             catch (Exception ex)
@@ -1263,5 +1310,197 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert('Error displaying the data. '); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>" + ex.Message);
             }
         }
+        //SEARCH CERTAIN PRODUCT REPORT
+        protected void btnSearchThirdParty_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
+
+            string idno = (string)Session["idno"];
+            string productSearch = txtSearchThirdParty.Text;
+            decimal discount;
+
+
+            // Check if the product is valid
+            if (string.IsNullOrEmpty(productSearch))
+            {
+                Response.Write("<script>alert ('Please enter a valid product ID or name!');</script>");
+                return;
+            }
+
+            try
+            {
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("thirdparty_PRODUCTS");
+                Dictionary<string, thirdpartyProducts> otherProductlist = responselist.ResultAs<Dictionary<string, thirdpartyProducts>>();
+
+                // Create the DataTable to hold the orders
+                DataTable otherProductTable = new DataTable();
+                otherProductTable.Columns.Add("PRODUCT ID");
+                otherProductTable.Columns.Add("PRODUCT NAME");
+                otherProductTable.Columns.Add("PRODUCT QUANTITY");
+                otherProductTable.Columns.Add("PRODUCT UNIT OF VOLUME");
+                otherProductTable.Columns.Add("PRODUCT PRICE");
+                otherProductTable.Columns.Add("PRODUCT STOCK");
+                otherProductTable.Columns.Add("PRODUCT DISCOUNT");
+                otherProductTable.Columns.Add("DATE ADDED");
+                otherProductTable.Columns.Add("ADDED BY");
+                otherProductTable.Columns.Add("DATE UPDATED");
+                otherProductTable.Columns.Add("UPDATED BY");
+
+
+
+                //condition to fetch the third party product data
+                if (responselist != null && responselist.ResultAs<thirdpartyProducts>() != null)
+                {
+                    var filteredList = otherProductlist.Values.Where(d => d.adminId.ToString() == idno && (d.thirdparty_productId.ToString() == productSearch)
+                    || (d.thirdparty_productName == productSearch));
+
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in filteredList)
+                    {
+
+                        if (!decimal.TryParse(entry.thirdparty_productDiscount.ToString(), out discount))
+                        {
+                            // If the discount value is not a valid decimal, assume it is zero
+                            discount = 0;
+                        }
+                        else
+                        {
+                            // Convert discount from percentage to decimal
+                            discount /= 100;
+                        }
+
+
+                        string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        otherProductTable.Rows.Add(entry.thirdparty_productId, entry.thirdparty_productName, entry.thirdparty_productQty,
+                                                   entry.thirdparty_productUnitVolume, entry.thirdparty_productPrice,
+                                                   entry.thirdparty_qtyStock + " " + entry.thirdparty_unitStock,
+                                                   discount, dateAdded, entry.addedBy, dateUpdated, entry.updatedBy);
+
+                    }
+
+                    if (otherProductTable.Rows.Count == 0)
+                    {
+                        // Handle null response or invalid selected value
+                        GridotherProduct_Details.DataSource = null;
+                        GridotherProduct_Details.DataBind();
+                        GridPro_Details.DataSource = null;
+                        GridPro_Details.DataBind();
+                        lblMessage.Text = " No record found for third party product with id number/name" + " " + productSearch;
+
+                        lblMessage.Visible = true;
+                        lblViewSearch.Visible = false;
+                    }
+                    else
+                    {
+                        // Bind the DataTable to the GridView
+                        lblViewSearch.Text = " You search the record of third party product with/product name" + " " + productSearch;
+                        GridotherProduct_Details.DataSource = otherProductTable;
+                        GridotherProduct_Details.DataBind();
+                        lblMessage.Visible = false;
+                        lblViewSearch.Visible = true;
+                        GridPro_Details.DataSource = null;
+                        GridPro_Details.DataBind();
+                    }
+                }
+                else
+                {
+                    //Response.Write("<script>alert('Error retrieving product data.');</script>");
+                    lblMessage.Text = "No record found for third party product with id number/name" + " " + productSearch;
+                    lblViewSearch.Visible = false;
+                }
+
+                btnSearchOrder.Visible = false;
+                txtSearch.Visible = false;
+                txtSearchThirdParty.Visible = true;
+                btnSearchThirdParty.Visible = true;
+                txtSearchThirdParty.Text = null;
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error displaying the data. '); location.reload(); window.location.href = '/Admin/WaterProduct.aspx'; </script>" + ex.Message);
+            }
+        }
+
+        //CALCULATE THIRDPARTY BALANCE
+        //private void calculateThirdpartyBalance()
+        //{
+        //    // Get the ID of the currently logged-in owner from session state
+        //    string idno = (string)Session["idno"];
+
+        //    try
+        //    {
+        //        // Retrieve all products from the database
+        //        FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS");
+        //        Dictionary<string, thirdpartyProducts> thirdpartyproduct = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
+
+        //        if (response != null && thirdpartyproduct != null)
+        //        {
+        //            var filteredList = thirdpartyproduct.Values.Where(d => d.adminId.ToString() == idno).OrderByDescending(d => d.dateAdded);
+
+        //            foreach (var entry in filteredList)
+        //            {
+        //                // Calculate the balance stock based on the units
+        //                decimal stockQty;
+        //                decimal productQty;
+        //                decimal stockBalance = 0;
+
+        //                if (decimal.TryParse(entry.thirdparty_qtyStock, out stockQty) && decimal.TryParse(entry.thirdparty_productQty, out productQty))
+        //                {
+        //                    // Check the unit of volume
+        //                    string unit = entry.thirdparty_productUnitVolume.ToLower();
+        //                    string stockUnit = entry.thirdparty_unitStock.ToLower();
+
+        //                    if (unit == "liters")
+        //                    {
+        //                        stockBalance = stockQty - (productQty * 1);
+        //                    }
+        //                    else if (unit == "ml")
+        //                    {
+        //                        stockBalance = stockQty - (productQty * 0.001m); // Convert milliliters to liters if needed
+        //                    }
+        //                    else if (unit == "gallon")
+        //                    {
+        //                        stockBalance = stockQty - (productQty * 3.78541m); // Convert gallons to liters if needed
+        //                    }
+
+
+        //                    // Store the updated stock balance in the entry object
+        //                    entry.thirdparty_balanceStock = stockBalance.ToString();
+
+        //                    // Update the data object in the database
+        //                    twoBigDB.Update("thirdparty_PRODUCTS/" + entry.thirdparty_productId, entry);
+
+        //                }
+        //                else
+        //                {
+        //                    // Handle parsing errors for stock quantity or product quantity
+        //                    Console.WriteLine("Invalid stock quantity or product quantity for entry with ID: " + entry.thirdparty_productId);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('An error occurred while retrieving tank supply data: " + ex.Message + "'); window.location.href = '/Admin/WaterProduct.aspx';</script>");
+        //    }
+        //}
+
+        // Clear the form fields after saving the product
+        //ClearForm();
+        //private void ClearForm()
+        //{
+        //    // Clear the form fields
+        //    productName.Text = string.Empty;
+        //    drdprodUnitVolume.SelectedIndex = 0;
+        //    productQty.Text = string.Empty;
+        //    productPrice.Text = string.Empty;
+        //    productDiscounts.Text = string.Empty;
+        //    drdUnitStock.SelectedIndex = 0;
+        //    stockQuantity.Text = string.Empty;
+        //}
     }
 }
