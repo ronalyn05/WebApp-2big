@@ -15,6 +15,114 @@ namespace WRS2big_Web.superAdmin
     {
 
         /// <summary>
+        /// updatepackageName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updatepackageName;
+
+        /// <summary>
+        /// updatePackageDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updatePackageDes;
+
+        /// <summary>
+        /// updatePackagePrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updatePackagePrice;
+
+        /// <summary>
+        /// updateDurationType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList updateDurationType;
+
+        /// <summary>
+        /// updateDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateDuration;
+
+        /// <summary>
+        /// updateOrderLimit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateOrderLimit;
+
+        /// <summary>
+        /// updateProductLimit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateProductLimit;
+
+        /// <summary>
+        /// updateManagebleStation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateManagebleStation;
+
+        /// <summary>
+        /// existingFeatures control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox existingFeatures;
+
+        /// <summary>
+        /// updatefeaturesCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList updatefeaturesCheckbox;
+
+        /// <summary>
+        /// updateRenewable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList updateRenewable;
+
+        /// <summary>
+        /// updatePackagebtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button updatePackagebtn;
+
+        /// <summary>
         /// packageID control.
         /// </summary>
         /// <remarks>
@@ -69,6 +177,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label packageLimit;
 
         /// <summary>
+        /// manageableStation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label manageableStation;
+
+        /// <summary>
         /// featuresList control.
         /// </summary>
         /// <remarks>
@@ -78,13 +195,13 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.ListBox featuresList;
 
         /// <summary>
-        /// numofStations control.
+        /// productLimit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label numofStations;
+        protected global::System.Web.UI.WebControls.Label productLimit;
 
         /// <summary>
         /// renewable control.

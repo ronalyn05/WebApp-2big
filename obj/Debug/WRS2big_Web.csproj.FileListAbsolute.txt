@@ -58,6 +58,7 @@ C:\Users\User1\Desktop\Capstone2-2BigSystem\WebApp-2big\obj\Debug\WRS2big_Web.cs
 C:\Users\User1\Desktop\Capstone2-2BigSystem\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\User1\Desktop\Capstone2-2BigSystem\WebApp-2big\obj\Debug\WRS2big_Web.dll
 C:\Users\User1\Desktop\Capstone2-2BigSystem\WebApp-2big\obj\Debug\WRS2big_Web.pdb
+<<<<<<< HEAD
 C:\Users\trini\CAPSTONE2 PROJECT\WebApp-2big\bin\WRS2big_Web.dll.config
 C:\Users\trini\CAPSTONE2 PROJECT\WebApp-2big\bin\WRS2big_Web.dll
 C:\Users\trini\CAPSTONE2 PROJECT\WebApp-2big\bin\WRS2big_Web.pdb
@@ -178,3 +179,5 @@ C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\obj\Debug
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\obj\Debug\WRS2big_Web.csproj.CopyComplete
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\obj\Debug\WRS2big_Web.dll
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\obj\Debug\WRS2big_Web.pdb
+=======
+>>>>>>> master

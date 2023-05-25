@@ -486,11 +486,7 @@ namespace WRS2big_Web.Admin
 
                 Response.Write("<script>alert ('Station details successfully updated!');window.location.href = '/Admin/AdminProfile.aspx';</script>");
 
-                int logsId = (int)Session["logsId"];
 
-                //// Retrieve the existing Users log object from the database
-                //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
