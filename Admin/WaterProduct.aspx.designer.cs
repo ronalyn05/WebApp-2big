@@ -231,13 +231,40 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSet;
 
         /// <summary>
-        /// txt_productId control.
+        /// txtproductprice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_productId;
+        protected global::System.Web.UI.WebControls.TextBox txtproductprice;
+
+        /// <summary>
+        /// txtproductdiscount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtproductdiscount;
+
+        /// <summary>
+        /// btnEditDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditDetails;
+
+        /// <summary>
+        /// hfeditProductDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfeditProductDetails;
 
         /// <summary>
         /// txt_price control.
@@ -267,13 +294,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnUpdateDetails;
 
         /// <summary>
-        /// btnEditDetails control.
+        /// hfThirdpartyProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEditDetails;
+        protected global::System.Web.UI.WebControls.HiddenField hfThirdpartyProduct;
 
         /// <summary>
         /// lblViewSearch control.
@@ -384,6 +411,24 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Label Label7;
 
         /// <summary>
+        /// ddlSearchOptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearchOptions;
+
+        /// <summary>
+        /// btnSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearch;
+
+        /// <summary>
         /// txtSearch control.
         /// </summary>
         /// <remarks>
@@ -402,22 +447,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSearchOrder;
 
         /// <summary>
-        /// ddlSearchOptions control.
+        /// txtSearchThirdParty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSearchOptions;
+        protected global::System.Web.UI.WebControls.TextBox txtSearchThirdParty;
 
         /// <summary>
-        /// btnSearch control.
+        /// btnSearchThirdParty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Button btnSearchThirdParty;
 
         /// <summary>
         /// lblProductData control.
@@ -438,6 +483,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.GridView gridProductRefill;
 
         /// <summary>
+        /// lblThirdparty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblThirdparty;
+
+        /// <summary>
         /// gridotherProduct control.
         /// </summary>
         /// <remarks>
@@ -445,6 +499,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gridotherProduct;
+
+        /// <summary>
+        /// lbl_tankSupply control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_tankSupply;
 
         /// <summary>
         /// gridTankSupply control.
