@@ -74,7 +74,7 @@
                                                                     </div>
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <strong>Contact Number:</strong>
-                                                                        <asp:TextBox ID="txt_contactNumber" runat="server" ToolTip="Enter contact number you want to update (e.g Format: 09XXXXXXXXX (must be 11 digit))" placeholder="Enter contact number to update (Format: 09XXXXXXXXX (must be 11 digit))" class="form-control" TextMode="Phone"></asp:TextBox>
+                                                                        <asp:TextBox ID="txt_contactNumber" runat="server" ToolTip="Enter contact number you want to update (e.g Format: 09XXXXXXXXX (must be 11 digit))" placeholder="Enter contact number to update (Format: 09XXXXXXXXX (must be 11 digit))" class="form-control" TextMode="Number"></asp:TextBox>
                                                                         <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txt_contactNumber" ForeColor="Red" ErrorMessage="Invalid phone number format and (it must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
 
                                                                         <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
@@ -105,6 +105,26 @@
                                                                         </asp:DropDownList>
                                                                     </div>
                                                                     <br />
+                                                                    <h4>Forgot Employee Password? </h4>
+                                                                    <hr />
+                                                                     <div class="col-md-12 col-sm-12">
+                                                                        <strong>Reset Password:</strong>
+                                                                         <asp:TextBox ID="resetPass" runat="server" ToolTip="enter new employee password here" placeholder="reset employee password" class="form-control"></asp:TextBox>
+                                                                       <asp:RegularExpressionValidator ID="RegularExpressionValidator3" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
+                                                                                    ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="resetPass"></asp:RegularExpressionValidator>
+                                                                      <script>
+                                                                          const toggle_Password = document.querySelector('#toggle_Password');
+                                                                          const resetpassword = document.querySelector('#resetPass');
+
+                                                                          toggle_Password.addEventListener('click', function (e) {
+                                                                              // toggle the type attribute
+                                                                              const type = resetpassword.getAttribute('type') === 'resetpassword' ? 'text' : 'resetpassword';
+                                                                              resetpassword.setAttribute('type', type);
+                                                                              // toggle the eye slash icon
+                                                                              this.classList.toggle('fa-eye-slash');
+                                                                          });
+                                                                      </script>
+                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -176,7 +196,7 @@
 
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Contact Number:</strong>
-                                                                                <asp:TextBox ID="txtcontactnum" ToolTip="e.g Format: 09XXXXXXXXX (must be 11 digit)" runat="server" class="form-control" placeholder="Employees' Contact number (Format: 09XXXXXXXXX) (must be 11 digit) " TextMode="Phone" Value=""></asp:TextBox>
+                                                                                <asp:TextBox ID="txtcontactnum" ToolTip="e.g Format: 09XXXXXXXXX (must be 11 digit)" runat="server" class="form-control" placeholder="Employees' Contact number (Format: 09XXXXXXXXX) (must be 11 digit) " TextMode="Number" Value=""></asp:TextBox>
                                                                                 <asp:RegularExpressionValidator ID="RegexValidator" ValidationGroup="a" runat="server" ControlToValidate="txtcontactnum" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
                                                                                 <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" ValidationGroup="a" runat="server" ControlToValidate="txtcontactnum" ForeColor="Red" ErrorMessage="Invalid phone number format" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>--%>
                                                                             </div>
@@ -191,9 +211,9 @@
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Password:</strong>
                                                                                 <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password"></asp:TextBox>
-                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>
-                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
-                                                                                    ErrorMessage="Password must be at least 8 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
+                                                                             <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>--%>
+                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="a" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
+                                                                                    ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
                                                                                 <%-- @*Show Password checkbox*@--%>
                                                                                 <%-- <div class="checkbox-fade fade-in-primary">
                                                                                 <label>
@@ -238,7 +258,8 @@
                                                                                 <%--emergency contact--%>
                                                                                 <strong>In case of emergency, Contact:</strong>
                                                                                 <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
-                                                                                <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>
+                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator4" ValidationGroup="a" runat="server" ControlToValidate="txtemergencycontact" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
+                                                                            <%--    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>--%>
                                                                             </div>
 
                                                                             <div class="col-md-12 col-sm-12">
