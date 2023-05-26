@@ -65,13 +65,13 @@ namespace WRS2big_Web.superAdmin
             DataTable customerTable = new DataTable();
             //customerTable.Columns.Add("PROFILE");
             customerTable.Columns.Add("USER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("STATUS");
+            customerTable.Columns.Add("NAME");
             customerTable.Columns.Add("EMAIL");
             customerTable.Columns.Add("ADDRESS");
             customerTable.Columns.Add("PHONE #");
+            customerTable.Columns.Add("DATE EVALUATED");
             customerTable.Columns.Add("DATE REGISTERED");
-            customerTable.Columns.Add("USER STATUS");
 
 
 
@@ -80,21 +80,19 @@ namespace WRS2big_Web.superAdmin
                 //clientProfile.ImageUrl = entry.Value.profile_image;
                 if (entry.Value.status == "Approved")
                 {
-                    FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                    Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-
-
+                   
 
                     customerTable.Rows.Add(
                        //entry.Value.profile_image,
                        entry.Value.idno,
-                        entry.Value.fname,
-                        entry.Value.lname,
+                        entry.Value.status,
+                        entry.Value.fname + " " + entry.Value.lname,
                         entry.Value.email,
-                       stations.stationAddress,
+                       entry.Value.address,
                         entry.Value.phone,
-                        entry.Value.dateRegistered,
-                        entry.Value.status
+                        entry.Value.dateApproved,
+                        entry.Value.dateRegistered
+
                         );
                 }
 
@@ -171,13 +169,13 @@ namespace WRS2big_Web.superAdmin
             DataTable customerTable = new DataTable();
             //customerTable.Columns.Add("PROFILE");
             customerTable.Columns.Add("USER ID");
-            customerTable.Columns.Add("FIRST NAME");
-            customerTable.Columns.Add("LAST NAME");
+            customerTable.Columns.Add("STATUS");
+            customerTable.Columns.Add("NAME");
             customerTable.Columns.Add("EMAIL");
             customerTable.Columns.Add("ADDRESS");
             customerTable.Columns.Add("PHONE #");
+            customerTable.Columns.Add("DATE EVALUATED");
             customerTable.Columns.Add("DATE REGISTERED");
-            customerTable.Columns.Add("USER STATUS");
 
 
 
@@ -186,21 +184,18 @@ namespace WRS2big_Web.superAdmin
                 //clientProfile.ImageUrl = entry.Value.profile_image;
                 if (entry.Value.status == "Declined")
                 {
-                    FirebaseResponse station = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/RefillingStation");
-                    Model.RefillingStation stations = station.ResultAs<Model.RefillingStation>();
-
-
 
                     customerTable.Rows.Add(
                        //entry.Value.profile_image,
                        entry.Value.idno,
-                        entry.Value.fname,
-                        entry.Value.lname,
+                       entry.Value.status,
+                        entry.Value.fname + " " + entry.Value.lname,
                         entry.Value.email,
-                       stations.stationAddress,
+                       entry.Value.address,
                         entry.Value.phone,
-                        entry.Value.dateRegistered,
-                        entry.Value.status
+                        entry.Value.dateDeclined,
+                        entry.Value.dateRegistered
+                        
                         );
                 }
 
@@ -275,13 +270,12 @@ namespace WRS2big_Web.superAdmin
                 DataTable customerTable = new DataTable();
                 //customerTable.Columns.Add("PROFILE");
                 customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("ROLE");
                 customerTable.Columns.Add("STATUS");
                 customerTable.Columns.Add("NAME");
                 customerTable.Columns.Add("EMAIL");
                 customerTable.Columns.Add("ADDRESS");
                 customerTable.Columns.Add("PHONE #");
-                customerTable.Columns.Add("DATE APPROVED");
+                customerTable.Columns.Add("DATE EVALUATED");
                 customerTable.Columns.Add("DATE REGISTERED");
 
 
@@ -298,17 +292,33 @@ namespace WRS2big_Web.superAdmin
                     {
                         if (entry.Value.status != "Pending")
                         {
-                            customerTable.Rows.Add(
-                               //entry.Value.profile_image,
-                               entry.Value.idno,
-                               entry.Value.userRole,
-                               entry.Value.status,
-                                entry.Value.fname + " " + entry.Value.lname,
-                                entry.Value.email,
-                               stations.stationAddress,
-                                entry.Value.phone,
-                                entry.Value.dateApproved,
-                                entry.Value.dateRegistered);
+                            if (entry.Value.status == "Approved")
+                            {
+                                customerTable.Rows.Add(
+                                   //entry.Value.profile_image,
+                                   entry.Value.idno,
+                                   entry.Value.status,
+                                    entry.Value.fname + " " + entry.Value.lname,
+                                    entry.Value.email,
+                                   stations.stationAddress,
+                                    entry.Value.phone,
+                                    entry.Value.dateApproved,
+                                    entry.Value.dateRegistered);
+                            }
+                            else
+                            {
+                                customerTable.Rows.Add(
+                                   //entry.Value.profile_image,
+                                   entry.Value.idno,
+                                   entry.Value.status,
+                                    entry.Value.fname + " " + entry.Value.lname,
+                                    entry.Value.email,
+                                   stations.stationAddress,
+                                    entry.Value.phone,
+                                    entry.Value.dateDeclined,
+                                    entry.Value.dateRegistered);
+                            }
+
                         }
 
 

@@ -11,44 +11,8 @@ namespace WRS2big_Web.superAdmin
 {
 
 
-    public partial class SubscriptionReports
+    public partial class SalesReport
     {
-
-        /// <summary>
-        /// TextBox1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
-
-        /// <summary>
-        /// modalSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button modalSearch;
-
-        /// <summary>
-        /// subscriptionReport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView subscriptionReport;
-
-        /// <summary>
-        /// paymentButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button paymentButton;
 
         /// <summary>
         /// search control.
@@ -69,6 +33,24 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Button searchButton;
 
         /// <summary>
+        /// subscriptionSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button subscriptionSales;
+
+        /// <summary>
+        /// clientSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button clientSales;
+
+        /// <summary>
         /// customersLabel control.
         /// </summary>
         /// <remarks>
@@ -78,12 +60,12 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label customersLabel;
 
         /// <summary>
-        /// subscriptionSales control.
+        /// subscriptionReport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView subscriptionSales;
+        protected global::System.Web.UI.WebControls.GridView subscriptionReport;
     }
 }
