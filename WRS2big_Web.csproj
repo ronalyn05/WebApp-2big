@@ -590,6 +590,7 @@
     <Content Include="Site.Master" />
     <Content Include="superAdmin\clientDetails.aspx" />
     <Content Include="superAdmin\ClientReports.aspx" />
+    <Content Include="superAdmin\clientSubscriptionHistory.aspx" />
     <Content Include="superAdmin\customerDetails.aspx" />
     <Content Include="superAdmin\CustomerReports.aspx" />
     <Content Include="superAdmin\ManageCustomers.aspx" />
@@ -599,6 +600,7 @@
     <Content Include="superAdmin\RefillingStationReports.aspx" />
     <Content Include="superAdmin\Reports.aspx" />
     <Content Include="superAdmin\SAdminIndex.aspx" />
+    <Content Include="superAdmin\SalesReport.aspx" />
     <Content Include="superAdmin\SubscriptionReports.aspx" />
     <Content Include="superAdmin\SuperAdminAccount.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -840,6 +842,13 @@
     <Compile Include="superAdmin\ClientReports.aspx.designer.cs">
       <DependentUpon>ClientReports.aspx</DependentUpon>
     </Compile>
+    <Compile Include="superAdmin\clientSubscriptionHistory.aspx.cs">
+      <DependentUpon>clientSubscriptionHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\clientSubscriptionHistory.aspx.designer.cs">
+      <DependentUpon>clientSubscriptionHistory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="superAdmin\customerDetails.aspx.cs">
       <DependentUpon>customerDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -902,6 +911,13 @@
     </Compile>
     <Compile Include="superAdmin\SAdminIndex.aspx.designer.cs">
       <DependentUpon>SAdminIndex.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="superAdmin\SalesReport.aspx.cs">
+      <DependentUpon>SalesReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="superAdmin\SalesReport.aspx.designer.cs">
+      <DependentUpon>SalesReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="superAdmin\SubscriptionReports.aspx.cs">
       <DependentUpon>SubscriptionReports.aspx</DependentUpon>

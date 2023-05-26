@@ -92,7 +92,8 @@ namespace WRS2big_Web.Admin
                     paypalButton.AppendLine("    onApprove: function(data, actions) {");
                     paypalButton.AppendLine("        return actions.order.capture().then(function(details) {");
                     paypalButton.AppendLine("            console.log(details);");
-                    paypalButton.AppendLine("            window.location.replace('SubscriptionSuccess.aspx');");
+                    paypalButton.AppendLine("            var packageID = '" + package.packageID + "';");
+                    paypalButton.AppendLine("            window.location.replace('SubscriptionSuccess.aspx?packageID=' + packageID);");
                     paypalButton.AppendLine("        });");
                     paypalButton.AppendLine("    },");
                     paypalButton.AppendLine("    onCancel: function(data) {");
@@ -113,7 +114,9 @@ namespace WRS2big_Web.Admin
                     Label packageProducts = (Label)e.Item.FindControl("unliProducts");
 
 
-                    packageNameLabel.Text = package.packageName;
+                    
+
+                packageNameLabel.Text = package.packageName;
                     packageDescriptionLabel.Text = package.packageDescription;
                     packagePriceLabel.Text = package.packagePrice.ToString();
                     packageDurationLabel.Text = "for " + package.packageDuration + " " + package.durationType + "/s";
@@ -133,9 +136,11 @@ namespace WRS2big_Web.Admin
                     featuresRepeater.DataSource = featuresList;
                     featuresRepeater.DataBind();
 
-                    //FETCH DETAILS FOR EXCLUSIVE PACKAGE DETAILS
-                    //TO DISPLAY THE RENEWAL DETAILS
-                    if (package.renewable == "No")
+
+
+                //FETCH DETAILS FOR EXCLUSIVE PACKAGE DETAILS
+                //TO DISPLAY THE RENEWAL DETAILS
+                if (package.renewable == "No")
                     {
                         Label renewable = (Label)e.Item.FindControl("renewable");
                         renewable.Text = "No Renewal";
