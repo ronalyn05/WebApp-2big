@@ -315,9 +315,9 @@ namespace WRS2big_Web.Admin
                 {
                     couponId = idnum,
                     adminId = int.Parse(idno),
-                    couponName = txtpromoname.Text,
+                    couponName = Server.HtmlEncode(txtpromoname.Text),
                     couponDiscountValue = percentageVAlue,
-                    couponDescription = txtpromodescription.Text,
+                    couponDescription = Server.HtmlEncode(txtpromodescription.Text),
                     couponPointsRequiredToClaim = pointsRequired,
                     couponAppliedToProductOffers = selectedPromo_productOffered,
                     couponExpirationFrom = DateTime.Parse(txtpromoExpirationFrom.Text),
@@ -390,10 +390,6 @@ namespace WRS2big_Web.Admin
 
                 // Convert the date string to a DateTimeOffset using ParseExact
                 DateTime rewardsDateAdded = DateTime.ParseExact(currentDateTime.ToString(format), format, CultureInfo.InvariantCulture);
-
-
-               
-                    
 
                 // Get the selected values from the CheckBoxList
                 string waysToEarnPoints_selectedValues = "";

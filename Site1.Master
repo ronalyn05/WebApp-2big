@@ -246,7 +246,7 @@
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="/Admin/Reports" class="waves-effect waves-dark">
+                                        <a href="/Admin/SalesReports" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-money"></i><b>FC</b></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Sales</span>
                                             <span class="pcoded-mcaret"></span>

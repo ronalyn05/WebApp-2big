@@ -60,7 +60,8 @@
                                                     <div class="card-footer bg-c-purple">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                <p class="text-white m-b-0 text-center"> SALES</p>
+                                                                 <a href="/Admin/SalesReports" class="text-white m-b-0 text-center">SALES</a>
+                                                              <%--  <p class="text-white m-b-0 text-center"> SALES</p>--%>
                                                             </div>
                                                             <div class="col-3 text-right">
                                                                 <i class="fa fa-line-chart text-white f-16"></i>
@@ -86,7 +87,8 @@
                                                     <div class="card-footer bg-c-green">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                <p class="text-white m-b-0 text-center">DELIVERIES</p>
+                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">RESERVATIONS</a>
+                                                               <%-- <p class="text-white m-b-0 text-center">DELIVERIES</p>--%>
                                                             </div>
                                                             <div class="col-3 text-right">
                                                                 <i class="fa fa-line-chart text-white f-16"></i>
@@ -111,7 +113,8 @@
                                                     <div class="card-footer bg-c-red">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                <p class="text-white m-b-0 text-center">ORDERS</p>
+                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">ORDERS</a>
+                                                              <%--  <p class="text-white m-b-0 text-center">ORDERS</p>--%>
                                                             </div>
                                                             <div class="col-3 text-right">
                                                                 <i class="fa fa-line-chart text-white f-16"></i>
@@ -136,7 +139,8 @@
                                                     <div class="card-footer bg-c-blue">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                <p class="text-white m-b-0 text-center">RESERVATIONS</p>
+                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">RESERVATIONS</a>
+                                                               <%-- <p class="text-white m-b-0 text-center">RESERVATIONS</p>--%>
                                                             </div>
                                                             <div class="col-3 text-right">
                                                                 <i class="fa fa-line-chart text-white f-16"></i>

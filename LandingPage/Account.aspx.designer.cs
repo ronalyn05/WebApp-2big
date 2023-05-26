@@ -276,6 +276,15 @@ namespace WRS2big_Web.LandingPage
         protected global::System.Web.UI.WebControls.FileUpload businessProof;
 
         /// <summary>
+        /// lblErrorMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorMessage;
+
+        /// <summary>
         /// validIDUpload control.
         /// </summary>
         /// <remarks>
@@ -283,6 +292,15 @@ namespace WRS2big_Web.LandingPage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload validIDUpload;
+
+        /// <summary>
+        /// lblErrorUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorUpload;
 
         /// <summary>
         /// btnSignup control.

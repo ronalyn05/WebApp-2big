@@ -11,7 +11,7 @@ namespace WRS2big_Web.Admin
 {
 
 
-    public partial class ProductGallon
+    public partial class OnlineOrders
     {
 
         /// <summary>

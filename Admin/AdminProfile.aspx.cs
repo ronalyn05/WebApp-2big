@@ -258,27 +258,27 @@ namespace WRS2big_Web.Admin
                 // Update the fields that have changed
                 if (!string.IsNullOrEmpty(firstname.Text))
                 {
-                    data.fname = firstname.Text;
+                    data.fname = Server.HtmlEncode(firstname.Text);
                 }
                 if (!string.IsNullOrEmpty(middlename.Text))
                 {
-                    data.mname = middlename.Text;
+                    data.mname = Server.HtmlEncode(middlename.Text);
                 }
                 if (!string.IsNullOrEmpty(lastname.Text))
                 {
-                    data.lname = lastname.Text;
+                    data.lname = Server.HtmlEncode(lastname.Text);
                 }
                 if (!string.IsNullOrEmpty(birthdate.Text))
                 {
-                    data.bdate = birthdate.Text;
+                    data.bdate = Server.HtmlEncode(birthdate.Text);
                 }
                 if (!string.IsNullOrEmpty(contactnum.Text))
                 {
-                    data.phone = contactnum.Text;
+                    data.phone = Server.HtmlEncode(contactnum.Text);
                 }
                 if (!string.IsNullOrEmpty(email.Text))
                 {
-                    data.email = email.Text;
+                    data.email = Server.HtmlEncode(email.Text);
                 }
 
 

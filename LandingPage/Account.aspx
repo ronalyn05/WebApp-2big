@@ -341,7 +341,7 @@
                                                 <div class="form-group">
                                                     <label>Phone Number</label>
                                                     <div class="input-group-sm">
-                                                        <asp:TextBox runat="server" TextMode="Phone" class="form-control" Placeholder="(Format: 09XXXXXXXXX) (must be 11 digit)" ID="txtphoneNum"></asp:TextBox>
+                                                        <asp:TextBox runat="server" TextMode="Number" class="form-control" Placeholder="(Format: 09XXXXXXXXX) (must be 11 digit)" ID="txtphoneNum"></asp:TextBox>
                                                         <asp:RegularExpressionValidator ID="RegexValidator" ValidationGroup="a" runat="server" ControlToValidate="txtphoneNum" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
 
                                                         <%--                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>--%>
@@ -604,6 +604,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
                                                         <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" />
+                                                         <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
                                             </div>
@@ -611,6 +612,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
                                                         <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" />
+                                                         <asp:Label ID="lblErrorUpload" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
                                             </div>
