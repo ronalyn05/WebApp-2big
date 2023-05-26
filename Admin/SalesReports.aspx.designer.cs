@@ -11,115 +11,88 @@ namespace WRS2big_Web.Admin
 {
 
 
-    public partial class OnlineOrders
+    public partial class SalesReports
     {
 
         /// <summary>
-        /// Label2 control.
+        /// ddlSaleTransaction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSaleTransaction;
 
         /// <summary>
-        /// drdViewOrders control.
+        /// btnView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdViewOrders;
+        protected global::System.Web.UI.WebControls.Button btnView;
 
         /// <summary>
-        /// btnViewOrders control.
+        /// dailySalesGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnViewOrders;
+        protected global::System.Web.UI.WebControls.GridView dailySalesGridView;
 
         /// <summary>
-        /// lblViewOrders control.
+        /// weeklySales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblViewOrders;
+        protected global::System.Web.UI.WebControls.Label weeklySales;
 
         /// <summary>
-        /// lblError control.
+        /// weeklySalesGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected global::System.Web.UI.WebControls.GridView weeklySalesGridView;
 
         /// <summary>
-        /// gridView_order control.
+        /// monthlysales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridView_order;
+        protected global::System.Web.UI.WebControls.Label monthlysales;
 
         /// <summary>
-        /// drdAssignDriver control.
+        /// monthlySalesGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drdAssignDriver;
+        protected global::System.Web.UI.WebControls.GridView monthlySalesGridView;
 
         /// <summary>
-        /// btnSubmit control.
+        /// overallSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.Label overallSales;
 
         /// <summary>
-        /// hfAssignDriver control.
+        /// overallSalesLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfAssignDriver;
-
-        /// <summary>
-        /// reasonInput control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea reasonInput;
-
-        /// <summary>
-        /// btnSub_decline control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSub_decline;
-
-        /// <summary>
-        /// hfDeclineOrderID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfDeclineOrderID;
+        protected global::System.Web.UI.WebControls.Label overallSalesLabel;
     }
 }

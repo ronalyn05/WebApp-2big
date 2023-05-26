@@ -127,8 +127,6 @@ namespace WRS2big_Web.Admin
                     }
                 }
             }
-            //calculateThirdpartyBalance();
-
         }
        
         //DISPLAY TANK SUPPLY NI DIRI
@@ -658,59 +656,119 @@ namespace WRS2big_Web.Admin
                     productStockQty = stockQuantity.Text;
                 }
 
-
-                var data = new thirdpartyProducts
-                {
-                    adminId = adminId,
-                    thirdparty_productId = idnum,
-                    offerType = "thirdparty product",
-                    thirdparty_productName = productName.Text,
-                    thirdparty_productUnitVolume = drdprodUnitVolume.SelectedValue,
-                    thirdparty_productQty = productQty.Text,
-                    thirdparty_productPrice = productPrice.Text,
-                    thirdparty_productDiscount = discount,
-                    thirdparty_unitStock = productStockUnit,
-                    thirdparty_qtyStock = productStockQty,
-                    thirdparty_productImage = null,
-                    addedBy = name,
-                    dateAdded = DateTime.UtcNow
-
-                };
-
-
                 byte[] fileBytes = null;
 
+                // Check if the uploaded file is valid and meets the requirements
                 if (imgProduct.HasFile)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    // Get the file extension
+                    string fileExtension = Path.GetExtension(imgProduct.FileName);
+
+                    // Check if the file extension is allowed (JPG)
+                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
                     {
-                        imgProduct.PostedFile.InputStream.CopyTo(memoryStream);
-                        fileBytes = memoryStream.ToArray();
+                        
+                        //Check if the file size is within the allowed limit
+                            int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
+                        if (imgProduct.FileContent.Length <= maxFileSizeInBytes)
+                        {
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                imgProduct.PostedFile.InputStream.CopyTo(memoryStream);
+                                fileBytes = memoryStream.ToArray();
+                            }
+
+                            var data = new thirdpartyProducts
+                            {
+                                adminId = adminId,
+                                thirdparty_productId = idnum,
+                                offerType = "thirdparty product",
+                                thirdparty_productName = Server.HtmlEncode(productName.Text),
+                                thirdparty_productUnitVolume = drdprodUnitVolume.SelectedValue,
+                                thirdparty_productQty = productQty.Text,
+                                thirdparty_productPrice = productPrice.Text,
+                                thirdparty_productDiscount = discount,
+                                thirdparty_unitStock = productStockUnit,
+                                thirdparty_qtyStock = productStockQty,
+                                thirdparty_productImage = null,
+                                addedBy = name,
+                                dateAdded = DateTime.UtcNow
+
+                            };
+                            //// Check if there is already an uploaded image
+                            //if (data.thirdparty_productImage == null)
+                            //{
+                                // Upload the image to the storage
+                                var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                                var filePath = $"thirdpartyProduct_images/{data.thirdparty_productId}{fileExtension}";
+
+                                using (var stream = new MemoryStream(fileBytes))
+                                {
+                                    var storageTask = storage.Child(filePath).PutAsync(stream);
+                                    var downloadUrl = await storageTask;
+                                    data.thirdparty_productImage = downloadUrl;
+                                }
+
+                            SetResponse response;
+                            //USER = tablename, Idno = key(PK ? )
+                            // response = twoBigDB.Set("ADMIN/" + idno + "/Product/" + data.productId, data);
+                            response = twoBigDB.Set("thirdparty_PRODUCTS/" + data.thirdparty_productId, data);
+                            thirdpartyProducts result = response.ResultAs<thirdpartyProducts>();
+                            Response.Write("<script>alert ('Third party product offers with Id number: " + data.thirdparty_productId + " is successfully added!'); </script>");
+                            //}
+                            //else
+                            //{
+                            //    //lblErrorMessage.Text = "Only one image is allowed.";
+                            //    Response.Write("<script>alert('Only one image is allowed.'); </script>");
+                            //    return;
+                            //}
+                        }
+                        else
+                        {
+                            //lblErrorMessage.Text = "File size should not exceed 5MB.";
+                            Response.Write("<script>alert('File size should not exceed 5MB.'); </script>");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        //lblErrorMessage.Text = "Only JPG files are allowed.";
+                        Response.Write("<script>alert('Only JPG files are allowed.'); </script>");
+                        return;
                     }
                 }
-
-                if (fileBytes != null)
+                else
                 {
-
-                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                    var fileExtension = Path.GetExtension(imgProduct.FileName);
-                    var filePath = $"thirdpartyProduct_images/{data.thirdparty_productId}{fileExtension}";
-                    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
-                    using (var stream = new MemoryStream(fileBytes))
-                    {
-                        var storageTask = storage.Child(filePath).PutAsync(stream);
-                        var downloadUrl = await storageTask;
-                        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.thirdparty_productImage = downloadUrl;
-                    }
+                    // No image uploaded, handle accordingly
+                    Response.Write("<script>alert('No image uploaded, please upload one'); </script>");
+                    //lblErrorMessage.Text = "No image uploaded, please upload one";
                 }
+                //if (imgProduct.HasFile)
+                //{
+                //    using (var memoryStream = new MemoryStream())
+                //    {
+                //        imgProduct.PostedFile.InputStream.CopyTo(memoryStream);
+                //        fileBytes = memoryStream.ToArray();
+                //    }
+                //}
 
-                SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
-                // response = twoBigDB.Set("ADMIN/" + idno + "/Product/" + data.productId, data);
-                response = twoBigDB.Set("thirdparty_PRODUCTS/" + data.thirdparty_productId, data);
-                thirdpartyProducts result = response.ResultAs<thirdpartyProducts>();
-                Response.Write("<script>alert ('Third party product offers with Id number: " + data.thirdparty_productId + " is successfully added!'); </script>");
+                //if (fileBytes != null)
+                //{
+
+                //    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                //    var fileExtension = Path.GetExtension(imgProduct.FileName);
+                //    var filePath = $"thirdpartyProduct_images/{data.thirdparty_productId}{fileExtension}";
+                //    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
+                //    using (var stream = new MemoryStream(fileBytes))
+                //    {
+                //        var storageTask = storage.Child(filePath).PutAsync(stream);
+                //        var downloadUrl = await storageTask;
+                //        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
+                //        data.thirdparty_productImage = downloadUrl;
+                //    }
+                //}
+
+              
 
                 productName.Text = null;
                 productQty.Text = null;
@@ -742,12 +800,15 @@ namespace WRS2big_Web.Admin
                 thirdpartyProductsDisplay();
                 lblProductData.Text = "THIRDPARTY PRODUCT";
                 lblProductData.Visible = true;
+                txtSearchThirdParty.Visible = true;
+                btnSearchThirdParty.Visible = true;
             }
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Data already exist'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';" + ex.Message);
             }
         }
+       
         //STORING DATA TO PRODUCT REFILL and other product offered
         protected async void btnSet_Click(object sender, EventArgs e)
         {
@@ -785,6 +846,23 @@ namespace WRS2big_Web.Admin
                 {
                     productStockUnit = " ";
                 }
+                string refillunit = " ";
+                if (refillUnitOfVolume.SelectedValue == "gallon")
+                {
+                    refillunit = refillUnitOfVolume.SelectedValue;
+                }
+                else if (refillUnitOfVolume.SelectedValue == "liter/s")
+                {
+                    refillunit = refillUnitOfVolume.SelectedValue;
+                }
+                else if (refillUnitOfVolume.SelectedValue == "mililiter/s")
+                {
+                    refillunit = refillUnitOfVolume.SelectedValue;
+                }
+                else
+                {
+                    refillunit = " ";
+                }
                 // Get the selected values from the CheckBoxList
                 string offerType_selectedValues = " ";
                 foreach (ListItem item in radioType_productoffered.Items)
@@ -807,58 +885,122 @@ namespace WRS2big_Web.Admin
                     productStockQty = txtStockQty.Text;
                 }
                
-
-                var data = new ProductRefill
-                {
-                    pro_refillId = idnum,
-                    adminId = adminId,
-                    offerType = offerType_selectedValues,
-                    pro_refillWaterType = refillwaterType.Text.ToLower(),
-                    pro_Image = null,
-                    pro_refillUnitVolume = refillUnitOfVolume.SelectedValue,
-                    pro_discount = discount,
-                    pro_refillQty = refillQty.Text,
-                    pro_refillPrice = refillPrice.Text,
-                    pro_stockUnit = productStockUnit,
-                    pro_stockQty = productStockQty,
-                    addedBy = name,
-                    dateAdded = DateTime.Now
-                };
-
                 //UPLOADING THE IMAGE TO THE STORAGE
                 byte[] fileBytes = null;
+                //bool imageUploaded = false; // Add a flag to track if an image was uploaded
 
+
+                // Check if the uploaded file is valid and meets the requirements
                 if (prodImage.HasFile)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    // Get the file extension
+                    string fileExtension = Path.GetExtension(prodImage.FileName);
+
+                    // Check if the file extension is allowed (JPG)
+                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
                     {
-                        prodImage.PostedFile.InputStream.CopyTo(memoryStream);
-                        fileBytes = memoryStream.ToArray();
+                        // Check if the file size is within the allowed limit
+                        int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
+                        if (prodImage.FileContent.Length <= maxFileSizeInBytes)
+                        {
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                prodImage.PostedFile.InputStream.CopyTo(memoryStream);
+                                fileBytes = memoryStream.ToArray();
+                            }
+
+                            var data = new ProductRefill
+                            {
+                                pro_refillId = idnum,
+                                adminId = adminId,
+                                offerType = offerType_selectedValues,
+                                pro_refillWaterType = Server.HtmlEncode(refillwaterType.Text.ToLower()),
+                                pro_Image = null,
+                                pro_refillUnitVolume = refillUnitOfVolume.SelectedValue,
+                                pro_discount = discount,
+                                pro_refillQty = refillQty.Text,
+                                pro_refillPrice = refillPrice.Text,
+                                pro_stockUnit = productStockUnit,
+                                pro_stockQty = productStockQty,
+                                addedBy = name,
+                                dateAdded = DateTime.Now
+                            };
+
+                            // Check if there is already an uploaded image
+                            //if (data.pro_Image == null)
+                            //{
+                                // Upload the image to the storage
+                                var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                                var filePath = $"productRefill_images/{data.pro_refillId}{fileExtension}";
+
+                                using (var stream = new MemoryStream(fileBytes))
+                                {
+                                    var storageTask = storage.Child(filePath).PutAsync(stream);
+                                    var downloadUrl = await storageTask;
+                                    data.pro_Image = downloadUrl;
+                                }
+
+                                SetResponse response;
+                                //USER = tablename, Idno = key(PK ? )
+                                // response = twoBigDB.Set("Product/" + idno + "/Product/" + data.productId, data);
+                                response = twoBigDB.Set("PRODUCTREFILL/" + data.pro_refillId, data);
+                                ProductRefill result = response.ResultAs<ProductRefill>();
+                                Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
+                            //}
+                            //else
+                            //{
+                            //    //lblError.Text = "Only one image is allowed.";
+                            //    Response.Write("<script>alert('Only one image is allowed.'); </script>");
+                            //    return;
+                            //}
+                        }
+                        else
+                        {
+                            //lblError.Text = "File size should not exceed 5MB.";
+                            Response.Write("<script>alert('File size should not exceed 5MB.'); </script>");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        //lblError.Text = "Only JPG files are allowed.";
+                        Response.Write("<script>alert('Only JPG files are allowed.'); </script>");
+                        return;
                     }
                 }
-
-                if (fileBytes != null)
+                else
                 {
-
-                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                    var fileExtension = Path.GetExtension(prodImage.FileName);
-                    var filePath = $"productRefill_images/{data.pro_refillId}{fileExtension}";
-                    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
-                    using (var stream = new MemoryStream(fileBytes))
-                    {
-                        var storageTask = storage.Child(filePath).PutAsync(stream);
-                        var downloadUrl = await storageTask;
-                        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.pro_Image = downloadUrl;
-                    }
+                    // No image uploaded, handle accordingly
+                    //lblError.Text = "No image uploaded, please upload one";
+                    Response.Write("<script>alert('No image uploaded, please upload one.'); </script>");
                 }
+               
+                //if (prodImage.HasFile)
+                //{
+                //    using (var memoryStream = new MemoryStream())
+                //    {
+                //        prodImage.PostedFile.InputStream.CopyTo(memoryStream);
+                //        fileBytes = memoryStream.ToArray();
+                //    }
+                //}
 
-                SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
-                // response = twoBigDB.Set("Product/" + idno + "/Product/" + data.productId, data);
-                response = twoBigDB.Set("PRODUCTREFILL/" + data.pro_refillId, data);
-                ProductRefill result = response.ResultAs<ProductRefill>();
-                Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
+                //if (fileBytes != null)
+                //{
+
+                //    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                //    var fileExtension = Path.GetExtension(prodImage.FileName);
+                //    var filePath = $"productRefill_images/{data.pro_refillId}{fileExtension}";
+                //    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
+                //    using (var stream = new MemoryStream(fileBytes))
+                //    {
+                //        var storageTask = storage.Child(filePath).PutAsync(stream);
+                //        var downloadUrl = await storageTask;
+                //        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
+                //        data.pro_Image = downloadUrl;
+                //    }
+                //}
+
+              
 
                 refillwaterType.Text = null;
                 refillDiscount.Text = null;
@@ -891,6 +1033,8 @@ namespace WRS2big_Web.Admin
                 productRefillDisplay();
                 lblProductData.Text = "PRODUCT REFILL";
                 lblProductData.Visible = true;
+                btnSearchOrder.Visible = true;
+                txtSearch.Visible = true;
             }
             catch (Exception ex)
             {
@@ -1134,7 +1278,7 @@ namespace WRS2big_Web.Admin
                 // Show error message
                 Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
-        }
+        } 
 
         //SEARCH PRODUCT REPORT
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -1202,7 +1346,7 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string productSearch = txtSearch.Text;
+            string productSearch = Server.HtmlEncode(txtSearch.Text);
             decimal discount;
 
 
@@ -1316,7 +1460,7 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string productSearch = txtSearchThirdParty.Text;
+            string productSearch = Server.HtmlEncode(txtSearchThirdParty.Text);
             decimal discount;
 
 

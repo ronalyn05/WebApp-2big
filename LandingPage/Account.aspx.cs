@@ -63,12 +63,12 @@ namespace WRS2big_Web.LandingPage
                 string validID = validIDList.SelectedValue;
 
                 // Password validation
-                string password = id_passwordreg.Text;
+                string password = Server.HtmlEncode(id_passwordreg.Text);
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
                     !password.Any(c => !char.IsLetterOrDigit(c)))
                 {
-                    Response.Write("<script>alert('Password must be 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                    Response.Write("<script>alert('Password must be in between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
                     return;
                 }
 
@@ -103,12 +103,12 @@ namespace WRS2big_Web.LandingPage
                 var data = new AdminAccount
                 {
                     idno = idnum,
-                    lname = txtlname.Text,
-                    fname = txtfname.Text,
-                    mname = txtmname.Text,
+                    lname = Server.HtmlEncode(txtlname.Text),
+                    fname = Server.HtmlEncode(txtfname.Text),
+                    mname = Server.HtmlEncode(txtmname.Text),
                     bdate = txtbirthdate.Text,
                     phone = contactNum,
-                    email = txtEmail.Text,
+                    email = Server.HtmlEncode(txtEmail.Text),
                     pass = password,
                     businessProof = selectedProof,
                     validID = validID,
@@ -124,12 +124,14 @@ namespace WRS2big_Web.LandingPage
                 {
                     addLongitude = longitude,
                     addLattitude = latitude,
-                    stationName = txtStationName.Text,
+                    stationName = Server.HtmlEncode(txtStationName.Text),
                     stationAddress = address,
                     proof = null,
                     dateAdded = DateTime.UtcNow
                 };
-                //FOR THE VALID ID 
+
+               
+                ////FOR THE VALID ID 
                 if (validIDUpload.HasFile)
                 {
                     //FOR THE VALID ID

@@ -303,7 +303,7 @@
     <Content Include="Admin\WaitingPage.aspx" />
     <Content Include="Admin\WalkIns.aspx" />
     <Content Include="Admin\OnlineOrders.aspx" />
-    <Content Include="Admin\Reports.aspx" />
+    <Content Include="Admin\SalesReports.aspx" />
     <Content Include="Admin\Reviews.aspx" />
     <Content Include="Admin\Rewards.aspx" />
     <Content Include="Admin\WaterOrders.aspx" />
@@ -714,12 +714,12 @@
     <Compile Include="Admin\OnlineOrders.aspx.designer.cs">
       <DependentUpon>OnlineOrders.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\Reports.aspx.cs">
-      <DependentUpon>Reports.aspx</DependentUpon>
+    <Compile Include="Admin\SalesReports.aspx.cs">
+      <DependentUpon>SalesReports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\Reports.aspx.designer.cs">
-      <DependentUpon>Reports.aspx</DependentUpon>
+    <Compile Include="Admin\SalesReports.aspx.designer.cs">
+      <DependentUpon>SalesReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Reviews.aspx.cs">
       <DependentUpon>Reviews.aspx</DependentUpon>

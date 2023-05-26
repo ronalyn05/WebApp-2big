@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Data;
 using WRS2big_Web.Model;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WRS2big_Web.Admin
 {
@@ -68,6 +70,7 @@ namespace WRS2big_Web.Admin
             employeesTable.Columns.Add("DETAILS UPDATED BY");
             employeesTable.Columns.Add("DATE RESIGNED");
             employeesTable.Columns.Add("STATUS MODIFIED BY");
+            //employeesTable.Columns.Add("PASSWORD");
 
             if (response != null && response.ResultAs<Employee>() != null)
             {
@@ -76,6 +79,9 @@ namespace WRS2big_Web.Admin
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
+                    // Decrypt the password
+                    //string decryptedPassword = DecryptSHA1Hash(entry.emp_pass);
+
                     string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateUpdated = entry.dateUpdated == DateTime.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
                     string dateStatusModified = entry.statusDateModified == DateTime.MinValue ? "" : entry.statusDateModified.ToString("MMMM dd, yyyy hh:mm:ss tt");
@@ -84,10 +90,9 @@ namespace WRS2big_Web.Admin
                         entry.emp_gender, entry.emp_role,  entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, entry.emp_emergencycontact,
                         dateAdded, entry.addedBy, dateUpdated, entry.updatedBy, dateStatusModified, entry.status_ModifiedBy);
 
-                    //employeesTable.Rows.Add(entry.emp_status, entry.emp_id,
-                    //                     entry.emp_firstname + " " + entry.emp_lastname, entry.emp_gender, entry.emp_role,
-                    //                     entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, 
-                    //                     entry.emp_emergencycontact, entry.dateAdded, entry.addedBy);
+                    //employeesTable.Rows.Add(entry.emp_status, entry.emp_id, entry.emp_firstname + " " + entry.emp_midname + " " + entry.emp_lastname,
+                    //    entry.emp_gender, entry.emp_role, entry.emp_contactnum, entry.emp_email, entry.emp_dateHired, entry.emp_availability, entry.emp_address, entry.emp_emergencycontact,
+                    //    dateAdded, entry.addedBy, dateUpdated, entry.updatedBy, dateStatusModified, entry.status_ModifiedBy, decryptedPassword);
                 }
                 if (employeesTable.Rows.Count == 0)
                 {
@@ -113,7 +118,7 @@ namespace WRS2big_Web.Admin
                 lblError.Visible = true;
             }
         }
-            
+       
         //DISPLAY ACTIVE EMPLOYEE
         private void displayActiveEmp()
         {
@@ -278,19 +283,23 @@ namespace WRS2big_Web.Admin
                 //  string employee_id = (string)Session["idno"];
 
                 // Password validation
-                string password = txtpass.Text;
+                string password = Server.HtmlEncode(txtpass.Text);
+
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
                     !password.Any(c => !char.IsLetterOrDigit(c)))
                 {
-                    Response.Write("<script>alert('Password must be 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                    Response.Write("<script>alert('Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
                     return;
                 }
+
+                // Encrypt the password using SHA-256
+                string hashedPassword = GetSHA256Hash(password);
 
                 // Contact number validation
                 string contactNum = txtcontactnum.Text;
                 if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
-                {
+                { 
                     Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
                     return;
                 }
@@ -300,19 +309,20 @@ namespace WRS2big_Web.Admin
                 {
                     adminId = int.Parse(idno),
                     emp_id = employee_id,
-                    emp_lastname = txtlastname.Text,
-                    emp_firstname = txtfirstname.Text,
-                    emp_midname = txtmidname.Text,
-                    emp_birthdate = BirthDate.Text,
-                    emp_gender = drdgender.Text,
-                    emp_address = txtaddress.Text,
-                    emp_contactnum = txtcontactnum.Text,
-                    emp_email = txtemail.Text,
-                    emp_pass = txtpass.Text,
-                    emp_dateHired = txtdateHired.Text,
-                    emp_emergencycontact = txtemergencycontact.Text,
-                    emp_role = drdrole.Text,
-                    emp_status = Drd_status.Text,
+                    emp_lastname = Server.HtmlEncode(txtlastname.Text),
+                    emp_firstname = Server.HtmlEncode(txtfirstname.Text),
+                    emp_midname = Server.HtmlEncode(txtmidname.Text),
+                    emp_birthdate = Server.HtmlEncode(BirthDate.Text),
+                    emp_gender = drdgender.SelectedValue,
+                    emp_address = Server.HtmlEncode(txtaddress.Text),
+                    emp_contactnum = Server.HtmlEncode(txtcontactnum.Text),
+                    emp_email = Server.HtmlEncode(txtemail.Text),
+                    //emp_pass = txtpass.Text,
+                    emp_pass = hashedPassword,
+                    emp_dateHired = Server.HtmlEncode(txtdateHired.Text),
+                    emp_emergencycontact = Server.HtmlEncode(txtemergencycontact.Text),
+                    emp_role = drdrole.SelectedValue,
+                    emp_status = Server.HtmlEncode(Drd_status.Text),
                     addedBy = name,
                     dateAdded = DateTime.Now
                 };
@@ -350,6 +360,40 @@ namespace WRS2big_Web.Admin
 
             }
         }
+        //ENCRYPTING THE PASSWORD
+        private string GetSHA256Hash(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        //private string GetSHA1Hash(string input)
+        //{
+        //    using (SHA1 sha1 = SHA1.Create())
+        //    {
+        //        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+        //        byte[] hashBytes = sha1.ComputeHash(inputBytes);
+
+        //        StringBuilder sb = new StringBuilder();
+        //        for (int i = 0; i < hashBytes.Length; i++)
+        //        {
+        //            sb.Append(hashBytes[i].ToString("x2"));
+        //        }
+
+        //        return sb.ToString();
+        //    }
+        //}
         protected void btnViewEmployee_Click(object sender, EventArgs e)
         {
 
@@ -436,9 +480,11 @@ namespace WRS2big_Web.Admin
             // Get the new status and position from the DropDownList in the modal popup
             string newPosition = drd_empPosition.SelectedValue;
             string newStatus = drd_empStatus.SelectedValue;
-            string contactnumber = txt_contactNumber.Text;
-            string email = txtEmail_address.Text;
-            string address = txt_address.Text;
+            string contactnumber = Server.HtmlEncode(txt_contactNumber.Text);
+            string email = Server.HtmlEncode(txtEmail_address.Text);
+            string address = Server.HtmlEncode(txt_address.Text);
+
+            string resetPassword = Server.HtmlEncode(resetPass.Text.Trim()); // Get the reset password from the TextBox
 
             try
             {
@@ -486,30 +532,84 @@ namespace WRS2big_Web.Admin
                 };
 
                 // Update the fields that have changed
+                bool fieldUpdated = false; // Flag to track if any field has been updated
+
                 if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
                 {
                     updatedEmp.emp_role = newPosition;
-                    updatedEmp.dateUpdated = DateTime.Now;
-                    updatedEmp.updatedBy = name;
+                    fieldUpdated = true;
                 }
                 else if (!string.IsNullOrEmpty(address) && address != existingEmp.emp_address)
                 {
                     updatedEmp.emp_address = address;
-                    updatedEmp.dateUpdated = DateTime.Now;
-                    updatedEmp.updatedBy = name;
+                    fieldUpdated = true;
                 }
                 else if (!string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum)
                 {
                     updatedEmp.emp_contactnum = contactnumber;
-                    updatedEmp.dateUpdated = DateTime.Now;
-                    updatedEmp.updatedBy = name;
+                    fieldUpdated = true;
                 }
                 else if (!string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
                 {
                     updatedEmp.emp_email = email;
+                    fieldUpdated = true;
+                }
+
+                // Check if the reset password is provided
+                if (!string.IsNullOrEmpty(resetPassword))
+                {
+                    // Encrypt the reset password
+                    string encryptedPassword = GetResetSHA256Hash(resetPassword);
+
+                    // Update the employee's password in the database
+                    updatedEmp.emp_pass = encryptedPassword;
+                    fieldUpdated = true;
+                }
+
+                // Update the common properties if any field has been updated
+                if (fieldUpdated)
+                {
                     updatedEmp.dateUpdated = DateTime.Now;
                     updatedEmp.updatedBy = name;
                 }
+
+
+                //// Update the fields that have changed
+                //if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
+                //{
+                //    updatedEmp.emp_role = newPosition;
+                //    updatedEmp.dateUpdated = DateTime.Now;
+                //    updatedEmp.updatedBy = name;
+                //}
+                //else if (!string.IsNullOrEmpty(address) && address != existingEmp.emp_address)
+                //{
+                //    updatedEmp.emp_address = address;
+                //    updatedEmp.dateUpdated = DateTime.Now;
+                //    updatedEmp.updatedBy = name;
+                //}
+                //else if (!string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum)
+                //{
+                //    updatedEmp.emp_contactnum = contactnumber;
+                //    updatedEmp.dateUpdated = DateTime.Now;
+                //    updatedEmp.updatedBy = name;
+                //}
+                //else if (!string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
+                //{
+                //    updatedEmp.emp_email = email;
+                //    updatedEmp.dateUpdated = DateTime.Now;
+                //    updatedEmp.updatedBy = name;
+                //}
+                //// Check if the reset password is provided
+                //if (!string.IsNullOrEmpty(resetPassword))
+                //{
+                //    // Encrypt the reset password
+                //    string encryptedPassword = GetResetSHA1Hash(resetPassword);
+
+                //    // Update the employee's password in the database
+                //    updatedEmp.emp_pass = encryptedPassword;
+                //    updatedEmp.dateUpdated = DateTime.Now;
+                //    updatedEmp.updatedBy = name;
+                //}
 
                 //if emp status is already inactive
                 if (existingEmp.emp_status == "Inactive")
@@ -557,7 +657,25 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
-      
+        //ENCRYPTING THE RESET PASSWORD
+        private string GetResetSHA256Hash(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
+
         //SEARCH CERTAIN EMPLOYEE REPORT
         protected void btnSearchEmployee_Click(object sender, EventArgs e)
         {
@@ -566,7 +684,7 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             try
             {
-                string empSearch = txtSearch.Text;
+                string empSearch = Server.HtmlEncode(txtSearch.Text);
 
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(empSearch))
@@ -640,7 +758,28 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
             }
         }
-       
+        ////DECRYPTING THE PASSWORD
+        //private string DecryptSHA1Hash(string hashedPassword)
+        //{
+        //    // Convert the hashed password to byte array
+        //    byte[] hashBytes = Encoding.UTF8.GetBytes(hashedPassword);
+
+        //    // Create an instance of the SHA1 algorithm
+        //    using (SHA1 sha1 = SHA1.Create())
+        //    {
+        //        // Compute the hash of the byte array
+        //        byte[] decryptedBytes = sha1.ComputeHash(hashBytes);
+
+        //        // Convert the decrypted bytes to string
+        //        StringBuilder sb = new StringBuilder();
+        //        for (int i = 0; i < decryptedBytes.Length; i++)
+        //        {
+        //            sb.Append(decryptedBytes[i].ToString("x2"));
+        //        }
+
+        //        return sb.ToString();
+        //    }
+        //}
 
     }
 }
