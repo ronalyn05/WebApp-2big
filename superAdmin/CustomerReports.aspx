@@ -68,15 +68,13 @@
                                                                 <div class="input-group">
                                                                     <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by Firstname"> </asp:TextBox>
                                                                     <asp:Button runat="server" ID="searchButton" class="btn btn-primary" OnClick="searchButton_Click" Height="40" Text="search" />
-
+                                                                      <asp:Button runat="server" ID="closeButton" Text="X" OnClick="closeButton_Click" BorderColor="Transparent" BackColor="Transparent"/> 
 
                                                                     <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
-                                                                        <asp:ListItem Value="All"> All </asp:ListItem>
-                                                                        <asp:ListItem Value="Registered Clients"> Registered Clients </asp:ListItem>
-                                                                        <asp:ListItem Value="Registered Customers"> Registered Customers </asp:ListItem>
-                                                                        <asp:ListItem Value="Subscribed Clients"> Subscribed Clients </asp:ListItem>
-                                                                        <asp:ListItem Value="Declined Customers"> Declined Customers </asp:ListItem>
-                                                                        <asp:ListItem Value="Declined Clients"> Declined Clients </asp:ListItem>
+                                                                        <asp:ListItem Value="All"> All Customers</asp:ListItem>
+                                                                        <asp:ListItem Value="Approved"> Approved Customers </asp:ListItem>
+                                                                        <asp:ListItem Value="Declined"> Declined Customers </asp:ListItem>
+
                                                                     </asp:DropDownList>
                                                                      <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" OnClick="viewSorted_Click" />
                                                                 </div>
@@ -93,8 +91,54 @@
                                                                         <div class="card table-card">
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
-                                                                                    <br /> <asp:Label runat="server" style="margin-left:10px" id="customersLabel">CUSTOMERS</asp:Label>
-                                                                                    <asp:GridView runat="server" ID="customerReports" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                    <br /> <asp:Label runat="server" style="margin-left:10px" id="customersLabel"> ALL CUSTOMERS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="allCustomers" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                        
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField>
+
+                                                                                                <ItemTemplate>
+                                                                                                    
+                                                                                                   
+                                                                                                </ItemTemplate>
+                                                                                                
+                                                                                            </asp:TemplateField>
+
+                                                                                        </Columns>
+                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black"/>
+                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                    </asp:GridView> 
+                                                                                    <asp:Label runat="server" style="margin-left:10px" id="declinedLabel"> DECLINED CUSTOMERS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="declinedCustomers" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                        
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField>
+
+                                                                                                <ItemTemplate>
+                                                                                                    
+                                                                                                   
+                                                                                                </ItemTemplate>
+                                                                                                
+                                                                                            </asp:TemplateField>
+
+                                                                                        </Columns>
+                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black"/>
+                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                    </asp:GridView>
+                                                                                    <asp:Label runat="server" style="margin-left:10px" id="approvedLabel"> APPROVED CUSTOMERS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="approvedCustomers" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
@@ -116,44 +160,6 @@
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                                     </asp:GridView> <br /><br />
-                                                                                   <asp:Label runat="server" style="margin-left:10px" id="clientsLabel">CLIENTS</asp:Label>
-                                                                                    <asp:GridView runat="server" ID="clientReports" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                        <Columns>
-                                                                                            <asp:TemplateField>
-                                                                                                <ItemTemplate>
-                                                                                                  
-                                                                                                </ItemTemplate>
-                                                                                               
-                                                                                            </asp:TemplateField>
-                                                                                        </Columns>
-                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView><br /><br />
-                                                                                   <asp:Label runat="server" style="margin-left:10px" id="Label1"> CLIENT EMPLOYEES</asp:Label>
-                                                                                    <asp:GridView runat="server" ID="adminEmployees" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                        <Columns>
-                                                                                            <asp:TemplateField>
-                                                                                                <ItemTemplate>
-                                                                                                  
-                                                                                                </ItemTemplate>
-                                                                                               
-                                                                                            </asp:TemplateField>
-                                                                                        </Columns>
-                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

@@ -1,20 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WRSsuperAdmin.Master" AutoEventWireup="true" CodeBehind="ManageWRSClients.aspx.cs" Inherits="WRS2big_Web.superAdmin.ManageWRSClients" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/WRSsuperAdmin.Master" AutoEventWireup="true" CodeBehind="RefillingStationReports.aspx.cs" Inherits="WRS2big_Web.superAdmin.RefillingStationReports" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
-        .texts {
-            font-size: 16px;
-            color: black;
-        }
-
-        .scrollable-listbox {
-            height: 200px;
-            overflow-y: auto;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <%--<form runat="server">--%>
+    <%--  <form runat="server">--%>
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -57,13 +46,14 @@
                                             <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
                                             <div class="clearfix">
                                             </div>
-                                            <!--MAIN CONTENT-->
+
+                                            <!--PACKAGES -->
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <!-- Tab variant tab card start -->
                                                     <div class="card">
                                                         <div class="card-header">
-                                                            <h5>CLIENT APPROVAL</h5>
+                                                            <h5>USERS</h5>
                                                             <div class="card-header-right">
                                                                 <ul class="list-unstyled card-option">
                                                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -76,17 +66,19 @@
                                                             </div>
                                                             <div class="header-search">
                                                                 <div class="input-group">
-                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by station name"> </asp:TextBox>
-                                                                    <asp:Button runat="server" ID="searchButton" class="btn btn-primary" Height="40" Text="search" OnClick="searchButton_Click" />
-                                                                    <asp:Button runat="server" ID="closeButton" Text="X" OnClick="closeButton_Click" BorderColor="Transparent" BackColor="Transparent"/> 
-                                                                   <%-- <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
-                                                                        <asp:ListItem Value="All"> All </asp:ListItem>
-                                                                        <asp:ListItem Value="Pending"> Pending Clients </asp:ListItem>
-                                                                        <asp:ListItem Value="Approved"> Approved Clients </asp:ListItem>
-                                                                        <asp:ListItem Value="Declined"> Declined Clients </asp:ListItem>
+                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by Firstname"> </asp:TextBox>
+                                                                    <asp:Button runat="server" ID="searchButton" class="btn btn-primary" OnClick="searchButton_Click" Height="40" Text="search" />
+                                                                     <asp:Button runat="server" ID="closeButton" Text="X" OnClick="closeButton_Click" BorderColor="Transparent" BackColor="Transparent"/> 
 
+                                                                    <asp:DropDownList runat="server" ID="sortDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
+                                                                      
+                                                                        <asp:ListItem Value="All"> All Clients </asp:ListItem>
+                                                                        <asp:ListItem Value="Approved"> Approved Clients </asp:ListItem>
+                                                                       <%-- <asp:ListItem Value="Subscribed"> Subscribed Clients </asp:ListItem>--%>
+                                                                        <asp:ListItem Value="Declined"> Declined Clients </asp:ListItem>
+                                                                        <%--<asp:ListItem Value="Client Employees"> Client Employees </asp:ListItem>--%>
                                                                     </asp:DropDownList>
-                                                                    <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" OnClick="viewSorted_Click" />--%>
+                                                                     <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" OnClick="viewSorted_Click" />
                                                                 </div>
 
 
@@ -101,34 +93,14 @@
                                                                         <div class="card table-card">
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
-                                                                                    
-                                                                                   
-<%--                                                                                    <asp:GridView runat="server" ID="AllGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                   <asp:Label runat="server" style="margin-left:10px" id="approvedLabel">APPROVED CLIENTS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="approvedClients" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
-
-                                                                                                    <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                                   <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
                                                                                                 </ItemTemplate>
-                                                                                            </asp:TemplateField>
-                                                                                        </Columns>
-                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>--%>
-                                                                                   <asp:Label runat="server" style="margin-left:10px" id="pendingLabel"></asp:Label>
-                                                                                    <asp:GridView runat="server" ID="pendingGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                        <Columns>
-                                                                                            <asp:TemplateField>
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:CheckBox runat="server" Style="font-size: 18px" ID="select" />
-                                                                                                    <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                                </ItemTemplate>
+                                                                                               
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                                         <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -140,13 +112,34 @@
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                                     </asp:GridView>
-<%--                                                                                    <asp:GridView runat="server" ID="approvedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                       
+                                                                                   <asp:Label runat="server" style="margin-left:10px" id="allClientsLabel">ALL CLIENTS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="allClients" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                                  <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
                                                                                                 </ItemTemplate>
+                                                                                               
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                    </asp:GridView>
+<%--                                                                                    <br /><br />
+                                                                                     <asp:Label runat="server" style="margin-left:10px" id="subscribedLabel">SUBSCRIBED CLIENTS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="subscribedClients" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField>
+                                                                                                <ItemTemplate>
+                                                                                                  
+                                                                                                </ItemTemplate>
+                                                                                               
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                                         <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -158,13 +151,15 @@
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                                     </asp:GridView>--%>
-<%--                                                                                    <asp:GridView runat="server" ID="declinedGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                       
+                                                                                    
+                                                                                     <asp:Label runat="server" style="margin-left:10px" id="declinedLabel"> DECLINED CLIENTS</asp:Label>
+                                                                                    <asp:GridView runat="server" ID="declinedClients" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         <Columns>
                                                                                             <asp:TemplateField>
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                                  
                                                                                                 </ItemTemplate>
+                                                                                               
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                                         <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -175,13 +170,7 @@
                                                                                         <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
                                                                                         <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                         <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                    </asp:GridView>--%> <br /><br />
-                                                                                            <asp:CheckBox runat="server" ID="selectAll" Text=" Select All" Style="font-size: 18px;margin-left:50px" OnCheckedChanged="selectAll_CheckedChanged" AutoPostBack="true"/>
-                                                                                <br />
-
-                                                                                <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" Style="font-size: 18px;margin-left:60px" Text="APPROVE" OnClick="approveButton_Click" />
-                                                                                <asp:Button runat="server" ID="declineButton" class="btn btn-primary btn-sm text" Style="font-size: 18px;" Text="DECLINE" OnClick="declineButton_Click" />
-
+                                                                                    </asp:GridView>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -190,23 +179,18 @@
                                                                 </div>
                                                             </div>
                                                             <!-- Row end -->
-                                                            <br /><br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Clients</asp:Label> <br />
-                                                             <asp:LinkButton runat="server" Text="Registered Clients" class="btn btn-primary" style="font-size:18px;margin-left:40px" href="RefillingStationReports.aspx"></asp:LinkButton> 
-                                                             
                                                         </div>
                                                     </div>
                                                     <!-- Tab variant tab card start -->
                                                 </div>
                                             </div>
-
                                         </div>
+
+
+                                        <!-- page content -->
+                                        <!-- Page-body end -->
+
                                     </div>
-
-
-                                    <!-- page content -->
-                                    <!-- Page-body end -->
-
                                 </div>
                             </div>
                         </div>

@@ -11,7 +11,7 @@ namespace WRS2big_Web.superAdmin
 {
 
 
-    public partial class ManageWRSClients
+    public partial class RefillingStationReports
     {
 
         /// <summary>
@@ -42,57 +42,75 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Button closeButton;
 
         /// <summary>
-        /// pendingLabel control.
+        /// sortDropdown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label pendingLabel;
+        protected global::System.Web.UI.WebControls.DropDownList sortDropdown;
 
         /// <summary>
-        /// pendingGridView control.
+        /// viewSorted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView pendingGridView;
+        protected global::System.Web.UI.WebControls.Button viewSorted;
 
         /// <summary>
-        /// selectAll control.
+        /// approvedLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox selectAll;
+        protected global::System.Web.UI.WebControls.Label approvedLabel;
 
         /// <summary>
-        /// approveButton control.
+        /// approvedClients control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button approveButton;
+        protected global::System.Web.UI.WebControls.GridView approvedClients;
 
         /// <summary>
-        /// declineButton control.
+        /// allClientsLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button declineButton;
+        protected global::System.Web.UI.WebControls.Label allClientsLabel;
 
         /// <summary>
-        /// allLabel control.
+        /// allClients control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label allLabel;
+        protected global::System.Web.UI.WebControls.GridView allClients;
+
+        /// <summary>
+        /// declinedLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label declinedLabel;
+
+        /// <summary>
+        /// declinedClients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView declinedClients;
     }
 }

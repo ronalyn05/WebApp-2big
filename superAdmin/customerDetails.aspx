@@ -78,7 +78,8 @@
                                                             <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
                                                             </center>
 
-                                                               <br /> <br />
+                                                               <br />  <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Customers</asp:Label> <br />
+                                                              <asp:LinkButton runat="server" Text="View All Customers" class="btn btn-primary" style="font-size:18px" href="CustomerReports.aspx"></asp:LinkButton> <br /> <br />
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <!-- Tab variant tab card start -->
@@ -161,7 +162,7 @@
                                                             <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
                                                             <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
                                                             </center>
-                                                              <asp:LinkButton runat="server" Text="View Customer List" style="font-size:18px" href="ManageCustomers.aspx"></asp:LinkButton>
+                                                              <asp:LinkButton runat="server" Text="Pending Customer List" class="btn btn-primary" style="font-size:18px" href="ManageCustomers.aspx"></asp:LinkButton>
 
                                                         </div>
 
