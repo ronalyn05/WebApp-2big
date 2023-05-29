@@ -115,11 +115,10 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
+            string activity = txtSearch.Text;
             try
             {
-                string activity = txtSearch.Text;
-
-              
+                
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse responselist = twoBigDB.Get("ADMINLOGS");
@@ -169,8 +168,86 @@ namespace WRS2big_Web.Admin
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Select '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
+                Response.Write("<script>alert('An error occurred while processing your request. '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
             }
+        }
+        protected void generateSortedData_Click(object sender, EventArgs e)
+        {
+            string idno = (string)Session["idno"];
+            // Get the selected start and end dates
+            DateTime startDate = DateTime.Parse(sortStart.Text);
+            DateTime endDate = DateTime.Parse(sortEnd.Text).AddDays(1); // Add one day to include the end date
+
+            try
+            {
+
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse responselist = twoBigDB.Get("ADMINLOGS");
+                Dictionary<string, UsersLogs> loglist = responselist.ResultAs<Dictionary<string, UsersLogs>>();
+
+                //sa pag create sa table 
+                DataTable userLogTable = new DataTable();
+                userLogTable.Columns.Add("LOG ID");
+                userLogTable.Columns.Add("USER NAME");
+                userLogTable.Columns.Add("ACTIVITY");
+                userLogTable.Columns.Add("TIMESTAMP");
+
+                if (responselist != null && loglist != null)
+                {
+
+                    if (!DateTime.TryParse(sortStart.Text, out startDate) || !DateTime.TryParse(sortEnd.Text, out endDate))
+                    {
+                        // Handle the invalid date format or parsing error (e.g., display an alert)
+                        Response.Write("<script>alert('Invalid date format. Please enter the dates in the correct format.');</script>");
+                        return; // Exit the method or return the appropriate response
+                    }
+
+                    // Check for empty start or end date
+                    if (startDate == DateTime.MinValue || endDate == DateTime.MinValue)
+                    {
+                        // Handle the missing start or end date condition (e.g., display an alert)
+                        Response.Write("<script>alert('You must choose a Start and End Date');</script>");
+                        return; // Exit the method or return the appropriate response
+                    }
+
+                    // Filter the data based on the selected dates
+                    var filteredList = loglist.Values.Where(d => d.userIdnum.ToString() == idno && d.activityTime >= startDate && d.activityTime < endDate);
+
+                    // Create a list to hold the filtered sales data
+                    List<Model.UsersLogs> logsList = new List<Model.UsersLogs>(filteredList);
+
+                    // Sort the sales list in descending order by date and time
+                    logsList.Sort((x, y) => y.activityTime.CompareTo(x.activityTime));
+
+                    // Loop through the entries and add them to the DataTable
+                    foreach (var entry in logsList)
+                    {
+                        string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        userLogTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, timestamp);
+                    }
+
+
+                    // Bind the DataTable to the GridView
+                    gridUserLog.DataSource = userLogTable;
+                    gridUserLog.DataBind();
+                }
+                else
+                {
+                    Response.Write("<script>alert('Error retrieving logs.');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('An error occurred while processing your request. '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
+            }
+
+        }
+        protected void clearSort_Click(object sender, EventArgs e)
+        {
+            sortStart.Text = "";
+            sortEnd.Text = "";
+            Response.Write("<script> window.location.href = '/superAdmin/UsersLog.aspx'; </script>");
+            
         }
     }
 }
