@@ -54,25 +54,34 @@ namespace WRS2big_Web.Admin
                 // Filter the customer records based on their access to the station
                 var filteredList = customerList.Values.Where(c => c.orderedStore?.Any(os => os.adminId.ToString() == idno) ?? false).ToList();
 
-                // Loop through the filtered customer records and add them to the DataTable
-                foreach (var customer in filteredList)
+                if(filteredList != null)
                 {
-                    string dateRegistered = customer.dateRegistered == DateTime.MinValue ? "" : customer.dateRegistered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    // Loop through the filtered customer records and add them to the DataTable
+                    foreach (var customer in filteredList)
+                    {
+                        string dateRegistered = customer.dateRegistered == DateTime.MinValue ? "" : customer.dateRegistered.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    customerTable.Rows.Add(
-                        customer.cusId,
-                        customer.firstName + " " + customer.middleName + " " + customer.lastName,
-                        customer.address,
-                        customer.cus_status,
-                        customer.email,
-                        customer.phoneNumber,
-                        dateRegistered
-                    );
+                        customerTable.Rows.Add(
+                            customer.cusId,
+                            customer.firstName + " " + customer.middleName + " " + customer.lastName,
+                            customer.address,
+                            customer.cus_status,
+                            customer.email,
+                            customer.phoneNumber,
+                            dateRegistered
+                        );
+                    }
+
+                    // Bind the DataTable to the GridView
+                    gridCustomer_Details.DataSource = customerTable;
+                    gridCustomer_Details.DataBind();
+                }
+                else
+                {
+                    // Handle null response or invalid customer records
+                    lblMessage.Text = "No customer record found";
                 }
 
-                // Bind the DataTable to the GridView
-                gridCustomer_Details.DataSource = customerTable;
-                gridCustomer_Details.DataBind();
             }
             else
             {
