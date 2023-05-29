@@ -22,6 +22,7 @@ namespace WRS2big_Web.Model
         public DateTime subExpiration { get; set; }
         public string currentSubStatus { get; set; }
         public string paymentStatus { get; set; }
+        public string type { get; set; }
        // public string type { get; set; } //SUBSCRIPTION, RENEWAL
         
     }
@@ -51,6 +52,16 @@ namespace WRS2big_Web.Model
 
     }
 
+    public class subscriptionLogs
+    {
+        public int logsId { get; set; }
+        public int userIdnum { get; set; }
+        public string userFullname { get; set; }
+        public string userActivity { get; set; }
+        public DateTime activityTime { get; set; }
+        public decimal total { get; set; }
+        public string packageName { get; set; }
+    }
     public class SubscriptionPlans
     {
         public int idno { get; set; }

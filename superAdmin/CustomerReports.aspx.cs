@@ -112,7 +112,6 @@ namespace WRS2big_Web.superAdmin
             {
                 DataTable customerTable = new DataTable();
                 customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("ROLE");
                 customerTable.Columns.Add("STATUS");
                 customerTable.Columns.Add("NAME");
                 customerTable.Columns.Add("EMAIL");
@@ -123,18 +122,16 @@ namespace WRS2big_Web.superAdmin
 
                 foreach (KeyValuePair<string, Model.Customer> entry in customers)
                 {
-                    string role = "Customer";
                     if (entry.Value.cus_status == "Declined")
                     {
                         customerTable.Rows.Add(
                            entry.Value.cusId,
-                           role,
                            entry.Value.cus_status,
                            entry.Value.firstName + " " + entry.Value.lastName,
                            entry.Value.email,
                            entry.Value.address,
                            entry.Value.phoneNumber,
-                           entry.Value.dateApproved,
+                           entry.Value.dateDeclined,
                            entry.Value.dateRegistered);
                     }
 
@@ -163,7 +160,6 @@ namespace WRS2big_Web.superAdmin
             {
                 DataTable customerTable = new DataTable();
                 customerTable.Columns.Add("USER ID");
-                customerTable.Columns.Add("ROLE");
                 customerTable.Columns.Add("STATUS");
                 customerTable.Columns.Add("NAME");
                 customerTable.Columns.Add("EMAIL");
@@ -177,16 +173,33 @@ namespace WRS2big_Web.superAdmin
                     string role = "Customer";
                     if (entry.Value.cus_status != "Pending")
                     {
-                        customerTable.Rows.Add(
-                           entry.Value.cusId,
-                           role,
-                           entry.Value.cus_status,
-                           entry.Value.firstName + " " + entry.Value.lastName,
-                           entry.Value.email,
-                           entry.Value.address,
-                           entry.Value.phoneNumber,
-                           entry.Value.dateApproved,
-                           entry.Value.dateRegistered);
+                        if (entry.Value.cus_status == "Approved")
+                        {
+                            customerTable.Rows.Add(
+                               entry.Value.cusId,
+                               role,
+                               entry.Value.cus_status,
+                               entry.Value.firstName + " " + entry.Value.lastName,
+                               entry.Value.email,
+                               entry.Value.address,
+                               entry.Value.phoneNumber,
+                               entry.Value.dateApproved,
+                               entry.Value.dateRegistered);
+                        }
+                        else
+                        {
+                            customerTable.Rows.Add(
+                               entry.Value.cusId,
+                               role,
+                               entry.Value.cus_status,
+                               entry.Value.firstName + " " + entry.Value.lastName,
+                               entry.Value.email,
+                               entry.Value.address,
+                               entry.Value.phoneNumber,
+                               entry.Value.dateDeclined,
+                               entry.Value.dateRegistered);
+                        }
+
                     }
 
                 }
