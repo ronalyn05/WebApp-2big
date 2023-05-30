@@ -2002,7 +2002,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[1].Text);
+            int orderID = int.Parse(row.Cells[2].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -2078,7 +2078,7 @@ namespace WRS2big_Web.Admin
                             cusId = existingOrder.cusId,
                             receiver = "Customer",
                             driverId = driver.emp_id,
-                            body = "Your payment for your order with Order ID:" + orderID + "has been received.",
+                            body = "Your payment for your order with Order ID:" + orderID + " " + "has been received.",
                             notificationDate = DateTime.Now,
                             status = "unread",
                             notificationID = ID
@@ -2265,7 +2265,7 @@ namespace WRS2big_Web.Admin
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             // Get the order ID from the first cell in the row
-            int orderID = int.Parse(row.Cells[2].Text);
+            int orderID = int.Parse(row.Cells[1].Text);
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);

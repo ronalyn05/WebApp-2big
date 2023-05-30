@@ -177,7 +177,6 @@ namespace WRS2big_Web.superAdmin
                         {
                             customerTable.Rows.Add(
                                entry.Value.cusId,
-                               role,
                                entry.Value.cus_status,
                                entry.Value.firstName + " " + entry.Value.lastName,
                                entry.Value.email,
@@ -385,6 +384,26 @@ namespace WRS2big_Web.superAdmin
                 declinedLabel.Visible = false;
             }
 
+
+        }
+        protected void detailsButton_Click(object sender, EventArgs e)
+        {
+
+            //Get the GridViewRow that contains the clicked button
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            //Get the order ID from the first cell in the row
+            int customerID = int.Parse(row.Cells[1].Text);
+
+            // Retrieve the existing order object from the database
+            FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
+            Model.Customer customerDetails = response.ResultAs<Model.Customer>();
+
+            int currentClient = customerDetails.cusId;
+            Session["currentCustomer"] = currentClient;
+
+            Response.Write("<script>window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
 
         }
     }

@@ -906,130 +906,130 @@ namespace WRS2big_Web.Admin
 
                                 Response.Write("<script>alert ('Order has been Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
 
-                                //SEND SCHEDULED NOTIFICATION
-                                int schedNotifID = rnd.Next(1, 20000);
+                                ////SEND SCHEDULED NOTIFICATION
+                                //int schedNotifID = rnd.Next(1, 20000);
 
-                                //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                                if (existingOrder.order_OverallQuantities <= 2)
-                                {
-                                    //get the ordered date from the order
-                                    DateTime orderedDate = existingOrder.orderDate;
-                                    //add two days from the orderedDate to set the scheduled date
-                                    DateTime schedule = orderedDate.AddDays(2);
+                                ////condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
+                                //if (existingOrder.order_OverallQuantities <= 2)
+                                //{
+                                //    //get the ordered date from the order
+                                //    DateTime orderedDate = existingOrder.orderDate;
+                                //    //add two days from the orderedDate to set the scheduled date
+                                //    DateTime schedule = orderedDate.AddDays(2);
 
-                                    var scheduleNotif = new Model.scheduledNotification
-                                    {
+                                //    var scheduleNotif = new Model.scheduledNotification
+                                //    {
 
-                                        admin_ID = adminId,
-                                        orderID = orderID,
-                                        cusId = existingOrder.cusId,
-                                        sender = "Admin",
-                                        title = "Order Reminder",
-                                        receiver = "Customer",
-                                        body = "It's been 2 days since your last tubig order! Order again to earn points!",
-                                        notificationDate = DateTime.Now,
-                                        status = "unread",
-                                        scheduledSent = schedule,
-                                        notificationID = schedNotifID
+                                //        admin_ID = adminId,
+                                //        orderID = orderID,
+                                //        cusId = existingOrder.cusId,
+                                //        sender = "Admin",
+                                //        title = "Order Reminder",
+                                //        receiver = "Customer",
+                                //        body = "It's been 2 days since your last tubig order! Order again to earn points!",
+                                //        notificationDate = DateTime.Now,
+                                //        status = "unread",
+                                //        scheduledSent = schedule,
+                                //        notificationID = schedNotifID
 
-                                    };
-                                    SetResponse scheduledNotification;
-                                    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
-                                    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
+                                //    };
+                                //    SetResponse scheduledNotification;
+                                //    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
+                                //    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
-                                    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                                    Debug.WriteLine($"SCHEDULE: {schedule}");
-                                }
-                                else if (existingOrder.order_OverallQuantities > 2 && existingOrder.order_OverallQuantities <= 5)
-                                {
-                                    //get the ordered date from the order
-                                    DateTime orderedDate = existingOrder.orderDate;
-                                    //add two days from the orderedDate to set the scheduled date
-                                    DateTime schedule = orderedDate.AddDays(4);
+                                //    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
+                                //    Debug.WriteLine($"SCHEDULE: {schedule}");
+                                //}
+                                //else if (existingOrder.order_OverallQuantities > 2 && existingOrder.order_OverallQuantities <= 5)
+                                //{
+                                //    //get the ordered date from the order
+                                //    DateTime orderedDate = existingOrder.orderDate;
+                                //    //add two days from the orderedDate to set the scheduled date
+                                //    DateTime schedule = orderedDate.AddDays(4);
 
-                                    var scheduleNotif = new Model.scheduledNotification
-                                    {
+                                //    var scheduleNotif = new Model.scheduledNotification
+                                //    {
 
-                                        admin_ID = adminId,
-                                        orderID = orderID,
-                                        cusId = existingOrder.cusId,
-                                        sender = "Admin",
-                                        title = "Order Reminder",
-                                        receiver = "Customer",
-                                        body = "It's been 4 days since your last tubig order! Order again to earn points!",
-                                        notificationDate = DateTime.Now,
-                                        status = "unread",
-                                        scheduledSent = schedule,
-                                        notificationID = schedNotifID
+                                //        admin_ID = adminId,
+                                //        orderID = orderID,
+                                //        cusId = existingOrder.cusId,
+                                //        sender = "Admin",
+                                //        title = "Order Reminder",
+                                //        receiver = "Customer",
+                                //        body = "It's been 4 days since your last tubig order! Order again to earn points!",
+                                //        notificationDate = DateTime.Now,
+                                //        status = "unread",
+                                //        scheduledSent = schedule,
+                                //        notificationID = schedNotifID
 
-                                    };
-                                    SetResponse scheduledNotification;
-                                    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
-                                    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
+                                //    };
+                                //    SetResponse scheduledNotification;
+                                //    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
+                                //    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
-                                    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                                    Debug.WriteLine($"SCHEDULE: {schedule}");
-                                }
-                                else if (existingOrder.order_OverallQuantities > 5 && existingOrder.order_OverallQuantities <= 8)
-                                {
-                                    //get the ordered date from the order
-                                    DateTime orderedDate = existingOrder.orderDate;
-                                    //add two days from the orderedDate to set the scheduled date
-                                    DateTime schedule = orderedDate.AddDays(7);
+                                //    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
+                                //    Debug.WriteLine($"SCHEDULE: {schedule}");
+                                //}
+                                //else if (existingOrder.order_OverallQuantities > 5 && existingOrder.order_OverallQuantities <= 8)
+                                //{
+                                //    //get the ordered date from the order
+                                //    DateTime orderedDate = existingOrder.orderDate;
+                                //    //add two days from the orderedDate to set the scheduled date
+                                //    DateTime schedule = orderedDate.AddDays(7);
 
-                                    var scheduleNotif = new Model.scheduledNotification
-                                    {
+                                //    var scheduleNotif = new Model.scheduledNotification
+                                //    {
 
-                                        admin_ID = adminId,
-                                        orderID = orderID,
-                                        cusId = existingOrder.cusId,
-                                        sender = "Admin",
-                                        title = "Order Reminder",
-                                        receiver = "Customer",
-                                        body = "It's been a week since your last tubig order! Order again to earn points!",
-                                        notificationDate = DateTime.Now,
-                                        status = "unread",
-                                        scheduledSent = schedule,
-                                        notificationID = schedNotifID
+                                //        admin_ID = adminId,
+                                //        orderID = orderID,
+                                //        cusId = existingOrder.cusId,
+                                //        sender = "Admin",
+                                //        title = "Order Reminder",
+                                //        receiver = "Customer",
+                                //        body = "It's been a week since your last tubig order! Order again to earn points!",
+                                //        notificationDate = DateTime.Now,
+                                //        status = "unread",
+                                //        scheduledSent = schedule,
+                                //        notificationID = schedNotifID
 
-                                    };
-                                    SetResponse scheduledNotification;
-                                    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
-                                    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
+                                //    };
+                                //    SetResponse scheduledNotification;
+                                //    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
+                                //    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
-                                    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                                    Debug.WriteLine($"SCHEDULE: {schedule}");
-                                }
-                                else if (existingOrder.order_OverallQuantities > 8 && existingOrder.order_OverallQuantities <= 15)
-                                {
-                                    //get the ordered date from the order
-                                    DateTime orderedDate = existingOrder.orderDate;
-                                    //add two days from the orderedDate to set the scheduled date
-                                    DateTime schedule = orderedDate.AddDays(7);
+                                //    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
+                                //    Debug.WriteLine($"SCHEDULE: {schedule}");
+                                //}
+                                //else if (existingOrder.order_OverallQuantities > 8 && existingOrder.order_OverallQuantities <= 15)
+                                //{
+                                //    //get the ordered date from the order
+                                //    DateTime orderedDate = existingOrder.orderDate;
+                                //    //add two days from the orderedDate to set the scheduled date
+                                //    DateTime schedule = orderedDate.AddDays(7);
 
-                                    var scheduleNotif = new Model.scheduledNotification
-                                    {
+                                //    var scheduleNotif = new Model.scheduledNotification
+                                //    {
 
-                                        admin_ID = adminId,
-                                        orderID = orderID,
-                                        cusId = existingOrder.cusId,
-                                        sender = "Admin",
-                                        title = "Order Reminder",
-                                        receiver = "Customer",
-                                        body = "We miss you! It's been a long time since your last 2Big order! Order again to earn points!",
-                                        notificationDate = DateTime.Now,
-                                        status = "unread",
-                                        scheduledSent = schedule,
-                                        notificationID = schedNotifID
+                                //        admin_ID = adminId,
+                                //        orderID = orderID,
+                                //        cusId = existingOrder.cusId,
+                                //        sender = "Admin",
+                                //        title = "Order Reminder",
+                                //        receiver = "Customer",
+                                //        body = "We miss you! It's been a long time since your last 2Big order! Order again to earn points!",
+                                //        notificationDate = DateTime.Now,
+                                //        status = "unread",
+                                //        scheduledSent = schedule,
+                                //        notificationID = schedNotifID
 
-                                    };
-                                    SetResponse scheduledNotification;
-                                    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
-                                    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
+                                //    };
+                                //    SetResponse scheduledNotification;
+                                //    scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
+                                //    scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
 
-                                    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
-                                    Debug.WriteLine($"SCHEDULE: {schedule}");
-                                }
+                                //    Debug.WriteLine($"ORDERED DATE: {orderedDate}");
+                                //    Debug.WriteLine($"SCHEDULE: {schedule}");
+                                //}
                             
 
                                 // Retrieve the existing Users log object from the database
