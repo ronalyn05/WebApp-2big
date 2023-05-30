@@ -40,663 +40,877 @@ namespace WRS2big_Web.Admin
                 return;
             }
 
-            if (twoBigDB != null)
-            {
-                // Retrieve the orders from the database
-                Dictionary<string, Order> orders = GetOrdersFromDatabase();
-
-                // Calculate and display the daily sales
-                DataTable dailySalesTable = CalculateDailySales(orders);
-                dailySalesGridView.DataSource = dailySalesTable;
-                dailySalesGridView.DataBind();
-
-                // Calculate and display the weekly sales
-                DataTable weeklySalesTable = CalculateWeeklySales(orders);
-                weeklySalesGridView.DataSource = weeklySalesTable;
-                weeklySalesGridView.DataBind();
-
-                // Calculate and display the monthly sales
-                DataTable monthlySalesTable = CalculateMonthlySales(orders);
-                monthlySalesGridView.DataSource = monthlySalesTable;
-                monthlySalesGridView.DataBind();
-
-                // Calculate and display the overall sales
-                decimal overallSales = CalculateOverallSales(orders);
-                overallSalesLabel.Text = "Overall Sales: $" + overallSales;
-            }
+            overallSalesRevenue.Visible = false;
+            Label2.Visible = false;
+            Label1.Visible = false;
+            Label4.Visible = false;
+            overallSalesRevenue.Visible = false;
+            onlinesalesRevenue.Visible = false;
+            walkinsalesRevenue.Visible = false;
+            lblErrorOnline.Visible = false;
+            lblErrorWalkin.Visible = false;
+            overAllSalesDisplay();
         }
 
-        private Dictionary<string, Order> GetOrdersFromDatabase()
+        private void overAllSalesDisplay()
         {
+            string idno = (string)Session["idno"];
+
+            // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ORDERS");
-            return JsonConvert.DeserializeObject<Dictionary<string, Order>>(response.Body);
-        }
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-        private DataTable CalculateDailySales(Dictionary<string, Order> orders)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("OrderID");
-            dt.Columns.Add("OrderDate");
-            dt.Columns.Add("TotalAmount");
+            // Create the DataTable to hold the orders
+            DataTable salesordersTable = new DataTable();
+            salesordersTable.Columns.Add("Order ID");
+            salesordersTable.Columns.Add("Customer ID");
+            salesordersTable.Columns.Add("Order Status");
+            salesordersTable.Columns.Add("Delivery Type");
+            salesordersTable.Columns.Add("Transaction Type");
+            salesordersTable.Columns.Add("Total Amount");
+            salesordersTable.Columns.Add("Order Date");
 
-            var dailySales = orders.Values.GroupBy(o => o.orderDate.Date)
-                                          .Select(g => new
-                                          {
-                                              OrderDate = g.Key,
-                                              TotalAmount = g.Sum(o => o.order_TotalAmount)
-                                          })
-                                          .OrderBy(g => g.OrderDate);
-
-            foreach (var sale in dailySales)
+            if (orderlist != null)
             {
-                DataRow dr = dt.NewRow();
-                dr["OrderID"] = string.Join(", ", orders.Values.Where(o => o.orderDate.Date == sale.OrderDate).Select(o => o.orderID));
-                dr["OrderDate"] = sale.OrderDate.ToString("MM/dd/yyyy");
-                dr["TotalAmount"] = sale.TotalAmount;
-                dt.Rows.Add(dr);
+                // Filter the list of orders by the owner's ID and the order status and delivery type
+                List<Order> filteredList = orderlist.Values
+                    .Where(d => d.admin_ID.ToString() == idno && (d.order_OrderTypeValue == "PickUp" || d.order_OrderTypeValue == "Delivery")
+                        && ( d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Payment Received"))
+                    .ToList();
+
+                // Retrieve all orders from the WALKINORDERS table
+                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                // Create the DataTable to hold the orders
+                DataTable walkinsalesTable = new DataTable();
+                walkinsalesTable.Columns.Add("Order ID");
+                walkinsalesTable.Columns.Add("Added By");
+                walkinsalesTable.Columns.Add("Amount Paid");
+                walkinsalesTable.Columns.Add("Transaction Type");
+                walkinsalesTable.Columns.Add("Order Date");
+                // Filter the list of orders by the owner's ID
+                //List<WalkInOrders> filteredordersList = walkinOrderlist?.Values
+                //    .Where(d => d.adminId.ToString() == idno)
+                //    .ToList();
+                List<WalkInOrders> filteredordersList = walkinOrderlist.Values
+                           .Where(d => d.adminId.ToString() == idno)
+                           .ToList();
+
+                decimal totalOrderAmount = 0;
+                decimal overAllSales = 0;
+                decimal totalWalkInAmount = 0;
+
+                // Check if there are no walk-in sales found
+                if (filteredList.Count == 0)
+                {
+                    lblErrorOnline.Visible = true;
+                    lblErrorWalkin.Visible = false;
+                    lblErrorOnline.Text = "No online order sales found.";
+                    
+                }
+                foreach (Order order in filteredList)
+                {
+                    //if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+                    //     && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+                    //{
+                    string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+                        order.order_TotalAmount, dateOrdered);
+
+                    totalOrderAmount += order.order_TotalAmount;
+                    //}
+                }
+                // Check if there are no walk-in sales found
+                if (filteredordersList.Count == 0)
+                {
+                    lblErrorOnline.Visible = false;
+                    lblErrorWalkin.Visible = true;
+                    lblErrorWalkin.Text = "No walk-in order sales found.";
+                    
+                }
+
+                if (filteredordersList != null)
+                {
+                    foreach (WalkInOrders order in filteredordersList)
+                    {
+                        string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        walkinsalesTable.Rows.Add(order.orderNo, order.addedBy, order.totalAmount, "Walkin Order", dateOrdered);
+
+                        totalWalkInAmount += order.totalAmount;
+                    }
+                }
+
+                overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                onlinesalesRevenue.Text = "Php." + " " + totalOrderAmount.ToString();
+                walkinsalesRevenue.Text = "Php." + " " + totalWalkInAmount.ToString();
+                overallSalesRevenue.Text = "Php." + " " + overAllSales.ToString();
+                salesRevenueGridView.DataSource = salesordersTable;
+                salesRevenueGridView.DataBind();
+                walkinSales.DataSource = walkinsalesTable;
+                walkinSales.DataBind();
+                Label2.Visible = true;
+                Label1.Visible = true;
+                Label4.Visible = true;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = true;
+                walkinsalesRevenue.Visible = true;
+               
             }
-
-            return dt;
-        }
-
-        private DataTable CalculateWeeklySales(Dictionary<string, Order> orders)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Week");
-            dt.Columns.Add("TotalAmount");
-
-            var weeklySales = orders.Values.GroupBy(o => GetIso8601WeekOfYear(o.orderDate))
-                                           .Select(g => new
-                                           {
-                                               Week = g.Key,
-                                               TotalAmount = g.Sum(o => o.order_TotalAmount)
-                                           })
-                                           .OrderBy(g => g.Week);
-
-            foreach (var sale in weeklySales)
+            else
             {
-                DataRow dr = dt.NewRow();
-                dr["Week"] = sale.Week;
-                dr["TotalAmount"] = sale.TotalAmount;
-                dt.Rows.Add(dr);
+                // Handle null response or invalid selected value
+                overallSalesRevenue.Text = "No record of sales found";
+                Label2.Visible = false;
+                Label1.Visible = false;
+                Label4.Visible = false;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = false;
+                walkinsalesRevenue.Visible = false;
+               
             }
-
-            return dt;
         }
 
-        private DataTable CalculateMonthlySales(Dictionary<string, Order> orders)
+        //private void overAllSalesDisplay()
+        //{
+        //    string idno = (string)Session["idno"];
+
+        //    // Retrieve all orders from the ORDERS table
+        //    FirebaseResponse response = twoBigDB.Get("ORDERS");
+        //    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+        //    // Create the DataTable to hold the orders
+        //    DataTable salesordersTable = new DataTable();
+        //    salesordersTable.Columns.Add("Order ID");
+        //    salesordersTable.Columns.Add("Customer ID");
+        //    salesordersTable.Columns.Add("Order Status");
+        //    salesordersTable.Columns.Add("Delivery Type");
+        //    salesordersTable.Columns.Add("Transaction Type");
+        //    salesordersTable.Columns.Add("Total Amount");
+        //    salesordersTable.Columns.Add("Order Date");
+
+        //    // Get the selected date range from the dropdown list
+        //    //string dateRange = ddlDateRange.SelectedValue;
+
+        //    if (response != null && response.ResultAs<Order>() != null)
+        //    {
+        //         if (orderlist != null)
+        //        {
+        //            //  Filter the list of orders by the owner's ID and the order status and delivery type
+        //            List<Order> filteredList = orderlist.Values
+        //                .Where(d => d.admin_ID.ToString() == idno)
+        //                .ToList();
+
+        //            //  Retrieve all orders from the ORDERS table
+        //            FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+        //            Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+        //            // Filter the list of orders by the owner's ID and the order status and delivery type
+        //            List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+        //            if (walkinOrderlist != null)
+        //            {
+        //                filteredordersList = walkinOrderlist.Values
+        //                    .Where(d => d.adminId.ToString() == idno)
+        //                    .ToList();
+        //            }
+
+        //            decimal totalOrderAmount = 0;
+        //            decimal overAllSales = 0;
+        //            decimal totalWalkInAmount = 0;
+
+        //            foreach (Order order in filteredList)
+        //            {
+        //                if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+        //                    && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+        //                {
+        //                    string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                  //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+        //                    salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+        //                        order.order_TotalAmount, dateOrdered);
+
+
+        //                    totalOrderAmount += order.order_TotalAmount;
+        //                }
+        //            }
+        //            foreach (WalkInOrders order in filteredordersList)
+        //            {
+        //                string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+        //                //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+        //                salesordersTable.Rows.Add(order.orderNo, " ", " ", " ", order.orderType, order.totalAmount, dateOrdered);
+
+        //                totalWalkInAmount += order.totalAmount;
+        //            }
+
+        //            overAllSales = totalOrderAmount + totalWalkInAmount;
+        //            salesRevenue.Text = "Php." + " " + overAllSales;
+        //            salesRevenueGridView.DataSource = salesordersTable;
+        //            salesRevenueGridView.DataBind();
+        //            Label1.Visible = true;
+        //            salesRevenue.Visible = true;
+        //        }
+        //        else
+        //        {
+        //            // Handle null response or invalid selected value
+        //            salesRevenue.Text = "No record of sales found";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Handle null response or invalid selected value
+        //        salesRevenue.Text = "No record of sales found";
+        //    }
+        //}
+        private void dailySalesDisplay()
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Month");
-            dt.Columns.Add("TotalAmount");
+            string idno = (string)Session["idno"];
+            //DateTime fromDate = DateTime.MinValue;
+            //DateTime toDate = DateTime.MinValue;
 
-            var monthlySales = orders.Values.GroupBy(o => o.orderDate.Month)
-                                            .Select(g => new
-                                            {
-                                                Month = g.Key,
-                                                TotalAmount = g.Sum(o => o.order_TotalAmount)
-                                            })
-                                            .OrderBy(g => g.Month);
+            DateTime fromDate = DateTime.Today;
+            DateTime toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
 
-            foreach (var sale in monthlySales)
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ORDERS");
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+            // Create the DataTable to hold the orders
+            DataTable salesordersTable = new DataTable();
+            salesordersTable.Columns.Add("Order ID");
+            salesordersTable.Columns.Add("Customer ID");
+            salesordersTable.Columns.Add("Order Status");
+            salesordersTable.Columns.Add("Delivery Type");
+            salesordersTable.Columns.Add("Transaction Type");
+            salesordersTable.Columns.Add("Total Amount");
+            salesordersTable.Columns.Add("Order Date");
+
+            // Get the selected date range from the dropdown list
+            //string dateRange = ddlDateRange.SelectedValue;
+
+            if (response != null && response.ResultAs<Order>() != null)
             {
-                DataRow dr = dt.NewRow();
-                dr["Month"] = GetMonthName(sale.Month);
-                dr["TotalAmount"] = sale.TotalAmount;
-                dt.Rows.Add(dr);
+                if (orderlist != null)
+                {
+                    //  Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<Order> filteredList = orderlist.Values
+                    .Where(d => d.admin_ID.ToString() == idno && (d.orderDate >= fromDate && d.orderDate <= toDate) && (d.order_OrderTypeValue == "PickUp" || d.order_OrderTypeValue == "Delivery")
+                        && ( d.order_OrderStatus == "Payment Received"))
+                    .ToList();
+                    //List<Order> filteredList = orderlist.Values
+                    //        .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
+                    //        .ToList();
+
+                    //  Retrieve all orders from the ORDERS table
+                    FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                    Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                    // Create the DataTable to hold the orders
+                    DataTable walkinsalesTable = new DataTable();
+                    walkinsalesTable.Columns.Add("Order ID");
+                    walkinsalesTable.Columns.Add("Added By");
+                    walkinsalesTable.Columns.Add("Amount Paid");
+                    walkinsalesTable.Columns.Add("Transaction Type");
+                    walkinsalesTable.Columns.Add("Order Date");
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+
+                    //if (walkinOrderlist != null)
+                    //{
+                        filteredordersList = walkinOrderlist.Values
+                               .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
+                               .ToList();
+                    //}
+
+                    decimal totalOrderAmount = 0;
+                    decimal overAllSales = 0;
+                    decimal totalWalkInAmount = 0;
+                    // Check if there are no walk-in sales found
+                    if (filteredList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = true;
+                        lblErrorWalkin.Visible = false;
+                        lblErrorOnline.Text = "No daily online order sales found.";
+                        
+                    }
+                    foreach (Order order in filteredList)
+                    {
+                        //if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+                        //     && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+                        //{
+                            string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                            salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+                                order.order_TotalAmount, dateOrdered);
+
+                            totalOrderAmount += order.order_TotalAmount;
+                        //}
+                    }
+                    // Check if there are no walk-in sales found
+                    if (filteredordersList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = false;
+                        lblErrorWalkin.Visible = true;
+                        lblErrorWalkin.Text = "No daily walk-in order sales found.";
+                       
+                    }
+                    foreach (WalkInOrders order in filteredordersList)
+                    {
+                        string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        walkinsalesTable.Rows.Add(order.orderNo, order.addedBy, order.totalAmount, "Walkin Order", dateOrdered);
+
+                        totalWalkInAmount += order.totalAmount;
+                    }
+                   
+
+                    overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                    onlinesalesRevenue.Text = "Php." + " " + totalOrderAmount.ToString();
+                    walkinsalesRevenue.Text = "Php." + " " + totalWalkInAmount.ToString();
+                    overallSalesRevenue.Text = "Php." + " " + overAllSales.ToString();
+                    salesRevenueGridView.DataSource = salesordersTable;
+                    salesRevenueGridView.DataBind();
+                    walkinSales.DataSource = walkinsalesTable;
+                    walkinSales.DataBind();
+                    Label2.Visible = true;
+                    Label1.Visible = true;
+                    Label4.Visible = true;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = true;
+                    walkinsalesRevenue.Visible = true;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    overallSalesRevenue.Text = "No record of sales found";
+                    Label2.Visible = false;
+                    Label1.Visible = false;
+                    Label4.Visible = false;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = false;
+                    walkinsalesRevenue.Visible = false;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
             }
-
-            return dt;
-        }
-
-        private decimal CalculateOverallSales(Dictionary<string, Order> orders)
-        {
-            return orders.Values.Sum(o => o.order_TotalAmount);
-        }
-
-        private string GetMonthName(int month)
-        {
-            return new DateTime(1, month, 1).ToString("MMMM");
-        }
-
-        private int GetIso8601WeekOfYear(DateTime time)
-        {
-            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+            else
             {
-                time = time.AddDays(3);
+                // Handle null response or invalid selected value
+                overallSalesRevenue.Text = "No record of sales found";
+                Label2.Visible = false;
+                Label1.Visible = false;
+                Label4.Visible = false;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = false;
+                walkinsalesRevenue.Visible = false;
+                //lblErrorOnline.Visible = false;
+                //lblErrorWalkin.Visible = false;
             }
-
-            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
+        private void weeklySalesDisplay()
+        {
+            string idno = (string)Session["idno"];
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MinValue;
+
+            fromDate = DateTime.Today.AddDays(-6);
+            toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ORDERS");
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+            // Create the DataTable to hold the orders
+            DataTable salesordersTable = new DataTable();
+            salesordersTable.Columns.Add("Order ID");
+            salesordersTable.Columns.Add("Customer ID");
+            salesordersTable.Columns.Add("Order Status");
+            salesordersTable.Columns.Add("Delivery Type");
+            salesordersTable.Columns.Add("Transaction Type");
+            salesordersTable.Columns.Add("Total Amount");
+            salesordersTable.Columns.Add("Order Date");
+
+            // Get the selected date range from the dropdown list
+            //string dateRange = ddlDateRange.SelectedValue;
+
+            if (response != null && response.ResultAs<Order>() != null)
+            {
+                if (orderlist != null)
+                {
+                    //  Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<Order> filteredList = orderlist.Values
+                   .Where(d => d.admin_ID.ToString() == idno && (d.orderDate >= fromDate && d.orderDate <= toDate) && (d.order_OrderTypeValue == "PickUp" || d.order_OrderTypeValue == "Delivery")
+                       && ( d.order_OrderStatus == "Payment Received"))
+                   .ToList();
+                    //List<Order> filteredList = orderlist.Values
+                    //        .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
+                    //        .ToList();
+
+                    //  Retrieve all orders from the ORDERS table
+                    FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                    Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                    // Create the DataTable to hold the orders
+                    DataTable walkinsalesTable = new DataTable();
+                    walkinsalesTable.Columns.Add("Order ID");
+                    walkinsalesTable.Columns.Add("Added By");
+                    walkinsalesTable.Columns.Add("Amount Paid");
+                    walkinsalesTable.Columns.Add("Transaction Type");
+                    walkinsalesTable.Columns.Add("Order Date");
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+                    //if (walkinOrderlist != null)
+                    //{
+                        filteredordersList = walkinOrderlist.Values
+                               .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
+                               .ToList();
+                    //}
+
+                    decimal totalOrderAmount = 0;
+                    decimal overAllSales = 0;
+                    decimal totalWalkInAmount = 0;
+
+                    // Check if there are no walk-in sales found
+                    if (filteredList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = true;
+                        lblErrorWalkin.Visible = false;
+                        lblErrorOnline.Text = "No weekly online order sales found.";
+                        
+                    }
+                    foreach (Order order in filteredList)
+                    {
+                        //if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+                        //     && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+                        //{
+                        string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+                            order.order_TotalAmount, dateOrdered);
+
+                        totalOrderAmount += order.order_TotalAmount;
+                        //}
+                    }
+                    // Check if there are no walk-in sales found
+                    if (filteredordersList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = false;
+                        lblErrorWalkin.Visible = true;
+                        lblErrorWalkin.Text = "No weekly walk-in order sales found.";
+                        
+                    }
+                    foreach (WalkInOrders order in filteredordersList)
+                    {
+                        string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        walkinsalesTable.Rows.Add(order.orderNo, order.addedBy, order.totalAmount, "Walkin Order", dateOrdered);
+
+                        totalWalkInAmount += order.totalAmount;
+                    }
+
+                    overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                    onlinesalesRevenue.Text = "Php." + " " + totalOrderAmount.ToString();
+                    walkinsalesRevenue.Text = "Php." + " " + totalWalkInAmount.ToString();
+                    overallSalesRevenue.Text = "Php." + " " + overAllSales.ToString();
+                    salesRevenueGridView.DataSource = salesordersTable;
+                    salesRevenueGridView.DataBind();
+                    walkinSales.DataSource = walkinsalesTable;
+                    walkinSales.DataBind();
+                    Label2.Visible = true;
+                    Label1.Visible = true;
+                    Label4.Visible = true;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = true;
+                    walkinsalesRevenue.Visible = true;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    overallSalesRevenue.Text = "No record of sales found";
+                    Label2.Visible = false;
+                    Label1.Visible = false;
+                    Label4.Visible = false;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = false;
+                    walkinsalesRevenue.Visible = false;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                overallSalesRevenue.Text = "No record of sales found";
+                Label2.Visible = false;
+                Label1.Visible = false;
+                Label4.Visible = false;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = false;
+                walkinsalesRevenue.Visible = false;
+                //lblErrorOnline.Visible = false;
+                //lblErrorWalkin.Visible = false;
+            }
+        }
+        private void monthlySalesDisplay()
+        {
+            string idno = (string)Session["idno"];
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MinValue;
+
+            fromDate = DateTime.Today.AddDays(-30);
+            toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ORDERS");
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+
+            // Create the DataTable to hold the orders
+            DataTable salesordersTable = new DataTable();
+            salesordersTable.Columns.Add("Order ID");
+            salesordersTable.Columns.Add("Customer Name");
+            salesordersTable.Columns.Add("Payment Mode");
+            salesordersTable.Columns.Add("Order Status");
+            salesordersTable.Columns.Add("Delivery Type");
+            salesordersTable.Columns.Add("Transaction Type");
+            salesordersTable.Columns.Add("Total Amount");
+            salesordersTable.Columns.Add("Order Date");
+
+            // Get the selected date range from the dropdown list
+            //string dateRange = ddlDateRange.SelectedValue;
+
+            if (response != null && response.ResultAs<Order>() != null)
+            {
+                if (orderlist != null )
+                {
+                    //  Filter the list of orders by the owner's ID
+                    List<Order> filteredList = orderlist.Values
+                   .Where(d => d.admin_ID.ToString() == idno && (d.orderDate >= fromDate && d.orderDate <= toDate) && (d.order_OrderTypeValue == "PickUp" || d.order_OrderTypeValue == "Delivery")
+                       && (d.order_OrderStatus == "Payment Received"))
+                   .ToList();
+                    //List<Order> filteredList = orderlist.Values
+                    //        .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
+                    //        .ToList();
+
+                    //  Retrieve all orders from the ORDERS table
+                    FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                    Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                    // Create the DataTable to hold the orders
+                    DataTable walkinsalesTable = new DataTable();
+                    walkinsalesTable.Columns.Add("Order ID");
+                    walkinsalesTable.Columns.Add("Added By");
+                    walkinsalesTable.Columns.Add("Amount Paid");
+                    walkinsalesTable.Columns.Add("Transaction Type");
+                    walkinsalesTable.Columns.Add("Order Date");
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+                    //if (walkinOrderlist != null)
+                    //{
+                    filteredordersList = walkinOrderlist.Values
+                           .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
+                           .ToList();
+                    //}
+
+                    decimal totalOrderAmount = 0;
+                    decimal overAllSales = 0;
+                    decimal totalWalkInAmount = 0;
+
+                    // Check if there are no walk-in sales found
+                    if (filteredList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = true;
+                        lblErrorWalkin.Visible = false;
+                        lblErrorOnline.Text = "No monthly online order sales found.";
+                       
+                    }
+                    foreach (Order order in filteredList)
+                    {
+                        //if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+                        //     && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+                        //{
+                        string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+                            order.order_TotalAmount, dateOrdered);
+
+                        totalOrderAmount += order.order_TotalAmount;
+                        //}
+                    }
+                    // Check if there are no walk-in sales found
+                    if (filteredordersList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = false;
+                        lblErrorWalkin.Visible = true;
+                        lblErrorWalkin.Text = "No monthly walk-in order sales found.";
+                        
+                    }
+                    foreach (WalkInOrders order in filteredordersList)
+                    {
+                        string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        walkinsalesTable.Rows.Add(order.orderNo, order.addedBy, order.totalAmount, "Walkin Order", dateOrdered);
+
+                        totalWalkInAmount += order.totalAmount;
+                    }
+
+                    overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                    onlinesalesRevenue.Text = "Php." + " " + totalOrderAmount.ToString();
+                    walkinsalesRevenue.Text = "Php." + " " + totalWalkInAmount.ToString();
+                    overallSalesRevenue.Text = "Php." + " " + overAllSales.ToString();
+                    salesRevenueGridView.DataSource = salesordersTable;
+                    salesRevenueGridView.DataBind();
+                    walkinSales.DataSource = walkinsalesTable;
+                    walkinSales.DataBind();
+                    Label2.Visible = true;
+                    Label1.Visible = true;
+                    Label4.Visible = true;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = true;
+                    walkinsalesRevenue.Visible = true;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    overallSalesRevenue.Text = "No record of sales found";
+                    Label2.Visible = false;
+                    Label1.Visible = false;
+                    Label4.Visible = false;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = false;
+                    walkinsalesRevenue.Visible = false;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                overallSalesRevenue.Text = "No record of sales found";
+                Label2.Visible = false;
+                Label1.Visible = false;
+                Label4.Visible = false;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = false;
+                walkinsalesRevenue.Visible = false;
+                //lblErrorOnline.Visible = false;
+                //lblErrorWalkin.Visible = false;
+            }
+        }
+
+        private void yearlySalesDisplay()
+        {
+            string idno = (string)Session["idno"];
+
+            DateTime fromDate = DateTime.MinValue;
+            DateTime toDate = DateTime.MinValue;
+
+            fromDate = new DateTime(2023, 1, 1);
+            toDate = new DateTime(2023, 12, 31, 23, 59, 59);
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ORDERS");
+            Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+
+            // Create the DataTable to hold the orders
+            DataTable salesordersTable = new DataTable();
+            salesordersTable.Columns.Add("Order ID");
+            salesordersTable.Columns.Add("Customer ID");
+            salesordersTable.Columns.Add("Order Status");
+            salesordersTable.Columns.Add("Delivery Type");
+            salesordersTable.Columns.Add("Transaction Type");
+            salesordersTable.Columns.Add("Total Amount");
+            salesordersTable.Columns.Add("Order Date");
+            // Get the selected date range from the dropdown list
+            //string dateRange = ddlDateRange.SelectedValue;
+
+            if (response != null && response.ResultAs<Order>() != null)
+            {
+                if (orderlist != null)
+                {
+                    //  Filter the list of orders by the owner's ID
+                    List<Order> filteredList = orderlist.Values
+                   .Where(d => d.admin_ID.ToString() == idno && (d.orderDate >= fromDate && d.orderDate <= toDate) && (d.order_OrderTypeValue == "PickUp" || d.order_OrderTypeValue == "Delivery")
+                       && (d.order_OrderStatus == "Payment Received"))
+                   .ToList();
+                    //List<Order> filteredList = orderlist.Values
+                    //        .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
+                    //        .ToList();
+
+                    //  Retrieve all orders from the ORDERS table
+                    FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
+                    Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
+
+                    // Create the DataTable to hold the orders
+                    DataTable walkinsalesTable = new DataTable();
+                    walkinsalesTable.Columns.Add("Order ID");
+                    walkinsalesTable.Columns.Add("Added By");
+                    walkinsalesTable.Columns.Add("Amount Paid");
+                    walkinsalesTable.Columns.Add("Transaction Type");
+                    walkinsalesTable.Columns.Add("Order Date");
+
+                    // Filter the list of orders by the owner's ID and the order status and delivery type
+                    List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
+                    //if (walkinOrderlist != null)
+                    //{
+                        filteredordersList = walkinOrderlist.Values
+                               .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
+                               .ToList();
+                    //}
+
+                    decimal totalOrderAmount = 0;
+                    decimal overAllSales = 0;
+                    decimal totalWalkInAmount = 0;
+
+                    // Check if there are no walk-in sales found
+                    if (filteredList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = true;
+                        lblErrorWalkin.Visible = false;
+                        lblErrorOnline.Text = "No yearly online order sales found.";
+                        
+                    }
+                    foreach (Order order in filteredList)
+                    {
+                        //if ((order.order_OrderTypeValue == "PickUp") && (order.order_OrderStatus == "Accepted") || (order.order_OrderTypeValue == "Delivery")
+                        //     && (order.order_OrderStatus == "Delivered") && (order.order_OrderStatus == "Payment Received"))
+                        //{
+                        string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        salesordersTable.Rows.Add(order.orderID, order.cusId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.order_OrderTypeValue,
+                            order.order_TotalAmount, dateOrdered);
+
+                        totalOrderAmount += order.order_TotalAmount;
+                        //}
+                    }
+                    // Check if there are no walk-in sales found
+                    if (filteredordersList.Count == 0)
+                    {
+                        lblErrorOnline.Visible = false;
+                        lblErrorWalkin.Visible = true;
+                        lblErrorWalkin.Text = "No yearly walk-in order sales found.";
+                      
+                    }
+                    foreach (WalkInOrders order in filteredordersList)
+                    {
+                        string dateOrdered = order.dateAdded == DateTime.MinValue ? "" : order.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        //  string datePaymentReceived = order.datePaymentReceived == DateTime.MinValue ? "" : order.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        walkinsalesTable.Rows.Add(order.orderNo, order.addedBy, order.totalAmount, "Walkin Order", dateOrdered);
+
+
+                        totalWalkInAmount += order.totalAmount;
+                    }
+
+                    overAllSales = totalOrderAmount + totalWalkInAmount;
+
+                    onlinesalesRevenue.Text = "Php." + " " + totalOrderAmount.ToString();
+                    walkinsalesRevenue.Text = "Php." + " " + totalWalkInAmount.ToString();
+                    overallSalesRevenue.Text = "Php." + " " + overAllSales.ToString();
+                    salesRevenueGridView.DataSource = salesordersTable;
+                    salesRevenueGridView.DataBind();
+                    walkinSales.DataSource = walkinsalesTable;
+                    walkinSales.DataBind();
+                    Label2.Visible = true;
+                    Label1.Visible = true;
+                    Label4.Visible = true;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = true;
+                    walkinsalesRevenue.Visible = true;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+                else
+                {
+                    // Handle null response or invalid selected value
+                    overallSalesRevenue.Text = "No record of sales found";
+                    Label2.Visible = false;
+                    Label1.Visible = false;
+                    Label4.Visible = false;
+                    overallSalesRevenue.Visible = true;
+                    onlinesalesRevenue.Visible = false;
+                    walkinsalesRevenue.Visible = false;
+                    //lblErrorOnline.Visible = false;
+                    //lblErrorWalkin.Visible = false;
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                overallSalesRevenue.Text = "No record of sales found";
+                Label2.Visible = false;
+                Label1.Visible = false;
+                Label4.Visible = false;
+                overallSalesRevenue.Visible = true;
+                onlinesalesRevenue.Visible = false;
+                walkinsalesRevenue.Visible = false;
+                //lblErrorOnline.Visible = false;
+                //lblErrorWalkin.Visible = false;
+            }
+        }
+
         protected void btnViewSale_Click(object sender, EventArgs e)
         {
             // Get the ID of the currently logged-in owner from session state
             string idno = (string)Session["idno"];
             string selectedOption = ddlSaleTransaction.SelectedValue;
 
-           try
-           {
-
-
-                    if (selectedOption == "0")
-                    {
-
-                    }
-                    else if (selectedOption == "1")
-                    {
-
-                       
-
-                    }
-                    else if (selectedOption == "2")
-                    {
-
-                       
-
-                    }
-                    else if (selectedOption == "3")
-                    {
-
-                        
-
-
-                    }
-                    
-
-           }
-           catch (Exception ex)
-           {
-               Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/WaterOrders.aspx';" + ex.Message);
-           }
-
+            try
+            {
+                if (selectedOption == "0")
+                {
+                    overAllSalesDisplay();
+                }
+                else if (selectedOption == "1")
+                {
+                    dailySalesDisplay();
+                }
+                else if (selectedOption == "2")
+                {
+                    weeklySalesDisplay();
+                }
+                else if (selectedOption == "3")
+                {
+                    monthlySalesDisplay();
+                }
+                else if (selectedOption == "4")
+                {
+                    yearlySalesDisplay();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/SalesReports.aspx';" + ex.Message);
+            }
         }
 
-        //protected void btnViewSale_Click(object sender, EventArgs e)
-        //{
-        //    // Get the ID of the currently logged-in owner from session state
-        //    string idno = (string)Session["idno"];
-        //    string selectedOption = ddlSaleTransaction.SelectedValue;
 
-        //    try
-        //    {
-               
 
-        //        // Retrieve all orders from the ORDERS table
-        //        FirebaseResponse response = twoBigDB.Get("ORDERS");
-        //        Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-
-        //        DateTime fromDate = DateTime.MinValue;
-        //        DateTime toDate = DateTime.MinValue;
-
-        //        if(selectedOption == "0") // View All
-        //        {
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the ORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders today
-        //                int totalOrdersToday = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrdersToday + totalWalkInOrder;
-        //                // Compute the total amount of all orders
-        //                //decimal totalOrderAmount = filteredList.Count();
-        //                decimal totalOrderAmount = 0;
-        //                decimal overAllSales = 0;
-        //                decimal totalWalkInAmount = 0;
-        //                // Compute the total number of delivery orders
-        //                //int totalDeliveryOrders = filteredList.Count(d => d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Received" || d.order_OrderStatus == "Payment Received");
-        //                //// Compute the total number of reservation orders
-        //                //int totalReservationOrders = filteredList.Count(d => d.order_DeliveryTypeValue == "Reservation");
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalOrderAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                overAllSales = totalOrderAmount + totalWalkInAmount;
-
-        //                // Display the total amount of all orders
-        //                lblTotalSales.Text = overAllSales.ToString();
-        //                lbloverallTotalSale.Text = "OVERALL TOTAL SALES";
-        //                // Display the total number of all orders
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TOTAL ORDERS ";
-
-        //                lblTodaysSale.Visible = false;
-        //                lblYesterdaySale.Visible = false;
-        //                lblPastWeekSale.Visible = false;
-        //                lblPastmonthSale.Visible = false;
-        //                lbl2023Sale.Visible = false;
-        //                lbl_TodaysSale.Visible = false;
-        //                lbl_YesterdaySale.Visible = false;
-        //                lbl_PastWeekSale.Visible = false;
-        //                lbl_PastmonthSale.Visible = false;
-        //                lbl_2023Sale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTotalSales.Text = "Sales not found";
-        //                //lblDeliveries.Text = "Deliveries not found";
-        //                //lblOrders.Text = "Orders not found";
-        //                //lblReservations.Text = "Reservation not found";
-
-        //            }
-        //        }
-        //        else if (selectedOption == "1") // Today
-        //        {
-        //            fromDate = DateTime.Today;
-        //            toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the WALKINORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of walk-in orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders today
-        //                int totalOrders = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrders + totalWalkInOrder;
-
-        //                // Compute the total amount of orders today
-        //                decimal totalAmount = 0;
-        //                decimal totalWalkInAmount = 0;
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                // Compute todays sales 
-        //                decimal todaySales = totalAmount + totalWalkInAmount;
-
-        //                // Display todays total sales 
-        //                lblTodaysSale.Text = todaySales.ToString();
-        //                lbl_TodaysSale.Text = "TODAY/S SALES";
-        //                // Display the total number of todays orders
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TODAY/S ORDERS ";
-
-        //                lbloverallTotalSale.Visible = false;
-        //                lblTotalSales.Visible = false;
-        //                lblYesterdaySale.Visible = false;
-        //                lblPastWeekSale.Visible = false;
-        //                lblPastmonthSale.Visible = false;
-        //                lbl2023Sale.Visible = false;
-        //                lbl_YesterdaySale.Visible = false;
-        //                lbl_PastWeekSale.Visible = false;
-        //                lbl_PastmonthSale.Visible = false;
-        //                lbl_2023Sale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTodaysSale.Text = "Sales not found";
-        //                lblOrders.Text = "Orders not found";
-        //            }
-        //        }
-        //        else if (selectedOption == "2")//Yesterday
-        //        {
-        //            fromDate = DateTime.Today.AddDays(-1);
-        //            toDate = DateTime.Today.AddSeconds(-1);
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the WALKINORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of walk-in orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders from yesterday
-        //                int totalOrders = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrders + totalWalkInOrder;
-
-        //                // Compute the total amount of orders from yesterday
-        //                decimal totalAmount = 0;
-        //                decimal totalWalkInAmount = 0;
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                // Compute yesterdays sales 
-        //                decimal yesterdaySales = totalAmount + totalWalkInAmount;
-
-        //                // Display yesterdays sales
-        //                lblYesterdaySale.Text = "YESTERDAY/S SALES";
-        //                lbl_YesterdaySale.Text = yesterdaySales.ToString();
-        //                // Display the total number of orders yesterday
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TOTAL ORDERS ";
-
-        //                lbloverallTotalSale.Visible = false;
-        //                lblTotalSales.Visible = false;
-        //                lblTodaysSale.Visible = false;
-        //                lblPastWeekSale.Visible = false;
-        //                lblPastmonthSale.Visible = false;
-        //                lbl2023Sale.Visible = false;
-        //                lbl_TodaysSale.Visible = false;
-        //                lbl_PastWeekSale.Visible = false;
-        //                lbl_PastmonthSale.Visible = false;
-        //                lbl_2023Sale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTotalSales.Text = "Sales not found";
-        //                lblOrders.Text = "Orders not found";
-        //            }
-        //        }
-        //        else if (selectedOption == "3")// Past 7 days
-        //        {
-        //            fromDate = DateTime.Today.AddDays(-6);
-        //            toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the WALKINORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of walk-in orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders in the past 7 days
-        //                int totalOrders = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrders + totalWalkInOrder;
-
-        //                // Compute the total amount of orders in the past 7 days
-        //                decimal totalAmount = 0;
-        //                decimal totalWalkInAmount = 0;
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                // Compute the overall sales in the past 7 days
-        //                decimal pastWeekSale = totalAmount + totalWalkInAmount;
-
-        //                // Display the total sales in the past 7 days
-        //                lblPastWeekSale.Text = pastWeekSale.ToString();
-        //                lbl_PastWeekSale.Text = "PAST WEEK SALES";
-        //                // Display the total number of orders in the past 7 days
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TOTAL ORDERS ";
-
-        //                lbloverallTotalSale.Visible = false;
-        //                lblTotalSales.Visible = false;
-        //                lblTodaysSale.Visible = false;
-        //                lblYesterdaySale.Visible = false;
-        //                lblPastmonthSale.Visible = false;
-        //                lbl2023Sale.Visible = false;
-        //                lbl_TodaysSale.Visible = false;
-        //                lbl_YesterdaySale.Visible = false;
-        //                lbl_PastmonthSale.Visible = false;
-        //                lbl_2023Sale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTotalSales.Text = "Sales not found";
-        //                lblOrders.Text = "Orders not found";
-        //            }
-        //        }
-        //        else if (selectedOption == "4")//past month
-        //        {
-        //            fromDate = DateTime.Today.AddDays(-30);
-        //            toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the WALKINORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of walk-in orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders in the past 30 days
-        //                int totalOrders = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrders + totalWalkInOrder;
-
-        //                // Compute the total amount of orders in the past 30 days
-        //                decimal totalAmount = 0;
-        //                decimal totalWalkInAmount = 0;
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                // Compute the overall sales in the past 30 days
-        //                decimal pastMonthSale = totalAmount + totalWalkInAmount;
-
-        //                // Display the total sales in the past 30 days
-        //                lblPastmonthSale.Text = pastMonthSale.ToString();
-        //                lbl_PastmonthSale.Text = "PAST MONTH SALES";
-        //                // Display the total number of orders in the past 30 days
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TOTAL ORDERS ";
-
-        //                lbloverallTotalSale.Visible = false;
-        //                lblTotalSales.Visible = false;
-        //                lblTodaysSale.Visible = false;
-        //                lblYesterdaySale.Visible = false;
-        //                lblPastWeekSale.Visible = false;
-        //                lbl2023Sale.Visible = false;
-        //                lbl_TodaysSale.Visible = false;
-        //                lbl_YesterdaySale.Visible = false;
-        //                lbl_PastWeekSale.Visible = false;
-        //                lbl_2023Sale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTotalSales.Text = "Sales not found";
-        //                lblOrders.Text = "Orders not found";
-        //            }
-        //        }
-        //        else if (selectedOption == "5")//2023
-        //        {
-        //            fromDate = new DateTime(2023, 1, 1);
-        //            toDate = new DateTime(2023, 12, 31, 23, 59, 59);
-        //            if (orderlist != null)
-        //            {
-        //                // Filter the list of orders by the owner's ID and the order status and delivery type
-        //                List<Order> filteredList = orderlist.Values
-        //                    .Where(d => d.admin_ID.ToString() == idno && d.orderDate >= fromDate && d.orderDate <= toDate)
-        //                    .ToList();
-
-        //                // Retrieve all orders from the WALKINORDERS table
-        //                FirebaseResponse res = twoBigDB.Get("WALKINORDERS");
-        //                Dictionary<string, WalkInOrders> walkinOrderlist = res.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //                // Filter the list of walk-in orders by the owner's ID and the order status and delivery type
-        //                List<WalkInOrders> filteredordersList = new List<WalkInOrders>();
-        //                if (walkinOrderlist != null)
-        //                {
-        //                    filteredordersList = walkinOrderlist.Values
-        //                        .Where(d => d.adminId.ToString() == idno && d.dateAdded >= fromDate && d.dateAdded <= toDate)
-        //                        .ToList();
-        //                }
-
-        //                // Compute the total number of orders in the past year
-        //                int totalOrders = filteredList.Count(d => d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Pending"
-        //                                                           || d.order_OrderStatus == "Accepted");
-        //                int totalWalkInOrder = filteredordersList.Count();
-        //                int CombinedOrder = totalOrders + totalWalkInOrder;
-
-        //                // Compute the total amount of orders year
-        //                decimal totalAmount = 0;
-        //                decimal totalWalkInAmount = 0;
-
-        //                foreach (Order order in filteredList)
-        //                {
-        //                    if (order.order_OrderTypeValue == "pickup" && order.order_OrderStatus == "Accepted" || order.order_OrderTypeValue == "delivery"
-        //                        && order.order_OrderStatus == "Delivered" || order.order_OrderStatus == "Payment Received")
-        //                    {
-        //                        totalAmount += order.order_TotalAmount;
-        //                    }
-        //                }
-
-        //                foreach (WalkInOrders order in filteredordersList)
-        //                {
-        //                    totalWalkInAmount += order.totalAmount;
-        //                }
-
-        //                // Compute the overall sales within a year
-        //                decimal yearSales = totalAmount + totalWalkInAmount;
-
-        //                // Display the total sales within a year
-        //                lbl2023Sale.Text = yearSales.ToString();
-        //                lbl_2023Sale.Text = "2023 SALES";
-        //                // Display the total number of orders within a year
-        //                lblOrders.Text = CombinedOrder.ToString();
-        //                lblCombinedOrders.Text = "TOTAL ORDERS ";
-
-        //                lbloverallTotalSale.Visible = false;
-        //                lblTotalSales.Visible = false;
-        //                lblTodaysSale.Visible = false;
-        //                lblYesterdaySale.Visible = false;
-        //                lblPastmonthSale.Visible = false;
-        //                lblPastWeekSale.Visible = false;
-        //                lbl_TodaysSale.Visible = false;
-        //                lbl_YesterdaySale.Visible = false;
-        //                lbl_PastWeekSale.Visible = false;
-        //                lbl_PastmonthSale.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                // handle the case where orderlist is null
-        //                lblTotalSales.Text = "Sales not found";
-        //                lblOrders.Text = "Orders not found";
-        //            }
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("<script>alert('No data exists.'); window.location.href = '/Admin/Reports.aspx';</script>" + ex.Message);
-        //    }
-        //}
+      
     }
 }

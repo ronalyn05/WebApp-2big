@@ -88,8 +88,8 @@
                                                                             <br />
                                                                             <%--  Tank Size--%>
                                                                             <div class="col-md-12 col-sm-12 ">
-                                                                                <strong>Tank Size:</strong>
-                                                                                <asp:TextBox ID="tankSize" Placeholder="Enter the size of tank water supply" runat="server" Width="300px"></asp:TextBox>
+                                                                                <strong>Quantity/Size of Tank Unit:</strong>
+                                                                                <asp:TextBox ID="tankSize" Placeholder="Enter the number of units of tank water supply" runat="server" Width="300px"></asp:TextBox>
                                                                             </div>
                                                                             <br />
 
@@ -150,8 +150,8 @@
                                                                             </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12">
-                                                                                <strong>Product Quantity:</strong>
-                                                                                <asp:TextBox ID="productQty" TextMode="Number" Height="40px" step="any" Placeholder="Enter how many quantity the unit of volume have" runat="server" Width="464px"></asp:TextBox>
+                                                                                <strong>Product Quantity/Size of Unit:</strong>
+                                                                                <asp:TextBox ID="productQty" TextMode="Number" Height="40px" step="any" Placeholder="Enter the number of quantity/size the unit of volume have" runat="server" Width="464px"></asp:TextBox>
                                                                             </div>
                                                                             <br />
                                                                             <%--PRODUCT PRICE--%>
@@ -183,7 +183,7 @@
                                                                             <br />
                                                                             <%--PRODUCT Available--%>
                                                                             <div class="col-md-12 col-sm-12 ">
-                                                                                <strong>Quantity(Stock):</strong>
+                                                                                <strong>Quantity(Stock)/Number of unit:</strong>
                                                                                 <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
                                                                                 <asp:TextBox ID="stockQuantity" Height="40px" TextMode="Number" step="any" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                             </div>
@@ -252,7 +252,7 @@
                                                                             <br />
 
                                                                             <div class="col-md-12 col-sm-12 ">
-                                                                                <strong>Quantity:</strong>
+                                                                                <strong>Quantity/Number of unit:</strong>
                                                                                
                                                                                 <asp:TextBox ID="refillQty" Height="40px" Width="464px" Placeholder="Enter how many quantity does the unit of volume have" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                                             </div>
@@ -294,7 +294,7 @@
                                                                             <br />
                                                                             <%--PRODUCT Available--%>
                                                                             <div class="col-md-12 col-sm-12 ">
-                                                                                <strong>Quantity(Stock):</strong>
+                                                                                <strong>Quantity(Stock)/Number:</strong>
                                                                                 <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
                                                                                 <asp:TextBox ID="txtStockQty" Height="40px" TextMode="Number" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                             </div>

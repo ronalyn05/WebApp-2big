@@ -55,6 +55,20 @@
                                                 <%--<div class="card" style="background-color:#f2e2ff">--%>
                                                     <div class="card-header">
                                                          <asp:Label ID="Label1" runat="server" Text="USER ACTIVITY LOG" ForeColor="Black" Font-Size="Large" Font-Bold="True"></asp:Label>
+                                                     <hr />
+                                                         <%--   SORTING CODES HERE --%>
+                                                               <%-- <h6 style="color: black; font-family: Bahnschrift;margin-left:20px"> Sorting:</h6>--%>
+                                                               <%-- SORT BY DATE--%>
+                                                                  
+                                                                                    <h7 style="margin-left:20px">Start Date:</h7>
+                                                                                    <asp:TextBox ID="sortStart" style="margin-left:20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox> 
+                                                                                    <h7 style="margin-left:20px">End Date:</h7> 
+                                                                                    <asp:TextBox ID="sortEnd" style="margin-left:20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+
+                                                                                     <asp:Button runat="server" ID="generateSortedData" class="btn btn-primary" OnClick="generateSortedData_Click" Height="40" Text="Sort Date" />
+                                                                                    <asp:LinkButton runat="server" ID="clearSort" OnClick="clearSort_Click" Text="Clear"></asp:LinkButton> 
+
+                                                                
                                                         <div style="float:right;"> 
                                                             <asp:TextBox ID="txtSearch" Width="545px" Placeholder="search by activity (must be in capital letters and spacing in between words)...." ToolTip="enter activity to search in capital letters and with space in between each word" Height="40px" runat="server"></asp:TextBox>
                                                             <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px"/>

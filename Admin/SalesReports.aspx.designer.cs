@@ -33,66 +33,93 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnView;
 
         /// <summary>
-        /// dailySalesGridView control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView dailySalesGridView;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// weeklySales control.
+        /// onlinesalesRevenue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label weeklySales;
+        protected global::System.Web.UI.WebControls.Label onlinesalesRevenue;
 
         /// <summary>
-        /// weeklySalesGridView control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView weeklySalesGridView;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// monthlysales control.
+        /// walkinsalesRevenue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label monthlysales;
+        protected global::System.Web.UI.WebControls.Label walkinsalesRevenue;
 
         /// <summary>
-        /// monthlySalesGridView control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView monthlySalesGridView;
+        protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
-        /// overallSales control.
+        /// overallSalesRevenue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label overallSales;
+        protected global::System.Web.UI.WebControls.Label overallSalesRevenue;
 
         /// <summary>
-        /// overallSalesLabel control.
+        /// lblErrorOnline control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label overallSalesLabel;
+        protected global::System.Web.UI.WebControls.Label lblErrorOnline;
+
+        /// <summary>
+        /// salesRevenueGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView salesRevenueGridView;
+
+        /// <summary>
+        /// lblErrorWalkin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrorWalkin;
+
+        /// <summary>
+        /// walkinSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView walkinSales;
     }
 }

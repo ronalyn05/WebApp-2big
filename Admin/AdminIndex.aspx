@@ -87,7 +87,7 @@
                                                     <div class="card-footer bg-c-green">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
-                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">RESERVATIONS</a>
+                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">DELIVERIES</a>
                                                                <%-- <p class="text-white m-b-0 text-center">DELIVERIES</p>--%>
                                                             </div>
                                                             <div class="col-3 text-right">
