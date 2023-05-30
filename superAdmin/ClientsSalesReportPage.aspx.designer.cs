@@ -11,71 +11,8 @@ namespace WRS2big_Web.superAdmin
 {
 
 
-    public partial class SubscriptionReports
+    public partial class ClientsSalesReportPage
     {
-
-        /// <summary>
-        /// searchClient control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox searchClient;
-
-        /// <summary>
-        /// modalSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button modalSearch;
-
-        /// <summary>
-        /// closeButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button closeButton;
-
-        /// <summary>
-        /// modalDropdown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList modalDropdown;
-
-        /// <summary>
-        /// viewSorted control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button viewSorted;
-
-        /// <summary>
-        /// subscriptionReport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView subscriptionReport;
-
-        /// <summary>
-        /// clientSubHistoryButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button clientSubHistoryButton;
 
         /// <summary>
         /// sortStart control.
@@ -114,13 +51,40 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.LinkButton clearSort;
 
         /// <summary>
-        /// subscriptionRevenue control.
+        /// currentStationName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl subscriptionRevenue;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentStationName;
+
+        /// <summary>
+        /// currentClient control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentClient;
+
+        /// <summary>
+        /// currentStationAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentStationAddress;
+
+        /// <summary>
+        /// H2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H2;
 
         /// <summary>
         /// overallRevenue control.
@@ -132,21 +96,93 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl overallRevenue;
 
         /// <summary>
-        /// subSalesLabel control.
+        /// subscriptionRevenue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label subSalesLabel;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl subscriptionRevenue;
 
         /// <summary>
-        /// subscriptionSales control.
+        /// onlineOrdersRev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView subscriptionSales;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl onlineOrdersRev;
+
+        /// <summary>
+        /// walkinsRevenue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl walkinsRevenue;
+
+        /// <summary>
+        /// walkinOrdersRev control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl walkinOrdersRev;
+
+        /// <summary>
+        /// H1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H1;
+
+        /// <summary>
+        /// currentTotalOrders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentTotalOrders;
+
+        /// <summary>
+        /// onlineOrdersLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label onlineOrdersLabel;
+
+        /// <summary>
+        /// clientSalesReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView clientSalesReport;
+
+        /// <summary>
+        /// walkinLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label walkinLabel;
+
+        /// <summary>
+        /// walkInOrders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView walkInOrders;
     }
 }

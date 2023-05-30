@@ -98,7 +98,7 @@
                                                                                             <asp:TemplateField>
 
                                                                                                 <ItemTemplate>
-                                                                                                    
+                                                                                                        <asp:Button runat="server" OnClick="detailsButton_Click" Text="View" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
                                                                                                    
                                                                                                 </ItemTemplate>
                                                                                                 
