@@ -220,7 +220,7 @@
                                     <!-- Page-body start -->
                                             <div class="row">
                                                 <div class="col-xl-4 col-md-12 " >
-                                                <div class="card " style="background-color:	#deffea">
+                                                <div class="card " style="background-color:white">
                                                     <div class="card-header">
                                                         <h5>My Profile</h5>
                                                         <div class="card-header-right">

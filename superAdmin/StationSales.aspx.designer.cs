@@ -33,39 +33,75 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Button searchButton;
 
         /// <summary>
-        /// subscriptionSales control.
+        /// closeButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button subscriptionSales;
+        protected global::System.Web.UI.WebControls.Button closeButton;
 
         /// <summary>
-        /// clientSales control.
+        /// sortStart control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button clientSales;
+        protected global::System.Web.UI.WebControls.TextBox sortStart;
 
         /// <summary>
-        /// customersLabel control.
+        /// sortEnd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label customersLabel;
+        protected global::System.Web.UI.WebControls.TextBox sortEnd;
 
         /// <summary>
-        /// subscriptionReport control.
+        /// generateSortedData control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView subscriptionReport;
+        protected global::System.Web.UI.WebControls.Button generateSortedData;
+
+        /// <summary>
+        /// clearSort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton clearSort;
+
+        /// <summary>
+        /// subSalesLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label subSalesLabel;
+
+        /// <summary>
+        /// stationSalesReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView stationSalesReport;
+
+        /// <summary>
+        /// generateAdminSales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button generateAdminSales;
     }
 }

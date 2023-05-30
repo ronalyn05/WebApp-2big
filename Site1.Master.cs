@@ -65,10 +65,81 @@ namespace WRS2big_Web
 
 
             loadNotifications();
+            checkStationStatus();
             //SubscriptionStatus();
             //reminderNotification();
 
          
+        }
+        private void checkStationStatus()
+        {
+            var adminID = Session["idno"].ToString();
+
+            //TO GET THE REFILLING STATION DETAILS
+            FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
+            Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
+
+            //string name = refillStation.stationName;
+            string days = refillStation.businessDaysFrom;
+
+            //to check if naka add na ug station details
+            if (days != null)
+            {
+
+
+                DateTime timeNow = DateTime.Now;
+                DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
+                DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
+                //string businessClose = refillStation.businessDaysTo;
+                ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
+                //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
+
+                // Check if the current day is within the business days
+                DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
+                DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
+                DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
+
+                //convert into INT
+                int currentDay = (int)currentDayOfWeek;
+                int businessDayStart = (int)businessDayFrom;
+                int businessDayEnd = (int)businessDayTo;
+
+                bool isBusinessDay = false;
+                // check if the businessDayFrom is less than or equal to businessDayTo
+                if (businessDayStart <= businessDayEnd)
+                {
+                    //check if the current day is within the range using the >= and <= operators.
+                    isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
+                }
+                else
+                {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
+                    isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
+                }
+
+
+
+                //DEBUG STATEMENTS
+                Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
+                Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
+                Debug.WriteLine($"businessDayTo: {businessDayTo}");
+                Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
+
+                //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
+                string status = "CLOSE";
+                //lblstatus.Text = status;
+                if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
+                {
+                    status = "OPEN";
+                }
+               // lblstatus.Text = status;
+
+                var statusUpdate = new Dictionary<string, object>
+                {
+                  { "status", status }
+                };  
+
+                FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
+            }
         }
 
         private void SubscriptionStatus()

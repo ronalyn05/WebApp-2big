@@ -76,7 +76,7 @@ namespace WRS2big_Web.superAdmin
 
             if (subscribed != null)
             {
-                double totalSale = 0;
+                decimal totalSale = 0;
                 foreach (var entry in subscribed)
                 {
                     superAdminClients client = entry.Value;

@@ -96,7 +96,7 @@ namespace WRS2big_Web.Admin
                                         FirebaseResponse res = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                                         Model.PackagePlans package = res.ResultAs<Model.PackagePlans>();
 
-                                        //var adminID = Session["idno"].ToString();
+                                        //var adminID = Session["idno"].ToString();      
 
                                         //to ADD the subscription Status to admin table
                                         FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
@@ -238,7 +238,7 @@ namespace WRS2big_Web.Admin
                                             {
                                                 logsId = idnum,
                                                 userIdnum = update.idno,
-                                                userFullname = update.fname,
+                                                userFullname = update.fname + " " + update.lname,
                                                 userActivity = "NEW SUBSCRIPTION",
                                                 packageName = package.packageName,
                                                 activityTime = logTime,
@@ -424,7 +424,7 @@ namespace WRS2big_Web.Admin
                                     logsId = idnum,
                                     userIdnum = update.idno,
                                     userFullname = update.fname,
-                                    userActivity = "SUBSCRIPTION RENEWED",
+                                    userActivity = "SUBSCRIPTION RENEWAL",
                                     packageName = package.packageName,
                                     activityTime = logTime,
                                     total = (decimal)package.packagePrice

@@ -40,9 +40,9 @@ namespace WRS2big_Web.superAdmin
         private void superAdminLog()
         {
             FirebaseResponse response = twoBigDB.Get("SUPERADMIN_LOGS");
-            Model.UsersLogs all = response.ResultAs<Model.UsersLogs>();
+            Model.superLogs all = response.ResultAs<Model.superLogs>();
             var data = response.Body;
-            Dictionary<string, Model.UsersLogs> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.UsersLogs>>(data);
+            Dictionary<string, Model.superLogs> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superLogs>>(data);
 
             if (data != null)
             {
@@ -52,11 +52,10 @@ namespace WRS2big_Web.superAdmin
                 clientsTable.Columns.Add("NAME");
                 clientsTable.Columns.Add("ACTIVITY");
                 clientsTable.Columns.Add("TIME");
-
-                foreach (KeyValuePair<string, Model.UsersLogs> entry in subscribed)
+                    
+                foreach (KeyValuePair<string, Model.superLogs> entry in subscribed)
                 {
-
-                    clientsTable.Rows.Add(entry.Value.logsId, entry.Value.userFullname, entry.Value.userActivity, entry.Value.activityTime);
+                    clientsTable.Rows.Add(entry.Value.logsId, entry.Value.superFullname, entry.Value.superActivity, entry.Value.activityTime);
 
                 }
                 // Bind DataTable to GridView control

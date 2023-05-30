@@ -28,6 +28,12 @@
                                             <li class="breadcrumb-item">
                                                 <a href="/superAdmin/SAdminIndex">Dashboard</a>
                                             </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="/superAdmin/SubscriptionReports">Subscription Report</a>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a>Client Subscription History</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -75,7 +81,7 @@
                                                             </div>
                                                             <br />
                                                            
-                                                            <asp:LinkButton runat="server" Text="View Subscription Report" style="font-size:14px" class="btn btn-primary " href="SubscriptionReports.aspx"></asp:LinkButton>
+                                                            <asp:LinkButton runat="server" Text="Subscription Report" style="font-size:14px" class="btn btn-primary " href="SubscriptionReports.aspx"></asp:LinkButton>
                                                             
                                                         </div>
                                                        
@@ -87,9 +93,9 @@
                                                                         <div class="card table-card">
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
-                                                                                    <br />  <h4 style="color: black; font-family: Bahnschrift">CLIENT SUBSCRIPTION HISTORY</h4>
+                                                                                    <br />  <h4 style="color: black; font-family: Bahnschrift;margin-left:20px;">CLIENT SUBSCRIPTION HISTORY</h4>
                                                                                    
-
+                                                                                    <br /><br />
                                                                                     <asp:GridView runat="server" ID="subscriptionHistory" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 100px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1300px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         
                                                                                         <Columns>
