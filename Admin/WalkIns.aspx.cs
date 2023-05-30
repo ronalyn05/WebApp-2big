@@ -144,7 +144,6 @@ namespace WRS2big_Web.Admin
             }
         }
 
-
         //RETRIEVING THE PRODUCTS USING SEARCH
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -154,8 +153,7 @@ namespace WRS2big_Web.Admin
 
             drdProdName.Items.Clear();
             drdUnit_Size.Items.Clear();
-            //drdSize.Items.Clear();
-
+           
             if (selectedOption == "Refill")
             {
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
@@ -168,9 +166,7 @@ namespace WRS2big_Web.Admin
                         drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
                         drdUnit_Size.Items.Add(new ListItem(product.pro_refillQty + " " + product.pro_refillUnitVolume));
                     }
-                    //drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
-                    //drdUnit_Size.Items.Add(new ListItem(product.pro_refillSize + " " + product.pro_refillUnit));
-                   // drdSize.Items.Add(new ListItem(product.pro_refillSize));
+                    
                 }
 
 

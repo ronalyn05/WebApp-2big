@@ -15,22 +15,31 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
-        /// lblTotalSales control.
+        /// lblOverallTotalSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalSales;
+        protected global::System.Web.UI.WebControls.Label lblOverallTotalSales;
 
         /// <summary>
-        /// lblDeliveries control.
+        /// lblOnlineSales control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDeliveries;
+        protected global::System.Web.UI.WebControls.Label lblOnlineSales;
+
+        /// <summary>
+        /// lblWalkinOrders control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblWalkinOrders;
 
         /// <summary>
         /// lblOrders control.
@@ -40,14 +49,5 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOrders;
-
-        /// <summary>
-        /// lblReservations control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblReservations;
     }
 }
