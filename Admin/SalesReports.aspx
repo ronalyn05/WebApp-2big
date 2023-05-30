@@ -77,41 +77,51 @@
                                                             <div class="card">
                                                                 <div class="card-header">
                                                                     <div class="col-md-12 col-sm-12">
-                                                                        <div style="display: flex; justify-content: space-between;">
-                                                                            <div style="float: left;">
+                                                                         <h7 style="margin-left: 10px">From:</h7>
+                                                            <asp:TextBox ID="sortStart" Style="margin-left: 20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+                                                            <h7 style="margin-left: 10px">To:</h7>
+                                                            <asp:TextBox ID="sortEnd" Style="margin-left: 20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+
+                                                            <asp:Button runat="server" ID="generateSortedData" class="btn btn-primary" OnClick="generateSortedData_Click" Height="40" Text="Sort Date" />
+                                                            <asp:LinkButton runat="server" ID="clearSort" OnClick="clearSort_Click" Text="Clear"></asp:LinkButton>
+
+                                                                       <%-- <div style="display: flex; justify-content: space-between;">--%>
+                                                                            <div style="float: right;">
                                                                                 <asp:DropDownList ID="ddlSaleTransaction" CssClass="text-center" runat="server" Height="40px" Width="364px">
                                                                                     <asp:ListItem Text="Viel All Sales" Value="0"></asp:ListItem>
                                                                                     <asp:ListItem Text="Daily" Value="1"></asp:ListItem>
                                                                                     <asp:ListItem Text="Weekly" Value="2"></asp:ListItem>
-                                                                                     <asp:ListItem Text="Monthly" Value="3"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Monthly" Value="3"></asp:ListItem>
                                                                                     <asp:ListItem Text="Yearly" Value="4"></asp:ListItem>
                                                                                 </asp:DropDownList>
                                                                                 <asp:Button ID="btnView" runat="server" Text="View Report" OnClick="btnViewSale_Click" CssClass="btn-primary" Height="40px" />
 
                                                                             </div>
+                                                                            
 
-                                                                        </div>
+                                                                      <%--  </div>--%>
+                                                                        
 
                                                                         <div>
                                                                             <%--<h1> Sales</h1>--%>
-                                                                           <br />
-                                                                          <%-- <div style="display: flex; align-items: center;">--%>
+                                                                            <br />
+                                                                            <%-- <div style="display: flex; align-items: center;">--%>
                                                                             <div style="display: flex; align-items: center; justify-content: space-between;">
-    <div>
-        <asp:Label ID="Label1" runat="server" Text="Online Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
-        <asp:Label ID="onlinesalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
-    </div>
-    <div>
-        <asp:Label ID="Label2" runat="server" Text="Walkin Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
-        <asp:Label ID="walkinsalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
-    </div>
-    <div>
-        <asp:Label ID="Label4" runat="server" Text="Overall Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
-        <asp:Label ID="overallSalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
-    </div>
-</div>
+                                                                                <div>
+                                                                                    <asp:Label ID="Label1" runat="server" Text="Online Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
+                                                                                    <asp:Label ID="onlinesalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <asp:Label ID="Label2" runat="server" Text="Walkin Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
+                                                                                    <asp:Label ID="walkinsalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <asp:Label ID="Label4" runat="server" Text="Overall Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
+                                                                                    <asp:Label ID="overallSalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
+                                                                                </div>
+                                                                            </div>
 
-                                                                        <%--  <asp:Label ID="Label1" runat="server" Text="Online Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
+                                                                            <%--  <asp:Label ID="Label1" runat="server" Text="Online Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
                                                                           <asp:Label ID="onlinesalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
 
                                                                          <asp:Label ID="Label2" runat="server" Text="Walkin Order Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
@@ -120,7 +130,7 @@
                                                                               <asp:Label ID="Label4" runat="server" Text="Overall Sales Revenue:" Font-Size="16" Font-Bold="false" ForeColor="Black"></asp:Label>
                                                                           <asp:Label ID="overallSalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>--%>
 
-                                                                    <%--    </div>--%>
+                                                                            <%--    </div>--%>
                                                                             <%-- <div style="display: flex; align-items: center;">
                                                                           <asp:Label ID="Label2" runat="server" Text="Walkin Order Sales Revenue:" Font-Size="16" style="margin-right: 10px;" Font-Bold="false" ForeColor="Black"></asp:Label>
                                                                           <asp:Label ID="walkinsalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
@@ -130,12 +140,12 @@
                                                                           <asp:Label ID="overallSalesRevenue" runat="server" Text="" Font-Size="16" ForeColor="Blue"></asp:Label>
                                                                         </div>--%>
                                                                             <hr />
-                                                                            
-                                                                              <h4>ONLINE SALES REPORT</h4>
-                                                                             <asp:Label ID="lblErrorOnline" runat="server" Text="" Font-Size="16" ForeColor="Red"></asp:Label>
-                                                                            <asp:GridView runat="server" ID="salesRevenueGridView" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
-                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                                 <%--  <Columns>
+
+                                                                            <h4>ONLINE SALES REPORT</h4>
+                                                                            <asp:Label ID="lblErrorOnline" runat="server" Text="" Font-Size="16" ForeColor="Red"></asp:Label>
+                                                                            <asp:GridView runat="server" ID="salesRevenueGridView" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                                SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
+                                                                                <%--  <Columns>
                                                                                     <asp:BoundField DataField="OrderID" HeaderText="Order ID" />
                                                                                     <asp:BoundField DataField="CustomerID" HeaderText="CUSTOMER ID" />
                                                                                     <asp:BoundField DataField="OrderStatus" HeaderText="Order Status" />
@@ -145,33 +155,33 @@
                                                                                     <asp:BoundField DataField="OrderDate" HeaderText="Order Date" />
                                                                                    
                                                                                 </Columns>--%>
-                                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                        </asp:GridView>
+                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                            </asp:GridView>
                                                                             <br />
                                                                             <hr />
                                                                             <h4>WALKIN SALES REPORT</h4>
-                                                                             <asp:Label ID="lblErrorWalkin" runat="server" Text="" Font-Size="16" ForeColor="Red"></asp:Label>
-                                                                            <asp:GridView runat="server" ID="walkinSales" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
-                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
-                                                              
-                                                             <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                        </asp:GridView>
+                                                                            <asp:Label ID="lblErrorWalkin" runat="server" Text="" Font-Size="16" ForeColor="Red"></asp:Label>
+                                                                            <asp:GridView runat="server" ID="walkinSales" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                                SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
+
+                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                            </asp:GridView>
                                                                             <br />
-                                                                           <%-- <asp:Label ID="weeklySales" runat="server" Text=""></asp:Label>
+                                                                            <%-- <asp:Label ID="weeklySales" runat="server" Text=""></asp:Label>
                                                                               <asp:GridView runat="server" ID="weeklySalesGridView" CellPadding="3" Width="975px" CssClass="auto-style1" style=" text-align:center; overflow-y: auto;max-height: 500px; margin-left: 14px;" 
                                                                         SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >
                                                                   <Columns>
@@ -212,10 +222,10 @@
                                                                             <asp:Label ID="overallSalesLabel" runat="server" Text=""></asp:Label>
                                                                         </div>--%>
 
-                                                                        <%--  <input type="date" id="fromDate" style="display: none" />
+                                                                            <%--  <input type="date" id="fromDate" style="display: none" />
                                                                         <input type="date" id="toDate" style="display: none" />--%>
 
-                                                                        <%--     <script>
+                                                                            <%--     <script>
                                                                             function showCalendar() {
                                                                                 var selectedOption = document.getElementById("ddlSaleTransaction").value;
                                                                                 var fromDateInput = document.getElementById("fromDate");
@@ -235,7 +245,7 @@
                                                                         </script>--%>
 
 
-                                                                       <%-- <hr />
+                                                                            <%-- <hr />
                                                                         <br />
 
                                                                         <div class="col-md-12 col-sm-12">
@@ -271,12 +281,12 @@
                                                                         <br />
                                                                                </div>--%>
 
-                                                                        <%--<div style="float: right;">
+                                                                            <%--<div style="float: right;">
                                                                                         <asp:TextBox ID="txtSearch" Width="364px" Placeholder="enter order id...." ToolTip="enter order id number to search and view record" Height="40px" runat="server"></asp:TextBox>
                                                                                         <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchOrder_Click" CssClass="btn-primary" Height="40px" />
                                                                                     </div>--%>
-                                                             
-                                                                    <%--       <div class="card">
+
+                                                                            <%--       <div class="card">
                                                                         <div class="card-block">
                                                                             <div class="row align-items-center">
                                                                                 <div class="col-8">
@@ -300,26 +310,26 @@
 
                                                                         </div>
                                                                     </div>--%>
+                                                                        </div>
+
+                                                                    </div>
+
                                                                 </div>
 
                                                             </div>
-
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-
                                 </div>
+
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
-
-        </div>
-    </div>
 </asp:Content>
