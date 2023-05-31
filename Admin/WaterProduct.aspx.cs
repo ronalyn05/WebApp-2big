@@ -683,7 +683,7 @@ namespace WRS2big_Web.Admin
                                 adminId = adminId,
                                 thirdparty_productId = idnum,
                                 offerType = "thirdparty product",
-                                thirdparty_productName = Server.HtmlEncode(productName.Text),
+                                thirdparty_productName = productName.Text.ToLower(),
                                 thirdparty_productUnitVolume = drdprodUnitVolume.SelectedValue,
                                 thirdparty_productQty = productQty.Text,
                                 thirdparty_productPrice = productPrice.Text,
@@ -914,7 +914,7 @@ namespace WRS2big_Web.Admin
                                 pro_refillId = idnum,
                                 adminId = adminId,
                                 offerType = offerType_selectedValues,
-                                pro_refillWaterType = Server.HtmlEncode(refillwaterType.Text.ToLower()),
+                                pro_refillWaterType = refillwaterType.Text.ToLower(),
                                 pro_Image = null,
                                 pro_refillUnitVolume = refillUnitOfVolume.SelectedValue,
                                 pro_discount = discount,
@@ -926,9 +926,6 @@ namespace WRS2big_Web.Admin
                                 dateAdded = DateTime.Now
                             };
 
-                            // Check if there is already an uploaded image
-                            //if (data.pro_Image == null)
-                            //{
                                 // Upload the image to the storage
                                 var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                                 var filePath = $"productRefill_images/{data.pro_refillId}{fileExtension}";
@@ -946,13 +943,7 @@ namespace WRS2big_Web.Admin
                                 response = twoBigDB.Set("PRODUCTREFILL/" + data.pro_refillId, data);
                                 ProductRefill result = response.ResultAs<ProductRefill>();
                                 Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
-                            //}
-                            //else
-                            //{
-                            //    //lblError.Text = "Only one image is allowed.";
-                            //    Response.Write("<script>alert('Only one image is allowed.'); </script>");
-                            //    return;
-                            //}
+                          
                         }
                         else
                         {
@@ -1346,7 +1337,7 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string productSearch = Server.HtmlEncode(txtSearch.Text);
+            string productSearch = txtSearch.Text;
             decimal discount;
 
 
@@ -1460,7 +1451,7 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string productSearch = Server.HtmlEncode(txtSearchThirdParty.Text);
+            string productSearch = txtSearchThirdParty.Text;
             decimal discount;
 
 
