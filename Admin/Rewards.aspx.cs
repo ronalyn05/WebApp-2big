@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Data;
 using WRS2big_Web.Model;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace WRS2big_Web.Admin
 {
@@ -42,46 +43,43 @@ namespace WRS2big_Web.Admin
             var filteredOtherList = otherProducts.Values.Where(p => p.adminId.ToString() == currentUserId);
 
             // Add the unit and sizes data of refill products to the CheckBoxList
-            List<string> refillUnitSizesList = new List<string>();
+            HashSet<string> refillUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
             foreach (var product in filteredRefillList)
             {
                 string unitofVolume = product.pro_refillUnitVolume;
                 string qty = product.pro_refillQty;
                 if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = qty + "  " + unitofVolume;
-                    if (!refillUnitSizesList.Contains(unitSizes))
-                    {
-                        refillUnitSizesList.Add(unitSizes);
-                    }
+                    string unitSizes = qty + " " + unitofVolume;
+                    refillUnitSizesSet.Add(unitSizes);
                 }
             }
 
-            foreach (string unitSizes in refillUnitSizesList)
+            foreach (string unitSizes in refillUnitSizesSet)
             {
                 chUnitSizes_proRefill.Items.Add(new ListItem(unitSizes));
             }
 
             // Add the unit and sizes data of other products to the CheckBoxList
-            List<string> otherUnitSizesList = new List<string>();
+            HashSet<string> otherUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
             foreach (var product in filteredOtherList)
             {
                 string unitofVolume = product.thirdparty_productUnitVolume;
                 string qty = product.thirdparty_productQty;
                 if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = qty + "  " + unitofVolume;
-                    if (!otherUnitSizesList.Contains(unitSizes))
-                    {
-                        otherUnitSizesList.Add(unitSizes);
-                    }
+                    string unitSizes = qty + " " + unitofVolume;
+                    otherUnitSizesSet.Add(unitSizes);
                 }
             }
 
-            foreach (string unitSizes in otherUnitSizesList)
+            foreach (string unitSizes in otherUnitSizesSet)
             {
                 chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
             }
+
+            promoOfferedReportsDisplay();
+            rewardReportsDisplay();
         }
 
         //RETRIEVE REPORTS
@@ -205,30 +203,38 @@ namespace WRS2big_Web.Admin
             gridPromoReports.DataBind();
 
         }
-       // STORE PROMO OFFERED
+        //html tags regex
+        //private bool ContainsHtmlTags(string input)
+        //{
+        //    string pattern = @"<.*?>";
+        //    return Regex.IsMatch(input, pattern);
+        //}
+        // STORE PROMO OFFERED
         protected void btnAddPromoOffered_Click(object sender, EventArgs e)
         {
-
             string idno = (string)Session["idno"];
-            int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
             {
-
                 // Generate reward id number to make as the unique key
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
-                
-                
+                //// Check if any input contains HTML tags
+                //if (ContainsHtmlTags(txtpromoname.Text) || ContainsHtmlTags(txtpromodescription.Text))
+                //{
+                //    Response.Write("<script> alert('Inputting HTML tags is not allowed.'); </script>");
+                //    return;
+                //}
+
                 // Validate user input
                 if (string.IsNullOrEmpty(txtpromoname.Text) || string.IsNullOrEmpty(txtpromodescription.Text) || string.IsNullOrEmpty(txtpromo_pointsToClaimReward.Text))
                 {
                     Response.Write("<script> alert('Please fill all the required fields.'); </script>");
                     return;
                 }
-
+                
                 // Convert discount value to an integer
                 int discountValue = 0;
                 if (!int.TryParse(txtpromoDiscountValue.Text, out discountValue))
@@ -247,7 +253,6 @@ namespace WRS2big_Web.Admin
 
                 // Get the current UTC date and time as a DateTimeOffset object
                 DateTime currentDateTime = DateTime.Now;
-
 
                 // Define the format of the date string
                 string format = "MMMM, dd yyyy";
@@ -315,9 +320,10 @@ namespace WRS2big_Web.Admin
                 {
                     couponId = idnum,
                     adminId = int.Parse(idno),
-                    couponName = Server.HtmlEncode(txtpromoname.Text),
+                    couponName = txtpromoname.Text,
+                    //couponName = Server.HtmlEncode(txtpromoname.Text),
                     couponDiscountValue = percentageVAlue,
-                    couponDescription = Server.HtmlEncode(txtpromodescription.Text),
+                    couponDescription = txtpromodescription.Text,
                     couponPointsRequiredToClaim = pointsRequired,
                     couponAppliedToProductOffers = selectedPromo_productOffered,
                     couponExpirationFrom = DateTime.Parse(txtpromoExpirationFrom.Text),
@@ -360,7 +366,8 @@ namespace WRS2big_Web.Admin
                 chUnitSizes_proRefill.SelectedValue = null;
                 // Show success message
                 Response.Write("<script> alert('Promo offered added successfully!') </script>");
-                    
+
+                promoOfferedReportsDisplay();
 
             }
             catch (Exception ex)
@@ -368,6 +375,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<pre>" + ex.ToString() + "</pre>");
             }
         }
+       
         //STORE REWARD
         protected void btnAddReward_Click(object sender, EventArgs e)
         {
@@ -507,6 +515,7 @@ namespace WRS2big_Web.Admin
                 txtminRange_perAmount.Text = null;
                 radioWaysToEarnPoints.SelectedValue = null;
 
+                rewardReportsDisplay();
 
 
             }
@@ -532,10 +541,11 @@ namespace WRS2big_Web.Admin
         //OPTION DISPLAY REPORTS
         protected void btnDisplayReports_Click(object sender, EventArgs e)
         {
+
+            string selectedOption = ddlSearchOptions.SelectedValue;
+
             try
             {
-                string selectedOption = ddlSearchOptions.SelectedValue;
-
                 if (selectedOption == "0")
                 {
                     lblreports.Text = "DISCOUNT COUPON REPORT";

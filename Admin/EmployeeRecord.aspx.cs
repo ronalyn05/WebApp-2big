@@ -283,7 +283,7 @@ namespace WRS2big_Web.Admin
                 //  string employee_id = (string)Session["idno"];
 
                 // Password validation
-                string password = Server.HtmlEncode(txtpass.Text);
+                string password = txtpass.Text;
 
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
@@ -309,20 +309,20 @@ namespace WRS2big_Web.Admin
                 {
                     adminId = int.Parse(idno),
                     emp_id = employee_id,
-                    emp_lastname = Server.HtmlEncode(txtlastname.Text),
-                    emp_firstname = Server.HtmlEncode(txtfirstname.Text),
-                    emp_midname = Server.HtmlEncode(txtmidname.Text),
-                    emp_birthdate = Server.HtmlEncode(BirthDate.Text),
+                    emp_lastname = txtlastname.Text,
+                    emp_firstname = txtfirstname.Text,
+                    emp_midname = txtmidname.Text,
+                    emp_birthdate = BirthDate.Text,
                     emp_gender = drdgender.SelectedValue,
-                    emp_address = Server.HtmlEncode(txtaddress.Text),
-                    emp_contactnum = Server.HtmlEncode(txtcontactnum.Text),
-                    emp_email = Server.HtmlEncode(txtemail.Text),
+                    emp_address =txtaddress.Text,
+                    emp_contactnum = txtcontactnum.Text,
+                    emp_email = txtemail.Text,
                     //emp_pass = txtpass.Text,
                     emp_pass = hashedPassword,
-                    emp_dateHired = Server.HtmlEncode(txtdateHired.Text),
-                    emp_emergencycontact = Server.HtmlEncode(txtemergencycontact.Text),
+                    emp_dateHired = txtdateHired.Text,
+                    emp_emergencycontact =txtemergencycontact.Text,
                     emp_role = drdrole.SelectedValue,
-                    emp_status = Server.HtmlEncode(Drd_status.Text),
+                    emp_status =Drd_status.SelectedValue,
                     addedBy = name,
                     dateAdded = DateTime.Now
                 };
@@ -480,11 +480,11 @@ namespace WRS2big_Web.Admin
             // Get the new status and position from the DropDownList in the modal popup
             string newPosition = drd_empPosition.SelectedValue;
             string newStatus = drd_empStatus.SelectedValue;
-            string contactnumber = Server.HtmlEncode(txt_contactNumber.Text);
-            string email = Server.HtmlEncode(txtEmail_address.Text);
-            string address = Server.HtmlEncode(txt_address.Text);
+            string contactnumber = txt_contactNumber.Text;
+            string email =txtEmail_address.Text;
+            string address = txt_address.Text;
 
-            string resetPassword = Server.HtmlEncode(resetPass.Text.Trim()); // Get the reset password from the TextBox
+            string resetPassword =resetPass.Text.Trim(); // Get the reset password from the TextBox
 
             try
             {
@@ -684,7 +684,7 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             try
             {
-                string empSearch = Server.HtmlEncode(txtSearch.Text);
+                string empSearch =txtSearch.Text;
 
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(empSearch))
