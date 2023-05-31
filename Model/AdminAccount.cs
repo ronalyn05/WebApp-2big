@@ -33,6 +33,13 @@ namespace WRS2big_Web.Model
 
     }
 
+    public class Links
+    {
+        public string profile_image { get; set; }
+        public string businessProofLnk { get; set; }
+        public string validIDLnk { get; set; }
+    }
+
     public class RefillingStation
     {
         // public int stationID { get; set; }

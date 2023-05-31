@@ -2139,7 +2139,7 @@ namespace WRS2big_Web.Admin
                             body = "It's been 2 days since your last tubig order! Order again to earn points!",
                             notificationDate = DateTime.Now,
                             status = "unread",
-                            scheduledSent = schedule,
+                            scheduledSent = schedule,//DATE SCHED NGA MASEND ANG NOTIFICATION
                             notificationID = schedNotifID
 
                         };
