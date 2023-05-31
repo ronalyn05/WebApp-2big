@@ -266,7 +266,8 @@ namespace WRS2big_Web.Admin
         {
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-
+            //generate a random number
+            Random rnd = new Random();
 
             FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
@@ -332,9 +333,23 @@ namespace WRS2big_Web.Admin
                                 delivery.standistance = FreeDelivery.Text;
                                 //delivery.stanOrderType = GetSelectedValues(DeliveryType);
                                 delivery.standardProducts = GetSelectedValues(OrderMethod);
-                                //delivery.standardSwapOptions = GetSelectedValues(standardSwapOptions);
 
-                                // Parse the operating hours from and to times as DateTime objects
+
+                                int logID = rnd.Next(1, 10000);
+                                // Get the current date and time
+                                DateTime now = DateTime.Now;
+
+                                // Log user activity
+                                var userLog = new UsersLogs
+                                {
+                                    userIdnum = int.Parse(idno),
+                                    logsId = logID,
+                                    userFullname = (string)Session["fullname"],
+                                    userActivity = "ADDED STANDARD DELIVERY TYPE",
+                                    activityTime = now
+                                };
+
+                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
 
                             }
                             break;
@@ -354,8 +369,22 @@ namespace WRS2big_Web.Admin
                                 delivery.resDeliveryFee = resDelFee.Text;
                                 delivery.resDistanceFree = resFreeDel.Text;
                                 delivery.reserveProducts = GetSelectedValues(reserveOrderMethod);
-                                //delivery.resOrderType = GetSelectedValues(reserveOrderType);
-                                //delivery.reserveSwapOptions = GetSelectedValues(reserveSwap);
+
+                                int logID = rnd.Next(1, 10000);
+                                // Get the current date and time
+                                DateTime now = DateTime.Now;
+
+                                // Log user activity
+                                var userLog = new UsersLogs
+                                {
+                                    userIdnum = int.Parse(idno),
+                                    logsId = logID,
+                                    userFullname = (string)Session["fullname"],
+                                    userActivity = "ADDED RESERVATION DELIVERY TYPE",
+                                    activityTime = now
+                                };
+
+                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
                             }
                             break;
                         case "Express":
@@ -375,8 +404,25 @@ namespace WRS2big_Web.Admin
                                 delivery.exDeliveryFee = expressdeliveryFee.Text;
                                 delivery.exEstimatedDelivery = estimatedTime.Text;
                                 delivery.expressProducts = GetSelectedValues(expressOrderMethod);
-                                //delivery.exOrderType = GetSelectedValues(expressOrderType);
-                                //delivery.expressSwapOptions = GetSelectedValues(expressSwap);
+
+                                //generate a random number for users logged
+                                //Random rnd = new Random();
+                                int logID = rnd.Next(1, 10000);
+                                // Get the current date and time
+                                DateTime now = DateTime.Now;
+
+                                // Log user activity
+                                var userLog = new UsersLogs
+                                {
+                                    userIdnum = int.Parse(idno),
+                                    logsId = logID,
+                                    userFullname = (string)Session["fullname"],
+                                    userActivity = "ADDED EXPRESS DELIVERY TYPE",
+                                    activityTime = now
+                                };
+
+                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
+                               
                             }
                             break;
                     }
@@ -386,25 +432,7 @@ namespace WRS2big_Web.Admin
             FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryIdno, delivery);
             Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
-            int logsId = (int)Session["logsId"];
-            // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
-            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-            // Get the current date and time
-            DateTime addedTime = DateTime.Now;
-
-            // Log user activity
-            var log = new UsersLogs
-            {
-                userIdnum = int.Parse(idno),
-                logsId = logsId,
-                userFullname = (string)Session["fullname"],
-                userActivity = "ADDED DELIVERY DETAILS",
-                activityTime = addedTime
-            };
-
-            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+        
         }
 
         //RADIO BUTTON SELECTION FOT DELIVERY TYPE

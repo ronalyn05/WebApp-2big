@@ -13,6 +13,7 @@ using System.IO;
 using WRS2big_Web.Model;
 using System.Text;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace WRS2big_Web.LandingPage
 {
@@ -40,16 +41,18 @@ namespace WRS2big_Web.LandingPage
 
             try
             {
-                if (businessProof == null)
+                if (!businessProof.HasFile)
                 {
                     Response.Write("<script>alert('You must upload a proof of your business');</script>");
                     return;
                 }
-                if (validIDUpload == null)
+
+                if (!validIDUpload.HasFile)
                 {
                     Response.Write("<script>alert('You must upload a VALID ID!'); </script>");
                     return;
                 }
+
 
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
@@ -99,6 +102,8 @@ namespace WRS2big_Web.LandingPage
                     return;
                 }
 
+                // Encrypt the password using SHA-256
+                string hashedPassword = GetSHA256Hash(password);
 
                 var data = new AdminAccount
                 {
@@ -109,12 +114,12 @@ namespace WRS2big_Web.LandingPage
                     bdate = txtbirthdate.Text,
                     phone = contactNum,
                     email = Server.HtmlEncode(txtEmail.Text),
-                    pass = password,
+                    pass = hashedPassword,
                     businessProof = selectedProof,
                     validID = validID,
                     status = "Pending",
-                    businessProofLnk = null,
-                    validIDLnk = null,
+                    //businessProofLnk = null,
+                    //validIDLnk = null,
                     subStatus = "notSubscribed",
                     dateRegistered = DateTime.Now,
                     userRole = "Admin",
@@ -129,54 +134,62 @@ namespace WRS2big_Web.LandingPage
                     proof = null,
                     dateAdded = DateTime.UtcNow
                 };
-
-               
-                ////FOR THE VALID ID 
-                if (validIDUpload.HasFile)
+                var links = new Links
                 {
-                    //FOR THE VALID ID
-                    // Get the file name and extension
-                    string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
-                    string fileExtension = Path.GetExtension(fileName);
+                    businessProofLnk = null,
+                    validIDLnk = null,
+                    profile_image = null
+                };
 
-                    // Generate a unique file name
-                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+                ////FOR THE VALID ID 
+                //if (validIDUpload.HasFile)
+                //{
+                //    //FOR THE VALID ID
+                //    // Get the file name and extension
+                //    string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
+                //    string fileExtension = Path.GetExtension(fileName);
 
-                    // Upload the file to Firebase Storage
-                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                    var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
+                //    // Generate a unique file name
+                //    string uniqueFileName = data.fname + data.lname + Guid.NewGuid().ToString() + fileExtension;
 
-                    // Get the download URL of the uploaded file
-                    string imageUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
-                    data.validIDLnk = imageUrl;
+                //    // Upload the file to Firebase Storage
+                //    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                //    var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
 
-                }
+                //    // Get the download URL of the uploaded file
+                //    string imageUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+                //    data.validIDLnk = imageUrl;
 
-                //FOR THE BUSINESS PROOF
-                byte[] fileBytes = null;
+                //}
+
+                List<string> businessProofs = new List<string>();
+
                 if (businessProof.HasFile)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    foreach (HttpPostedFile file in businessProof.PostedFiles)
                     {
-                        businessProof.PostedFile.InputStream.CopyTo(memoryStream);
-                        fileBytes = memoryStream.ToArray();
+                        string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
+                        string fileExtension = Path.GetExtension(fileName);
+
+                        // Generate a unique file name
+                        string uniqueFileName = data.idno + Guid.NewGuid().ToString() + fileExtension;
+
+                        // Upload the file to Firebase Storage
+                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                        var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
+
+                        // Get the download URL of the uploaded file
+                        string proofUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+
+                        //save the links to the list
+                        businessProofs.Add(proofUrl);
+                        
                     }
+
+      
+
                 }
 
-                if (fileBytes != null)
-                {
-                    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                    var fileExtension = Path.GetExtension(businessProof.FileName);
-                    var filePath = $"clientBusinessProof/{list.stationName}{fileExtension}";
-                    //  used the using statement to ensure that the MemoryStream object is properly disposed after it's used.
-                    using (var stream = new MemoryStream(fileBytes))
-                    {
-                        var storageTask = storage.Child(filePath).PutAsync(stream);
-                        var downloadUrl = await storageTask;
-                        // used Encoding.ASCII.GetBytes to convert the downloadUrl string to a byte[] object.
-                        data.businessProofLnk = downloadUrl;
-                    }
-                }
 
                 SetResponse response;
                 //Storing the admin info
@@ -187,6 +200,8 @@ namespace WRS2big_Web.LandingPage
                 response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
 
+                response = twoBigDB.Set("ADMIN/" + data.idno + "/Proofs/", businessProofs);//Storing data to the database
+                RefillingStation Linkresult = response.ResultAs<RefillingStation>();//Database Result
 
                 Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
@@ -238,7 +253,23 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
             }
         }
-       // To validate the terms and condition
+        //ENCRYPTING THE PASSWORD
+        private string GetSHA256Hash(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+        }
 
         //LOGGING IN 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -414,6 +445,30 @@ namespace WRS2big_Web.LandingPage
             }
         }
 
+        protected void uploadBusiness_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        protected void uploadValidID_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+
+        }
     }
 }
 
