@@ -256,6 +256,12 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row m-t-25 text-left">
+                                            <div class="col-md-12">
+                                              <asp:LinkButton runat="server" Text="Forgot Password? Reset your password." href="ResetPassword.aspx"></asp:LinkButton>
+                                               
+                                            </div>
+                                        </div>
                                         <%-- @*Show Password script*@--%>
                                         <script>
                                             const togglePassword = document.querySelector('#togglePassword');
@@ -548,9 +554,9 @@
                                                         <label>
                                                             Please choose from the options below.
                                                             <br />
-                                                            You must upload the file that you selected in the options.
+                                                            Upload a picture of your choosen business document.
                                                             <br />
-                                                            Picture is not allowed.</label>
+                                                            </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -603,7 +609,8 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
-                                                        <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" />
+                                                        <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" AllowMultiple="true"  Accept="image/*"/>
+                                                         <asp:LinkButton ID="uploadBusiness" class="btn-mktg d-block btn-muted-mktg btn btn-primary" OnClick="uploadBusiness_Click" runat="server" Text="Upload Business Proof" />
                                                          <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
@@ -611,7 +618,8 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
-                                                        <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" />
+                                                        <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" AllowMultiple="true"   Accept="image/*"/>
+                                                         <asp:LinkButton ID="uploadValidID" class="btn-mktg d-block btn-muted-mktg btn btn-primary" OnClick="uploadValidID_Click" runat="server" Text="Upload Valid ID" />
                                                          <asp:Label ID="lblErrorUpload" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>

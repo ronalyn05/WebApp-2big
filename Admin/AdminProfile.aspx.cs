@@ -387,7 +387,7 @@ namespace WRS2big_Web.Admin
                 userIdnum = int.Parse(idno),
                 logsId = idnum,
                 userFullname = (string)Session["fullname"],
-                userActivity = "UPLOAD IMAGE",
+                userActivity = "UPLOADED PROFILE IMAGE",
                 // userActivity = UserActivityType.AddedProductRefill,
                 activityTime = addedTime
             };

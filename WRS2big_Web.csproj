@@ -479,9 +479,11 @@
     <Content Include="images\water.png" />
     <Content Include="LandingPage\Account.aspx" />
     <Content Include="Admin\SubscriptionSuccess.aspx" />
+    <Content Include="LandingPage\ConfirmResetPass.aspx" />
     <Content Include="LandingPage\Index.aspx" />
     <Content Include="Admin\BasicPlanSub.aspx" />
     <Content Include="Admin\PremiumPlanSub.aspx" />
+    <Content Include="LandingPage\ResetPassword.aspx" />
     <Content Include="LandingPage\Terms.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -769,6 +771,13 @@
     <Compile Include="Admin\SubscriptionSuccess.aspx.designer.cs">
       <DependentUpon>SubscriptionSuccess.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LandingPage\ConfirmResetPass.aspx.cs">
+      <DependentUpon>ConfirmResetPass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LandingPage\ConfirmResetPass.aspx.designer.cs">
+      <DependentUpon>ConfirmResetPass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LandingPage\FirebaseStorageClient.cs" />
     <Compile Include="LandingPage\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
@@ -790,6 +799,13 @@
     </Compile>
     <Compile Include="Admin\PremiumPlanSub.aspx.designer.cs">
       <DependentUpon>PremiumPlanSub.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LandingPage\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LandingPage\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Model\AdminAccount.cs" />
     <Compile Include="Model\Customer.cs" />
