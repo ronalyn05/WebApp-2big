@@ -111,7 +111,9 @@
                                                             <center>
                                                           <asp:Image runat="server" ID="clientImage" class="img-100" style="width:300px" Height="300px"/> <br /> <br />
                                                              <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
+                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label><br /> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="Label23" style="font-size:16px;color:dimgray;">Status:</asp:Label> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="customerStatus" style="font-size:20px;color:black;"></asp:Label>
                                                             </center>
 
                                                                <br />  <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Customers</asp:Label> <br />

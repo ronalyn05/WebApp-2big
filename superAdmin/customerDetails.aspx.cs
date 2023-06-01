@@ -67,7 +67,7 @@ namespace WRS2big_Web.superAdmin
             cuslastName.Text = admin.lastName;
             cusmiddleName.Text = admin.middleName;
             clientAddress.Text = admin.address;
-
+            customerStatus.Text = admin.cus_status;
             clientValidID.ImageUrl = admin.imageProof.ToString();
 
             //if (admin.cus_status == "Approved" && admin.cus_status == "Declined")
@@ -208,7 +208,7 @@ namespace WRS2big_Web.superAdmin
 
             admin.cus_status = "Declined";
             admin.dateDeclined = DateTime.Now;
-            adminDet = twoBigDB.Update("ADMIN/" + customerID, admin);
+            adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 
           
             //SEND NOTIFICATION TO CUSTOMER 
@@ -254,7 +254,7 @@ namespace WRS2big_Web.superAdmin
             Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
 
-            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
 
         }
     }
