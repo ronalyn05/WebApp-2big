@@ -60,6 +60,24 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label clientEmail;
 
         /// <summary>
+        /// Label23 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label23;
+
+        /// <summary>
+        /// customerStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label customerStatus;
+
+        /// <summary>
         /// allLabel control.
         /// </summary>
         /// <remarks>
