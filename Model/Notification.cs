@@ -8,6 +8,7 @@ namespace WRS2big_Web.Model
     public class Notification
     {
        
+        public int superAdmin_ID { get; set; }
         public int admin_ID { get; set; } 
         public string status { get; set; }
         public string sender { get; set; }

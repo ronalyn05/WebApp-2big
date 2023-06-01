@@ -260,6 +260,7 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> clientIDs = new List<int>();
+            var idno = (string)Session["SuperIDno"];
 
             foreach (GridViewRow row in pendingGridView.Rows)
             {
@@ -293,6 +294,7 @@ namespace WRS2big_Web.superAdmin
 
                 var Notification = new Model.Notification
                 {
+                    superAdmin_ID = int.Parse(idno),
                     admin_ID = clientID,
                     sender = "Super Admin",
                     title = "Application Approved",
@@ -316,12 +318,13 @@ namespace WRS2big_Web.superAdmin
                 //Random rnd = new Random();
                 int logID = rnd.Next(1, 10000);
 
-                var idno = (string)Session["SuperIDno"];
+              
                 string superName = (string)Session["superAdminName"];
 
                 //Store the login information in the USERLOG table
                 var log = new Model.superLogs
                 {
+
                     logsId = logID,
                     superID = int.Parse(idno),
                     superFullname = superName,
@@ -349,7 +352,10 @@ namespace WRS2big_Web.superAdmin
 
         protected void declineButton_Click(object sender, EventArgs e)
         {
+
             List<int> customerIDs = new List<int>();
+            int superID = (int)Session["SuperIDno"];
+            string reason = reasonDecline.Text;
 
             foreach (GridViewRow row in pendingGridView.Rows)
             {
@@ -384,10 +390,11 @@ namespace WRS2big_Web.superAdmin
                 var Notification = new Model.Notification
                 {
                     admin_ID = customerID,
+                    superAdmin_ID = superID,
                     sender = "Super Admin",
                     title = "Application Declined",
                     receiver = "Admin",
-                    body = "Your application is Declined!",
+                    body = reason,
                     notificationDate = DateTime.Now,
                     status = "unread",
                     notificationID = ID

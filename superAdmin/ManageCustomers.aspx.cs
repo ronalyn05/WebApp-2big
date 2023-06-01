@@ -110,6 +110,7 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> customerIDs = new List<int>();
+            var idno = (string)Session["SuperIDno"];
 
             foreach (GridViewRow row in pendingGridView.Rows)
             {
@@ -150,7 +151,8 @@ namespace WRS2big_Web.superAdmin
                     body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
                     notificationDate = DateTime.Now,
                     status = "unread",
-                    notificationID = ID
+                    notificationID = ID,
+                    superAdmin_ID = int.Parse(idno),
 
                 };
 
@@ -165,7 +167,7 @@ namespace WRS2big_Web.superAdmin
                 //generate a random number for users logged
                 //Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
-                var idno = (string)Session["SuperIDno"];
+                
                 string superName = (string)Session["superAdminName"];
 
                 //Store the login information in the USERLOG table
@@ -197,6 +199,8 @@ namespace WRS2big_Web.superAdmin
         protected void declineButton_Click(object sender, EventArgs e)
         {
             List<int> customerIDs = new List<int>();
+            var idno = (string)Session["SuperIDno"];
+            string reason = reasonDecline.Text;
 
             foreach (GridViewRow row in pendingGridView.Rows)
             {
@@ -230,11 +234,12 @@ namespace WRS2big_Web.superAdmin
                 int ID = rnd.Next(1, 20000);
                 var Notification = new Model.Notification
                 {
+                    superAdmin_ID = int.Parse(idno),
                     cusId = customerID,
                     sender = "Super Admin",
                     title = "Application Declined",
                     receiver = "Customer",
-                    body = "Your application is Declined!",
+                    body = reason,
                     notificationDate = DateTime.Now,
                     status = "unread",
                     notificationID = ID
@@ -252,7 +257,7 @@ namespace WRS2big_Web.superAdmin
                 //generate a random number for users logged
                 //Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
-                var idno = (string)Session["SuperIDno"];
+               
                 string superName = (string)Session["superAdminName"];
 
                 //Store the login information in the USERLOG table

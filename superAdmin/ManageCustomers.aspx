@@ -56,6 +56,42 @@
                                         <div class="">
                                             <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
                                             <div class="clearfix">
+                                                <div class="modal fade declineCustomer" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md">
+                                                        <div class="modal-content">
+                                                            <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="declineModal"></h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                            <%-- <div class="item form-group">--%>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">DECLINE CUSTOMER</h4>
+
+                                                                            <div class="col-md-12 col-sm-12" style="font-size: 20px"> <br />
+                                                                                <center>
+                                                                                    <h4 style="font-size: 16px; color: black">Why are you declining this customer?</h4>
+                                                                                    <p style="font-size: 16px; color: black;">"Provide more information on why do you want to decline this customer. Declined customer will be notified about this action."</p>
+                                                                                </center>
+
+                                                                                <hr />
+                                                                                <asp:TextBox runat="server" class="form-control" TextMode="MultiLine" Style="font-size: 18px" Width="400px" ID="reasonDecline" Placeholder="Reason for declining"></asp:TextBox>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON CONFIRM DECLINE--%>
+                                                                        <asp:Button ID="confirmDecline" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="declineButton_Click"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="row">
@@ -132,7 +168,7 @@
                                                                                 <br />
 
                                                                                 <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" Style="font-size: 18px;margin-left:60px" Text="APPROVE" OnClick="approveButton_Click" />
-                                                                                <asp:Button runat="server" ID="declineButton" class="btn btn-primary btn-sm text" Style="font-size: 18px;" Text="DECLINE" OnClick="declineButton_Click" />
+                                                                                <button type="button" runat="server" id="declineButton" style="font-size: 18px;" class="btn btn-primary btn-sm text" data-toggle="modal" data-target=".declineCustomer">DECLINE</button>
 
                                                                                     </div>
                                                                                 </div>
