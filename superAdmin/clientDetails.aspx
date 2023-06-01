@@ -14,7 +14,20 @@
         height: 200px;
         overflow-y: auto;
          }
+         .image-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .image-item {
+            flex-basis: 50%;
+            padding: 2px;
+            box-sizing: border-box;
+        }
+
     </style>
+
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 
 </asp:Content>
@@ -61,6 +74,42 @@
                                         <div class="">
                                             <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
                                             <div class="clearfix">
+                                                <div class="modal fade declineClient" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md">
+                                                        <div class="modal-content">
+                                                            <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="declineModal"></h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                            <%-- <div class="item form-group">--%>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">DECLINE CLIENT</h4>
+
+                                                                            <div class="col-md-12 col-sm-12" style="font-size: 20px"> <br />
+                                                                                <center>
+                                                                                    <h4 style="font-size: 16px; color: black">Why are you declining this client?</h4>
+                                                                                    <p style="font-size: 16px; color: black;">"Provide more information on why do you want to decline this client. Your client will be notified about this action."</p>
+                                                                                </center>
+
+                                                                                <hr />
+                                                                                <asp:TextBox runat="server" class="form-control" TextMode="MultiLine" Style="font-size: 18px" Width="400px" ID="reasonDecline" Placeholder="Reason for declining"></asp:TextBox>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON CONFIRM DECLINE--%>
+                                                                        <asp:Button ID="confirmDecline" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="declineButton_Click"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                      <!--MAIN CONTENT-->
                                     <div class="row">
@@ -78,12 +127,15 @@
                                                           <asp:Image runat="server" ID="clientImage" class="img-200 img-radius" style="width:350px"/> <br /> <br />
                                                              <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
                                                             <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label> <br /> <br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="Label23" style="font-size:20px;color:dimgray;">STATUS:</asp:Label> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="Label23" style="font-size:16px;color:dimgray;">Status:</asp:Label> <br />
                                                             <asp:Label   class="form-control-round" runat="server" id="clientStatus" style="font-size:20px;color:black;"></asp:Label>
                                                             </center>
-                                                             <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Clients</asp:Label> <br />
-                                                              <asp:LinkButton runat="server" Text="View All Clients" class="btn btn-primary" style="font-size:18px" href="RefillingStationReports.aspx"></asp:LinkButton>
-                                                               <br /> <br />
+                                                           
+                                                              <asp:LinkButton runat="server" Text="All Clients" class="btn btn-primary" style="font-size:18px" href="RefillingStationReports.aspx"></asp:LinkButton>
+                                                            
+                                                           
+                                                              <asp:LinkButton runat="server" Text="Pending Clients" class="btn btn-primary" style="font-size:18px;margin-left:40px" href="ManageWRSClients.aspx"></asp:LinkButton> 
+                                                            <br /><br />
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <!-- Tab variant tab card start -->
@@ -126,15 +178,7 @@
                                                                                                           <asp:Label  class="form-control-round" id="clientPhone" runat="server"></asp:Label>
                                                                                                         </div>
 
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Valid ID:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                          <asp:Label  class="form-control-round" id="chosenValidID" runat="server"></asp:Label>
-                                                                                                        </div>
 
-                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Government-issued ID:</label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
-                                                                                                            <asp:Image runat="server" ID="clientValidID" class="img-500  " style="width:600px;height:600px" />
-                                                                                                        </div>
                                                                                                     </div>
                                                                                             </div>
 
@@ -162,19 +206,11 @@
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:Label  class="form-control-round" id="chosenProof" runat="server"></asp:Label>
                                                                                                         </div>
-
-                                                                                                        <asp:Label runat="server" class="col-sm-5 col-form-label" id="proofChosen" style="font-size:18px"></asp:Label>
-                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
-                                                                                                            <asp:Image runat="server" ID="businessProofImg" class="img-500  " style="width:600px;height:600px" />
-                                                                                                            <%--<asp:HyperLink ID="fileProofLink" class="btn btn-primary btn-sm text" style="font-size:18px" Target="_blank" runat="server" >Open uploaded File</asp:HyperLink>
-                                                                                                           --%>
-
+                                                                                                        <label class="col-sm-5 col-form-label" style="font-size:18px">Valid ID:</label>
+                                                                                                        <div class="col-sm-10 form-control-round"  style="margin-left:70px">  
+                                                                                                          <asp:Label  class="form-control-round" id="chosenValidID" runat="server"></asp:Label>
                                                                                                         </div>
-<%--                                                                                                        <div id="pdfViewerContainer">
-                                                                                                            <iframe id="pdfViewer" runat="server" width="500" height="500"></iframe>
-                                                                                                            
-                                                                                                        </div>--%>
-
+                                                                                                      
                                                                                                     </div>
                                                                                             </div>
 
@@ -187,12 +223,28 @@
                                                                     <!-- Tab variant tab card start -->
                                                                 </div>
                                                             </div>
-                                                            <center>
+                                                             <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Uploaded Business Proof and Valid ID:</label> 
+                                                            <div class="row">
+                                                                        <asp:Repeater ID="uploadedImages" runat="server">
+
+                                                                                    <ItemTemplate>
+                                                                                        <a href='<%# Container.DataItem %>'>
+                                                                                            <center>
+                                                                                               
+                                                                                                <img ID="ImageItem" runat="server" src='<%# Container.DataItem %>' Width="350" Height="350" style="border-color:black " />
+                                                                                            </center>
+                                                                                             
+                                                                                        </a>
+                                                                                     
+                                                                                    </ItemTemplate>
+
+                                                                        </asp:Repeater>
+                                                            </div>
+
+                                                            <center> <br /><br />
                                                             <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
-                                                            <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
+                                                            <button type="button" runat="server" id="declineButton" style="font-size: 18px;" class="btn btn-primary btn-sm text" data-toggle="modal" data-target=".declineClient">DECLINE</button>
                                                               <br /><br />
-                                                             <asp:Label   class="form-control-round" runat="server" id="Label1" style="font-size:16px;color:dimgray;"> Visit Pending Clients</asp:Label> <br />
-                                                              <asp:LinkButton runat="server" Text="Pending Client List" class="btn btn-primary" style="font-size:18px;margin-left:40px" href="ManageWRSClients.aspx"></asp:LinkButton> 
                                                             
                                                         </div>
 

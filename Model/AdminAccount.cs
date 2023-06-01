@@ -22,8 +22,7 @@ namespace WRS2big_Web.Model
         public string currentSubscription { get; set; } //Active or Expired/Inactive
         public string businessProof { get; set; }
         public string validID { get; set; }
-        public string businessProofLnk { get; set; }
-        public string validIDLnk { get; set; }
+
         public string address { get; set; }
         public DateTime dateApproved { get; set; }
         public DateTime dateRegistered { get; set; }
@@ -33,11 +32,12 @@ namespace WRS2big_Web.Model
 
     }
 
+
+
     public class Links
     {
-        public string profile_image { get; set; }
-        public string businessProofLnk { get; set; }
-        public string validIDLnk { get; set; }
+        public List<string> Businessproofs { get; set; }
+        public List<string> ValidIDs { get; set; }
     }
 
     public class RefillingStation

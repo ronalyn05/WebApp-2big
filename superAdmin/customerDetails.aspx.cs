@@ -39,13 +39,13 @@ namespace WRS2big_Web.superAdmin
             {
                 if (admin.cus_status == "Approved" || admin.cus_status == "Declined")
                 {
-                    approveButton.Enabled = false;
-                    declineButton.Enabled = false;
+                    approveButton.Visible = false;
+                    declineButton.Visible = false;
                 }
                 else
                 {
-                    approveButton.Enabled = true;
-                    declineButton.Enabled = true;
+                    approveButton.Visible = true;
+                    declineButton.Visible = true;
                 }
             }
             DisplayDetails();
@@ -67,7 +67,7 @@ namespace WRS2big_Web.superAdmin
             cuslastName.Text = admin.lastName;
             cusmiddleName.Text = admin.middleName;
             clientAddress.Text = admin.address;
-
+            customerStatus.Text = admin.cus_status;
             clientValidID.ImageUrl = admin.imageProof.ToString();
 
             //if (admin.cus_status == "Approved" && admin.cus_status == "Declined")
@@ -107,6 +107,7 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             int customerID = (int)Session["currentCustomer"];
+            var idno = (string)Session["SuperIDno"];
 
             FirebaseResponse adminDet = twoBigDB.Get("CUSTOMER/" + customerID);
             Model.Customer admin = adminDet.ResultAs<Model.Customer>();
@@ -143,7 +144,8 @@ namespace WRS2big_Web.superAdmin
                 body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
                 notificationDate = DateTime.Now,
                 status = "unread",
-                notificationID = ID
+                notificationID = ID,
+                superAdmin_ID = int.Parse(idno),
 
             };
 
@@ -159,7 +161,7 @@ namespace WRS2big_Web.superAdmin
             //generate a random number for users logged
             //Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
-            var idno = (string)Session["SuperIDno"];
+            
             string superName = (string)Session["superAdminName"];
 
             //Store the login information in the USERLOG table
@@ -183,6 +185,9 @@ namespace WRS2big_Web.superAdmin
         protected void declineButton_Click(object sender, EventArgs e)
         {
             int customerID = (int)Session["currentCustomer"];
+            string reason = reasonDecline.Text;
+            var idno = (string)Session["SuperIDno"];
+
 
             FirebaseResponse adminDet = twoBigDB.Get("CUSTOMER/" + customerID);
             Model.Customer admin = adminDet.ResultAs<Model.Customer>();
@@ -203,7 +208,7 @@ namespace WRS2big_Web.superAdmin
 
             admin.cus_status = "Declined";
             admin.dateDeclined = DateTime.Now;
-            adminDet = twoBigDB.Update("ADMIN/" + customerID, admin);
+            adminDet = twoBigDB.Update("CUSTOMER/" + customerID, admin);
 
           
             //SEND NOTIFICATION TO CUSTOMER 
@@ -212,10 +217,11 @@ namespace WRS2big_Web.superAdmin
             var Notification = new Model.Notification
             {
                 cusId = customerID,
+                superAdmin_ID = int.Parse(idno),
                 sender = "Super Admin",
                 title = "Application Declined",
                 receiver = "Customer",
-                body = "Your application is Declined!",
+                body = reason,
                 notificationDate = DateTime.Now,
                 status = "unread",
                 notificationID = ID
@@ -230,7 +236,7 @@ namespace WRS2big_Web.superAdmin
             //Get the current date and time
             DateTime logTime = DateTime.Now;
             int idnum = rnd.Next(1, 10000);
-            var idno = (string)Session["SuperIDno"];
+            
             string superName = (string)Session["superAdminName"];
 
             //Store the login information in the USERLOG table
@@ -248,7 +254,7 @@ namespace WRS2big_Web.superAdmin
             Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
 
-            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/customerDetails.aspx'; </script>");
 
         }
     }

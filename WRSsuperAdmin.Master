@@ -128,9 +128,9 @@
                                                 <ul class="show-notification" style="overflow-y: auto; height: 700px">
                                                     <li>
 
-                                                        <div class=" header-notification;" style="position: fixed;">
+                                                        <div class="header-notification;" style="position: fixed;">
                                                             <h6 style="font-size: 16px;">Notifications</h6>
-                                                    
+                                                             <asp:LinkButton runat="server" ID="markAsRead" style="color:blue;margin-left:80px" Text="Mark all as Read" OnClick="markAsRead_Click"></asp:LinkButton>
                                                       
                                                         </div>
                                                         <br />

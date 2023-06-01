@@ -11,7 +11,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div id="pcoded" class="pcoded">
-        <div class="pcoded-overlay-box">ELIVER</div>
+        <div class="pcoded-overlay-box">DELIVER</div>
         <div class="pcoded-container navbar-wrapper">
             <div class="pcoded-main-container">
                 <div class="pcoded-wrapper">

@@ -14,6 +14,7 @@ using WRS2big_Web.Model;
 using System.Text;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace WRS2big_Web.LandingPage
 {
@@ -134,62 +135,94 @@ namespace WRS2big_Web.LandingPage
                     proof = null,
                     dateAdded = DateTime.UtcNow
                 };
-                var links = new Links
-                {
-                    businessProofLnk = null,
-                    validIDLnk = null,
-                    profile_image = null
-                };
 
-                ////FOR THE VALID ID 
-                //if (validIDUpload.HasFile)
-                //{
-                //    //FOR THE VALID ID
-                //    // Get the file name and extension
-                //    string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
-                //    string fileExtension = Path.GetExtension(fileName);
 
-                //    // Generate a unique file name
-                //    string uniqueFileName = data.fname + data.lname + Guid.NewGuid().ToString() + fileExtension;
-
-                //    // Upload the file to Firebase Storage
-                //    var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                //    var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
-
-                //    // Get the download URL of the uploaded file
-                //    string imageUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
-                //    data.validIDLnk = imageUrl;
-
-                //}
-
+                //CREATE LIST TO STORE THE LINKS
                 List<string> businessProofs = new List<string>();
+                List<string> validIDs = new List<string>();
 
+                //BUSINESS PROOF UPLOAD
                 if (businessProof.HasFile)
                 {
                     foreach (HttpPostedFile file in businessProof.PostedFiles)
                     {
-                        string fileName = Path.GetFileName(validIDUpload.PostedFile.FileName);
+                        string fileName = Path.GetFileName(file.FileName);
                         string fileExtension = Path.GetExtension(fileName);
 
                         // Generate a unique file name
-                        string uniqueFileName = data.idno + Guid.NewGuid().ToString() + fileExtension;
+                        string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
 
-                        // Upload the file to Firebase Storage
-                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                        var task = await storage.Child("clientValidID").Child(uniqueFileName).PutAsync(validIDUpload.PostedFile.InputStream);
+                        try
+                        {
+                            // Upload the file to Firebase Storage
+                            var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                            var task = storage.Child("clientBusinessProof").Child(uniqueFileName).PutAsync(file.InputStream);
 
-                        // Get the download URL of the uploaded file
-                        string proofUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+                            // Wait for the upload task to complete
+                            await task;
 
-                        //save the links to the list
-                        businessProofs.Add(proofUrl);
-                        
+                            // Get the download URL of the uploaded file
+                            string proofUrl = await storage.Child("clientBusinessProof").Child(uniqueFileName).GetDownloadUrlAsync();
+
+                            // Save the link to the list
+                            businessProofs.Add(proofUrl);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any exceptions that occur during the upload process
+                            // You can log the exception details or handle the error in a way that suits your application
+                            Console.WriteLine("Error uploading file: " + ex.Message);
+                        }
                     }
-
-      
 
                 }
 
+               
+                Debug.WriteLine($"PROOFS : {string.Join(", ", businessProofs)}");
+
+                //VALID ID UPLOAD
+                if (validIDUpload.HasFile)
+                {
+                    foreach (HttpPostedFile file in validIDUpload.PostedFiles)
+                    {
+                        string fileName = Path.GetFileName(file.FileName);
+                        string fileExtension = Path.GetExtension(fileName);
+
+                        // Generate a unique file name
+                        string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+                        try
+                        {
+                            // Upload the file to Firebase Storage
+                            var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                            var task = storage.Child("clientValidID").Child(uniqueFileName).PutAsync(file.InputStream);
+
+                            // Wait for the upload task to complete
+                            await task;
+
+                            // Get the download URL of the uploaded file
+                            string proofUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+
+                            // Save the link to the list
+                            validIDs.Add(proofUrl);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle any exceptions that occur during the upload process
+                            // You can log the exception details or handle the error in a way that suits your application
+                            Console.WriteLine("Error uploading file: " + ex.Message);
+                        }
+                    }
+
+                }
+                Debug.WriteLine($"VALIDID: {string.Join(", ", validIDs)}");
+
+                var links = new Links
+                {
+                    Businessproofs = businessProofs,
+                    ValidIDs = validIDs,
+
+                };
 
                 SetResponse response;
                 //Storing the admin info
@@ -200,8 +233,13 @@ namespace WRS2big_Web.LandingPage
                 response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
                 RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
 
-                response = twoBigDB.Set("ADMIN/" + data.idno + "/Proofs/", businessProofs);//Storing data to the database
-                RefillingStation Linkresult = response.ResultAs<RefillingStation>();//Database Result
+                //SAVE BUSINESS PROOF LINKS 
+                response = twoBigDB.Set("ADMIN/" + data.idno + "/Links/", links);//Storing data to the database
+                Links Linkresult = response.ResultAs<Links>();//Database Result
+
+                ////SAVE VALID ID LINKS
+                //response = twoBigDB.Set("ADMIN/" + data.idno + "/ValidID/", links.ValidIDs);//Storing data to the database
+                //Links validIDresult = response.ResultAs<Links>();//Database Result
 
                 Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
@@ -248,11 +286,15 @@ namespace WRS2big_Web.LandingPage
 
 
             }
-            catch
+            catch (Exception ex)
             {
+                // Output the exception message to the console or log it
+                Debug.WriteLine("Error creating account: " + ex.Message);
+
                 Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
             }
         }
+
         //ENCRYPTING THE PASSWORD
         private string GetSHA256Hash(string input)
         {
@@ -434,7 +476,7 @@ namespace WRS2big_Web.LandingPage
                 }
                 else
                 {
-                    Response.Write("<script>alert('User not found!');</script>");
+                    Response.Write("<script>alert('No Account yet, Sign-up now');</script>");
                 }
               
             }
@@ -445,30 +487,7 @@ namespace WRS2big_Web.LandingPage
             }
         }
 
-        protected void uploadBusiness_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-        }
-
-        protected void uploadValidID_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-
-        }
+        
     }
 }
 

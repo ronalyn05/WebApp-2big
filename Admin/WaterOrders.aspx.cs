@@ -2214,7 +2214,37 @@ namespace WRS2big_Web.Admin
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
                         //add two days from the orderedDate to set the scheduled date
-                        DateTime schedule = orderedDate.AddDays(7);
+                        DateTime schedule = orderedDate.AddDays(10);
+
+                        var scheduleNotif = new Model.scheduledNotification
+                        {
+
+                            admin_ID = adminId,
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            sender = "Admin",
+                            title = "Order Reminder",
+                            receiver = "Customer",
+                            body = "We miss you! It's been a long time since your last tubig order! Order again to earn points!",
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            scheduledSent = schedule,
+                            notificationID = schedNotifID
+
+                        };
+                        SetResponse scheduledNotification;
+                        scheduledNotification = twoBigDB.Set("NOTIFICATION/" + schedNotifID, scheduleNotif);
+                        scheduledNotification scheduled = scheduledNotification.ResultAs<scheduledNotification>();
+
+                        Debug.WriteLine($"ORDERED DATE: {orderedDate}");
+                        Debug.WriteLine($"SCHEDULE: {schedule}");
+                    }
+                    else if (existingOrder.order_OverallQuantities > 15)
+                    {
+                        //get the ordered date from the order
+                        DateTime orderedDate = existingOrder.orderDate;
+                        //add two days from the orderedDate to set the scheduled date
+                        DateTime schedule = orderedDate.AddDays(20);
 
                         var scheduleNotif = new Model.scheduledNotification
                         {

@@ -59,6 +59,42 @@
                                         <div class="">
                                             <%-- <asp:Label ID="lblResult" runat="server" Text="" ForeColor="Red" Font-Size="Large" Font-Bold="True"></asp:Label>--%>
                                             <div class="clearfix">
+                                                <div class="modal fade declineCustomer" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md">
+                                                        <div class="modal-content">
+                                                            <div id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="declineModal"></h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                            <%-- <div class="item form-group">--%>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">DECLINE CUSTOMER</h4>
+
+                                                                            <div class="col-md-12 col-sm-12" style="font-size: 20px"> <br />
+                                                                                <center>
+                                                                                    <h4 style="font-size: 16px; color: black">Why are you declining this customer?</h4>
+                                                                                    <p style="font-size: 16px; color: black;">"Provide more information on why do you want to decline this customer. Declined customer will be notified about this action."</p>
+                                                                                </center>
+
+                                                                                <hr />
+                                                                                <asp:TextBox runat="server" class="form-control" TextMode="MultiLine" Style="font-size: 18px" Width="400px" ID="reasonDecline" Placeholder="Reason for declining"></asp:TextBox>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON CONFIRM DECLINE--%>
+                                                                        <asp:Button ID="confirmDecline" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="declineButton_Click"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                      <!--MAIN CONTENT-->
                                     <div class="row">
@@ -75,7 +111,9 @@
                                                             <center>
                                                           <asp:Image runat="server" ID="clientImage" class="img-100" style="width:300px" Height="300px"/> <br /> <br />
                                                              <asp:Label  class="form-control-round" style="font-size:20px;color:black;" id="clientFullName" runat="server"></asp:Label> <br />
-                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label>
+                                                            <asp:Label   class="form-control-round" runat="server" id="clientEmail" style="font-size:16px;color:dimgray;"></asp:Label><br /> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="Label23" style="font-size:16px;color:dimgray;">Status:</asp:Label> <br />
+                                                            <asp:Label   class="form-control-round" runat="server" id="customerStatus" style="font-size:20px;color:black;"></asp:Label>
                                                             </center>
 
                                                                <br />  <asp:Label   class="form-control-round" runat="server" id="allLabel" style="font-size:16px;color:dimgray;"> Visit All Registered Customers</asp:Label> <br />
@@ -160,7 +198,7 @@
                                                             </div>
                                                             <center>
                                                             <asp:Button runat="server" ID="approveButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="approveButton_Click" Text="APPROVE"/>
-                                                            <asp:Button  runat="server" ID="declineButton" class="btn btn-primary btn-sm text" style="font-size:18px" OnClick="declineButton_Click" Text="DECLINE"/> 
+                                                            <button type="button" runat="server" id="declineButton" style="font-size: 18px;" class="btn btn-primary btn-sm text" data-toggle="modal" data-target=".declineCustomer">DECLINE</button>
                                                             </center>
                                                               <asp:LinkButton runat="server" Text="Pending Customer List" class="btn btn-primary" style="font-size:18px" href="ManageCustomers.aspx"></asp:LinkButton>
 
