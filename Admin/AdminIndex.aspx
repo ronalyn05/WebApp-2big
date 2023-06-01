@@ -136,7 +136,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer bg-c-blue">
+                                                    <div class="card-footer bg-c-lite-green">
                                                         <div class="row align-items-center">
                                                             <div class="col-9">
                                                                 <a href="/Admin/OnlineOrders" class="text-white m-b-0 text-center">Pending Orders</a>
@@ -149,26 +149,84 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                          
-                                            <%-- <asp:Chart ID="chart" runat="server">
-
-                                            </asp:Chart>--%>
-
-                                            <%--<asp:Chart runat="server">
-                                                <Series>
-                                                    <asp:Series Name="Series1"></asp:Series>
-                                                </Series>
-                                                <ChartAreas>
-                                                    <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
-                                                </ChartAreas>
-                                            </asp:Chart>--%>
+                                          </div> 
                                         </div>
                                           <%--  customer graph here--%>
-                                            <div id="chart_div">
-
+                                    <%--     CUSTOMER CHART--%>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>CUSTOMER GRAPH</h4>
+                                                <br>
+                                             
+                                                <div class="card-header-right">
+                                                    <ul class="list-unstyled card-option">
+                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                                        <li><i class="fa fa-trash close-card"></i></li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                                            <div class="card-block">
+                                                <div class="table-responsive">
+                                                      <div id="chartContainer"></div>
+                                                     <%--Add CSS to adjust the chart container height--%>
+                <style>
+                     
+                #chartContainer {
+                    height: 800px; /* Adjust the height of the chart */
+                }
+
+                </style>
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active">
+                                                            
+                                                                            <%-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                                            <script type="text/javascript">
+                                                google.charts.load('current', { packages: ['corechart'] });
+                                                google.charts.setOnLoadCallback(drawChart);
+
+                                                function drawChart() {
+                                                    // Your chart data and options here
+                                                    var data = google.visualization.arrayToDataTable([
+                                                        ['Time Period', 'Value'],
+                                                        ['Average Transaction Order (Week)', 10],
+                                                        ['Average Sales (Week)', 20],
+                                                        // Add more data as needed
+                                                    ]);
+
+                                                    var options = {
+                                                        title: 'Average Values by Time Period',
+                                                        //titleTextStyle: {
+                                                        //    fontSize: 18
+                                                        //},
+                                                        //chartArea: {
+                                                        //    width: '80%',
+                                                        //    height: '80%'
+                                                        //},
+                                                        colors: ['blue', 'green']
+                                                    };
+
+                                                    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                                                    chart.draw(data, options);
+
+                                                }
+                                            </script>--%>
+                                                        </div>
+                                                        <!--/tab-pane-->
+                                                    </div>
+                                                    <!--/tab-content-->
+                                                    <%--TAB end --%>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+
+                                            <%--<div id="chart_div">
+
+                                            </div>--%>
+                                           <%-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                                             <script type="text/javascript">
                                                 google.charts.load('current', { packages: ['corechart'] });
                                                 google.charts.setOnLoadCallback(drawChart);
@@ -198,10 +256,9 @@
                                                     chart.draw(data, options);
                                                     
                                                 }
-                                            </script>
-                                    </div>
+                                            </script>--%>
+                                    
                                 </div>
-                                <div id="styleSelector"></div>
                             </div>
                         </div>
                     </div>
