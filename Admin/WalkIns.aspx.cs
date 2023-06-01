@@ -148,49 +148,116 @@ namespace WRS2big_Web.Admin
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
-
             string selectedOption = drdOrderType.SelectedValue;
 
             drdProdName.Items.Clear();
             drdUnit_Size.Items.Clear();
-           
+
             if (selectedOption == "Refill")
             {
                 FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
                 Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
 
-                foreach (var product in products.Values)
+                if (response != null && response.ResultAs<ProductRefill>() != null)
                 {
-                    if (product.adminId.ToString() == idno) // check if the product belongs to the current user
+                    List<string> uniqueProductNames = new List<string>();
+                    List<string> uniqueUnitSizes = new List<string>();
+
+                    foreach (var product in products.Values)
                     {
-                        drdProdName.Items.Add(new ListItem(product.pro_refillWaterType));
-                        drdUnit_Size.Items.Add(new ListItem(product.pro_refillQty + " " + product.pro_refillUnitVolume));
+                        if (product.adminId.ToString() == idno && product.offerType == "Product Refill") // check if the product belongs to the current user
+                        {
+                            string productName = product.pro_refillWaterType;
+                            string unitSize = product.pro_refillQty + " " + product.pro_refillUnitVolume;
+
+                            // Check if the product name or unit size already exists in the respective lists
+                            if (!uniqueProductNames.Contains(productName))
+                            {
+                                uniqueProductNames.Add(productName);
+                                drdProdName.Items.Add(new ListItem(productName));
+                            }
+
+                            if (!uniqueUnitSizes.Contains(unitSize))
+                            {
+                                uniqueUnitSizes.Add(unitSize);
+                                drdUnit_Size.Items.Add(new ListItem(unitSize));
+                            }
+                        }
                     }
-                    
                 }
-
-
             }
+            if (selectedOption == "other Product")
+            {
+                FirebaseResponse response = twoBigDB.Get("PRODUCTREFILL/");
+                Dictionary<string, ProductRefill> products = response.ResultAs<Dictionary<string, ProductRefill>>();
+
+                if (response != null && response.ResultAs<ProductRefill>() != null)
+                {
+                    List<string> uniqueProductNames = new List<string>();
+                    List<string> uniqueUnitSizes = new List<string>();
+
+                    foreach (var product in products.Values)
+                    {
+                        if (product.adminId.ToString() == idno && product.offerType == "other Product") // check if the product belongs to the current user
+                        {
+                            string productName = product.pro_refillWaterType;
+                            string unitSize = product.pro_refillQty + " " + product.pro_refillUnitVolume;
+
+                            // Check if the product name or unit size already exists in the respective lists
+                            if (!uniqueProductNames.Contains(productName))
+                            {
+                                uniqueProductNames.Add(productName);
+                                drdProdName.Items.Add(new ListItem(productName));
+                            }
+
+                            if (!uniqueUnitSizes.Contains(unitSize))
+                            {
+                                uniqueUnitSizes.Add(unitSize);
+                                drdUnit_Size.Items.Add(new ListItem(unitSize));
+                            }
+                        }
+                    }
+                }
+            }
+
             else if (selectedOption == "Third Party Products")
             {
                 FirebaseResponse response = twoBigDB.Get("thirdparty_PRODUCTS/");
                 Dictionary<string, thirdpartyProducts> otherproducts = response.ResultAs<Dictionary<string, thirdpartyProducts>>();
 
-                foreach (var otherproduct in otherproducts.Values)
+                if (response != null && response.ResultAs<thirdpartyProducts>() != null)
                 {
-                    if (otherproduct.adminId.ToString() == idno) // check if the product belongs to the current user
+                    List<string> uniqueProductNames = new List<string>();
+                    List<string> uniqueUnitSizes = new List<string>();
+
+                    foreach (var otherproduct in otherproducts.Values)
                     {
-                        drdProdName.Items.Add(new ListItem(otherproduct.thirdparty_productName));
-                        drdUnit_Size.Items.Add(new ListItem(otherproduct.thirdparty_productQty + " " + otherproduct.thirdparty_productUnitVolume));
-                        // drdSize.Items.Add(new ListItem(otherproduct.other_productSize));
+                        if (otherproduct.adminId.ToString() == idno) // check if the product belongs to the current user
+                        {
+                            string productName = otherproduct.thirdparty_productName;
+                            string unitSize = otherproduct.thirdparty_productQty + " " + otherproduct.thirdparty_productUnitVolume;
+
+                            // Check if the product name or unit size already exists in the respective lists
+                            if (!uniqueProductNames.Contains(productName))
+                            {
+                                uniqueProductNames.Add(productName);
+                                drdProdName.Items.Add(new ListItem(productName));
+                            }
+
+                            if (!uniqueUnitSizes.Contains(unitSize))
+                            {
+                                uniqueUnitSizes.Add(unitSize);
+                                drdUnit_Size.Items.Add(new ListItem(unitSize));
+                            }
+                        }
                     }
                 }
-               
             }
+
             lblDescription.Text = "Choose product type, unit and size:";
             btnSearchPrice.Visible = true;
-
         }
+
         //RETRIEVING THE PRICE AND DISCOUNT 
         protected void btnSearchPrice_Click(object sender, EventArgs e)
         {
