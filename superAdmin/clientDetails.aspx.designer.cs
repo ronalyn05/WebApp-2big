@@ -15,6 +15,24 @@ namespace WRS2big_Web.superAdmin
     {
 
         /// <summary>
+        /// reasonDecline control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox reasonDecline;
+
+        /// <summary>
+        /// confirmDecline control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button confirmDecline;
+
+        /// <summary>
         /// clientImage control.
         /// </summary>
         /// <remarks>
@@ -58,15 +76,6 @@ namespace WRS2big_Web.superAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label clientStatus;
-
-        /// <summary>
-        /// allLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label allLabel;
 
         /// <summary>
         /// firstName control.
@@ -114,24 +123,6 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label clientPhone;
 
         /// <summary>
-        /// chosenValidID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label chosenValidID;
-
-        /// <summary>
-        /// clientValidID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image clientValidID;
-
-        /// <summary>
         /// clientStationName control.
         /// </summary>
         /// <remarks>
@@ -159,22 +150,22 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Label chosenProof;
 
         /// <summary>
-        /// proofChosen control.
+        /// chosenValidID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label proofChosen;
+        protected global::System.Web.UI.WebControls.Label chosenValidID;
 
         /// <summary>
-        /// businessProofImg control.
+        /// uploadedImages control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image businessProofImg;
+        protected global::System.Web.UI.WebControls.Repeater uploadedImages;
 
         /// <summary>
         /// approveButton control.
@@ -192,15 +183,6 @@ namespace WRS2big_Web.superAdmin
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button declineButton;
-
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.HtmlControls.HtmlButton declineButton;
     }
 }

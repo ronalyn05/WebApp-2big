@@ -30,23 +30,43 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
+            if (Session["currentClient"] == null)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+
+
             int clientID = (int)Session["currentClient"];
+
+
+            if (clientID == 0)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+
 
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
+            if (adminDet == null)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+               
+            }
             if (admin != null)
             {
                 if (admin.status == "Approved" || admin.status == "Declined")
                 {
-                    declineButton.Enabled = false;
-                    approveButton.Enabled = false;
+                    declineButton.Visible = false;
+                    approveButton.Visible = false;
 
                 }
                 else
                 {
-                    approveButton.Enabled = true;
-                    declineButton.Enabled = true;
+                    approveButton.Visible = true;
+                    declineButton.Visible = true;
                 }
             }
 
@@ -59,6 +79,16 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
+            if (clientID == 0)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+            if (adminDet == null)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
 
             clientStatus.Text = admin.status;
             clientFullName.Text = admin.fname + " " + admin.mname + " " + admin.lname ;
@@ -71,37 +101,10 @@ namespace WRS2big_Web.superAdmin
             clientPhone.Text = admin.phone;
             chosenValidID.Text = admin.validID;
             chosenProof.Text = admin.businessProof;
-            proofChosen.Text = admin.businessProof + " " + "File:";
-            
-
-            //FILE 
-            //string proofLink = admin.businessProofLnk;
-            //fileProofLink.NavigateUrl = proofLink;
+            //proofChosen.Text = admin.businessProof + " " + "File:";
 
 
-
-
-            //TO CHECK IF NAY VALID ID AND PROOF
-            if (admin.businessProofLnk != null || admin.validIDLnk != null)
-            {
-                clientValidID.ImageUrl = admin.validIDLnk.ToString();
-
-            }
-            //TO CHECK IF NAAY PROFILE PIC
-            if (admin.profile_image != null)
-            {
-                clientImage.ImageUrl = admin.profile_image.ToString();
-            }
-            if (admin.businessProofLnk != null)
-            {
-                businessProofImg.ImageUrl = admin.businessProofLnk.ToString();
-              
-
-            }
-
-
-
-
+            DisplayImages();
 
 
             adminDet = twoBigDB.Get("ADMIN/" + clientID + "/RefillingStation");
@@ -110,6 +113,44 @@ namespace WRS2big_Web.superAdmin
             clientStationAdd.Text = station.stationAddress;
 
             clientStationName.Text = station.stationName;
+
+        }
+        private void DisplayImages()
+        {
+            int clientID = (int)Session["currentClient"];
+
+            if (clientID == 0)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+
+            FirebaseResponse businessProof = twoBigDB.Get("ADMIN/" + clientID + "/Links/Businessproofs");
+            //Model.Links proof = businessProof.ResultAs<Model.Links>();
+            List<string> businessProofUrls = JsonConvert.DeserializeObject<List<string>>(businessProof.Body);
+
+            if (businessProof == null)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+            FirebaseResponse validID = twoBigDB.Get("ADMIN/" + clientID + "/Links/ValidIDs");
+            //Model.Links valid = validID.ResultAs<Model.Links>();
+            List<string> validIDProofUrls = JsonConvert.DeserializeObject<List<string>>(validID.Body);
+
+            if (validID == null)
+            {
+                Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+
+            //Combine the URLs into a single list.
+            List<string> allImageUrls = new List<string>();
+            allImageUrls.AddRange(businessProofUrls);
+            allImageUrls.AddRange(validIDProofUrls);
+
+            uploadedImages.DataSource = allImageUrls;
+            uploadedImages.DataBind();
 
         }
 
@@ -150,6 +191,7 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             int clientID = (int)Session["currentClient"];
+            var idno = (string)Session["SuperIDno"];
 
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
@@ -185,7 +227,8 @@ namespace WRS2big_Web.superAdmin
                 body = "Your application is now approved! You can now subscribe to our Subscription Packages",
                 notificationDate = DateTime.Now,
                 status = "unread",
-                notificationID = ID
+                notificationID = ID,
+                superAdmin_ID = int.Parse(idno),
 
             };
 
@@ -201,7 +244,7 @@ namespace WRS2big_Web.superAdmin
             int idnum = rnd.Next(1, 10000);
 
             string superName = (string)Session["superAdminName"];
-            var idno = (string)Session["SuperIDno"];
+           
 
             //Store the login information in the USERLOG table
             var data = new superLogs
@@ -228,6 +271,8 @@ namespace WRS2big_Web.superAdmin
            
 
             int clientID = (int)Session["currentClient"];
+            var idno = (string)Session["SuperIDno"];
+            string reason = reasonDecline.Text;
 
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
@@ -255,11 +300,12 @@ namespace WRS2big_Web.superAdmin
             int ID = rnd.Next(1, 20000);
             var Notification = new Notification
             {
+                superAdmin_ID = int.Parse(idno),
                 admin_ID = clientID,
                 sender = "Super Admin",
-                title = "Client Declined",
+                title = "Application Declined",
                 receiver = "Admin",
-                body = "Your application is Declined!",
+                body = reason,
                 notificationDate = DateTime.Now,
                 status = "unread",
                 notificationID = ID
@@ -276,7 +322,7 @@ namespace WRS2big_Web.superAdmin
             //generate a random number for users logged
             //Random rnd = new Random();
             int idnum = rnd.Next(1, 10000);
-            var idno = (string)Session["SuperIDno"];
+            
             string superName = (string)Session["name"];
 
             //Store the login information in the USERLOG table
@@ -293,7 +339,7 @@ namespace WRS2big_Web.superAdmin
             FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
             superLogs res = response.ResultAs<superLogs>();//Database Result
 
-            Response.Write("<script>alert ('You declined the application! Notify the client ');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
 
         }
     }

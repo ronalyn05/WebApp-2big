@@ -15,6 +15,24 @@ namespace WRS2big_Web.superAdmin
     {
 
         /// <summary>
+        /// reasonDecline control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox reasonDecline;
+
+        /// <summary>
+        /// confirmDecline control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button confirmDecline;
+
+        /// <summary>
         /// clientImage control.
         /// </summary>
         /// <remarks>
@@ -129,6 +147,6 @@ namespace WRS2big_Web.superAdmin
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button declineButton;
+        protected global::System.Web.UI.HtmlControls.HtmlButton declineButton;
     }
 }

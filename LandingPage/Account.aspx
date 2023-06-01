@@ -610,7 +610,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
                                                         <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" AllowMultiple="true"  Accept="image/*"/>
-                                                         <asp:LinkButton ID="uploadBusiness" class="btn-mktg d-block btn-muted-mktg btn btn-primary" OnClick="uploadBusiness_Click" runat="server" Text="Upload Business Proof" />
+                                                        
                                                          <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
@@ -619,7 +619,7 @@
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
                                                         <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" AllowMultiple="true"   Accept="image/*"/>
-                                                         <asp:LinkButton ID="uploadValidID" class="btn-mktg d-block btn-muted-mktg btn btn-primary" OnClick="uploadValidID_Click" runat="server" Text="Upload Valid ID" />
+                                                      
                                                          <asp:Label ID="lblErrorUpload" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>

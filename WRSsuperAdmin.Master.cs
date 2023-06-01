@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -35,11 +36,16 @@ namespace WRS2big_Web
                 superLbl.Text = "SUPER ADMIN:" + " " +Session["fname"].ToString();
             }
 
-            loadNotifications();
+            if (!IsPostBack)
+            {
+                loadNotifications();
+            }
+
+            
         }
         private void loadNotifications()
         {
-            //int count = 0;
+            
             // Retrieve the existing Notifications object from the database
             FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
             var data = notification.Body;
@@ -48,7 +54,7 @@ namespace WRS2big_Web
             {
                 Dictionary<string, Model.Notification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(data);
 
-                if (allNotifications == null)
+                if (allNotifications != null)
                 {
                     // Create a list to store all the notifications with the receiver as "Super Admin"
                     List<Model.Notification> superAdminNotifications = new List<Model.Notification>();
@@ -82,6 +88,10 @@ namespace WRS2big_Web
                     rptNotifications.DataSource = superAdminNotifications;
                     rptNotifications.DataBind();
 
+                    Debug.WriteLine($"NOTIFICATIONSLOADED: {superAdminNotifications.Count}");
+
+                    Debug.WriteLine($"UNREAD NOTIFS: {unreadNotifications.Count}");
+
                     int unreadCount = unreadNotifications.Count;
 
                     unread.Text = unreadNotifications.Count.ToString();
@@ -93,9 +103,9 @@ namespace WRS2big_Web
                     else
                     {
                         unread.Visible = false;
+                        
                     }
                 }
-               
             }
             else
             {
@@ -206,5 +216,72 @@ namespace WRS2big_Web
             Session.Clear();
             Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
         }
+
+        protected void markAsRead_Click(object sender, EventArgs e)
+        {
+            // Retrieve the existing Notifications object from the database
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
+            var data = notification.Body;
+
+            if (data != null)
+            {
+                Dictionary<string, Model.Notification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(data);
+
+                if (allNotifications != null)
+                {
+                    //List for unread notifications
+                    List<Model.Notification> unreadNotifications = new List<Model.Notification>();
+
+                    // Loop through all the notifications
+                    foreach (KeyValuePair<string, Model.Notification> entry in allNotifications)
+                    {
+                        // Check if the current notification has the receiver as "Super Admin"
+                        if (entry.Value.receiver == "Super Admin" && entry.Value.status == "unread")
+                        {
+                            unreadNotifications.Add(entry.Value);
+
+                        }
+                    }
+
+                    if (unreadNotifications.Count == 0)
+                    {
+
+                        Response.Write("<script>alert('No unread notifications'); </script>");
+                    }
+                    foreach(var unreads in unreadNotifications)
+                    {
+                        var updatedNotif = new Notification
+                        {
+                            notificationID = unreads.notificationID,
+                            notificationDate = unreads.notificationDate,
+                            receiver = unreads.receiver,
+                            sender = unreads.sender,
+                            title = unreads.title,
+                            orderID = unreads.orderID,
+                            cusId = unreads.cusId,
+                            driverId = unreads.driverId,
+                            //UPDATE THE STATUS FROM UNREAD TO READ
+                            status = "read",
+                            body = unreads.body,
+                            admin_ID = unreads.admin_ID
+                        };
+                        notification = twoBigDB.Update("NOTIFICATION/" + unreads.notificationID, updatedNotif);
+                    }
+
+
+                    //Redirect to the same page to reload it
+                    Response.Redirect(Request.RawUrl, false);
+                    Context.ApplicationInstance.CompleteRequest();
+                    
+
+                }
+            }
+            else
+            {
+                // noNotifications.Text = "No Notifications";
+            }
+
+        }
+       
     }
 }
