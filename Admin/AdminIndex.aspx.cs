@@ -50,7 +50,7 @@ namespace WRS2big_Web.Admin
             }
             
         }
-        //chart to track customer sales and get the average rate of cutomer that access the system
+        //chart to track customer sales and get the average rate of customer that access the system
         private void BindChart()
         {
             string idno = (string)Session["idno"];
@@ -87,12 +87,18 @@ namespace WRS2big_Web.Admin
 
                 totalCustomers = filteredList.Count() + walkinfilteredList.Count(); // Get the total number of customers for both walk-in and online orders
                 totalTransactionOrder += filteredList.Count() + walkinfilteredList.Count(); // Get the total of transaction order for both walk-in and online orders
-            }
 
+
+                // Calculate general averages
+                double avgTransactionOrder = totalTransactionOrder > 0 ? totalTransactionOrder / (filteredList.Count() + walkinfilteredList.Count()) : 0.001;
+                double avgSales = totalSales > 0 ? totalSales / (filteredList.Count() + walkinfilteredList.Count()) : 0.001;
+                double avgCustomers = totalCustomers > 0 ? totalCustomers / (filteredList.Count() + walkinfilteredList.Count()) : 0.001;
+
+           
             // Calculate general averages
-            double avgTransactionOrder = totalTransactionOrder > 0 ? totalTransactionOrder / 3 : 0.001;
-            double avgSales = totalSales > 0 ? totalSales / 3 : 0.001;
-            double avgCustomers = totalCustomers > 0 ? totalCustomers / 3 : 0.001;
+            //double avgTransactionOrder = totalTransactionOrder > 0 ? totalTransactionOrder / 3 : 0.001;
+            //double avgSales = totalSales > 0 ? totalSales / 3 : 0.001;
+            //double avgCustomers = totalCustomers > 0 ? totalCustomers / 3 : 0.001;
 
             // Load the Google Charts API
             ScriptManager.RegisterStartupScript(this, GetType(), "GoogleCharts", "google.charts.load('current', { packages: ['corechart'] });", true);
@@ -137,6 +143,7 @@ namespace WRS2big_Web.Admin
             chart.draw(data, options);
         }
     ", true);
+            }
         }
 
         //display sales in a day
