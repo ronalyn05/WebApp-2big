@@ -221,6 +221,14 @@
                                             <%--                                            @*username*@--%>
                                             <div class="col">
                                                 <div class="">
+                                                     
+                                                     <label>Plese choose your Role:</label><br />
+                                                    <asp:DropDownList runat="server" ID="roleType" style="font-size:18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged">
+                                                        <asp:ListItem Enabled="false"></asp:ListItem>
+                                                        <asp:ListItem Value="Admin"> Admin</asp:ListItem>
+                                                        <asp:ListItem Value="Cashier">Cashier</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                    <br /><br />
                                                     <%--<label>Email:</label>--%>
                                                     <label>ID Number:</label>
                                                     <div class="input-group">
