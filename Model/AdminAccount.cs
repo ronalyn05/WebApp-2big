@@ -273,6 +273,7 @@ namespace WRS2big_Web.Model
         public string userFullname { get; set; }
         public string userActivity { get; set; }
         public DateTime activityTime { get; set; }
+        public string role { get; set; }
 
     }
 

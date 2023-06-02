@@ -37,6 +37,11 @@ namespace WRS2big_Web.Admin
 
             string clientStat = pendingClients.status;
 
+            if (clientStat == "Subscribed")
+            {
+                subSuccessTitle.InnerText = "Subscription Renewal";
+            }
+
             if (clientStat == "pending")
             {
                 Response.Write("<script>alert ('Subscription Unsuccessful. You cannot subscribe yet since your account is still under review. Please wait until your account is approved before you can subscribe'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
@@ -278,6 +283,7 @@ namespace WRS2big_Web.Admin
         private void checkforRenewal()
         {
             var adminID = Session["idno"].ToString();
+           
 
             FirebaseResponse currentStat = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
             Dictionary<string, Model.superAdminClients> subscribed = currentStat.ResultAs<Dictionary<string, Model.superAdminClients>>();

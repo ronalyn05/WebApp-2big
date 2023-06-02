@@ -109,7 +109,7 @@
                 <div class="col-lg-5">
                     <div class="col-lg-7 mb-10 mb-lg-0" style="margin-left: 250px; background-color: lightblue">
                         <br />
-                        <h6 class="h6-mktg">Subscription Confirmation</h6>
+                        <h6 class="h6-mktg" runat="server" id="subSuccessTitle">Subscription Confirmation</h6>
                                  
                         <div class="d-lg-flex flex-items-stretch  text-center">
                             <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan">
