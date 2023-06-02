@@ -203,7 +203,7 @@
                                           </div>
                                              <div class="col-md-12 col-sm-12">
                                                  <asp:Label ID="Label13" runat="server" style="color:black; font-size:20px; display: inline-block;">Email address:</asp:Label>
-                                                 <asp:TextBox ID="email" placeholder="enter email" runat="server" Width="364px" style="display: inline-block; margin-right: 100px;"></asp:TextBox>                       
+                                                 <asp:TextBox ID="email" placeholder="enter email" runat="server" Width="364px" style="display: inline-block;  margin-right: 100px;"></asp:TextBox>                       
                                           </div>
 
                                         </div>

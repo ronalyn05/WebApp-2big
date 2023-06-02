@@ -35,6 +35,7 @@ namespace WRS2big_Web.Admin
             twoBigDB = new FireSharp.FirebaseClient(config);
 
             loadFeatures();
+            
 
            
         }
@@ -47,8 +48,20 @@ namespace WRS2big_Web.Admin
 
             if (allFeatures != null)
             {
+               
+                string idno = (string)Session["idno"];
 
-                List<Model.PackagePlans> packageList = allFeatures.Values.Where(p => p.status == "Active").ToList();
+                // Retrieve the existing product data from the database
+                var result = twoBigDB.Get("ADMIN/" + idno + "/Subscribed_Package");
+                Subscribed_Package currentPackage = result.ResultAs<Subscribed_Package>();
+
+                int subPackage = currentPackage.packageID;
+
+                //List<Model.PackagePlans> packageList = allFeatures.Values.Where(p => p.status == "Active").ToList();
+                List<Model.PackagePlans> packageList = allFeatures.Values
+                 .Where(p => p.status == "Active" && (p.renewable == "Yes" || (p.renewable == "No" && p.packageID != subPackage)))
+                 .ToList();
+                    
                 packagesRepeater.DataSource = packageList;
                 packagesRepeater.DataBind();
 

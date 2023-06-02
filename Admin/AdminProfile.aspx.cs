@@ -41,14 +41,135 @@ namespace WRS2big_Web.Admin
                 //Response.Write("<script>alert('User not found');</script>");
                 //Response.Redirect("/LandingPage/Account.aspx");
             }
-           
+
+            fetchAdminData();
+            fetchStationData();
+
+            string role = (string)Session["role"];
             
+            if (role != null)
+            {
+                if (role == "Cashier")
+                {
+                    //hide all the buttons for managements since the CASHIER is not allowed to manage them
+                    changePackage.Visible = false;
+                    renewBTN.Visible = false;
+                    subscribeBTN.Visible = false;
+                    btnManageStation.Visible = false;
+                    btnEdit.Visible = false;
+                    profileBtn.Visible = false;
+                    imgProfile.Visible = false;
+                    firstname.ReadOnly = true;
+                    middlename.ReadOnly = true;
+                    lastname.ReadOnly = true;
+                    birthdate.Enabled = false;
+                    contactnum.ReadOnly = true;
+                    email.ReadOnly = true;
+                    birthdate.ReadOnly = true;
+                    txtOperatingHrsTo.Enabled = false;
+                    txtOperatingHrsFrom.Enabled = false;
+                    drdBusinessDaysFrom.Enabled = false;
+                    drdBusinessDaysTo.Enabled = false;
+                }
+
+            }
+        }
+
+        private void fetchStationData()
+        {
+            var adminID = Session["idno"].ToString();
+            //TO GET THE REFILLING STATION DETAILS
+            FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
+            Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
+
+            //string name = refillStation.stationName;
+            string days = refillStation.businessDaysFrom;
+
+            //to check if naka add na ug station details
+            if (days != null)
+            {
+                //POPULATE THE STATION DETAILS IN THE TEXTBOXES
+                lblStationName.Text = refillStation.stationName;
+                lblAddress.Text = refillStation.stationAddress;
+                lblOperatingHours.Text = refillStation.operatingHrsFrom + "- " + refillStation.operatingHrsTo + "";
+                lblBusinessday.Text = refillStation.businessDaysFrom + " - " + refillStation.businessDaysTo;
+
+                //POPULATE THE REFILL STATION DETAILS IN THE MODAL
+                //txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom;
+                //txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
+                drdBusinessDaysFrom.Text = refillStation.businessDaysFrom;
+                drdBusinessDaysTo.Text = refillStation.businessDaysTo;
+
+
+
+                DateTime timeNow = DateTime.Now;
+                DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
+                DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
+                //string businessClose = refillStation.businessDaysTo;
+                ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
+                //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
+
+                // Check if the current day is within the business days
+                DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
+                DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
+                DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
+
+                //convert into INT
+                int currentDay = (int)currentDayOfWeek;
+                int businessDayStart = (int)businessDayFrom;
+                int businessDayEnd = (int)businessDayTo;
+
+                bool isBusinessDay = false;
+                // check if the businessDayFrom is less than or equal to businessDayTo
+                if (businessDayStart <= businessDayEnd)
+                {
+                    //check if the current day is within the range using the >= and <= operators.
+                    isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
+                }
+                else
+                {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
+                    isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
+                }
+
+
+
+                //DEBUG STATEMENTS
+                Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
+                Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
+                Debug.WriteLine($"businessDayTo: {businessDayTo}");
+                Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
+
+                //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
+                string status = "CLOSE";
+                lblstatus.Text = status;
+                if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
+                {
+                    status = "OPEN";
+                }
+                lblstatus.Text = status;
+
+                var statusUpdate = new Dictionary<string, object>
+                {
+                  { "status", status }
+                };
+
+                FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
+            }
+            else
+            {
+
+                Response.Write("<script>alert ('You haven't finished setting up your station details yet. Please complete your refilling station details now.');</script>");
+            }
+        }
+
+        private void fetchAdminData()
+        {
             var adminID = Session["idno"].ToString();
 
             FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
             Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
 
-           
+
             if (adminDet != null)
             {
                 //POPULATE THE PERSONAL DETAILS IN THE TEXTBOXES
@@ -98,7 +219,7 @@ namespace WRS2big_Web.Admin
                         DateTime subscriptionEnd = end;
                         LblSubEnd.Text = subscriptionEnd.ToString();
 
-                       
+
                     }
 
 
@@ -123,96 +244,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script> window.location.href = '/LandingPage/Account.aspx';</script>");
 
             }
-
-
-
-
-
-            //TO GET THE REFILLING STATION DETAILS
-            FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
-            Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
-
-            //string name = refillStation.stationName;
-            string days = refillStation.businessDaysFrom;
-            
-            //to check if naka add na ug station details
-            if (days != null)
-            {
-                //POPULATE THE STATION DETAILS IN THE TEXTBOXES
-                lblStationName.Text = refillStation.stationName;
-                lblAddress.Text = refillStation.stationAddress;
-                lblOperatingHours.Text = refillStation.operatingHrsFrom + "- " + refillStation.operatingHrsTo + "";
-                lblBusinessday.Text = refillStation.businessDaysFrom + " - " + refillStation.businessDaysTo;
-
-                //POPULATE THE REFILL STATION DETAILS IN THE MODAL
-                //txtOperatingHrsFrom.Text = refillStation.operatingHrsFrom;
-                //txtOperatingHrsTo.Text = refillStation.operatingHrsTo;
-                drdBusinessDaysFrom.Text = refillStation.businessDaysFrom;
-                drdBusinessDaysTo.Text = refillStation.businessDaysTo;
-
-
-
-                DateTime timeNow = DateTime.Now;
-                DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
-                DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
-                //string businessClose = refillStation.businessDaysTo;
-                ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
-                //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
-
-                // Check if the current day is within the business days
-                DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
-                DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
-                DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
-
-                //convert into INT
-                int currentDay = (int)currentDayOfWeek;
-                int businessDayStart = (int)businessDayFrom;
-                int businessDayEnd = (int)businessDayTo;
-
-                bool isBusinessDay = false;
-                // check if the businessDayFrom is less than or equal to businessDayTo
-                if (businessDayStart <= businessDayEnd)
-                {
-                    //check if the current day is within the range using the >= and <= operators.
-                    isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
-                }
-                else
-                {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
-                    isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
-                }
-
-
-             
-                //DEBUG STATEMENTS
-                Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
-                Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
-                Debug.WriteLine($"businessDayTo: {businessDayTo}");
-                Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
-
-                //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
-                string status = "CLOSE";
-                lblstatus.Text = status;
-                if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
-                {
-                    status = "OPEN";
-                }
-                lblstatus.Text = status;
-
-                var statusUpdate = new Dictionary<string, object>
-                {
-                  { "status", status }
-                };
-
-                FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
-            }
-            else
-            {
-
-                Response.Write("<script>alert ('You haven't finished setting up your station details yet. Please complete your refilling station details now.');</script>");
-            }
-
         }
-
         //RENEW SUBSCRIPTION
         protected void btnSubscription_Click(object sender, EventArgs e)
         {
@@ -388,7 +420,7 @@ namespace WRS2big_Web.Admin
                 logsId = idnum,
                 userFullname = (string)Session["fullname"],
                 userActivity = "UPLOADED PROFILE IMAGE",
-                // userActivity = UserActivityType.AddedProductRefill,
+              
                 activityTime = addedTime
             };
 
@@ -637,34 +669,12 @@ namespace WRS2big_Web.Admin
                     //renewBTN.Enabled = false;
                     Response.Write("<script>alert ('Your current package is not RENEWABLE. Redirecting you to Subscription Packages now.');  window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
                    
-                    //SEND NOTIFICATION TO ADMIN 
-                    Random rnd = new Random();
-                    int ID = rnd.Next(1, 20000);
-                    var Notification = new Notification
-                    {
-                        admin_ID = int.Parse(adminID),
-                        sender = "Super Admin",
-                        title = "Package Renewal",
-                        receiver = "Admin",
-                        body = package.packageName + " " + "is not renewable. You must subscribe to another package",
-                        notificationDate = DateTime.Now,
-                        status = "unread",
-                        notificationID = ID
-
-                    };
-
-                    SetResponse notifResponse;
-                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
                 }
-
-              
-
-                
-            }
-            else if (package.packageName == "Package B")
-            {
-                Response.Write("<script> window.location.href = '/Admin/PackageBPage.aspx';</script>");
+                else
+                {
+                    Response.Write("<script> window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
+                }
+  
             }
         }
     }

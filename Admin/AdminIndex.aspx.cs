@@ -33,14 +33,15 @@ namespace WRS2big_Web.Admin
             // Connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            // Get the ID of the currently logged-in owner from session state
-            string idno = (string)Session["idno"];
+            //// Get the ID of the currently logged-in owner from session state
+            //string idno = (string)Session["idno"];
+            //string cashierID = (string)Session["cashierID"];
 
-            if (idno == null)
-            {
-                Response.Write("<script>alert ('Session expired. Please log in again.');</script>");
-                return;
-            }
+            //if (idno == null || cashierID == null)
+            //{
+            //    Response.Write("<script>alert ('Session expired ADMIN INDEX. Please log in again.');</script>");
+            //    return;
+            //}
             if (!IsPostBack)
             {
                 BindChart();
@@ -206,8 +207,10 @@ namespace WRS2big_Web.Admin
         //display sales in a day
         private void dailySalesDisplay()
         {
-            string idno = (string)Session["idno"];
-           
+            string adminID = (string)Session["idno"];
+
+            string idno = adminID.ToString();
+
             DateTime fromDate = DateTime.Today;
             DateTime toDate = DateTime.Today.AddDays(1).AddSeconds(-1);
 

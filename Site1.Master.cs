@@ -28,48 +28,69 @@ namespace WRS2big_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             // Connection to database
-            twoBigDB = new FireSharp.FirebaseClient(config);
+             twoBigDB = new FireSharp.FirebaseClient(config);
 
+                    string adminID = Session["idno"].ToString();
 
-            if (Session["idno"] == null)
-            {
-                // User not found
+                    FirebaseResponse response;
+                    response = twoBigDB.Get("ADMIN/" + adminID);
+                    AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
 
-                Response.Write("<script>alert ('Session expired. Please login again');window.location.href = '/LandingPage/Account.aspx';</script>");
-                //Response.Redirect("/LandingPage/Account.aspx");
-            }
-            else
-            {
-                string stationName = (string)Session["stationName"];
-                lblWRSname.Text = stationName;
+                    response = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation");
+                    RefillingStation station = response.ResultAs<RefillingStation>(); //Database result
 
-                string adminID = Session["idno"].ToString();
-                FirebaseResponse response;
-                response = twoBigDB.Get("ADMIN/" + adminID);
-                AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
+                    if (response == null)
+                    {
+                        Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+                    }
 
-                //TO REMOVE THE SIDE NAVBARS 
-                if (user.status == "pending")
-                {
-                    navigationBarMaster.Visible = false;
-                } 
-                if (user.subStatus == "notSubscribed")
-                {
-                    navigationBarMaster.Visible = false;
-                }
+                    lblWRSname.Text = station.stationName;
+
+                    if (response != null)
+                    {
+
+                        string role =(string) Session["role"];
+
+                        
+                        //to check the role sa ni login
+                        if (role == "Admin")
+                        {
+                            lblWRSname.Text = station.stationName;
+
+                            //TO REMOVE THE SIDE NAVBARS 
+                            if (user.status == "pending")
+                            {
+                                navigationBarMaster.Visible = false;
+                            }
+                            if (user.subStatus == "notSubscribed")
+                            {
+                                navigationBarMaster.Visible = false;
+                            }
+                        }
+                        else if (role == "Cashier")
+                        {
+                           
+                            string cashierName = (string)Session["fullName"];
+
+                            if(cashierName != null)
+                            {
+                                lblWRSname.Text = "CASHIER:" + " " + cashierName;
+                            }
+                            else
+                            {
+                                lblWRSname.Text = "CASHIER:";
+                            }
+
+                            navigationBarMaster.Visible = true;
+                            navigationBarMaster.Visible = true;
+                        }
+
+                        
+                    }
                 
-            }
-
-           
-
-
 
             loadNotifications();
-            checkStationStatus();
-            //SubscriptionStatus();
-            //reminderNotification();
-
-         
+            checkStationStatus();         
         }
         private void checkStationStatus()
         {
@@ -323,7 +344,7 @@ namespace WRS2big_Web
             //NOTIFICATION FROM CUSTOMER TO ADMIN
             string adminID = (string)Session["idno"];
 
-            if (Session["idno"] == null)
+            if (Session["idno"] == null || adminID == null)
             {
                 Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
@@ -386,8 +407,6 @@ namespace WRS2big_Web
                 }
             }
         }
-
-
         //the notificationID is clicked
         protected void notifMsg_Click(object sender, EventArgs e)
         {
@@ -483,7 +502,7 @@ namespace WRS2big_Web
                     admin_ID = notif.admin_ID
                 };
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
-                Response.Write("<script>window.location.href = '/Admin/OnlineOrders.aspx'; </script>");
+                Response.Write("<script>window.location.href = '/Admin/WaterOrders.aspx'; </script>");
             }
             else if (title == "Subscription Success")
             {
@@ -669,37 +688,134 @@ namespace WRS2big_Web
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            string idno = (string)Session["idno"];
-            // Get the log ID from the session
-            int logsId = (int)Session["logsId"];
+            Random rnd = new Random();
+            string role = (string)Session["role"];
 
-            // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
-            UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-            //Get the current date and time
-            DateTime addedTime = DateTime.Now;
-
-            // Log user activity
-            var log = new UsersLogs
+            if (role == "Cashier")
             {
-                userIdnum = int.Parse(idno),
-                logsId = logsId,
-                userFullname = (string)Session["fullname"],
-                userActivity = "LOGGED OUT",
-                activityTime = addedTime
-            };
+                string currentID = (string)Session["cashierID"];
 
-            twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                //generate a random number for users logged
+                int idnum = rnd.Next(1, 10000);
+                // Get the current date and time
+                DateTime addedTime = DateTime.Now; ;
+
+
+                //Store the login information in the USERLOG table
+                var logoutLog = new UsersLogs
+                {
+                    userIdnum = int.Parse(currentID),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    userActivity = "LOGGED OUT",
+                    activityTime = addedTime,
+                    role = role
+                };
+
+                //Storing the  info
+                SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
+                Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+
+            }
+            else if (role == "Admin")
+            {
+                //generate a random number for users logged
+                int idnum = rnd.Next(1, 10000);
+                // Get the current date and time
+                DateTime addedTime = DateTime.Now; ;
+
+                string currentID = (string)Session["idno"];
+
+                //Store the login information in the USERLOG table
+                var logoutLog = new UsersLogs
+                {
+                    userIdnum = int.Parse(currentID),
+                    logsId = idnum,
+                    userFullname = (string)Session["fullname"],
+                    userActivity = "LOGGED OUT",
+                    activityTime = addedTime,
+                    role = role
+                };
+
+                //Storing the  info
+                SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
+                Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+            }
+            
 
 
             Session.Abandon();
             Session.RemoveAll();
             Session["idno"] = null;
             Session["password"] = null;
+            Session["cashierID"] = null;
             Session.Clear();
             Response.Redirect("/LandingPage/Account.aspx");
         }
 
+        protected void markAsRead_Click(object sender, EventArgs e)
+        {
+            // Retrieve the existing Notifications object from the database
+            FirebaseResponse notification = twoBigDB.Get("NOTIFICATION");
+            var data = notification.Body;
+
+            if (data != null)
+            {
+                Dictionary<string, Model.Notification> allNotifications = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(data);
+
+                if (allNotifications != null)
+                {
+                    //List for unread notifications
+                    List<Model.Notification> unreadNotifications = new List<Model.Notification>();
+
+                    // Loop through all the notifications
+                    foreach (KeyValuePair<string, Model.Notification> entry in allNotifications)
+                    {
+                        // Check if the current notification has the receiver as "Super Admin"
+                        if (entry.Value.receiver == "Admin" && entry.Value.status == "unread")
+                        {
+                            unreadNotifications.Add(entry.Value);
+
+                        }
+                    }
+
+                    if (unreadNotifications.Count == 0)
+                    {
+
+                        Response.Write("<script>alert('No unread notifications'); </script>");
+                    }
+                    foreach (var unreads in unreadNotifications)
+                    {
+                        var updatedNotif = new Notification
+                        {
+                            notificationID = unreads.notificationID,
+                            notificationDate = unreads.notificationDate,
+                            receiver = unreads.receiver,
+                            sender = unreads.sender,
+                            title = unreads.title,
+                            orderID = unreads.orderID,
+                            cusId = unreads.cusId,
+                            driverId = unreads.driverId,
+                            //UPDATE THE STATUS FROM UNREAD TO READ
+                            status = "read",
+                            body = unreads.body,
+                            admin_ID = unreads.admin_ID
+                        };
+                        notification = twoBigDB.Update("NOTIFICATION/" + unreads.notificationID, updatedNotif);
+                    }
+
+
+                    //Redirect to the same page to reload it
+                    Response.Redirect(Request.RawUrl, false);
+                    Context.ApplicationInstance.CompleteRequest();
+
+
+                }
+            }
+            else
+            {
+                // noNotifications.Text = "No Notifications";
+            }
+        }
     }
 }
