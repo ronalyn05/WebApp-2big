@@ -84,7 +84,7 @@
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
                                                                                     <br /> <asp:Label runat="server" style="margin-left:10px" id="customersLabel">SUPER ADMIN LOGS</asp:Label>
-                                                                                    <asp:GridView runat="server" ID="superAdminLogs" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                    <asp:GridView runat="server" ID="superAdminLogs" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         
                                                                                         <Columns>
                                                                                             <asp:TemplateField>

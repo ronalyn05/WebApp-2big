@@ -110,82 +110,93 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> customerIDs = new List<int>();
-            var idno = (string)Session["SuperIDno"];
 
-            foreach (GridViewRow row in pendingGridView.Rows)
+            if (Session["SuperIDno"] != null)
             {
-                CheckBox chk = (CheckBox)row.FindControl("select");
-                if (chk != null && chk.Checked)
+                var idno = (string)Session["SuperIDno"];
+
+                foreach (GridViewRow row in pendingGridView.Rows)
                 {
-                    int customerID = int.Parse(row.Cells[1].Text);
-                    customerIDs.Add(customerID);
+                    CheckBox chk = (CheckBox)row.FindControl("select");
+                    if (chk != null && chk.Checked)
+                    {
+                        int customerID = int.Parse(row.Cells[1].Text);
+                        customerIDs.Add(customerID);
+                    }
                 }
-            }
 
-            if (customerIDs.Count == 0)
-            {
-                Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
-                return;
-            }
-
-            foreach (int customerID in customerIDs)
-            {
-                FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
-                Model.Customer customerDetails = response.ResultAs<Model.Customer>();
-
-
-                customerDetails.cus_status = "Approved";
-                customerDetails.firstName = customerDetails.firstName;
-                customerDetails.dateApproved = DateTime.Now;
-                response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
-
-                //SEND NOTIFICATION TO CUSTOMER 
-                Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Model.Notification
+                if (customerIDs.Count == 0)
                 {
-                    admin_ID = customerID,
-                    sender = "Super Admin",
-                    title = "Application Approved",
-                    receiver = "Customer",
-                    body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID,
-                    superAdmin_ID = int.Parse(idno),
+                    Response.Write("<script>alert ('Please select at least one customer to approve'); </script>");
+                    return;
+                }
 
-                };
-
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
-
-                //SAVE LOGS TO SUPER ADMIN
-                //Get the current date and time
-                DateTime logTime = DateTime.Now;
-
-                //generate a random number for users logged
-                //Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-                
-                string superName = (string)Session["superAdminName"];
-
-                //Store the login information in the USERLOG table
-                var data = new Model.superLogs
+                foreach (int customerID in customerIDs)
                 {
-                    logsId = idnum,
-                    superID = int.Parse(idno),
-                    superFullname = superName,
-                    superActivity = "APPROVED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
-                    activityTime = logTime
-                };
+                    FirebaseResponse response = twoBigDB.Get("CUSTOMER/" + customerID);
+                    Model.Customer customerDetails = response.ResultAs<Model.Customer>();
 
-                //Storing the  info
-                response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
-                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
-                Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+                    customerDetails.cus_status = "Approved";
+                    customerDetails.firstName = customerDetails.firstName;
+                    customerDetails.dateApproved = DateTime.Now;
+                    response = twoBigDB.Update("CUSTOMER/" + customerID, customerDetails);
+
+                    //SEND NOTIFICATION TO CUSTOMER 
+                    Random rnd = new Random();
+                    int ID = rnd.Next(1, 20000);
+                    var Notification = new Model.Notification
+                    {
+                        admin_ID = customerID,
+                        sender = "Super Admin",
+                        title = "Application Approved",
+                        receiver = "Customer",
+                        body = "Your application is now approved! You can now order from your favorite Refilling Stations!",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID,
+                        superAdmin_ID = int.Parse(idno),
+
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+                    //SAVE LOGS TO SUPER ADMIN
+                    //Get the current date and time
+                    DateTime logTime = DateTime.Now;
+
+                    //generate a random number for users logged
+                    //Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    if (Session["superAdminName"] != null)
+                    {
+                        string superName = (string)Session["superAdminName"];
+
+                        //Store the login information in the USERLOG table
+                        var data = new Model.superLogs
+                        {
+                            logsId = idnum,
+                            superID = int.Parse(idno),
+                            superFullname = superName,
+                            superActivity = "APPROVED CUSTOMER:" + " " + customerDetails.firstName + " " + customerDetails.lastName,
+                            activityTime = logTime
+                        };
+
+                        //Storing the  info
+                        response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                        Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                        Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageCustomers.aspx'; </script>");
+                    }
+                    
+                }
+
             }
+            
+            
         }
         protected void selectAll_CheckedChanged(object sender, EventArgs e)
         {

@@ -30,171 +30,220 @@ namespace WRS2big_Web
             // Connection to database
              twoBigDB = new FireSharp.FirebaseClient(config);
 
-                    string adminID = Session["idno"].ToString();
+            if (Session["idno"] != null)
+            {
+                string adminID = Session["idno"].ToString();
 
-                    FirebaseResponse response;
-                    response = twoBigDB.Get("ADMIN/" + adminID);
-                    AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
+                FirebaseResponse response;
+                response = twoBigDB.Get("ADMIN/" + adminID);
+                AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
 
-                    response = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation");
-                    RefillingStation station = response.ResultAs<RefillingStation>(); //Database result
+                response = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation");
+                RefillingStation station = response.ResultAs<RefillingStation>(); //Database result
 
-                    if (response == null)
+                if (response == null)
+                {
+                    Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+                }
+
+                lblWRSname.Text = station.stationName;
+
+                if (response != null)
+                {
+
+                    string role = (string)Session["role"];
+
+
+                    //to check the role sa ni login
+                    if (role == "Admin")
                     {
-                        Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
-                    }
+                        lblWRSname.Text = station.stationName;
 
-                    lblWRSname.Text = station.stationName;
-
-                    if (response != null)
-                    {
-
-                        string role =(string) Session["role"];
-
-                        
-                        //to check the role sa ni login
-                        if (role == "Admin")
+                        //TO REMOVE THE SIDE NAVBARS 
+                        if (user.status == "pending")
                         {
-                            lblWRSname.Text = station.stationName;
-
-                            //TO REMOVE THE SIDE NAVBARS 
-                            if (user.status == "pending")
-                            {
-                                navigationBarMaster.Visible = false;
-                            }
-                            if (user.subStatus == "notSubscribed")
-                            {
-                                navigationBarMaster.Visible = false;
-                            }
+                            navigationBarMaster.Visible = false;
                         }
-                        else if (role == "Cashier")
+                        if (user.subStatus == "notSubscribed")
                         {
-                           
-                            string cashierName = (string)Session["fullName"];
+                            navigationBarMaster.Visible = false;
+                        }
+                    }
+                    else if (role == "Cashier")
+                    {
 
-                            if(cashierName != null)
-                            {
-                                lblWRSname.Text = "CASHIER:" + " " + cashierName;
-                            }
-                            else
-                            {
-                                lblWRSname.Text = "CASHIER:";
-                            }
+                        string cashierName = (string)Session["fullName"];
 
-                            navigationBarMaster.Visible = true;
-                            navigationBarMaster.Visible = true;
+                        if (cashierName != null)
+                        {
+                            lblWRSname.Text = "CASHIER:" + " " + cashierName;
+                        }
+                        else
+                        {
+                            lblWRSname.Text = "CASHIER:";
                         }
 
-                        
+                        navigationBarMaster.Visible = true;
+                        navigationBarMaster.Visible = true;
                     }
-                
-
-            loadNotifications();
-            checkStationStatus();         
-        }
-        private void checkStationStatus()
-        {
-            var adminID = Session["idno"].ToString();
-
-            //TO GET THE REFILLING STATION DETAILS
-            FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
-            Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
-
-            //string name = refillStation.stationName;
-            string days = refillStation.businessDaysFrom;
-
-            //to check if naka add na ug station details
-            if (days != null)
-            {
 
 
-                DateTime timeNow = DateTime.Now;
-                DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
-                DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
-                //string businessClose = refillStation.businessDaysTo;
-                ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
-                //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
-
-                // Check if the current day is within the business days
-                DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
-                DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
-                DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
-
-                //convert into INT
-                int currentDay = (int)currentDayOfWeek;
-                int businessDayStart = (int)businessDayFrom;
-                int businessDayEnd = (int)businessDayTo;
-
-                bool isBusinessDay = false;
-                // check if the businessDayFrom is less than or equal to businessDayTo
-                if (businessDayStart <= businessDayEnd)
-                {
-                    //check if the current day is within the range using the >= and <= operators.
-                    isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
-                }
-                else
-                {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
-                    isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
                 }
 
-
-
-                //DEBUG STATEMENTS
-                Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
-                Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
-                Debug.WriteLine($"businessDayTo: {businessDayTo}");
-                Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
-
-                //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
-                string status = "CLOSE";
-                //lblstatus.Text = status;
-                if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
-                {
-                    status = "OPEN";
-                }
-               // lblstatus.Text = status;
-
-                var statusUpdate = new Dictionary<string, object>
-                {
-                  { "status", status }
-                };  
-
-                FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
-            }
-        }
-
-        private void SubscriptionStatus()
-        {
-            string adminID = Session["idno"].ToString();
-
-            if (adminID == null && Session["idno"] == null)
-            {
-                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
             else
             {
-               
+
+                Response.Write("<script>alert ('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+            }
+
+
+            loadNotifications(); //load the notifications
+            checkStationStatus(); //Update the status of the station : Open/Close
+            checkOrderLimit(); //check if the admin has reached the order limit 
+        }
+        private void checkOrderLimit()
+        {
+            if (Session["idno"] != null)
+            {
+                var adminID = Session["idno"].ToString();
+
+                //TO GET THE REFILLING STATION DETAILS
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPackage/");
+                Model.Subscribed_Package package = response.ResultAs<Model.Subscribed_Package>();
+
+                if (package.orderLimit != 0)
+                {
+                    int orderLimit = package.orderLimit;
+
+                    //CLIENT WALKIN ORDERS
+                    response = twoBigDB.Get("WALKINORDERS");
+                    var data = response.Body;
+                    Dictionary<string, Model.WalkInOrders> walkinOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.WalkInOrders>>(data);
+
+                    //CLIENT ONLINE ORDERS
+                    response = twoBigDB.Get("ORDERS");
+                    var orders = response.Body;
+                    Dictionary<string, Model.Order> onlineOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.Order>>(orders);
+
+
+                    // Create a list to store all the Walkin orders
+                    List<Model.WalkInOrders> clientWalkins = new List<Model.WalkInOrders>();
+
+                    // Create a list to store all the online orders
+                    List<Model.Order> clientOnline = new List<Model.Order>();
+
+
+                }
+            }
+
+        }
+        private void checkStationStatus()
+        {
+            if (Session["idno"] != null)
+            {
+                var adminID = Session["idno"].ToString();
+
+                //TO GET THE REFILLING STATION DETAILS
+                FirebaseResponse stationDetails = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
+                Model.RefillingStation refillStation = stationDetails.ResultAs<Model.RefillingStation>();
+
+                //string name = refillStation.stationName;
+                string days = refillStation.businessDaysFrom;
+
+                //to check if naka add na ug station details
+                if (days != null)
+                {
+
+
+                    DateTime timeNow = DateTime.Now;
+                    DateTime operatingHrsFrom = DateTime.Parse(refillStation.operatingHrsFrom);
+                    DateTime operatingHrsTo = DateTime.Parse(refillStation.operatingHrsTo);
+                    //string businessClose = refillStation.businessDaysTo;
+                    ////method to convert the businessDaysTo from DB value to a DayOfWeek enum value
+                    //DayOfWeek storeClose = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), businessClose);
+
+                    // Check if the current day is within the business days
+                    DayOfWeek currentDayOfWeek = DateTime.Today.DayOfWeek;
+                    DayOfWeek businessDayFrom = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysFrom);
+                    DayOfWeek businessDayTo = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), refillStation.businessDaysTo);
+
+                    //convert into INT
+                    int currentDay = (int)currentDayOfWeek;
+                    int businessDayStart = (int)businessDayFrom;
+                    int businessDayEnd = (int)businessDayTo;
+
+                    bool isBusinessDay = false;
+                    // check if the businessDayFrom is less than or equal to businessDayTo
+                    if (businessDayStart <= businessDayEnd)
+                    {
+                        //check if the current day is within the range using the >= and <= operators.
+                        isBusinessDay = (currentDay >= businessDayStart && currentDay <= businessDayEnd);
+                    }
+                    else
+                    {//check if the current day is greater than or equal to businessDayFrom OR less than or equal to businessDayTo to determine if it is within the range.
+                        isBusinessDay = (currentDay >= businessDayStart || currentDay <= businessDayEnd);
+                    }
+
+
+
+                    //DEBUG STATEMENTS
+                    Debug.WriteLine($"currentDayOfWeek: {currentDayOfWeek}");
+                    Debug.WriteLine($"businessDayFrom: {businessDayFrom}");
+                    Debug.WriteLine($"businessDayTo: {businessDayTo}");
+                    Debug.WriteLine($"isBusinessDay: {isBusinessDay}");
+
+                    //TO CHECK IF THE CURRENT TIME IS WITHIN THE OPERATING HOURS SET BY THE ADMIN
+                    string status = "CLOSE";
+                    //lblstatus.Text = status;
+                    if (isBusinessDay && timeNow >= operatingHrsFrom && timeNow <= operatingHrsTo)
+                    {
+                        status = "OPEN";
+                    }
+                    // lblstatus.Text = status;
+
+                    var statusUpdate = new Dictionary<string, object>
+                {
+                  { "status", status }
+                };
+
+                    FirebaseResponse response = twoBigDB.Update("ADMIN/" + adminID + "/RefillingStation/", statusUpdate);
+                }
+            }
+            else
+            {
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
+            }
+
+        }
+
+        private void SubscriptionStatus() //to send the notification depending on the subscription status
+        {
+            if (Session["idno"] != null)
+            {
+                string adminID = Session["idno"].ToString();
+
                 FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
                 Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
 
                 if (expiration != null)
                 {
 
-                        //UPDATE THE SUBSTATUS OF SUBSCRIBED_PACKAGE FROM ACTIVE TO EXPIRED
-                       adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
-                        Model.Subscribed_Package subStatus = adminDet.ResultAs<Model.Subscribed_Package>();
-                        
-                        if (subStatus != null)
-                        {
+                    //UPDATE THE SUBSTATUS OF SUBSCRIBED_PACKAGE FROM ACTIVE TO EXPIRED
+                    adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                    Model.Subscribed_Package subStatus = adminDet.ResultAs<Model.Subscribed_Package>();
+
+                    if (subStatus != null)
+                    {
                         DateTime currentDate = DateTime.Now.Date;
                         DateTime reminderNotif = expiration.expiration.AddDays(-2); //2 days before the expiration
                         DateTime expirationDate = expiration.expiration; //actual expiration date on database
                         DateTime finalExpiration = expiration.expiration.AddDays(2); //final expiration !
 
-                            Debug.WriteLine($"NOW: {currentDate}");
-                            Debug.WriteLine($"REMINDER: {reminderNotif}");
-                            Debug.WriteLine($"EXPIRATION: {expirationDate}");
-                            Debug.WriteLine($"final EXPIRATION: {finalExpiration}");
+                        Debug.WriteLine($"NOW: {currentDate}");
+                        Debug.WriteLine($"REMINDER: {reminderNotif}");
+                        Debug.WriteLine($"EXPIRATION: {expirationDate}");
+                        Debug.WriteLine($"final EXPIRATION: {finalExpiration}");
 
                         if (currentDate.Date == reminderNotif.Date)
                         {
@@ -233,7 +282,7 @@ namespace WRS2big_Web
                             }
                         }
                         else if (currentDate.Date == expirationDate.Date)
-                            {
+                        {
                             int admin = int.Parse(adminID);
 
                             FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
@@ -242,7 +291,7 @@ namespace WRS2big_Web
 
                             // Check if there is already a Subscription Reminder notification for this admin_ID
                             bool hasSubscriptionReminder = adminAllNotifs.Values.Any(n => n.admin_ID == admin && n.title == "Subscription Extended");
-                            
+
                             if (!hasSubscriptionReminder)
                             {
                                 //SEND SECOND NOTIFICATION TO ADMIN FOR SUBSCRIPTION REMINDER
@@ -320,96 +369,95 @@ namespace WRS2big_Web
                                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification); //Storing data to the database
                                 Notification notif = notifResponse.ResultAs<Notification>(); //Database Result
                             }
-
-
-
                         }
-
-
-
                     }
-
-                    
                     Debug.WriteLine($"NOW: {DateTime.Now}");
                     Debug.WriteLine($"DATE: {expiration.expiration}");
                 }
             }
-
-
+            else
+            {
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
+            }
         }
         private void loadNotifications()
         {
-            SubscriptionStatus();
+            SubscriptionStatus(); //to send the notification depending on the subscription status
 
-            //NOTIFICATION FROM CUSTOMER TO ADMIN
-            string adminID = (string)Session["idno"];
-
-            if (Session["idno"] == null || adminID == null)
+            if (Session["idno"] != null)
             {
-                Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
-            }
+                //NOTIFICATION FROM CUSTOMER TO ADMIN
+                string adminID = (string)Session["idno"];
 
-            if (adminID != null)
-            {
-                int admin = int.Parse(adminID);
-
-                FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
-                var adminBody = adminNotif.Body;
-                Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
-
-                //int unreadCount = 0;
-
-                if (adminAllNotifs != null)
+                if (Session["idno"] == null || adminID == null)
                 {
-                    // Create a list to store all the notifications with the receiver as "Admin"
-                    List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+                    Response.Write("<script>alert('Session Expired. Please login again'); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                }
 
-                    //List for unread notifications
-                    List<Model.Notification> unreadNotifications = new List<Model.Notification>();
+                if (adminID != null)
+                {
+                    int admin = int.Parse(adminID);
 
-                    // Loop through all the notifications
-                    foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+                    FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                    var adminBody = adminNotif.Body;
+                    Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                    //int unreadCount = 0;
+
+                    if (adminAllNotifs != null)
                     {
-                        // Check if the current notification has the receiver as "Admin"
-                        if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
+                        // Create a list to store all the notifications with the receiver as "Admin"
+                        List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+
+                        //List for unread notifications
+                        List<Model.Notification> unreadNotifications = new List<Model.Notification>();
+
+                        // Loop through all the notifications
+                        foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
                         {
-                            // Add the current notification to the list of admin notifications
-                            AdminNotifications.Add(entry.Value);
-
-                            if (entry.Value.status == "unread")
+                            // Check if the current notification has the receiver as "Admin"
+                            if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin)
                             {
-                               
-                                unreadNotifications.Add(entry.Value);
+                                // Add the current notification to the list of admin notifications
+                                AdminNotifications.Add(entry.Value);
 
+                                if (entry.Value.status == "unread")
+                                {
+
+                                    unreadNotifications.Add(entry.Value);
+
+                                }
                             }
                         }
-                    }
 
-                    // Sort the super admin notifications based on dateAdded property in descending order
-                    AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
+                        // Sort the super admin notifications based on dateAdded property in descending order
+                        AdminNotifications = AdminNotifications.OrderByDescending(n => n.notificationDate).ToList();
 
-                    // Bind the list of super admin notifications to the repeater control
-                    rptNotifications.DataSource = AdminNotifications;
-                    rptNotifications.DataBind();
+                        // Bind the list of super admin notifications to the repeater control
+                        rptNotifications.DataSource = AdminNotifications;
+                        rptNotifications.DataBind();
 
-                    int unreadCount = unreadNotifications.Count;
-                    // return unreadCount;
-                    unread.Text = unreadNotifications.Count.ToString();
+                        int unreadCount = unreadNotifications.Count;
+                        // return unreadCount;
+                        unread.Text = unreadNotifications.Count.ToString();
 
-                    if (unreadCount > 0)
-                    {
-                        unread.Visible = true;
-                    }
-                    else
-                    {
-                        unread.Visible = false;
+                        if (unreadCount > 0)
+                        {
+                            unread.Visible = true;
+                        }
+                        else
+                        {
+                            unread.Visible = false;
+                        }
                     }
                 }
             }
+
         }
         //the notificationID is clicked
         protected void notifMsg_Click(object sender, EventArgs e)
         {
+
             LinkButton clickedButton = (LinkButton)sender;
             string notificationID = (sender as LinkButton).CommandArgument;
 
@@ -688,69 +736,73 @@ namespace WRS2big_Web
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            Random rnd = new Random();
-            string role = (string)Session["role"];
-
-            if (role == "Cashier")
+            if (Session["role"] != null)
             {
-                string currentID = (string)Session["cashierID"];
+                Random rnd = new Random();
+                string role = (string)Session["role"];
 
-                //generate a random number for users logged
-                int idnum = rnd.Next(1, 10000);
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now; ;
-
-
-                //Store the login information in the USERLOG table
-                var logoutLog = new UsersLogs
+                if (role == "Cashier")
                 {
-                    userIdnum = int.Parse(currentID),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "LOGGED OUT",
-                    activityTime = addedTime,
-                    role = role
-                };
+                    string currentID = (string)Session["cashierID"];
 
-                //Storing the  info
-                SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
-                Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+                    //generate a random number for users logged
+                    int idnum = rnd.Next(1, 10000);
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
 
-            }
-            else if (role == "Admin")
-            {
-                //generate a random number for users logged
-                int idnum = rnd.Next(1, 10000);
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now; ;
 
-                string currentID = (string)Session["idno"];
+                    //Store the login information in the USERLOG table
+                    var logoutLog = new UsersLogs
+                    {
+                        userIdnum = int.Parse(currentID),
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "LOGGED OUT",
+                        activityTime = addedTime,
+                        role = role
+                    };
 
-                //Store the login information in the USERLOG table
-                var logoutLog = new UsersLogs
+                    //Storing the  info
+                    SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
+                    Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+
+                }
+                else if (role == "Admin")
                 {
-                    userIdnum = int.Parse(currentID),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "LOGGED OUT",
-                    activityTime = addedTime,
-                    role = role
-                };
+                    //generate a random number for users logged
+                    int idnum = rnd.Next(1, 10000);
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
 
-                //Storing the  info
-                SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
-                Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+                    string currentID = (string)Session["idno"];
+
+                    //Store the login information in the USERLOG table
+                    var logoutLog = new UsersLogs
+                    {
+                        userIdnum = int.Parse(currentID),
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "LOGGED OUT",
+                        activityTime = addedTime,
+                        role = role
+                    };
+
+                    //Storing the  info
+                    SetResponse logresponse = twoBigDB.Set("ADMINLOGS/" + logoutLog.logsId, logoutLog);//Storing data to the database
+                    Model.UsersLogs res = logresponse.ResultAs<Model.UsersLogs>();//Database Result
+                }
+
+
+
+                Session.Abandon();
+                Session.RemoveAll();
+                Session["idno"] = null;
+                Session["password"] = null;
+                Session["cashierID"] = null;
+                Session.Clear();
+                Response.Redirect("/LandingPage/Account.aspx");
             }
-            
 
-
-            Session.Abandon();
-            Session.RemoveAll();
-            Session["idno"] = null;
-            Session["password"] = null;
-            Session["cashierID"] = null;
-            Session.Clear();
-            Response.Redirect("/LandingPage/Account.aspx");
         }
 
         protected void markAsRead_Click(object sender, EventArgs e)
