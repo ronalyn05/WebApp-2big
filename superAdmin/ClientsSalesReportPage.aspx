@@ -123,7 +123,7 @@
                                                                     <h4 style="color: black; font-family: Bahnschrift; margin-left: 150px" id="walkinOrdersRev" runat="server"></h4>
                                                                 </div>
                                                                 <div>
-                                                                    <h4 style="color: dodgerblue; font-family: Bahnschrift; margin-left: 30px" id="H1" runat="server">TOTAL ORDERS RECEIVED:</h4>
+                                                                    <h4 style="color: dodgerblue; font-family: Bahnschrift; margin-left: 30px" id="H1" runat="server">COMPLETED ORDERS:</h4>
                                                                     <h4 style="color: black; font-family: Bahnschrift; margin-left: 150px" id="currentTotalOrders" runat="server"></h4>
                                                                 </div>
                                                             </div>

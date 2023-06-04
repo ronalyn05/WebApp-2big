@@ -223,7 +223,7 @@
                                                 <div class="">
                                                      
                                                      <label>Plese choose your Role:</label><br />
-                                                    <asp:DropDownList runat="server" ID="roleType" style="font-size:18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged">
+                                                    <asp:DropDownList runat="server" ID="roleType" style="font-size:18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged" AutoPostBack="true">
                                                         <asp:ListItem Enabled="false"></asp:ListItem>
                                                         <asp:ListItem Value="Admin"> Admin</asp:ListItem>
                                                         <asp:ListItem Value="Cashier">Cashier</asp:ListItem>
