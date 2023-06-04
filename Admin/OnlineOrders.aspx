@@ -87,6 +87,10 @@
                                                         </asp:DropDownList>
                                                         <asp:Button ID="btnViewOrders" runat="server" Text="View" OnClick="btnViewOrders_Click" CssClass="btn-primary" Height="40px" />
                                                     </div>
+                                                     <div style="float: right;">
+                                                                                         <h6>Note:  (decline order if unforeseen emergency arises) 
+                                                                                    </h6>
+                                                                                    </div>
                                                 </div>
 
                                                 <%--                                                <br />
