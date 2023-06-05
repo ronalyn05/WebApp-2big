@@ -169,6 +169,67 @@
                                                                                 <asp:HiddenField runat="server" ID="hfDeclinePointsOrderID" />
                                                                             </div>
                                                                             <%-- end for modal DECLINING ORDER--%>
+                                                                             <!-- MODAL FOR PRINTING ORDER RECEIPTS-->
+                                                                            <div class="modal fade" id="printReceipts" tabindex="-1" role="dialog" aria-hidden="true">
+                                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title"> 
+                                    <img src="/images/FinalLogo.png" style="width: 100px;" alt="logo.png">
+                               </h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                <span aria-hidden="true">X</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <div class="form-group  text-center">
+                                                                                                <asp:Label ID="lblStationName" runat="server" Font-Size="16"></asp:Label>
+                                                                                                <br />
+                                                                                                 <asp:Label ID="lblStationAddress" runat="server" Font-Size="16"></asp:Label>
+                                                                                                 <br />
+                                                                                              <h5>SALES INVOICE</h5>
+                                                                                                <br />
+                                                                                            </div>
+                                                                                             <strong class="text-left">Owner / Cashier Name:</strong>
+                                                                                                 <asp:Label Style="text-align: left;" ID="lblownerName" runat="server" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                                                                 <br />
+                                                                                                <strong class="text-left">Customer Name:</strong>
+                                                                                                 <asp:Label Style="text-align: left;" ID="lblCustomerName" runat="server" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                                                                 <br />
+                                                                                                <strong class="text-left">Date:</strong>
+                                                                                                 <asp:Label Style="text-align: left;" ID="lblDate" runat="server" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                                                                 <br />
+                                                                                                <strong class="text-left">Transaction No. :</strong>
+                                                                                                 <asp:Label Style="text-align: left;" ID="lblTransNo" runat="server" ForeColor="Black" Font-Size="12"></asp:Label>
+                                                                                             <br />
+                                                                                             <asp:Label Style="text-align: left;" ID="lblError" runat="server" ForeColor="Red" Font-Size="14"></asp:Label>
+                                                                                             <br />
+                                                                                              <asp:GridView runat="server" ID="gridSalesInvoice" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
+                                                                                                        BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
+                                                                                                        ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                                        
+                                                                                                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                                        <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                                        <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                                    </asp:GridView>
+                                                                                            <br />
+                                                                                              <strong>Thank you for purchasing! Drink well and order again!</strong>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <%--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>--%>
+                                                                                            <asp:Button ID="btnPrintReceipts" runat="server" CssClass="btn btn-primary" Text="Print" OnClick="btnPrintingReceipts_Click" />
+                                                                                            <%-- <button type="button" class="btn btn-primary" runat="server" id="btnSubmitDecline" OnClick="btnSubmitDecline_Click">Submit</button>--%>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <asp:HiddenField runat="server" ID="hfPrintReceipts" />
+                                                                            </div>
+                                                                            <%-- end for modal PRINTING RECEIPTS--%>
                                                                             <%-- MODAL TO VIEW CERTAIN RECORDS --%>
                                                                             <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
                                                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -586,7 +647,14 @@
                                                                                                     <asp:GridView runat="server" ID="gridWalkIn" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                                         BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal"
                                                                                                         ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                                         <Columns>
+                                                                                                        <asp:TemplateField HeaderText="ACTION">
+                                                                                                            <ItemTemplate>
+                                                                                                                <asp:Button ID="btnPrint" runat="server" Text="Print Receipts" OnClick="btnPrintReceipts_Click" CssClass="btn btn-primary"  Style="background-color: paleturquoise; border-color: paleturquoise; font-size: 18px; border-style: solid" />
 
+                                                                                                            </ItemTemplate>
+                                                                                                        </asp:TemplateField>
+                                                                                                    </Columns>
                                                                                                         <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                                         <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                                         <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />

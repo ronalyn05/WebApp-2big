@@ -54,7 +54,7 @@ namespace WRS2big_Web.Admin
             walkInordersTable.Columns.Add("ORDER ID");
             walkInordersTable.Columns.Add("ORDER TYPE");
             walkInordersTable.Columns.Add("PRODUCT NAME");
-            walkInordersTable.Columns.Add("PRODUCT UNIT & SIZE");
+            walkInordersTable.Columns.Add("PRODUCT UNIT");
             walkInordersTable.Columns.Add("PRICE");
             walkInordersTable.Columns.Add("QUANTITY");
             walkInordersTable.Columns.Add("DISCOUNT");
@@ -112,6 +112,135 @@ namespace WRS2big_Web.Admin
                 // Handle null response or invalid selected value
                 lblWalkinError.Text = "No record found";
             }
+        }
+        //Print receipts
+        protected void btnPrintReceipts_Click(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnPrint = (Button)sender;
+
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnPrint.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 1; //  the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Store the order ID in a hidden field for later use
+            hfPrintReceipts.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "printReceipts", "$('#printReceipts').modal('show');", true);
+        }
+        //PRINTING ORDER RECEIPTS
+        protected void btnPrintingReceipts_Click(object sender, EventArgs e)
+        {
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfPrintReceipts.Value);
+
+            string idno = (string)Session["idno"];
+            decimal discount;
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
+            Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
+
+            //// Retrieve all customers from the CUSTOMER table and compare the current customer name
+            //FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+            //Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>(); 
+
+            // Create the DataTable to hold the orders
+            DataTable walkInordersTable = new DataTable();
+            //walkInordersTable.Columns.Add("ORDER ID");
+            //walkInordersTable.Columns.Add("ORDER TYPE");
+            walkInordersTable.Columns.Add("PRODUCT NAME");
+            walkInordersTable.Columns.Add("PRODUCT UNIT");
+            walkInordersTable.Columns.Add("PRICE");
+            walkInordersTable.Columns.Add("QUANTITY");
+            walkInordersTable.Columns.Add("DISCOUNT");
+            walkInordersTable.Columns.Add("TOTAL AMOUNT");
+            //walkInordersTable.Columns.Add("DATE");
+            //walkInordersTable.Columns.Add("ADDED BY");
+
+            // Get the selected date range from the dropdown list
+            //string dateRange = ddlDateRange.SelectedValue;
+
+            if (response != null && response.ResultAs<WalkInOrders>() != null)
+            {
+                var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+
+                // Loop through the filtered orders and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                    if (!decimal.TryParse(entry.productDiscount.ToString(), out discount))
+                    {
+                        // If the discount value is not a valid decimal, assume it is zero
+                        discount = 0;
+                    }
+                    else
+                    {
+                        // Convert discount from percentage to decimal
+                        discount /= 100;
+                    }
+
+
+                    // Retrieve the customer details based on the customer ID from the order
+                    //if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                    //{
+                    //    string customerName = customer.firstName + " " + customer.lastName;
+
+                    //    // Add the order details to the DataTable with the customer name
+                    //    string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    //    salesordersTable.Rows.Add(order.orderID, customerName, order.order_OrderStatus, order.orderPaymentMethod, order.order_DeliveryTypeValue,
+                    //        order.order_OrderTypeValue, order.order_TotalAmount, dateOrdered);
+
+                    //    totalOrderAmount += order.order_TotalAmount;
+                    //}
+                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
+                    //    entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
+                    //  lblCustomerName.Text = entry.addedBy;
+
+                    // Retrieve all RefillingStation objects for the current admin
+                    var empResponse = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+                    RefillingStation stations = empResponse.ResultAs<RefillingStation>();
+                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+                    Session["stationName"] = stations.stationName;
+                    Session["address"] = stations.stationAddress;
+
+                    lblownerName.Text = entry.addedBy;
+                    lblStationAddress.Text = entry.addedBy;
+                    lblownerName.Text = entry.addedBy;
+                    lblTransNo.Text = entry.orderNo.ToString();
+                    lblDate.Text = dateAdded;
+
+
+                    walkInordersTable.Rows.Add(entry.productName, entry.productUnitSize,
+                                         entry.productPrice, entry.productQty, discount,
+                                         entry.totalAmount);
+                }
+
+                if (walkInordersTable.Rows.Count == 0)
+                {
+                    lblError.Text = "No record found";
+                    lblError.Visible = true;
+                }
+                else
+                {
+                    // Bind the DataTable to the GridView
+                    gridSalesInvoice.DataSource = walkInordersTable;
+                    gridSalesInvoice.DataBind();
+                }
+
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblWalkinError.Text = "No record found";
+            }
+
         }
         //SEARCH REPORTS
         protected void btnSearchOrder_Click(object sender, EventArgs e)
