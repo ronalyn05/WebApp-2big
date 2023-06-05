@@ -46,22 +46,26 @@ namespace WRS2big_Web.superAdmin
 
             if (data != null)
             {
-                //creating the columns of the gridview
+                // Creating the columns of the GridView
                 DataTable clientsTable = new DataTable();
                 clientsTable.Columns.Add("LOG ID");
                 clientsTable.Columns.Add("NAME");
                 clientsTable.Columns.Add("ACTIVITY");
                 clientsTable.Columns.Add("TIME");
-                    
-                foreach (KeyValuePair<string, Model.superLogs> entry in subscribed)
+
+                // Create a list to store the sorted entries
+                List<KeyValuePair<string, Model.superLogs>> sortedEntries = subscribed.OrderByDescending(entry => entry.Value.activityTime).ToList();
+
+                foreach (KeyValuePair<string, Model.superLogs> entry in sortedEntries)
                 {
                     clientsTable.Rows.Add(entry.Value.logsId, entry.Value.superFullname, entry.Value.superActivity, entry.Value.activityTime);
-
                 }
+
                 // Bind DataTable to GridView control
                 superAdminLogs.DataSource = clientsTable;
                 superAdminLogs.DataBind();
             }
+
         }
     }
 }

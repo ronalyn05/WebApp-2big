@@ -54,16 +54,13 @@ namespace WRS2big_Web.LandingPage
                         Session["currentAdmin"] = entry.Value.idno;
                         Response.Write("<script>alert ('We found your account! Change your password now!');window.location.href = '/LandingPage/ConfirmResetPass.aspx'; </script>");
                     }
-                    else
-                    {
-                        Response.Write("<script>alert ('Account not found! Please input the correct credentials according to what you have used in your account registration');window.location.href = '/LandingPage/ResetPassword.aspx'; </script>");
-                    }
+                }
+
+                if (Session["currentAdmin"] == null)
+                {
+                    Response.Write("<script>alert ('Account not found! Please input the correct credentials according to what you have used in your account registration');window.location.href = '/LandingPage/ResetPassword.aspx'; </script>");
                 }
             }
-
-
-
-
-            }
+        }
     }
 }

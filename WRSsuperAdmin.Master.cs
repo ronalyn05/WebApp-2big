@@ -26,14 +26,13 @@ namespace WRS2big_Web
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            string name = (string)Session["superAdminName"];
-            if (name == null)
+            if (Session["fname"] != null)
             {
-                Response.Write("<script>alert('Please Login your account first'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+                superLbl.Text = "SUPER ADMIN:" + " " + Session["fname"].ToString();
             }
             else
             {
-                superLbl.Text = "SUPER ADMIN:" + " " +Session["fname"].ToString();
+                Response.Write("<script>alert('Please Login your account first'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
             }
 
             if (!IsPostBack)
@@ -191,30 +190,34 @@ namespace WRS2big_Web
             Random rnd = new Random();
             int logID = rnd.Next(1, 10000);
 
-            var idno = (string)Session["SuperIDno"];
-            string superName = (string)Session["superAdminName"];
-
-            //Store the login information in the USERLOG table
-            var log = new Model.superLogs
+            if (Session["SuperIDno"] != null || Session["superAdminName"] != null)
             {
-                logsId = logID,
-                superID = int.Parse(idno),
-                superFullname = superName,
-                superActivity = "LOGGED OUT",
-                activityTime = logTime
-            };
+                var idno = (string)Session["SuperIDno"];
+                string superName = (string)Session["superAdminName"];
 
-            //Storing the  info
-            FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
-            Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+                //Store the login information in the USERLOG table
+                var log = new Model.superLogs
+                {
+                    logsId = logID,
+                    superID = int.Parse(idno),
+                    superFullname = superName,
+                    superActivity = "LOGGED OUT",
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
 
 
-            Session.Abandon();
-            Session.RemoveAll();
-            Session["SuperIDno"] = null;
-            Session["password"] = null;
-            Session.Clear();
-            Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
+                Session.Abandon();
+                Session.RemoveAll();
+                Session["SuperIDno"] = null;
+                Session["password"] = null;
+                Session.Clear();
+                Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
+            }
+           
         }
 
         protected void markAsRead_Click(object sender, EventArgs e)

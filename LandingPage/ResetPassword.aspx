@@ -122,10 +122,10 @@
                                     <br />
                                     <div class="px-1 pt-1 pb-3">
 
-                                        <asp:Label class="mb-2 h5-mktg" ID="packageName" runat="server"> To reset your password, please enter your registered Email and Birthdate: </asp:Label>
+                                        <asp:Label class="mb-2 h5-mktg" ID="packageName" runat="server"> To reset your password, please enter your registered Email and Phone number: </asp:Label>
                                         <br />
                                         <br />
-                                        <asp:Label runat="server" style="font-size:16px"> Note: The email and birthdate that you will enter should be the one you used when you created your account</asp:Label> <br /> <br />
+                                        <asp:Label runat="server" style="font-size:16px"> Note: The email and phone number that you will enter should be the one you used when you created your account</asp:Label> <br /> <br />
                                         <br />
                                         <center>
                                          <div class="input-group-sm">

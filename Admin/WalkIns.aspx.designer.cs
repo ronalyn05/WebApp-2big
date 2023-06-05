@@ -15,6 +15,15 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
+        /// warning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label warning;
+
+        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>

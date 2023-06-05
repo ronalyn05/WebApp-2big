@@ -260,84 +260,92 @@ namespace WRS2big_Web.superAdmin
         protected void approveButton_Click(object sender, EventArgs e)
         {
             List<int> clientIDs = new List<int>();
-            var idno = (string)Session["SuperIDno"];
 
-            foreach (GridViewRow row in pendingGridView.Rows)
+            if (Session["SuperIDno"] != null)
             {
-                CheckBox chk = (CheckBox)row.FindControl("select");
-                if (chk != null && chk.Checked)
+                var idno = (string)Session["SuperIDno"];
+
+                foreach (GridViewRow row in pendingGridView.Rows)
                 {
-                    int clientID = int.Parse(row.Cells[1].Text);
-                    clientIDs.Add(clientID);
+                    CheckBox chk = (CheckBox)row.FindControl("select");
+                    if (chk != null && chk.Checked)
+                    {
+                        int clientID = int.Parse(row.Cells[1].Text);
+                        clientIDs.Add(clientID);
+                    }
+                }
+
+                if (clientIDs.Count == 0)
+                {
+                    Response.Write("<script>alert ('Please select at least one client to approve'); </script>");
+                    return;
+                }
+
+                foreach (int clientID in clientIDs)
+                {
+                    FirebaseResponse response = twoBigDB.Get("ADMIN/" + clientID);
+                    Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
+
+
+                    admin.status = "Approved";
+                    admin.dateApproved = DateTime.Now;
+                    response = twoBigDB.Update("ADMIN/" + clientID, admin);
+
+                    //SEND NOTIFICATION TO ADMIN 
+                    Random rnd = new Random();
+                    int ID = rnd.Next(1, 20000);
+
+                    var Notification = new Model.Notification
+                    {
+                        superAdmin_ID = int.Parse(idno),
+                        admin_ID = clientID,
+                        sender = "Super Admin",
+                        title = "Application Approved",
+                        receiver = "Admin",
+                        body = "Your application is now approved! You can now subscribe to our Subscription Packages",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
+
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+                    //SAVE LOGS TO SUPER ADMIN
+                    //Get the current date and time
+                    DateTime logTime = DateTime.Now;
+
+                    //generate a random number for users logged
+                    //Random rnd = new Random();
+                    int logID = rnd.Next(1, 10000);
+
+                    if (Session["superAdminName"] != null)
+                    {
+                        string superName = (string)Session["superAdminName"];
+
+                        //Store the login information in the USERLOG table
+                        var log = new Model.superLogs
+                        {
+
+                            logsId = logID,
+                            superID = int.Parse(idno),
+                            superFullname = superName,
+                            superActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                            activityTime = logTime
+                        };
+
+                        //Storing the  info
+                        response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                        Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                        Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+                    }
+                    
                 }
             }
-
-            if (clientIDs.Count == 0)
-            {
-                Response.Write("<script>alert ('Please select at least one client to approve'); </script>");
-                return;
-            }
-
-            foreach (int clientID in clientIDs)
-            {
-                FirebaseResponse response = twoBigDB.Get("ADMIN/" + clientID);
-                Model.AdminAccount admin = response.ResultAs<Model.AdminAccount>();
-
-
-                admin.status = "Approved";
-                admin.dateApproved = DateTime.Now;
-                response = twoBigDB.Update("ADMIN/" + clientID, admin);
-
-                //SEND NOTIFICATION TO ADMIN 
-                Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-
-                var Notification = new Model.Notification
-                {
-                    superAdmin_ID = int.Parse(idno),
-                    admin_ID = clientID,
-                    sender = "Super Admin",
-                    title = "Application Approved",
-                    receiver = "Admin",
-                    body = "Your application is now approved! You can now subscribe to our Subscription Packages",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
-
-                };
-
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
-
-                //SAVE LOGS TO SUPER ADMIN
-                //Get the current date and time
-                DateTime logTime = DateTime.Now;
-
-                //generate a random number for users logged
-                //Random rnd = new Random();
-                int logID = rnd.Next(1, 10000);
-
-              
-                string superName = (string)Session["superAdminName"];
-
-                //Store the login information in the USERLOG table
-                var log = new Model.superLogs
-                {
-
-                    logsId = logID,
-                    superID = int.Parse(idno),
-                    superFullname = superName,
-                    superActivity = "APPROVED CLIENT:" + " " + admin.fname + " " + admin.lname,
-                    activityTime = logTime
-                };
-
-                //Storing the  info
-                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
-                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
-
-                Response.Write("<script>alert ('successfully approved!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
-            }
+            
         }
         protected void selectAll_CheckedChanged(object sender, EventArgs e)
         {
@@ -354,85 +362,95 @@ namespace WRS2big_Web.superAdmin
         {
 
             List<int> customerIDs = new List<int>();
-            int superID = (int)Session["SuperIDno"];
-            string reason = reasonDecline.Text;
 
-            foreach (GridViewRow row in pendingGridView.Rows)
+            if (Session["SuperIDno"] != null)
             {
-                CheckBox chk = (CheckBox)row.FindControl("select");
-                if (chk != null && chk.Checked)
+                int superID = (int)Session["SuperIDno"];
+                string reason = reasonDecline.Text;
+
+                foreach (GridViewRow row in pendingGridView.Rows)
                 {
-                    int customerID = int.Parse(row.Cells[1].Text);
-                    customerIDs.Add(customerID);
+                    CheckBox chk = (CheckBox)row.FindControl("select");
+                    if (chk != null && chk.Checked)
+                    {
+                        int customerID = int.Parse(row.Cells[1].Text);
+                        customerIDs.Add(customerID);
+                    }
+                }
+
+                if (customerIDs.Count == 0)
+                {
+                    Response.Write("<script>alert ('Please select at least one client to decline'); </script>");
+                    return;
+                }
+
+                foreach (int customerID in customerIDs)
+                {
+                    FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
+                    Model.AdminAccount customerDetails = response.ResultAs<Model.AdminAccount>();
+
+
+                    customerDetails.status = "Declined";
+                    customerDetails.dateDeclined = DateTime.Now;
+                    response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
+
+                    //SEND NOTIFICATION
+                    Random rnd = new Random();
+                    int ID = rnd.Next(1, 20000);
+
+                    var Notification = new Model.Notification
+                    {
+                        admin_ID = customerID,
+                        superAdmin_ID = superID,
+                        sender = "Super Admin",
+                        title = "Application Declined",
+                        receiver = "Admin",
+                        body = reason,
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
+
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+                    //SAVE LOGS TO SUPER ADMIN
+                    //Get the current date and time
+                    DateTime logTime = DateTime.Now;
+
+                    //generate a random number for users logged
+                    //Random rnd = new Random();
+                    int logID = rnd.Next(1, 10000);
+
+                    var idno = (string)Session["SuperIDno"];
+
+                    if (Session["superAdminName"] != null)
+                    {
+                        string superName = (string)Session["superAdminName"];
+
+                        //Store the login information in the USERLOG table
+                        var log = new Model.superLogs
+                        {
+                            logsId = logID,
+                            superID = int.Parse(idno),
+                            superFullname = superName,
+                            superActivity = "DECLINED CLIENT:" + " " + customerDetails.fname + " " + customerDetails.lname,
+                            activityTime = logTime
+                        };
+
+                        //Storing the  info
+                        response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                        Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+
+                        Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+                    }
+                   
                 }
             }
-
-            if (customerIDs.Count == 0)
-            {
-                Response.Write("<script>alert ('Please select at least one client to decline'); </script>");
-                return;
-            }
-
-            foreach (int customerID in customerIDs)
-            {
-                FirebaseResponse response = twoBigDB.Get("ADMIN/" + customerID);
-                Model.AdminAccount customerDetails = response.ResultAs<Model.AdminAccount>();
-
-
-                customerDetails.status = "Declined";
-                customerDetails.dateDeclined = DateTime.Now;
-                response = twoBigDB.Update("ADMIN/" + customerID, customerDetails);
-
-                //SEND NOTIFICATION
-                Random rnd = new Random();
-                int ID = rnd.Next(1, 20000);
-
-                var Notification = new Model.Notification
-                {
-                    admin_ID = customerID,
-                    superAdmin_ID = superID,
-                    sender = "Super Admin",
-                    title = "Application Declined",
-                    receiver = "Admin",
-                    body = reason,
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
-
-                };
-
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
-
-                //SAVE LOGS TO SUPER ADMIN
-                //Get the current date and time
-                DateTime logTime = DateTime.Now;
-
-                //generate a random number for users logged
-                //Random rnd = new Random();
-                int logID = rnd.Next(1, 10000);
-
-                var idno = (string)Session["SuperIDno"];
-                string superName = (string)Session["superAdminName"];
-
-                //Store the login information in the USERLOG table
-                var log = new Model.superLogs
-                {
-                    logsId = logID,
-                    superID = int.Parse(idno),
-                    superFullname = superName,
-                    superActivity = "DECLINED CLIENT:" + " " + customerDetails.fname + " " + customerDetails.lname,
-                    activityTime = logTime
-                };
-
-                //Storing the  info
-                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
-                Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
-
-
-                Response.Write("<script>alert ('successfully declined!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
-            }
+            
         }
 
     
