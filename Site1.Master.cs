@@ -109,32 +109,133 @@ namespace WRS2big_Web
                 var adminID = Session["idno"].ToString();
 
                 //TO GET THE REFILLING STATION DETAILS
-                FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID + "/SubscribedPackage/");
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
                 Model.Subscribed_Package package = response.ResultAs<Model.Subscribed_Package>();
 
-                if (package.orderLimit != 0)
+                if (package != null)
                 {
-                    int orderLimit = package.orderLimit;
+                    if (package.orderLimit != 0)
+                    {
+                        int orderLimit = package.orderLimit;
+                        //int  = Limit + 1;
 
-                    //CLIENT WALKIN ORDERS
-                    response = twoBigDB.Get("WALKINORDERS");
-                    var data = response.Body;
-                    Dictionary<string, Model.WalkInOrders> walkinOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.WalkInOrders>>(data);
+                        int currentClient = int.Parse(adminID);
 
-                    //CLIENT ONLINE ORDERS
-                    response = twoBigDB.Get("ORDERS");
-                    var orders = response.Body;
-                    Dictionary<string, Model.Order> onlineOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.Order>>(orders);
+                        FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                        var adminBody = adminNotif.Body;
+                        Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                        // Check if there is already a Subscription Expired notification for this admin_ID
+                        bool hasLimitReached = adminAllNotifs.Values.Any(n => n.admin_ID == currentClient && n.title == "Limit Reached");
+
+                        if (!hasLimitReached)
+                        {
+
+                            //CLIENT WALKIN ORDERS
+                            response = twoBigDB.Get("WALKINORDERS");
+                            var data = response.Body;
+                            Dictionary<string, Model.WalkInOrders> walkinOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.WalkInOrders>>(data);
+
+                            //CLIENT ONLINE ORDERS
+                            response = twoBigDB.Get("ORDERS");
+                            var orders = response.Body;
+                            Dictionary<string, Model.Order> onlineOrderList = JsonConvert.DeserializeObject<Dictionary<string, Model.Order>>(orders);
 
 
-                    // Create a list to store all the Walkin orders
-                    List<Model.WalkInOrders> clientWalkins = new List<Model.WalkInOrders>();
+                            // Create a list to store all the Walkin orders
+                            List<WalkInOrders> clientWalkins = new List<WalkInOrders>();
 
-                    // Create a list to store all the online orders
-                    List<Model.Order> clientOnline = new List<Model.Order>();
+                            // Create a list to store all the online orders
+                            List<Order> clientOnline = new List<Model.Order>();
+
+                            if (Session["idno"] != null)
+                            {
+                                string adminSession = (string)Session["idno"];
+                                int currentAdmin = int.Parse(adminSession);
+
+                                foreach (var online in onlineOrderList)
+                                {
 
 
+                                    if (online.Value.admin_ID == currentAdmin)
+                                    {
+                                        clientOnline.Add(online.Value);
+                                    }
+
+                                }
+
+                                foreach (var walkins in walkinOrderList)
+                                {
+                                    if (walkins.Value.adminId == currentAdmin)
+                                    {
+                                        clientWalkins.Add(walkins.Value);
+                                    }
+                                }
+
+                                if (clientOnline != null || clientWalkins != null)
+                                {
+                                    int onlineOrders = clientOnline.Count;
+                                    int walkinOrders = clientWalkins.Count;
+
+                                    int totalOverall = onlineOrders + walkinOrders;
+
+                                    Debug.WriteLine($"ONLINE ORDERS:{onlineOrders}");
+                                    Debug.WriteLine($"WALKIN ORDERS:{walkinOrders}");
+                                    Debug.WriteLine($"TOTAL ORDERS: {totalOverall}");
+                                    Debug.WriteLine($"ORDER LIMIT: {orderLimit}");
+
+                                    if (totalOverall >= orderLimit)
+                                    {
+                                        FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
+                                        Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+                                        //change the currentSubscription into Limit Reached
+                                        admin.currentSubscription = "LimitReached";
+                                        adminDet = twoBigDB.Update("ADMIN/" + adminID, admin);
+
+                                        //change substatus into LimitReached
+                                        package.subStatus = "LimitReached";
+                                        response = twoBigDB.Update("ADMIN/" + adminID + "/Subscribed_Package/", package);
+
+
+                                        //SEND NOTIFICATION
+                                        Random rnd = new Random();
+                                        int ID = rnd.Next(1, 20000);
+                                        var Notification = new Notification
+                                        {
+                                            admin_ID = int.Parse(adminID),
+                                            sender = "Super Admin",
+                                            title = "Limit Reached",
+                                            receiver = "Admin",
+                                            body = "You've reached the order limit based on your currently subscribed package. Note: Your customers cant place an order from your station since you already reached the limit. Creating walk-in order is also not possible at this moment.  You can subscribe to another package to continue receiving orders from your valued customers.",
+                                            notificationDate = DateTime.Now,
+                                            status = "unread",
+                                            notificationID = ID
+
+
+                                        };
+
+                                        SetResponse notifResponse;
+                                        notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                                        Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                                        //Redirect to the same page to reload it
+                                        Response.Redirect(Request.RawUrl, false);
+                                        Context.ApplicationInstance.CompleteRequest();
+
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }
                 }
+
+            }
+            else
+            {
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
 
         }
@@ -326,7 +427,7 @@ namespace WRS2big_Web
                             var adminBody = adminNotif.Body;
                             Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
 
-                            // Check if there is already a Subscription Reminder notification for this admin_ID
+                            // Check if there is already a Subscription Expired notification for this admin_ID
                             bool hasSubscriptionReminder = adminAllNotifs.Values.Any(n => n.admin_ID == admin && n.title == "Subscription Expired");
 
                             if (!hasSubscriptionReminder)

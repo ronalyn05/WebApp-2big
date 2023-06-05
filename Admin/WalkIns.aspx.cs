@@ -30,8 +30,35 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            
+
+            checkAdminStatus();
+
             btnSearchPrice.Visible = false;
+
+        }
+        private void checkAdminStatus()
+        {
+            if (Session["idno"] != null)
+            {
+                var adminID = Session["idno"];
+
+                FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
+                Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+                if (admin.currentSubscription == "LimitReached")
+                {
+                    PaymentBtn.Enabled = false;
+                    btnSearchPrice.Enabled = false;
+                    btnSearch.Enabled = false;
+                    btnClear.Enabled = false;
+                    drdOrderType.Enabled = false;
+                    drdUnit_Size.Enabled = false;
+                    drdProdName.Enabled = false;
+
+                    warning.Text = "You have reached your 'ORDER TRANSACTION LIMIT'. You can't cater walk-in orders using the platform.";
+                }
+
+            }
         }
         //STORE DATA TO WALKINORDER TBL AND CALCULATE ITS TOTAL AMOUNT
         protected void btnPayment_Click(object sender, EventArgs e)
