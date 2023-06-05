@@ -43,6 +43,7 @@ namespace WRS2big_Web.Admin
                 displayAll_order();
                 // Call the method to populate the dropdown with order IDs
                 PopulateOrderDropdown();
+                checkAdminStatus();
                 //DisplayRewardPoints_order();
                 //lblViewOrders.Text = "COD ORDER";
                 //DisplayGcash_order();
@@ -76,6 +77,24 @@ namespace WRS2big_Web.Admin
             // Retrieve the existing order object from the database
 
 
+        }
+        private void checkAdminStatus()
+        {
+            if (Session["idno"] != null)
+            {
+                var adminID = Session["idno"];
+
+                FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
+                Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+                if (admin.currentSubscription == "LimitReached")
+                {
+                    btnViewOrders.Enabled = false;
+
+                    warning.Text = "WARNING: You have reached your 'ORDER TRANSACTION LIMIT'. Existing pending orders cannot be processed using the platform anymore. If you wish to continue using the system, subscribe to a different package. ";
+                }
+
+            }
         }
         //Fetch the employee 'driver' and get the id 
         private void PopulateOrderDropdown()
