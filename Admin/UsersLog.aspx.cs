@@ -34,10 +34,16 @@ namespace WRS2big_Web.Admin
 
             lblErrorActivity.Visible = false;
 
+            displayAll();
+
+        }
+        private void displayAll()
+        {
             string idno = (string)Session["idno"];
 
+
             // Get the log ID from the session
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
 
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
@@ -50,6 +56,7 @@ namespace WRS2big_Web.Admin
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
             userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
             userLogTable.Columns.Add("TIMESTAMP");
 
@@ -67,7 +74,7 @@ namespace WRS2big_Web.Admin
 
                     string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
+                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
 
                     ////Retrieve the existing Users log object from the database
                     //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
@@ -91,15 +98,222 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblErrorActivity.Text = "No data found";
+                lblErrorActivity.Text = "No record found";
             }
 
             // Bind the DataTable to the GridView
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
-
         }
-       
+        private void displayOwner()
+        {
+            string idno = (string)Session["idno"];
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ADMINLOGS");
+            Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+            // Create the DataTable to hold the orders
+            //sa pag create sa table 
+            DataTable userLogTable = new DataTable();
+            userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("USER ROLE");
+            userLogTable.Columns.Add("ACTIVITY");
+            userLogTable.Columns.Add("TIMESTAMP");
+
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            {
+                // Loop through the orders and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                    if(entry.role == "Admin")
+                    {
+                        string activity = entry.userActivity;
+
+                        if (activity == "0")
+                        {
+                            activity = "";
+                        }
+
+                        string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
+
+                    }
+
+                    ////Retrieve the existing Users log object from the database
+                    //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
+                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+
+                    //// Log user activity
+                    //var log = new UsersLogs
+                    //{
+                    //    userIdnum = int.Parse(idno),
+                    //    logsId = logsId,
+                    //    userFullname = (string)Session["fullname"],
+                    //    activityTime = existingLog.activityTime,
+                    //    userActivity = activity
+                    //};
+                    //// Update the userLogTable with the user's activity
+                    //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblErrorActivity.Text = "No record found";
+            }
+
+            // Bind the DataTable to the GridView
+            gridUserLog.DataSource = userLogTable;
+            gridUserLog.DataBind();
+        }
+        private void displayCashier()
+        {
+            string idno = (string)Session["idno"];
+
+
+            // Get the log ID from the session
+            //int logsId = (int)Session["logsId"];
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
+            Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+            // Create the DataTable to hold the orders
+            //sa pag create sa table 
+            DataTable userLogTable = new DataTable();
+            userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("USER ROLE");
+            userLogTable.Columns.Add("ACTIVITY");
+            userLogTable.Columns.Add("TIMESTAMP");
+
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            {
+                // Loop through the orders and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                    if (entry.role == "Cashier")
+                    {
+                        string activity = entry.userActivity;
+
+                        if (activity == "0")
+                        {
+                            activity = "";
+                        }
+
+                        string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
+
+                    }
+
+                    ////Retrieve the existing Users log object from the database
+                    //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
+                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+
+                    //// Log user activity
+                    //var log = new UsersLogs
+                    //{
+                    //    userIdnum = int.Parse(idno),
+                    //    logsId = logsId,
+                    //    userFullname = (string)Session["fullname"],
+                    //    activityTime = existingLog.activityTime,
+                    //    userActivity = activity
+                    //};
+                    //// Update the userLogTable with the user's activity
+                    //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblErrorActivity.Text = "No record found";
+            }
+
+            // Bind the DataTable to the GridView
+            gridUserLog.DataSource = userLogTable;
+            gridUserLog.DataBind();
+        }
+        private void displayDriver()
+        {
+            string idno = (string)Session["idno"];
+
+
+            // Get the log ID from the session
+            //int logsId = (int)Session["logsId"];
+
+            // Retrieve all orders from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("DRIVERSLOG/");
+            Dictionary<string, DriversLog> driverlog = response.ResultAs<Dictionary<string, DriversLog>>();
+            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+            var filteredList = driverlog.Values.Where(d => d.empId.ToString() == idno).OrderByDescending(d => d.date);
+
+            // Create the DataTable to hold the orders
+            //sa pag create sa table 
+            DataTable userLogTable = new DataTable();
+            userLogTable.Columns.Add("EMP ID");
+            userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("USER ROLE");
+            userLogTable.Columns.Add("ACTIVITY");
+            userLogTable.Columns.Add("TIMESTAMP");
+
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            {
+                // Loop through the orders and add them to the DataTable
+                foreach (var entry in filteredList)
+                {
+                    string activity = entry.actions;
+                    string role = "Driver";
+                    if (activity == "0")
+                    {
+                        activity = "";
+                    }
+
+                    string timestamp = entry.date == DateTime.MinValue ? "" : entry.date.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    userLogTable.Rows.Add(entry.empId, entry.driverName, role, activity, timestamp);
+
+                    ////Retrieve the existing Users log object from the database
+                    //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
+                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+
+                    //// Log user activity
+                    //var log = new UsersLogs
+                    //{
+                    //    userIdnum = int.Parse(idno),
+                    //    logsId = logsId,
+                    //    userFullname = (string)Session["fullname"],
+                    //    activityTime = existingLog.activityTime,
+                    //    userActivity = activity
+                    //};
+                    //// Update the userLogTable with the user's activity
+                    //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+
+                }
+            }
+            else
+            {
+                // Handle null response or invalid selected value
+                lblErrorActivity.Text = "No record found";
+            }
+
+            // Bind the DataTable to the GridView
+            gridUserLog.DataSource = userLogTable;
+            gridUserLog.DataBind();
+        }
+
         //SEARCH ACTIVITY
         protected void btnSearchLogs_Click(object sender, EventArgs e)
         {
@@ -120,6 +334,7 @@ namespace WRS2big_Web.Admin
                 userLogsTable.Columns.Add("LOG ID");
                 userLogsTable.Columns.Add("USER ID");
                 userLogsTable.Columns.Add("USER NAME");
+                userLogsTable.Columns.Add("USER ROLE");
                 userLogsTable.Columns.Add("ACTIVITY");
                 // walkInordersTable.Columns.Add("PRODUCT SIZE");
                 userLogsTable.Columns.Add("TIMESTAMP");
@@ -141,7 +356,7 @@ namespace WRS2big_Web.Admin
                             string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
                            // string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.userActivity, timestamp);
+                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.role, entry.userFullname, entry.userActivity, timestamp);
                         }
                     }
                 }
@@ -186,6 +401,7 @@ namespace WRS2big_Web.Admin
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
             userLogTable.Columns.Add("USER NAME");
+            userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
             userLogTable.Columns.Add("TIMESTAMP");
 
@@ -209,7 +425,7 @@ namespace WRS2big_Web.Admin
 
                         string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, activity, timestamp);
+                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
                     }
                 }
                 else
@@ -229,6 +445,46 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
         }
+        protected void btnViewRole_Click(object sender, EventArgs e)
+        {
+
+            string selectedOption = drdRole.SelectedValue;
+            try
+            {
+                if (selectedOption == "0")
+                {
+                    displayAll();
+                    //lblViewOrders.Text = "ALL ORDER";
+
+                }
+                else if (selectedOption == "1")
+                {
+                    //lblViewOrders.Text = "EXPRESS ORDER";
+                    displayOwner();
+                    //lblError.Visible = false;
+
+                }
+                else if (selectedOption == "2")
+                {
+                    //lblViewOrders.Text = "STANDARD ORDER";
+                    displayCashier();
+                    //lblError.Visible = false;
+
+                }
+                else if (selectedOption == "3")
+                {
+                    //lblViewOrders.Text = "RESERVATION ORDER";
+                    displayDriver();
+                    //lblError.Visible = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert(' No data exist'); window.location.href = '/Admin/OnlineOrders.aspx';" + ex.Message);
+            }
+        }
+
         //clear the sorting textbox fields
         protected void clearSort_Click(object sender, EventArgs e)
         {

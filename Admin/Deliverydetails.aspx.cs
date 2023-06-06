@@ -983,7 +983,9 @@ namespace WRS2big_Web.Admin
         {
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
@@ -1071,9 +1073,9 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                int logsId = (int)Session["logsId"];
+                //int logsId = (int)Session["logsId"];
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -1083,7 +1085,7 @@ namespace WRS2big_Web.Admin
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     userActivity = "UPDATED EXPRESS DELIVERY",
                     activityTime = addedTime
@@ -1098,7 +1100,9 @@ namespace WRS2big_Web.Admin
         {
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
@@ -1196,9 +1200,9 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                int logsId = (int)Session["logsId"];
+                //int logsId = (int)Session["logsId"];
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -1208,7 +1212,7 @@ namespace WRS2big_Web.Admin
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     userActivity = "UPDATED STANDARD DELIVERY",
                     activityTime = addedTime
@@ -1223,6 +1227,9 @@ namespace WRS2big_Web.Admin
             var idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
 
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
             var all = allDelivery.Body;
@@ -1308,9 +1315,9 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                int logsId = (int)Session["logsId"];
+                //int logsId = (int)Session["logsId"];
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -1320,7 +1327,7 @@ namespace WRS2big_Web.Admin
                 var log = new UsersLogs
                 {
                     userIdnum = int.Parse(idno),
-                    logsId = logsId,
+                    logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     userActivity = "UPDATED RESERVATION TYPE",
                     activityTime = addedTime

@@ -255,10 +255,13 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             // Get the log ID from the session
-            int logsId = (int)Session["logsId"]; 
+            // int logsId = (int)Session["logsId"]; '
+            //INSERT DATA TO TABLE
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
 
             // Retrieve the existing Users log object from the database
-            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+            FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
             UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
             //Get the current date and time
@@ -268,7 +271,7 @@ namespace WRS2big_Web.Admin
             var log = new UsersLogs
             {
                 userIdnum = int.Parse(idno),
-                logsId = logsId,
+                logsId = idnum,
                 userFullname = (string)Session["fullname"],
                 userActivity = "LOGGED OUT",
                 activityTime = addedTime

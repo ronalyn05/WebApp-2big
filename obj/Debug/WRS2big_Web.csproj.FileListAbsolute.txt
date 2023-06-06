@@ -65,3 +65,4 @@ C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\bin\Syste
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\bin\itextsharp.xml
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\bin\System.Collections.Immutable.xml
 C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\bin\System.Reflection.Metadata.xml
+C:\Users\User1\Desktop\Capstone-Backup\2bigSystem-Version3\WebApp-2big\bin\itextsharp.xmlworker.dll

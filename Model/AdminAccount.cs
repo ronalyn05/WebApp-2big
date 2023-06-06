@@ -275,6 +275,14 @@ namespace WRS2big_Web.Model
         public string role { get; set; }
 
     }
+    public class DriversLog
+    {
+        public int empId { get; set; }
+        public DateTime date { get; set; }
+        public string actions { get; set; }
+        public string driverName { get; set; }
+
+    }
 
     public class RewardSystem
     {

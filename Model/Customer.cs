@@ -47,10 +47,11 @@ namespace WRS2big_Web.Model
         public string order_OrderStatus { get; set; }
         public string order_OrderTypeValue { get; set; }
         public List<OrderProduct> order_Products { get; set; }
-        public int order_OverallQuantities { get; set; }
+        public int order_overallQuantities { get; set; }
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
         public decimal order_TotalAmount { get; set; }
+        public decimal order_InitialAmount { get; set; }
         public string order_GcashProofOfPayment { get; set; }
         public string order_RefillSelectedOption { get; set; }
         // public DateTimeOffset orderDate { get; set; }
@@ -65,7 +66,10 @@ namespace WRS2big_Web.Model
         public string orderDeclinedBy { get; set; }
         public DateTime dateOrderDelivered { get; set; }
         public DateTime dateDriverAssigned { get; set; }
+        public int orderDeliveryfee { get; set; }
+        public int ordervehiclefee { get; set; }
         public string driverAssignedBy { get; set; }
+
         public string order_deliveryReservationDeliveryReserveDate { get; set; }
         public string order_deliveryReservationDeliveryReserveTime { get; set; }
         public string order_deliveryReservationDeliveryTypeSelected { get; set; }
@@ -80,6 +84,7 @@ namespace WRS2big_Web.Model
         public string pro_refillUnitVolume { get; set; }
         public string qtyPerItem { get; set; }
         public string offerType { get; set; }
+        public string order_ProductDiscount { get; set; }
     }
 
 
