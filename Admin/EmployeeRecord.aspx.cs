@@ -273,7 +273,7 @@ namespace WRS2big_Web.Admin
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -335,7 +335,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
 
                 // Retrieve the existing employee object from the database
-                FirebaseResponse res = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse res = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = res.ResultAs<UsersLogs>();
 
                 // Get the current date and time

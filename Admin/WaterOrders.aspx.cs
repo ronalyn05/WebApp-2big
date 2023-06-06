@@ -8,14 +8,14 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
+//using System.Reflection.Metadata;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WRS2big_Web.Model;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
-
+using iTextSharp.tool.xml;
 
 namespace WRS2big_Web.Admin
 {
@@ -120,7 +120,7 @@ namespace WRS2big_Web.Admin
                 lblWalkinError.Text = "No record found";
             }
         }
-        //Print receipts
+        //Print wALKIN receipts
         protected void btnPrintReceipts_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
@@ -207,134 +207,8 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "printReceipts", "$('#printReceipts').modal('show');", true);
         }
 
-        //protected void btnPrintReceipts_Click(object sender, EventArgs e)
-        //{
-
-        //    string idno = (string)Session["idno"];
-
-        //    decimal discount; 
-
-        //    // Retrieve the button that was clicked
-        //    Button btnPrint = (Button)sender;
-
-        //    // Find the GridView row containing the button
-        //    GridViewRow row = (GridViewRow)btnPrint.NamingContainer;
-
-        //    // Get the order ID from the specific column
-        //    int orderIDColumnIndex = 1; //  the actual column index of the order ID
-        //    int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
-
-        //    // Store the order ID in a hidden field for later use
-        //    hfPrintReceipts.Value = orderID.ToString();
-        //    // Get the order ID from the hidden field
-        //    int order_ID = int.Parse(hfPrintReceipts.Value);
-
-
-        //    // Retrieve all orders from the ORDERS table
-        //    FirebaseResponse response = twoBigDB.Get("WALKINORDERS/" + order_ID);
-        //    //WalkInOrders walkinList = response.ResultAs<WalkInOrders>();
-        //    Dictionary<string, WalkInOrders> walkinList = response.ResultAs<Dictionary<string, WalkInOrders>>();
-
-        //    //// Retrieve all customers from the CUSTOMER table and compare the current customer name
-        //    //FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
-        //    //Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>(); 
-
-        //    // Create the DataTable to hold the orders
-        //    DataTable walkInordersTable = new DataTable();
-        //    //walkInordersTable.Columns.Add("ORDER ID");
-        //    //walkInordersTable.Columns.Add("ORDER TYPE");
-        //    walkInordersTable.Columns.Add("PRODUCT NAME");
-        //    walkInordersTable.Columns.Add("PRODUCT UNIT");
-        //    walkInordersTable.Columns.Add("PRICE");
-        //    walkInordersTable.Columns.Add("QUANTITY");
-        //    walkInordersTable.Columns.Add("DISCOUNT");
-        //    walkInordersTable.Columns.Add("TOTAL AMOUNT");
-        //    //walkInordersTable.Columns.Add("DATE");
-        //    //walkInordersTable.Columns.Add("ADDED BY");
-
-        //    // Get the selected date range from the dropdown list
-        //    //string dateRange = ddlDateRange.SelectedValue;
-
-        //    if (response != null && response.ResultAs<WalkInOrders>() != null)
-        //    {
-        //        var filteredList = walkinList.Values.Where(d => d.adminId.ToString() == idno);
-
-        //        // Loop through the filtered orders and add them to the DataTable
-        //        foreach (var entry in filteredList)
-        //        {
-        //            if (!decimal.TryParse(entry.productDiscount.ToString(), out discount))
-        //            {
-        //                // If the discount value is not a valid decimal, assume it is zero
-        //                discount = 0;
-        //            }
-        //            else
-        //            {
-        //                // Convert discount from percentage to decimal
-        //                discount /= 100;
-        //            }
-
-
-        //            // Retrieve the customer details based on the customer ID from the order
-        //            //if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
-        //            //{
-        //            //    string customerName = customer.firstName + " " + customer.lastName;
-
-        //            //    // Add the order details to the DataTable with the customer name
-        //            //    string dateOrdered = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-        //            //    salesordersTable.Rows.Add(order.orderID, customerName, order.order_OrderStatus, order.orderPaymentMethod, order.order_DeliveryTypeValue,
-        //            //        order.order_OrderTypeValue, order.order_TotalAmount, dateOrdered);
-
-        //            //    totalOrderAmount += order.order_TotalAmount;
-        //            //}
-        //            string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-        //            //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
-        //            //    entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
-        //            //  lblCustomerName.Text = entry.addedBy;
-
-        //            // Retrieve all RefillingStation objects for the current admin
-        //            var empResponse = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
-        //            RefillingStation stations = empResponse.ResultAs<RefillingStation>();
-        //            //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
-        //            Session["stationName"] = stations.stationName;
-        //            Session["address"] = stations.stationAddress;
-
-        //            lblStationName.Text = (string)Session["stationName"];
-        //            lblStationAddress.Text = (string)Session["address"];
-        //            lblownerName.Text = entry.addedBy;
-        //            lblTransNo.Text = orderID.ToString();
-        //            lblDate.Text = dateAdded;
-
-
-        //            walkInordersTable.Rows.Add(entry.productName, entry.productUnitSize,
-        //                                 entry.productPrice, entry.productQty, discount,
-        //                                 entry.totalAmount);
-        //        }
-
-        //        if (walkInordersTable.Rows.Count == 0)
-        //        {
-        //            lblError.Text = "No record found";
-        //            lblError.Visible = true;
-        //        }
-        //        else
-        //        {
-        //            // Bind the DataTable to the GridView
-        //            gridSalesInvoice.DataSource = walkInordersTable;
-        //            gridSalesInvoice.DataBind();
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        // Handle null response or invalid selected value
-        //        lblWalkinError.Text = "No record found";
-        //    }
-        //    // Show the modal popup
-        //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "printReceipts", "$('#printReceipts').modal('show');", true);
-        //}
-        //PRINTING ORDER RECEIPTS
-
+     
+        //generate pdf to print ORDER RECEIPTS for walkin order
         private string GenerateInvoiceHtml(int orderID)
         {
             // Retrieve the necessary data from the database based on the order ID
@@ -350,9 +224,42 @@ namespace WRS2big_Web.Admin
 
             // Create the HTML content for the invoice
             string invoiceHtml = $@"<html>
-                           
+                           <head>
+                            <style>
+                                .form-group {{
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                    text-align: center;
+                                    font-weight: bold;
+                                }}
+                                .invoice-header {{
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                    text-align: center;
+                                }}
+
+                                .invoice-details {{
+                                    text-align: left;
+                                    margin-bottom: 20px;
+                                }}
+
+                                .invoice-details strong {{
+                                    display: block;
+                                    font-weight: bold;
+                                }}
+
+                                .invoice-error {{
+                                    color: red;
+                                }}
+
+                                .invoice-table {{
+                                    margin-bottom: 20px;
+                                    width: 100%;
+                                }}
+                            </style>
+                        </head>
                             <body>
-                                    <div class='form-group text-center'>
+                                    <div class='form-group text-center font-weight-bold'>
                                         <br />
                                         <span>{stationName}</span>
                                         <br />
@@ -374,6 +281,8 @@ namespace WRS2big_Web.Admin
                                     <br />
                                     <span class='invoice-error'>{error}</span>
                                 </div>
+                                <hr />
+                                <br />
                                 <div>
                                     <table class='invoice-table'>
                                         <thead>
@@ -414,7 +323,9 @@ namespace WRS2big_Web.Admin
                 </div>
                 <div>
                     <br />
-                    <strong>Thank you for purchasing! Drink well and order again!</strong>
+                     <div class='form-group text-center font-weight-bold'>
+                <strong>Thank you for purchasing! Drink well and order again!</strong>
+            </div>
                 </div>
             </body>
         </html>";
@@ -422,7 +333,7 @@ namespace WRS2big_Web.Admin
             return invoiceHtml;
         }
 
-
+        //method to generate pdf printing receipts for walkin order
         [Obsolete]
         protected void btnPrintingReceipts_Click(object sender, EventArgs e)
         {
@@ -439,9 +350,11 @@ namespace WRS2big_Web.Admin
             document.Open();
 
             // Parse the HTML and add it to the document
+            //StringReader stringReader = new StringReader(invoiceHtml);
+            //HTMLWorker htmlWorker = new HTMLWorker(document);
+            //htmlWorker.Parse(stringReader);
             StringReader stringReader = new StringReader(invoiceHtml);
-            HTMLWorker htmlWorker = new HTMLWorker(document);
-            htmlWorker.Parse(stringReader);
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
 
             // Close the document
             document.Close();
@@ -454,6 +367,322 @@ namespace WRS2big_Web.Admin
             Response.End();
         }
 
+        //Print Online Receipts for COD order
+        protected void btnPrintReceiptsOnline_Click(object sender, EventArgs e)
+        {
+            string idno = (string)Session["idno"];
+
+            // Retrieve the button that was clicked
+            Button btnPrintOnlineOrder = (Button)sender;
+
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnPrintOnlineOrder.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 1; // the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Retrieve the order from the ORDERS table
+            FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+            Order onlineOrder = response.ResultAs<Order>();
+
+
+            // Retrieve all customers from the CUSTOMER table and compare the current customer name
+            FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+            Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+
+            if (onlineOrder != null)
+            {
+                // Check if the order belongs to the current admin
+                if (onlineOrder.admin_ID.ToString() == idno)
+                {
+                    if (onlineOrder.order_OrderStatus != "Declined")
+                    {
+
+                        // Create the DataTable to hold the order
+                        DataTable onlineordersTable = new DataTable();
+                        onlineordersTable.Columns.Add("PRODUCT NAME");
+                        onlineordersTable.Columns.Add("PRODUCT UNIT OF VOLUME");
+                        onlineordersTable.Columns.Add("QUANTITY PER ITEM");
+                        onlineordersTable.Columns.Add("PRICE");
+                        //onlineordersTable.Columns.Add("OVERALL QUANTITY");
+                        onlineordersTable.Columns.Add("DISCOUNT");
+                        onlineordersTable.Columns.Add("VEHICLE FEE");
+                        onlineordersTable.Columns.Add("DELIVERY FEE");
+                        //onlineordersTable.Columns.Add("TOTAL AMOUNT");
+
+
+                    // Retrieve the RefillingStation for the current admin
+                    var empResponse = twoBigDB.Get("ADMIN/" + idno + "/RefillingStation/");
+                    RefillingStation station = empResponse.ResultAs<RefillingStation>();
+
+                    // Set the session variables
+                    Session["stationName"] = station.stationName;
+                    Session["address"] = station.stationAddress;
+
+                    // Retrieve the customer details based on the customer ID from the order
+                    if (customerlist.TryGetValue(onlineOrder.cusId.ToString(), out Customer customer))
+                    {
+                        string customerName = customer.firstName + " " + customer.lastName;
+                        //store customer name here
+                        lblCustomerName.Text = customerName;
+                    }
+
+                    // Set the label values
+                        lbl_StationName.Text = (string)Session["stationName"];
+                        lbl_StationAddress.Text = (string)Session["address"];
+                        lblCashier_ownerName.Text = onlineOrder.orderAcceptedBy;
+                        lbl_transNo.Text = orderID.ToString();
+                        lbl_date.Text = onlineOrder.orderDate == DateTime.MinValue ? "" : onlineOrder.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        lblOverallQuantity.Text = onlineOrder.order_overallQuantities.ToString();
+                        lblInitialtotalAmount.Text = "Php." + " " + onlineOrder.order_InitialAmount.ToString();
+                        lblTotalAmount.Text = "Php." + " " + onlineOrder.order_TotalAmount.ToString();
+                        //lblInitialtotalAmount.Text = onlineOrder.order_InitialAmount.ToString();
+                        //lblTotalAmount.Text = onlineOrder.order_TotalAmount.ToString();
+
+                      
+                        // Retrieve the total amount, vehicle fee and delivery fee from the order
+                        int vehicleFee = onlineOrder.ordervehiclefee;
+                        int deliveryFee = onlineOrder.orderDeliveryfee;
+
+                        string productname = " ";
+                        string productunit = " ";
+                        string productprice = " ";
+                        string discount = " ";
+                        string qtyperItem = " ";
+
+                        foreach (var product in onlineOrder.order_Products)
+                            {
+                                 productname = product.order_ProductName;
+                                 productunit = product.pro_refillQty + " " + product.pro_refillUnitVolume;
+                                 productprice = product.order_ProductPrice.ToString();
+                                 discount = product.order_ProductDiscount;
+                                 qtyperItem = product.qtyPerItem;
+
+                            onlineordersTable.Rows.Add(
+                               productname,
+                               productunit,
+                               qtyperItem,
+                               productprice,
+                               discount,
+                               vehicleFee,
+                               deliveryFee
+                           );
+                        }
+                        
+                        // Bind the DataTable to the GridView
+                        gridOnlineInvoiceCOD.DataSource = onlineordersTable;
+                        gridOnlineInvoiceCOD.DataBind();
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('You are not able to print invoice since the order is declined.'); </script>");
+                        return;
+                    }
+                }
+                else
+                {
+                    lblErrorMessage.Text = "No record of order to print";
+                }
+            }
+            else
+            {
+                lblErrorMessage.Text = "No record of order to print";
+            }
+
+
+
+            // Store the order ID in a hidden field for later use
+            hfOnlinePrintingReceipts.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "onlineprintReceipts", "$('#onlineprintReceipts').modal('show');", true);
+        }
+        //generate pdf for printing the cod order invoice
+        private string GenerateOnlineOrderInvoiceHtml(int orderID)
+        {
+            // Retrieve the necessary data from the database based on the order ID
+            string ownerName = lblCashier_ownerName.Text;  // Owner / Cashier Name
+            string customerName = lblCustomerName.Text;  // Customer Name
+            string date = lbl_date.Text;  // Date
+            string transactionNo = lbl_transNo.Text;  // Transaction No.
+            string error = lblError_Message.Text;  // Error (if applicable)
+
+            // Retrieve the station logo, address, and name from the respective controls
+            // string stationLogo = "C:/Users/User1/Desktop/Capstone-Backup/2bigSystem-Version3/WebApp-2big/images/FinalLogo.png";  // Refilling station logo
+            string stationName = lbl_StationName.Text;  // Station name
+            string stationAddress = lbl_StationAddress.Text;  // Station address
+            string overallQty = lblOverallQuantity.Text;
+            string initialAmount = lblInitialtotalAmount.Text;
+            string totalAmount = lblTotalAmount.Text;
+
+
+            // Create the HTML content for the invoice
+            string invoiceHtml = $@"<html>
+                           <head>
+                            <style>
+                                .invoice-container {{
+                                    text-align: center;
+                                }}
+
+                                .form-group {{
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                    text-align: center;
+                                    font-weight: bold;
+                                }}
+                                .invoice-header {{
+                                    margin-top: 20px;
+                                    margin-bottom: 20px;
+                                    text-align: center;
+                                }}
+
+                                .invoice-details {{
+                                    text-align: left;
+                                    margin-bottom: 20px;
+                                }}
+
+                                .invoice-details strong {{
+                                    display: block;
+                                    font-weight: bold;
+                                }}
+
+                                .invoice-error {{
+                                    color: red;
+                                }}
+
+                                .invoice-table {{
+                                    margin-bottom: 20px;
+                                    width: 100%;
+                                }}
+                            </style>
+                        </head>
+                            <body>
+                                    <div class='form-group text-center font-weight-bold'>
+                                        <br />
+                                        <span>{stationName}</span>
+                                        <br />
+                                        <span>{stationAddress}</span>
+                                        <br />
+                                    </div>
+                                <div class='invoice-header'>
+                                    <h4 class='text-center font-weight-bold'>SALES INVOICE</h4>
+                                </div>
+                                <div class='invoice-details'>
+                                    <strong class='text-left font-weight-bold'>Owner / Cashier Name:</strong>
+                                    <span>{ownerName}</span>
+                                    <br />
+                                    <strong class='text-left font-weight-bold'>Customer Name:</strong>
+                                    <span>{customerName}</span>
+                                    <br />
+                                    <strong class='text-left font-weight-bold'>Date:</strong>
+                                    <span>{date}</span>
+                                    <br />
+                                    <strong class='text-left font-weight-bold'>Transaction No. :</strong>
+                                    <span>{transactionNo}</span>
+                                    <br />
+                                    <span class='invoice-error'>{error}</span>
+                                </div>
+                                <br />
+                                <hr />
+                                <div>
+                                    <table class='invoice-table'>
+                                        <thead>
+                                            <tr>
+                                                <th>PRODUCT NAME</th>
+                                                <th>PRODUCT UNIT</th>
+                                                <th>QTY PER ITEM</th>
+                                                <th>PRICE</th>
+                                                <th>DISCOUNT</th>
+                                                <th>VEHICLE FEE</th>
+                                                <th>DELIVERY FEE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>";
+
+            // Add the order details to the HTML content
+            GridViewRowCollection rows = gridOnlineInvoiceCOD.Rows;
+            foreach (GridViewRow row in rows)
+            {
+                string productname = row.Cells[0].Text;
+                string productunit = row.Cells[1].Text;
+                string quantity = row.Cells[2].Text;
+                string price = row.Cells[3].Text;
+                string discount = row.Cells[4].Text;
+                string vehicleFee = row.Cells[5].Text;
+                string deliveryFee = row.Cells[6].Text;
+
+                invoiceHtml += $@"<tr>
+                            <td>{productname}</td>
+                            <td>{productunit}</td>
+                            <td>{quantity}</td>
+                            <td>{price}</td>
+                            <td>{discount}</td>
+                            <td>{vehicleFee}</td>
+                            <td>{deliveryFee}</td>
+                        </tr>";
+            }
+
+            invoiceHtml += $@"</tbody>
+                </table>
+                <br />
+                <hr />
+                <strong>Overall Quantity: {overallQty}</strong>
+                <br />
+                <strong>Initial Total Amount: {initialAmount}</strong>
+                <br />
+                <strong>Total Amount: {totalAmount}</strong>
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class='form-group text-center font-weight-bold'>
+                <strong>Thank you for purchasing! Drink well and order again!</strong>
+            </div>
+            </div>
+        </body>
+    </html>";
+
+            return invoiceHtml;
+        }
+
+        //method for generating pdf for cod order invoice
+        [Obsolete]
+        protected void btnOnlineOrderPrintingReceipts_Click(object sender, EventArgs e)
+        {
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfOnlinePrintingReceipts.Value);
+
+            // Generate the invoice HTML
+            string invoiceHtml = GenerateOnlineOrderInvoiceHtml(orderID);
+
+            // Create the PDF document
+            Document document = new Document();
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.Open();
+
+            //// Parse the HTML and add it to the document
+            //StringReader stringReader = new StringReader(invoiceHtml);
+            //HTMLWorker htmlWorker = new HTMLWorker(document);
+            //htmlWorker.Parse(stringReader);
+
+            // Parse the HTML and add it to the document
+            StringReader stringReader = new StringReader(invoiceHtml);
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
+
+
+            // Close the document
+            document.Close();
+
+            // Set the response headers for downloading the PDF
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=invoice.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(memoryStream.ToArray());
+            Response.End();
+        }
         //SEARCH REPORTS
         protected void btnSearchOrder_Click(object sender, EventArgs e)
         {
@@ -2460,7 +2689,7 @@ namespace WRS2big_Web.Admin
                     int schedNotifID = rnd.Next(1, 20000);
 
                     //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                    if (existingOrder.order_OverallQuantities <= 2)
+                    if (existingOrder.order_overallQuantities <= 2)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2490,7 +2719,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 2 && existingOrder.order_OverallQuantities <= 5)
+                    else if (existingOrder.order_overallQuantities > 2 && existingOrder.order_overallQuantities <= 5)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2520,7 +2749,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 5 && existingOrder.order_OverallQuantities <= 8)
+                    else if (existingOrder.order_overallQuantities > 5 && existingOrder.order_overallQuantities <= 8)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2550,7 +2779,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 8 && existingOrder.order_OverallQuantities <= 15)
+                    else if (existingOrder.order_overallQuantities > 8 && existingOrder.order_overallQuantities <= 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2580,7 +2809,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 15)
+                    else if (existingOrder.order_overallQuantities > 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2757,7 +2986,7 @@ namespace WRS2big_Web.Admin
                     int schedNotifID = rnd.Next(1, 20000);
 
                     //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                    if (existingOrder.order_OverallQuantities <= 2)
+                    if (existingOrder.order_overallQuantities <= 2)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2787,7 +3016,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 2 && existingOrder.order_OverallQuantities <= 5)
+                    else if (existingOrder.order_overallQuantities > 2 && existingOrder.order_overallQuantities <= 5)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2817,7 +3046,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 5 && existingOrder.order_OverallQuantities <= 8)
+                    else if (existingOrder.order_overallQuantities > 5 && existingOrder.order_overallQuantities <= 8)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2847,7 +3076,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_OverallQuantities > 8 && existingOrder.order_OverallQuantities <= 15)
+                    else if (existingOrder.order_overallQuantities > 8 && existingOrder.order_overallQuantities <= 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;

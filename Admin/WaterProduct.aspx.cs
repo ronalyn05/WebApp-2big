@@ -207,7 +207,7 @@ namespace WRS2big_Web.Admin
                                 }
 
                                 //Get the total of ordered gallons 
-                                totalOrderedGallons += orderedGallons * order.order_OverallQuantities;
+                                totalOrderedGallons += orderedGallons * order.order_overallQuantities;
 
                             }
 
@@ -230,7 +230,7 @@ namespace WRS2big_Web.Admin
                                     declinedGallons = double.Parse(order.order_Products[0].qtyPerItem) / gallonsPerML;
                                 }
                                 // Get the total of declined gallons
-                                totalDeclinedGallons += declinedGallons * order.order_OverallQuantities;
+                                totalDeclinedGallons += declinedGallons * order.order_overallQuantities;
                             }
                         }
                         
@@ -520,7 +520,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
 
@@ -573,7 +573,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Tank supply for today with id number: " + data.tankId + " is successfully added!'); location.reload(); window.location.href = '/Admin/WaterProduct.aspx';</script>");
 
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -615,7 +615,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -779,7 +779,7 @@ namespace WRS2big_Web.Admin
                 drdUnitStock.SelectedValue = null;
 
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time
@@ -814,7 +814,7 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -1003,7 +1003,7 @@ namespace WRS2big_Web.Admin
                 //Response.Write("<script>alert ('Delivery details successfully added!');</script>");
 
                 // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
+                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
                 UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
 
                 // Get the current date and time

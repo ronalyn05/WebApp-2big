@@ -89,7 +89,7 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
 
             // Get the log ID from the session
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
 
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
@@ -147,7 +147,7 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
 
             // Get the log ID from the session
-            int logsId = (int)Session["logsId"];
+            //int logsId = (int)Session["logsId"];
 
             // Retrieve all records from the PROMO_OFFERED table
             FirebaseResponse response = twoBigDB.Get("DISCOUNTCOUPON/");
@@ -379,16 +379,16 @@ namespace WRS2big_Web.Admin
         //STORE REWARD
         protected void btnAddReward_Click(object sender, EventArgs e)
         {
+            string idno = (string)Session["idno"];
+            //int logsId = (int)Session["logsId"];
+            string name = (string)Session["fullname"];
+
+            // Generate reward id number to make as the unique key
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
             try
             {
-                string idno = (string)Session["idno"];
-                int logsId = (int)Session["logsId"];
-                string name = (string)Session["fullname"];
-
-                // Generate reward id number to make as the unique key
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-
                 // Get the current UTC date and time as a DateTimeOffset object
                 DateTime currentDateTime = DateTime.Now;
 
