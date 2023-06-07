@@ -39,7 +39,7 @@
                             <div class="main-body">
                                 <div class="page-wrapper">
                                     <center>
-                                    <asp:Label ID="warning" runat="server" style="font-size:18px;color:red;" class="danger">WARNING: </asp:Label> <br /><br /><br />
+                                    <asp:Label ID="warning" runat="server" style="font-size:18px;color:red;" class="danger"></asp:Label> <br /><br /><br />
                                     </center>
 
                                     <!-- page content -->
