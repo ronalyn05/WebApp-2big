@@ -70,7 +70,24 @@
                                                             <asp:Button runat="server" ID="generateSortedData" class="btn btn-primary" OnClick="generateSortedData_Click" Height="40" Text="Sort Date" />
                                                             <asp:LinkButton runat="server" ID="clearSort" OnClick="clearSort_Click" Text="Clear"></asp:LinkButton>
 
-
+                                                            <div style="display: flex; justify-content: space-between;">
+                                                  
+                                                    <div style="float: right;" >
+                                                        <asp:DropDownList ID="drdRole" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                            <%--<asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>--%>
+                                                            <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                            <asp:ListItem Text="Owner" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="Cashier" Value="2"></asp:ListItem>
+                                                            <asp:ListItem Text="Driver" Value="3"></asp:ListItem>
+                                                           
+                                                        </asp:DropDownList>
+                                                        <asp:Button ID="btnViewRole" runat="server" Text="View" OnClick="btnViewRole_Click" CssClass="btn-primary" Height="40px" />
+                                                    </div>
+                                                     <%--<div style="float: right;">
+                                                                                         <h6>Note:  (decline order if unforeseen emergency arises) 
+                                                                                    </h6>
+                                                                                    </div>--%>
+                                                </div>
                                                             <div style="float: right;">
                                                                 <asp:TextBox ID="txtSearch" Width="545px" Placeholder="search by activity (must be in capital letters and spacing in between words)...." ToolTip="enter activity to search in capital letters and with space in between each word" Height="40px" runat="server"></asp:TextBox>
                                                                 <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px" />

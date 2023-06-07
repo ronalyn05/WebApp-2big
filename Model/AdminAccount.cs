@@ -128,7 +128,6 @@ namespace WRS2big_Web.Model
     }
     public class Delivery
     {
-
         public int deliveryId { get; set; }
         public int adminId { get; set; }
         public string vehicles { get; set; }
@@ -291,6 +290,14 @@ namespace WRS2big_Web.Model
         public string userActivity { get; set; }
         public DateTime activityTime { get; set; }
         public string role { get; set; }
+
+    }
+    public class DriversLog
+    {
+        public int empId { get; set; }
+        public DateTime date { get; set; }
+        public string actions { get; set; }
+        public string driverName { get; set; }
 
     }
 
