@@ -137,6 +137,8 @@ namespace WRS2big_Web.Model
         public string gcashNumber { get; set; }
         
         public string orderTypes { get; set; }
+
+
         public string vehicle1Name { get; set; }
         public string vehicle1Fee { get; set; }
         public string vehicle2Name { get; set; }
@@ -146,6 +148,21 @@ namespace WRS2big_Web.Model
         public string vehicle4Name { get; set; }
         public string vehicle4Fee { get; set; }
         public string perGallonFee { get; set; }
+
+        public string vehicle1Qty { get; set; }
+        public string vehicle2Qty { get; set; }
+        public string vehicle3Qty { get; set; }
+        public string vehicle4Qty { get; set; }
+
+        public string vehicle1stat { get; set; }
+        public string vehicle2stat { get; set; }
+        public string vehicle3stat { get; set; }
+        public string vehicle4stat { get; set; }
+
+        public int vehicle1ID { get; set; }
+        public int vehicle2ID { get; set; }
+        public int vehicle3ID { get; set; }
+        public int vehicle4ID { get; set; }
 
         //STANDARD
         public int standardID { get; set; }

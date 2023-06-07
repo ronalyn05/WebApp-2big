@@ -218,7 +218,9 @@
                                         </div>
                                       </div> <%--Edit profile information ends here--%>
                                     <!-- Page-body start -->
+                                           <asp:Label runat="server" ID="warningMsg" style="font-size:18px;color:red"></asp:Label><br /><br />
                                             <div class="row">
+                                              
                                                 <div class="col-xl-4 col-md-12 " >
                                                 <div class="card " style="background-color:white">
                                                     <div class="card-header">
@@ -236,6 +238,8 @@
                                                   <div class="main-menu-header">
                                                       <center>
                                                           <%--image container--%>
+                                                          <br /><br />
+                                                       <asp:Label runat="server" ID="uploadinstruction" style="font-size:16px;color:black"></asp:Label>
                                                      <asp:ImageButton ID="ImageButton_new" class="img-100 img-radius" style="width:200px" runat="server" /> <%--src="/images/rhea.png"--%>
                                                           <br />
                                                           <asp:Label ID="Lbl_user" runat="server" style="color:black; font-size:16px"></asp:Label>

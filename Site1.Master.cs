@@ -207,7 +207,7 @@ namespace WRS2big_Web
                                             sender = "Super Admin",
                                             title = "Limit Reached",
                                             receiver = "Admin",
-                                            body = "You've reached the order limit based on your currently subscribed package. Note: Your customers cant place an order from your station since you already reached the limit. Creating walk-in order is also not possible at this moment.  You can subscribe to another package to continue receiving orders from your valued customers.",
+                                            body = "You've reached the order limit based on your currently subscribed package. Note: Your customers can't place an order from your station since you already reached the limit. Creating walk-in order is also not possible at this moment.  You can subscribe to another package to continue receiving orders from your valued customers.",
                                             notificationDate = DateTime.Now,
                                             status = "unread",
                                             notificationID = ID
@@ -469,6 +469,25 @@ namespace WRS2big_Web
                                 SetResponse notifResponse;
                                 notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification); //Storing data to the database
                                 Notification notif = notifResponse.ResultAs<Notification>(); //Database Result
+
+                                //SEND NOTIFICATION TO SUPER ADMIN
+                               
+                                int notifID = rnd.Next(1, 20000);
+                                var newNotification = new Notification
+                                {
+                                    admin_ID = int.Parse(adminID),
+                                    sender = "System",
+                                    title = "Subscription Expired",
+                                    receiver = "Super Admin",
+                                    body = "The subscription of client :" + " " + adminID + clientstat.fname + " " + clientstat.lname + " " + "has expired",
+                                    notificationDate = DateTime.Now,
+                                    status = "unread",
+                                    notificationID = ID
+                                };
+
+                             
+                                notifResponse = twoBigDB.Set("NOTIFICATION/" + notifID, newNotification); //Storing data to the database
+                                Notification newnotif = notifResponse.ResultAs<Notification>(); //Database Result
                             }
                         }
                     }
@@ -833,6 +852,30 @@ namespace WRS2big_Web
                 notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
                 Response.Write("<script>window.location.href = '/Admin/AdminProfile.aspx'; </script>");
             }
+            else if (title == "Limit Reached")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+                Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx'; </script>");
+            }
+            //else if (title == "Package Renewal")
+            //{
+
+            //}
 
         }
         protected void btnLogout_Click(object sender, EventArgs e)

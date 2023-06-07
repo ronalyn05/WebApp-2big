@@ -225,6 +225,7 @@
                                                             </div>
                                                              <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">Uploaded Business Proof and Valid ID:</label> 
                                                             <div class="row">
+                                                                <asp:Label runat="server" style="font-size:16px;color:red;margin-left:700px" id="noUploaded"> </asp:Label>
                                                                         <asp:Repeater ID="uploadedImages" runat="server">
 
                                                                                     <ItemTemplate>

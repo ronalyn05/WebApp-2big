@@ -172,9 +172,10 @@
 
                                                                                 <%--  delivery fee--%>
                                                                                 <div class="col-md-12 col-sm-12 ">
+
                                                                                     <strong>Distance in km for FREE Delivery:</strong>
                                                                                     <br />
-                                                                                    <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                    <%--                                                                                    <asp:Label ID="Label8" runat="server" Text="Note: If you don't want to offer FREE DELIVERY, set "></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
                                                                                 </div>
                                                                                 <br />
@@ -254,7 +255,7 @@
                                                                                     </asp:CheckBoxList>
                                                                                 </div>
 
-                                                                               
+
                                                                             </div>
 
 
@@ -360,7 +361,7 @@
                                                 </div>
 
                                                 <%--MODAL FOR UPDATE EXPRESS DELIVERY TYPES--%>
-                                            
+
                                                 <div class="modal fade updateExpressType col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
                                                         <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
@@ -420,7 +421,7 @@
                                                     </div>
                                                 </div>
                                                 <%--MODAL FOR UPDATE STANDARD DELIVERY TYPES--%>
-                                            
+
                                                 <div class="modal fade updateStandardType col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
                                                         <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
@@ -435,51 +436,53 @@
                                                                         <div class="x_content">
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <%--Delivery Type--%>
-                                                                            <!--OPTIONS FOR STANDARD WHEN CLICKED-->
-                                                                            <div id="standard">
-                                                                                <hr />
-                                                                               
-                                                                                <div class="col-md-12 col-sm-12 ">
-                                                                                    <strong>Standard Delivery Schedule:</strong>
-                                                                                    <br /> 
-                                                                                    <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                                   <strong>current schedule:</strong> <br />
-                                                                                    <asp:Label runat="server" ID="exisitingSchdule" style="font-size:16px"></asp:Label> <br />
-                                                                                    <h7>From:</h7>
-                                                                                    <asp:TextBox ID="updateStandardFrom" TextMode="Time" Width="100px" runat="server"></asp:TextBox>
-                                                                                    <h7>To:</h7>
-                                                                                    <asp:TextBox ID="updateStandardTo" TextMode="Time" Width="100px" runat="server"></asp:TextBox>
-                                                                                </div>
-                                                                                <br />
+                                                                                <!--OPTIONS FOR STANDARD WHEN CLICKED-->
+                                                                                <div id="standard">
+                                                                                    <hr />
 
-                                                                                <%--  delivery fee--%>
-                                                                                <div class="col-md-12 col-sm-12 ">
-                                                                                    <strong>Distance in km for FREE Delivery:</strong>
+                                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                                        <strong>Standard Delivery Schedule:</strong>
+                                                                                        <br />
+                                                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                        <strong>current schedule:</strong>
+                                                                                        <br />
+                                                                                        <asp:Label runat="server" ID="exisitingSchdule" Style="font-size: 16px"></asp:Label>
+                                                                                        <br />
+                                                                                        <h7>From:</h7>
+                                                                                        <asp:TextBox ID="updateStandardFrom" TextMode="Time" Width="100px" runat="server"></asp:TextBox>
+                                                                                        <h7>To:</h7>
+                                                                                        <asp:TextBox ID="updateStandardTo" TextMode="Time" Width="100px" runat="server"></asp:TextBox>
+                                                                                    </div>
                                                                                     <br />
-                                                                                    <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                                    <asp:TextBox ID="updatestandardDistance" Width="364px" Placeholder="" runat="server"></asp:TextBox>
-                                                                                </div>
-                                                                                <br />
-                                                                                <div class="col-md-12 col-sm-12 ">
-                                                                                    <strong>Delivery FEE: (php)</strong>
-                                                                                    <br />
-                                                                                    <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                                    <asp:TextBox ID="updateStandardFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                                                </div>
-                                                                                <br />
-                                                                              
-                                                                                <br />
-                                                                                <div class="col-md-12 col-sm-12">
 
-                                                                                    <strong>What products do you offer for the STANDARD delivery?</strong>
-                                                                                    <asp:CheckBoxList ID="updateStandardChkBx" runat="server">
-                                                                                        <asp:ListItem Value="Refill" onclick="refillOptions();" ID="standardRefillOp" runat="server">  &nbsp; Refill</asp:ListItem>
-                                                                                        <%--<asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>--%>
-                                                                                        <asp:ListItem Value="other products" ID="standardOtherProd" runat="server"> &nbsp; other Products</asp:ListItem>
-                                                                                    </asp:CheckBoxList>
+                                                                                    <%--  delivery fee--%>
+                                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                                        <strong>Distance in km for FREE Delivery:</strong>
+                                                                                        <br />
+                                                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                        <asp:TextBox ID="updatestandardDistance" Width="364px" Placeholder="" runat="server"></asp:TextBox>
+                                                                                    </div>
+                                                                                    <br />
+                                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                                        <strong>Delivery FEE: (php)</strong>
+                                                                                        <br />
+                                                                                        <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                        <asp:TextBox ID="updateStandardFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                                    </div>
+                                                                                    <br />
+
+                                                                                    <br />
+                                                                                    <div class="col-md-12 col-sm-12">
+
+                                                                                        <strong>What products do you offer for the STANDARD delivery?</strong>
+                                                                                        <asp:CheckBoxList ID="updateStandardChkBx" runat="server">
+                                                                                            <asp:ListItem Value="Refill" onclick="refillOptions();" ID="standardRefillOp" runat="server">  &nbsp; Refill</asp:ListItem>
+                                                                                            <%--<asp:ListItem Text="New Gallon" Value="New Gallon"></asp:ListItem>--%>
+                                                                                            <asp:ListItem Value="other products" ID="standardOtherProd" runat="server"> &nbsp; other Products</asp:ListItem>
+                                                                                        </asp:CheckBoxList>
+                                                                                    </div>
+                                                                                    <br />
                                                                                 </div>
-                                                                                <br />
-                                                                            </div>
 
                                                                             </div>
                                                                         </div>
@@ -494,7 +497,6 @@
                                                     </div>
                                                 </div>
                                                 <%--MODAL FOR UPDATE RESERVATION DELIVERY TYPES--%>
-                                            
                                                 <div class="modal fade updateReservationType col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
                                                         <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
@@ -526,7 +528,7 @@
                                                                                     <asp:TextBox ID="updateReserveFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
                                                                                 </div>
                                                                                 <br />
-                                                                              
+
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12">
 
@@ -550,8 +552,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
 
                                                 <%-- MODAL FOR Delivery details--%>
                                                 <div class="modal fade managedetails  col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
@@ -590,18 +590,23 @@
 
                                                                                     <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                 </div>
                                                                             </div>
@@ -724,175 +729,304 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <br />
-                                                <br />
-                                                <%--PAGE CONTENTS FOR DELIVERY DETAILS--%>
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-xl-16">
-                                                        <div class="card">
-                                                            <div class="card-header">
 
-                                                                <asp:Label ID="Label1" runat="server" Text="DELIVERY DETAILS" Style="color: black; font-size: 20px;"></asp:Label>
-                                                                <div class="card-header-right">
-                                                                    <ul class="list-unstyled card-option">
-                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                                    </ul>
+
+                                                <%-- MODAL FOR UPDATE Delivery details--%>
+                                                <div class="modal fade updatedeliveryDetails  col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
+                                                        <div class="modal-content col-xl-10 col-md-10" style="/*background-color: red; */ margin-left: 370px">
+                                                            <div id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="updateDetailsModal">UPDATE</h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
-                                                            </div>
-                                                            <div class="card-block">
-                                                                <!-- Row start -->
-                                                                <div class="row m-b-30">
-                                                                    <div class="col-lg-12 col-xl-6">
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-18 col-sm-18 ">
+                                                                        <div class="x_content">
+                                                                            <h5 style="color: black; font-family: Bahnschrift">DELIVERY DETAILS</h5>
+                                                                            <%--<h6>Note: You can't change the delivery details once it is already added</h6>--%>
+                                                                            <hr />
 
-                                                                        <!-- Nav tabs -->
-                                                                        <ul class="nav nav-tabs md-tabs" role="tablist">
-                                                                            <li class="nav-item">
-                                                                                <a class="nav-link active" data-toggle="tab" href="#home3" role="tab">ORDER TYPES</a>
-                                                                                <div class="slide"></div>
-                                                                            </li>
-                                                                            <li class="nav-item">
-                                                                                <a class="nav-link" data-toggle="tab" href="#profile3" role="tab">PAYMENT METHODS</a>
-                                                                                <div class="slide"></div>
-                                                                            </li>
-                                                                            <li class="nav-item">
-                                                                                <a class="nav-link" data-toggle="tab" href="#messages3" role="tab">SWAP OPTIONS</a>
-                                                                                <div class="slide"></div>
-                                                                            </li>
-                                                                            <li class="nav-item">
-                                                                                <a class="nav-link" data-toggle="tab" href="#settings3" role="tab">VEHICLES</a>
-                                                                                <div class="slide"></div>
-                                                                            </li>
-                                                                        </ul>
-                                                                        <!-- Tab panes -->
-                                                                        <div class="tab-content card-block">
-                                                                            <div class="tab-pane active" id="home3" role="tabpanel">
-                                                                                <br />
-                                                                                <br />
-                                                                                <asp:GridView runat="server" ID="orderTypesGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="400px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                    <Columns>
-                                                                                        <asp:TemplateField>
-                                                                                            <ItemTemplate>
-                                                                                                <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                                --%>
-                                                                                            </ItemTemplate>
-                                                                                        </asp:TemplateField>
-                                                                                    </Columns>
-                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                </asp:GridView>
+                                                                            <br />
+                                                                            <!--ORDER TYPE SELECTION-->
+                                                                            <div class="col-md-12 col-sm-12" id="updateorderTypeDiv">
+
+                                                                                <strong>Choose the order type you offer to customers:</strong>
+                                                                                <asp:CheckBoxList ID="updateOrderTypesChck" runat="server">
+                                                                                    <asp:ListItem Value="PickUp" id="updatePickup">&nbsp; Pick-Up</asp:ListItem>
+                                                                                    <asp:ListItem Value="Delivery" id="updatedelivery">&nbsp; Delivery</asp:ListItem>
+                                                                                </asp:CheckBoxList>
                                                                             </div>
-                                                                            <div class="tab-pane" id="profile3" role="tabpanel">
+                                                                            <br />
+                                                                            <!--OPTIONS FOR DELIVERY WHEN CLICKED-->
+                                                                            <div id="updatedeliveryChecked">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <strong> Add the vehicle types you have if you offer DELIVERY:</strong>
+                                                                                    <br />
+                                                                                    <br />
+
+                                                                                    <asp:TextBox ID="updateV1Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV1Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                  
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="updateV2Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV2Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="updateV3Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV3Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                   
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="updateV4Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV4Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+
+                                                                                    <br />
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <hr />
+                                                                            <!--SCRIPT FOR DELIVERY WHEN CLICKED-->
+ <%--                                                                           <script>
+                                                                                function updatevehicleTypeOptions() {
+                                                                                    var delivery = document.getElementById("updatedelivery");
+                                                                                    var stanfields = document.getElementById("updatedeliveryChecked");
+
+                                                                                    if (delivery.checked) {
+                                                                                        stanfields.style.display = "none";
+
+                                                                                    } else {
+
+                                                                                        stanfields.style.display = "block";
+
+                                                                                    }
+                                                                                }
+                                                                            </script>--%>
+
+                                                                            <br />
+                                                                            <div id="updateswapOptions">
+                                                                                <strong>Swap Gallon Options</strong>
+                                                                                <h6>Note: This will give your customers an option on how you can swap their gallons for the REFILL</h6>
+                                                                                <asp:CheckBoxList ID="updateSwap" runat="server">
+                                                                                    <asp:ListItem Value="Swap With Conditions" id="updatewithoutCondition"> &nbsp; Swap with NO Conditions</asp:ListItem>
+                                                                                    <asp:ListItem Value="Swap With Conditions" id="updatewithCondition"> &nbsp; Swap with Conditions</asp:ListItem>
+                                                                                    <asp:ListItem Value="Gallon Drop-by" ID="updategallonDropby"> &nbsp; Gallon Drop-by</asp:ListItem>
+                                                                                    <asp:ListItem Value="Request Pick-up" ID="updatepickupPerGallon"> &nbsp; Request Gallon Pickup</asp:ListItem>
+
+                                                                                </asp:CheckBoxList>
+                                                                                <div id="updateperGallon" style="display: none; margin-left: 15px">
+                                                                                    <asp:CheckBoxList ID="CheckBoxList3" runat="server">
+                                                                                        <asp:ListItem Value="by Gallons" ID="updatebyGallonFee">  &nbsp; by Gallons </asp:ListItem>
+                                                                                        <%--                                                                     <asp:ListItem Value="by "> &nbsp; Swap with Conditions</asp:ListItem>--%>
+                                                                                    </asp:CheckBoxList>
+                                                                                </div>
+                                                                                <div id="updateGallonsFee" runat="server">
+                                                                                    <h8 style="margin-left: 50px;">per Gallon Fee:</h8><br />
+                                                                                    <asp:TextBox ID="updatebyGallonsFee" Width="250px" Height="40px" TextMode="Number" runat="server" Style="margin-left: 80px;"></asp:TextBox>
+                                                                                </div>
                                                                                 <br />
-                                                                                <br />
-                                                                                <asp:GridView runat="server" ID="paymentsGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                    <Columns>
-                                                                                        <asp:TemplateField>
-                                                                                            <ItemTemplate>
-                                                                                                <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                                --%>
-                                                                                            </ItemTemplate>
-                                                                                        </asp:TemplateField>
-                                                                                    </Columns>
-                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                </asp:GridView>
+                                                                                <hr />
+
 
                                                                             </div>
-                                                                            <div class="tab-pane" id="messages3" role="tabpanel">
-                                                                                <br />
-                                                                                <br />
-                                                                                <asp:GridView runat="server" ID="swapOptionsGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                    <Columns>
-                                                                                        <asp:TemplateField>
-                                                                                            <ItemTemplate>
-                                                                                                <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                                --%>
-                                                                                            </ItemTemplate>
-                                                                                        </asp:TemplateField>
-                                                                                    </Columns>
-                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                </asp:GridView>
+                                                                            <br />
+                                                                            <h4 style="color: black; font-family: Bahnschrift">PAYMENT METHODS</h4> <br />
+
+                                                                            <div class="col-md-12 col-sm-12" style="font-size: 20px">
+                                                                                <h6>Please choose the Payment Methods you want to use for the Orders</h6>
+                                                                                <h6>"These payment methods are applicable to all orders made in your station regardless of its Delivery Type"</h6>
+                                                                               <br />
+                                                                                <asp:CheckBoxList ID="updatePayment" runat="server" Height="40px" Width="300px">
+                                                                                    <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
+                                                                                    <asp:ListItem  Text="Cash on Delivery" Value="CashOnDelivery" id="updateCOD"></asp:ListItem>
+
+                                                                                    <asp:ListItem  Text="Reward Points" Value="Points" id="updatePoints"></asp:ListItem>
+                                                                                    <asp:ListItem  Text="Gcash" Value="Gcash" id="updategcashPayment"></asp:ListItem>
+                                                                                </asp:CheckBoxList>
+
                                                                             </div>
-                                                                            <div class="tab-pane" id="settings3" role="tabpanel">
-                                                                                <br />
-                                                                                <br />
-                                                                                <asp:GridView runat="server" ID="vehiclesGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                    <Columns>
-                                                                                        <asp:TemplateField>
-                                                                                            <ItemTemplate>
-                                                                                                <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                                --%>
-                                                                                            </ItemTemplate>
-                                                                                        </asp:TemplateField>
-                                                                                    </Columns>
-                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                </asp:GridView>
+                                                                            <br />
+                                                                            <div class="col-md-12 col-sm-12" id="updategcashChecked" style="font-size: 20px;" runat="server">
+                                                                                <h6>Please enter your GCASH Registered number:</h6>
+                                                                                <h6>Reminder: This will be the number where the customer can send their payments</h6>
+                                                                                <asp:TextBox ID="updateGcashNum" runat="server" TextMode="Number" Placeholder="09123456789" Width="364px"></asp:TextBox>
                                                                             </div>
+                                                                            <!--SCRIPT FOR REQUEST PICK-UP WHEN CLICKED-->
+                                                                            <%--                                                                            <script>
+                                                                                function updateperGallonFee() {
+                                                                                    var delivery = document.getElementById("updatepickupPerGallon");
+                                                                                    var stanfields = document.getElementById("updateperGallon");
+
+                                                                                    if (delivery.checked) {
+                                                                                        stanfields.style.display = "none";
+
+                                                                                    } else {
+
+                                                                                        stanfields.style.display = "block";
+
+                                                                                    }
+                                                                                }
+                                                                            </script>
+
+                                                                            <script>
+                                                                                function updatebyGallons() {
+                                                                                    var delivery = document.getElementById("updatebyGallonFee");
+                                                                                    var stanfields = document.getElementById("updatebyGallonsFee");
+
+                                                                                    if (delivery.checked) {
+                                                                                        stanfields.style.display = "none";
+
+                                                                                    } else {
+
+                                                                                        stanfields.style.display = "block";
+
+                                                                                    }
+                                                                                }
+                                                                            </script>--%>
+                                                                            <%--  SCRIPT FOR GCASH NUMBER TEXTBOX--%>
+                                                                            <%--                                                                            <script>
+                                                                                function updategcashPayment() {
+                                                                                    var gcashNumber = document.getElementById("updategcashPayment");
+                                                                                    var fields = document.getElementById("updategcashChecked");
+                                                                                    if (gcashNumber.checked) {
+                                                                                        fields.style.display = "none";
+                                                                                    }
+                                                                                    else {
+                                                                                        fields.style.display = "block";
+                                                                                    }
+
+
+                                                                                }
+                                                                            </script>--%>
                                                                         </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <hr />
+                                                                    <h8>
+                                                                        <strong>LEGEND:</strong>
+                                                                        <br />
+                                                                        <strong>Pick-up:</strong>
+                                                                        <br />
+                                                                        The customer will pick-up their order in the station.
+                                                                                    <br />
+                                                                        <strong>Delivery:</strong>
+                                                                        <br />
+                                                                        The order of the customer will be delivered to their delivery address.
+                                                                                    <br />
+                                                                        <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
+                                                                        <strong>Swap with Condition:</strong>
+                                                                        <br />
+                                                                        Let the customers give their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill.
+                                                                                    <br />
+                                                                        <strong>Swap without Condition:</strong>
+                                                                        <br />
+                                                                        Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill.
+                                                                                    <br />
+                                                                        <strong>Request Gallon Pick-up:</strong>
+                                                                        <br />
+                                                                        Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped.
+                                                                                    <br />
+                                                                        <strong>per Gallon Fee: </strong>
+                                                                        <br />
+                                                                    </h8>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="modal-footer">
+                                                                        <%-- set data button--%>
+                                                                        <asp:Button ID="updateDeliveryDetails" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="updateDeliveryDetails_Click" AutoPostBack="false" />
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%--PAGE CONTENTS FOR DELIVERY TYPES--%>
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-xl-16">
-                                                        <div class="card">
-                                                            <div class="card-header">
+                                            </div>
+                                            <asp:Label ID="warning" runat="server" Style="color: black; font-size: 18px;"></asp:Label>
+                                            <br />
+                                            <br />
+                                            <%--PAGE CONTENTS FOR DELIVERY DETAILS--%>
+                                            <div class="row" id="deliveryDetailsRow" runat="server">
+                                                <div class="col-lg-12 col-xl-16">
+                                                    <div class="card">
+                                                        <div class="card-header">
 
-                                                                <asp:Label ID="Label7" runat="server" Text="DELIVERY TYPES" Style="color: black; font-size: 20px;"></asp:Label>
-                                                                <div class="card-header-right">
-                                                                    <ul class="list-unstyled card-option">
-                                                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
-                                                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                                                        <li><i class="fa fa-trash close-card"></i></li>
-                                                                    </ul>
-                                                                </div>
+                                                            <asp:Label ID="Label1" runat="server" Text="DELIVERY DETAILS" Style="color: black; font-size: 20px;"></asp:Label>
+                                                            <button type="button" id="updateDetails" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updatedeliveryDetails">UPDATE</button>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                    <li><i class="fa fa-trash close-card"></i></li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="card-block">
-                                                                <div class="table-responsive">
-                                                                    <div class="tab-content">
-                                                                        <div class="tab-pane active">
-                                                                            <asp:Label ID="lblProductData" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <!-- Row start -->
+                                                            <div class="row m-b-30">
+                                                                <div class="col-lg-12 col-xl-6">
 
+                                                                    <!-- Nav tabs -->
+                                                                    <ul class="nav nav-tabs md-tabs" role="tablist">
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link active" data-toggle="tab" href="#home3" role="tab">ORDER TYPES</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" data-toggle="tab" href="#profile3" role="tab">PAYMENT METHODS</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" data-toggle="tab" href="#messages3" role="tab">SWAP OPTIONS</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                        <li class="nav-item">
+                                                                            <a class="nav-link" data-toggle="tab" href="#settings3" role="tab">VEHICLES</a>
+                                                                            <div class="slide"></div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <!-- Tab panes -->
+                                                                    <div class="tab-content card-block">
+                                                                        <div class="tab-pane active" id="home3" role="tabpanel">
+                                                                            <br />
+                                                                            <br />
+                                                                            <asp:GridView runat="server" ID="orderTypesGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="400px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                <Columns>
+                                                                                    <asp:TemplateField>
+                                                                                        <ItemTemplate>
+                                                                                             <asp:Button runat="server" ID="removeVehicle" OnClick="removeVehicle_Click" Text="Remove" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                            
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
+                                                                                </Columns>
+                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                            </asp:GridView>
+                                                                            <br />
                                                                             <br />
 
-                                                                            <%-- DELIVERY DETAILS NI DIRI--%>
 
-                                                                            <asp:GridView runat="server" ID="gridDeliveryDetails" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                        </div>
+                                                                        <div class="tab-pane" id="profile3" role="tabpanel">
+                                                                            <br />
+                                                                            <br />
+                                                                            <asp:GridView runat="server" ID="paymentsGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                 <Columns>
                                                                                     <asp:TemplateField>
                                                                                         <ItemTemplate>
@@ -911,46 +1045,17 @@
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
 
-
-                                                                            <%--Gridview ends here--%>
                                                                         </div>
-                                                                        <!--/tab-pane-->
-                                                                    </div>
-                                                                    <!--/tab-content-->
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
-                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
-                                                            </div>
-                                                            <div class="card-block">
-                                                                <asp:DropDownList ID="drdDeliverytype" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                                    <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
-                                                                    <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
-                                                                    <asp:ListItem Text="Express" Value="1"></asp:ListItem>
-                                                                    <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
-                                                                    <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
-                                                                </asp:DropDownList>
-
-                                                                <asp:Button ID="btnDeliverytype" runat="server" Text="Search" OnClick="btnSearchDeliverytype_Click" CssClass="btn-primary" Height="40px" />
-                                                                <div class="table-responsive">
-                                                                    <div class="tab-content">
-                                                                        <div class="tab-pane active">
-                                                                            <hr />
-                                                                            <asp:Label ID="lblDeliveryType" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
-                                                                            <asp:Label ID="nullLabel" Font-Size="16px" runat="server" Width="364px"></asp:Label>
+                                                                        <div class="tab-pane" id="messages3" role="tabpanel">
                                                                             <br />
                                                                             <br />
-
-                                                                            <%--GRIDVIEW FOR EXPRESS--%>
-                                                                            <asp:GridView runat="server" ID="expressGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                            <asp:GridView runat="server" ID="swapOptionsGrid" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                 <Columns>
                                                                                     <asp:TemplateField>
-                                                                                        <%--                                                          <ItemTemplate>
-                                                       
-                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>--%>
+                                                                                        <ItemTemplate>
+                                                                                            <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                            --%>
+                                                                                        </ItemTemplate>
                                                                                     </asp:TemplateField>
                                                                                 </Columns>
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
@@ -962,77 +1067,205 @@
                                                                                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
-                                                                            <br /><br />
-                                                                            <button type="button" id="updateExpress" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateExpressType">UPDATE</button>
-
-                                                                            <%--GRIDVIEW FOR STANDARD--%>
-                                                                            <asp:GridView runat="server" ID="standardGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                <Columns>
-                                                                                    <asp:TemplateField>
-                                                                                        <%--                                                          <ItemTemplate>
-                                                          
-                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>--%>
-                                                                                    </asp:TemplateField>
-                                                                                </Columns>
-                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                            </asp:GridView>
-
-                                                                             <button type="button" id="updateStandard" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateStandardType">UPDATE</button>
-                                                                            <%--GRIDVIEW FOR RESERVATION--%>
-                                                                            <asp:GridView runat="server" ID="reservationGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
-                                                                                <Columns>
-                                                                                    <asp:TemplateField>
-                                                                                        <%--                                                          <ItemTemplate>
-                                                         
-                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
-                                                          </ItemTemplate>--%>
-                                                                                    </asp:TemplateField>
-                                                                                </Columns>
-                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
-                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
-                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
-                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
-                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
-                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
-                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                            </asp:GridView>
-                                                                            <button type="button" id="updateReservation" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateReservationType">UPDATE</button>
-
-                                                                            <%-- </div>--%> <%--Gridview ends here--%>
                                                                         </div>
-                                                                        <!--/tab-pane-->
+                                                                        <div class="tab-pane" id="settings3" role="tabpanel">
+                                                                            <br />
+                                                                            <br />
+                                                                            <asp:GridView runat="server" ID="vehiclesGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 500px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="450px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                                <Columns>
+                                                                                    <asp:TemplateField>
+                                                                                        <ItemTemplate>
+                                                                                            <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                            --%>
+                                                                                        </ItemTemplate>
+                                                                                    </asp:TemplateField>
+                                                                                </Columns>
+                                                                                <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                            </asp:GridView>
+                                                                        </div>
                                                                     </div>
-                                                                    <!--/tab-content-->
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!--PAGE CONTENTS END-->
-
                                             </div>
+                                            <%--PAGE CONTENTS FOR DELIVERY TYPES--%>
+                                            <div class="row" id="deliveryTypesRow" runat="server">
+                                                <div class="col-lg-12 col-xl-16">
+                                                    <div class="card">
+                                                        <div class="card-header">
+
+                                                            <asp:Label ID="Label7" runat="server" Text="DELIVERY TYPES" Style="color: black; font-size: 20px;"></asp:Label>
+                                                            <div class="card-header-right">
+                                                                <ul class="list-unstyled card-option">
+                                                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                                                    <li><i class="fa fa-trash close-card"></i></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <div class="table-responsive">
+                                                                <div class="tab-content">
+                                                                    <div class="tab-pane active">
+                                                                        <asp:Label ID="lblProductData" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+
+                                                                        <br />
+
+                                                                        <%-- DELIVERY DETAILS NI DIRI--%>
+
+                                                                        <asp:GridView runat="server" ID="gridDeliveryDetails" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                            <Columns>
+                                                                                <asp:TemplateField>
+                                                                                    <ItemTemplate>
+                                                                                        <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                        --%>
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                            </Columns>
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+
+
+                                                                        <%--Gridview ends here--%>
+                                                                    </div>
+                                                                    <!--/tab-pane-->
+                                                                </div>
+                                                                <!--/tab-content-->
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
+                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <asp:DropDownList ID="drdDeliverytype" runat="server" CssClass="text-center" Height="40px" Width="364px">
+                                                                <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
+                                                                <%--<asp:ListItem Text="View All" Value="0"></asp:ListItem>--%>
+                                                                <asp:ListItem Text="Express" Value="1"></asp:ListItem>
+                                                                <asp:ListItem Text="Standard" Value="2"></asp:ListItem>
+                                                                <asp:ListItem Text="Reservation" Value="3"></asp:ListItem>
+                                                            </asp:DropDownList>
+
+                                                            <asp:Button ID="btnDeliverytype" runat="server" Text="Search" OnClick="btnSearchDeliverytype_Click" CssClass="btn-primary" Height="40px" />
+                                                            <div class="table-responsive">
+                                                                <div class="tab-content">
+                                                                    <div class="tab-pane active">
+                                                                        <hr />
+                                                                        <asp:Label ID="lblDeliveryType" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
+                                                                        <asp:Label ID="nullLabel" Font-Size="16px" runat="server" Width="364px"></asp:Label>
+                                                                        <br />
+                                                                        <br />
+
+                                                                        <%--GRIDVIEW FOR EXPRESS--%>
+                                                                        <asp:GridView runat="server" ID="expressGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                            <Columns>
+                                                                                <asp:TemplateField>
+                                                                                    <%--                                                          <ItemTemplate>
+                                                       
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>--%>
+                                                                                </asp:TemplateField>
+                                                                            </Columns>
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                        <br />
+                                                                        <br />
+                                                                        <button type="button" id="updateExpress" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateExpressType">UPDATE</button>
+
+                                                                        <%--GRIDVIEW FOR STANDARD--%>
+                                                                        <asp:GridView runat="server" ID="standardGridview" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                            <Columns>
+                                                                                <asp:TemplateField>
+                                                                                    <%--                                                          <ItemTemplate>
+                                                          
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>--%>
+                                                                                </asp:TemplateField>
+                                                                            </Columns>
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+
+                                                                        <button type="button" id="updateStandard" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateStandardType">UPDATE</button>
+                                                                        <%--GRIDVIEW FOR RESERVATION--%>
+                                                                        <asp:GridView runat="server" ID="reservationGridView" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1650px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+                                                                            <Columns>
+                                                                                <asp:TemplateField>
+                                                                                    <%--                                                          <ItemTemplate>
+                                                         
+                                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i> update</button>
+                                                          </ItemTemplate>--%>
+                                                                                </asp:TemplateField>
+                                                                            </Columns>
+                                                                            <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                            <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                            <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                            <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                            <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                            <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                            <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                            <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                        </asp:GridView>
+                                                                        <button type="button" id="updateReservation" runat="server" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".updateReservationType">UPDATE</button>
+
+                                                                        <%-- </div>--%> <%--Gridview ends here--%>
+                                                                    </div>
+                                                                    <!--/tab-pane-->
+                                                                </div>
+                                                                <!--/tab-content-->
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--PAGE CONTENTS END-->
 
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <br />
                     </div>
+                    <br />
+                    <br />
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 </asp:Content>

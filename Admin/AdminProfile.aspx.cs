@@ -164,86 +164,94 @@ namespace WRS2big_Web.Admin
 
         private void fetchAdminData()
         {
-            var adminID = Session["idno"].ToString();
-
-            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
-            Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
-
-
-            if (adminDet != null)
+            if (Session["idno"] != null)
             {
-                //POPULATE THE PERSONAL DETAILS IN THE TEXTBOXES
-                Lbl_Idno.Text = admin.idno.ToString();
-                lblfname.Text = admin.fname;
-                lblmname.Text = admin.mname;
-                lblLname.Text = admin.lname;
-                lblcontactnum.Text = admin.phone;
-                lblemail.Text = admin.email;
-                lbldob.Text = admin.bdate;
+                var adminID = Session["idno"].ToString();
 
-                if (admin.profile_image != null)
+                FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
+                Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+
+                if (adminDet != null)
                 {
-                    ImageButton_new.ImageUrl = admin.profile_image.ToString();
+                    //POPULATE THE PERSONAL DETAILS IN THE TEXTBOXES
+                    Lbl_Idno.Text = admin.idno.ToString();
+                    lblfname.Text = admin.fname;
+                    lblmname.Text = admin.mname;
+                    lblLname.Text = admin.lname;
+                    lblcontactnum.Text = admin.phone;
+                    lblemail.Text = admin.email;
+                    lbldob.Text = admin.bdate;
 
-                }
-
-                //POPULATE THE PERSONAL DETAILS IN THE MODAL
-                firstname.Attributes["placeholder"] = admin.fname;
-                middlename.Attributes["placeholder"] = admin.mname;
-                lastname.Attributes["placeholder"] = admin.lname;
-                contactnum.Attributes["placeholder"] = admin.phone;
-                email.Attributes["placeholder"] = admin.email;
-                //birthdate.Text = admin.bdate;
-
-                //to GET the subscription details
-                string subStatus = admin.subStatus;
-                //check if naka subscribe na ba ang admin 
-                if (subStatus == "Subscribed")
-                {
-                    subscribeBTN.Visible = false;
-
-                    FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
-                    Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
-
-                    if (subscription != null)
+                    if (admin.profile_image != null)
                     {
-                        string subscribedPlan = subscription.packageName;
-                        DateTime start = subscription.subStart;
-                        DateTime end = subscription.expiration;
-
-                        //populate the textboxes for the subscription details
-                        LblSubPlan.Text = subscribedPlan;
-
-                        DateTime subscriptionStart = start;
-                        LblDateStarted.Text = subscriptionStart.ToString();
-                        DateTime subscriptionEnd = end;
-                        LblSubEnd.Text = subscriptionEnd.ToString();
-
+                        ImageButton_new.ImageUrl = admin.profile_image.ToString();
 
                     }
+                    else
+                    {
+                        uploadinstruction.Text = "Upload your profile picture";
+                        ImageButton_new.Visible = false;
+                    }
+
+                    //POPULATE THE PERSONAL DETAILS IN THE MODAL
+                    firstname.Attributes["placeholder"] = admin.fname;
+                    middlename.Attributes["placeholder"] = admin.mname;
+                    lastname.Attributes["placeholder"] = admin.lname;
+                    contactnum.Attributes["placeholder"] = admin.phone;
+                    email.Attributes["placeholder"] = admin.email;
+                    //birthdate.Text = admin.bdate;
+
+                    //to GET the subscription details
+                    string subStatus = admin.subStatus;
+                    //check if naka subscribe na ba ang admin 
+                    if (subStatus == "Subscribed")
+                    {
+                        subscribeBTN.Visible = false;
+
+                        FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
+                        Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
+
+                        if (subscription != null)
+                        {
+                            string subscribedPlan = subscription.packageName;
+                            DateTime start = subscription.subStart;
+                            DateTime end = subscription.expiration;
+
+                            //populate the textboxes for the subscription details
+                            LblSubPlan.Text = subscribedPlan;
+
+                            DateTime subscriptionStart = start;
+                            LblDateStarted.Text = subscriptionStart.ToString();
+                            DateTime subscriptionEnd = end;
+                            LblSubEnd.Text = subscriptionEnd.ToString();
 
 
+                        }
+                    }
+                    else if (subStatus == "notSubscribed")
+                    {
+                        warningMsg.Text = "Warning: You haven't subscribed to a package yet. Access to the features are disabled since your status is 'Not Subscribed' ";
+                        subscriptionLabel.Text = "You haven't subscribed to a plan yet. Please proceed with the subscription now.";
+                        changePackage.Visible = false;
+                        renewBTN.Visible = false;
+                        Label1.Visible = false;
+                        LblSubPlan.Visible = false;
+                        Label5.Visible = false;
+                        LblDateStarted.Visible = false;
+                        Label6.Visible = false;
+                        LblSubEnd.Visible = false;
+                       
+                    }
 
                 }
-                else if (subStatus == "notSubscribed")
+                else
                 {
-                    subscriptionLabel.Text = "You haven't subscribed to a plan yet. Please proceed with the subscription now.";
-                    changePackage.Visible = false;
-                    renewBTN.Visible = false;
-                    Label1.Visible = false;
-                    LblSubPlan.Visible = false;
-                    Label5.Visible = false;
-                    LblDateStarted.Visible = false;
-                    Label6.Visible = false;
-                    LblSubEnd.Visible = false;
-                    //Response.Write("<script>alert ('You haven't subscribed to a plan yet. Please proceed with the subscription now.'); window.location.href = '/Admin/SubscriptionPlans.aspx';</script>");
+                    Response.Write("<script> window.location.href = '/LandingPage/Account.aspx';</script>");
+
                 }
             }
-            else
-            {
-                Response.Write("<script> window.location.href = '/LandingPage/Account.aspx';</script>");
 
-            }
         }
         //RENEW SUBSCRIPTION
         protected void btnSubscription_Click(object sender, EventArgs e)
