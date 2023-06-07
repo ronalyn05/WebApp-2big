@@ -439,6 +439,7 @@ namespace WRS2big_Web.Admin
                                 {
                                     userIdnum = int.Parse(idno),
                                     logsId = logID,
+                                    role = "Admin",
                                     userFullname = (string)Session["fullname"],
                                     userActivity = "ADDED STANDARD DELIVERY TYPE",
                                     activityTime = now
@@ -474,6 +475,7 @@ namespace WRS2big_Web.Admin
                                 {
                                     userIdnum = int.Parse(idno),
                                     logsId = logID,
+                                    role = "Admin",
                                     userFullname = (string)Session["fullname"],
                                     userActivity = "ADDED RESERVATION DELIVERY TYPE",
                                     activityTime = now
@@ -500,24 +502,32 @@ namespace WRS2big_Web.Admin
                                 delivery.exEstimatedDelivery = estimatedTime.Text;
                                 delivery.expressProducts = GetSelectedValues(expressOrderMethod);
 
-                                //generate a random number for users logged
-                                //Random rnd = new Random();
-                                int logID = rnd.Next(1, 10000);
-                                // Get the current date and time
-                                DateTime now = DateTime.Now;
-
-                                // Log user activity
-                                var userLog = new UsersLogs
+                                if (Session["role"] != null || Session["idno"] != null)
                                 {
-                                    userIdnum = int.Parse(idno),
-                                    logsId = logID,
-                                    userFullname = (string)Session["fullname"],
-                                    userActivity = "ADDED EXPRESS DELIVERY TYPE",
-                                    activityTime = now
-                                };
+                                    string role = (string)Session["role"];
+                                    string adminID = (string)Session["idno"];
 
-                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
-                               
+                                    //Random rnd = new Random();
+                                    int logsID = rnd.Next(1, 10000);
+
+                                    // Get the current date and time
+                                    DateTime addedTime = DateTime.Now;
+
+                                    // Log user activity
+                                    var log = new UsersLogs
+                                    {
+                                        userIdnum = int.Parse(adminID),
+                                        logsId = logsID,
+                                        role = role,
+                                        userFullname = (string)Session["fullname"],
+                                        userActivity = "ADDED EXPRESS DELIVERY",
+                                        activityTime = addedTime
+                                    };
+
+                                    var reslog = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                                    UsersLogs logRes = reslog.ResultAs<UsersLogs>();//Database Result
+                                }
+
                             }
                             break;
                     }
@@ -898,7 +908,35 @@ namespace WRS2big_Web.Admin
                 payment.gcashNumber = gcashnum.Text;
 
                 paymentResponse = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, payment);
+
+                if (Session["role"] != null || Session["idno"] != null)
+                {
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
+
+                    Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "ADDED PAYMENT METHODS",
+                        activityTime = addedTime
+                    };
+
+                    var res = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
                 Response.Write("<script>alert ('Payment Methods successsfully added');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+
             }
             else
             {
@@ -1015,7 +1053,33 @@ namespace WRS2big_Web.Admin
                 Delivery result = response.ResultAs<Delivery>();
                 //save the deliveryID in the session
                 Session["deliveryID"] = idnum;
-                Response.Write("<script>alert ('Thankyou for setting up your Delivery Details! You can now proceed with creating your Delivery Types'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                if (Session["role"] != null || Session["idno"] != null)
+                {
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
+
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "ADDED VEHICLES",
+                        activityTime = addedTime
+                    };
+
+                    var res= twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
+                Response.Write("<script>alert ('Vehicles Added Successfully'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
             }
@@ -1184,25 +1248,31 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+                    if (Session["role"] != null || Session["idno"] != null)
+                    {
+                        string role = (string)Session["role"];
+                        string adminID = (string)Session["idno"];
 
-                    // Get the current date and time
-                    DateTime addedTime = DateTime.Now;
+                        Random rnd = new Random();
+                        int logsID = rnd.Next(1, 10000);
 
-                // Log user activity
-                var log = new UsersLogs
-                {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED EXPRESS DELIVERY",
-                    activityTime = addedTime
-                };
+                        // Get the current date and time
+                        DateTime addedTime = DateTime.Now;
 
-                    twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(adminID),
+                            logsId = logsID,
+                            role = role,
+                            userFullname = (string)Session["fullname"],
+                            userActivity = "UPDATED EXPRESS DELIVERY",
+                            activityTime = addedTime
+                        };
+
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                    }
                 }
             }
 
@@ -1313,25 +1383,31 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED STANDARD DELIVERY",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATED STANDARD DELIVERY",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
             }
         }
 
@@ -1428,25 +1504,31 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED RESERVATION TYPE",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATED RESERVATION DELIVERY",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
             }
         }
 
@@ -1606,26 +1688,32 @@ namespace WRS2big_Web.Admin
                     FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
                     Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
+                    if (Session["role"] != null || Session["idno"] != null)
+                    {
+                        string role = (string)Session["role"];
+                        string adminID = (string)Session["idno"];
 
-                    ////generate a random number for users logged
-                    //Random rnd = new Random();
-                    //int idnum = rnd.Next(1, 10000);
-                    ////Get the current date and time
-                    //DateTime updateTime = DateTime.Now;
+                        Random rnd = new Random();
+                        int logsID = rnd.Next(1, 10000);
 
-                    ////Store the login information in the USERLOG table
-                    //var data = new UsersLogs
-                    //{
-                    //    logsId = idnum,
-                    //    userIdnum = int.Parse(idno),
-                    //    userFullname = (string)Session["fullName"],
-                    //    userActivity = "UPDATED DELIVERY DETAILS",
-                    //    activityTime = updateTime
-                    //};
+                        // Get the current date and time
+                        DateTime addedTime = DateTime.Now;
 
-                    ////Storing the  info
-                    //res = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
-                    //UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(adminID),
+                            logsId = logsID,
+                            role = role,
+                            userFullname = (string)Session["fullname"],
+                            userActivity = "UPDATED DELIVERY DETAILS",
+                            activityTime = addedTime
+                        };
+
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                    }
+                    
                 }
             }
         }
