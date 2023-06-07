@@ -348,6 +348,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "ADDED DISCOUNT COUPON OFFERED",
                 };
@@ -500,6 +501,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "ADDED REWARD SYSTEM",
                 };

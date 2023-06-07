@@ -585,6 +585,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "ADDED TANK SUPPLY",
                 };
@@ -791,6 +792,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     userActivity = "ADDED THIRD PARTY PRODUCT",
                     activityTime = addedTime
                 };
@@ -1015,6 +1017,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     userActivity = "ADDED PRODUCT REFILL",
                     activityTime = addedTime
                 };
@@ -1254,6 +1257,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "UPDATED PRODUCT REFILL DETAILS",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords

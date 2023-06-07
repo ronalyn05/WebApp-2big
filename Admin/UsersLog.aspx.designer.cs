@@ -96,13 +96,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSearchLogs;
 
         /// <summary>
-        /// lbluserId control.
+        /// lblSearchError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbluserId;
+        protected global::System.Web.UI.WebControls.Label lblSearchError;
+
+        /// <summary>
+        /// lblSearchResult control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSearchResult;
 
         /// <summary>
         /// GridLogs control.

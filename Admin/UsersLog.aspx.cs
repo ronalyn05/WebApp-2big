@@ -48,8 +48,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+          
 
             // Create the DataTable to hold the orders
             //sa pag create sa table 
@@ -62,6 +61,15 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -112,9 +120,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
-
+            
             // Create the DataTable to hold the orders
             //sa pag create sa table 
             DataTable userLogTable = new DataTable();
@@ -126,6 +132,14 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found for the owner.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -184,9 +198,7 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
-
+            
             // Create the DataTable to hold the orders
             //sa pag create sa table 
             DataTable userLogTable = new DataTable();
@@ -198,6 +210,15 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found for the cashier.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -238,7 +259,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblErrorActivity.Text = "No record found";
+                lblErrorActivity.Text = "No record found cashier";
             }
 
             // Bind the DataTable to the GridView
@@ -254,13 +275,11 @@ namespace WRS2big_Web.Admin
             //int logsId = (int)Session["logsId"];
 
             // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("DRIVERSLOG/");
+            FirebaseResponse response = twoBigDB.Get("DRIVERSLOG");
             Dictionary<string, DriversLog> driverlog = response.ResultAs<Dictionary<string, DriversLog>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = driverlog.Values.Where(d => d.empId.ToString() == idno).OrderByDescending(d => d.date);
+           
 
-            // Create the DataTable to hold the orders
-            //sa pag create sa table 
+            // Create the DataTable to hold the users log
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("EMP ID");
             userLogTable.Columns.Add("USER NAME");
@@ -270,10 +289,19 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = driverlog.Values.Where(d => d.empId.ToString() == idno).OrderByDescending(d => d.date);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found for the driver.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
                     string activity = entry.actions;
+
                     string role = "Driver";
                     if (activity == "0")
                     {
@@ -306,7 +334,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblErrorActivity.Text = "No record found";
+                lblErrorActivity.Text = "No record found for the driver";
             }
 
             // Bind the DataTable to the GridView
@@ -314,39 +342,49 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataBind();
         }
 
-        //SEARCH ACTIVITY
+        //SEARCH ROLE OR FIRSTNAME OF OWNER, CASHIER, OR DRIVER
         protected void btnSearchLogs_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string activity = txtSearch.Text;
+            string searchQuery = txtSearch.Text;
+
             try
             {
-                
+                // Check if the search query is valid
+                if (string.IsNullOrEmpty(searchQuery))
+                {
+                    Response.Write("<script>alert ('Please enter a valid user role, first name, or full name!');</script>");
+                    return;
+                }
 
-                // Retrieve all orders from the ORDERS table
-                FirebaseResponse responselist = twoBigDB.Get("ADMINLOGS");
-                Dictionary<string, UsersLogs> loglist = responselist.ResultAs<Dictionary<string, UsersLogs>>();
+                // Retrieve all user logs from the database
+                FirebaseResponse response = twoBigDB.Get("ADMINLOGS");
+                Dictionary<string, UsersLogs> loglist = response.ResultAs<Dictionary<string, UsersLogs>>();
 
-                // Create the DataTable to hold the orders
+                // Create the DataTable to hold the user logs
                 DataTable userLogsTable = new DataTable();
                 userLogsTable.Columns.Add("LOG ID");
                 userLogsTable.Columns.Add("USER ID");
                 userLogsTable.Columns.Add("USER NAME");
                 userLogsTable.Columns.Add("USER ROLE");
                 userLogsTable.Columns.Add("ACTIVITY");
-                // walkInordersTable.Columns.Add("PRODUCT SIZE");
                 userLogsTable.Columns.Add("TIMESTAMP");
 
-
-                if (responselist != null && responselist.ResultAs<UsersLogs>() != null)
+                if (loglist != null && loglist.Count > 0)
                 {
-                    var filteredList = loglist.Values.Where(d => d.userIdnum.ToString() == idno && d.userActivity.ToString() == activity);
+                    // Filter the user logs based on the search query
+                    var filteredList = loglist.Values.Where(d =>
+                        d.userIdnum.ToString() == idno &&
+                        (d.role.ToLower() == searchQuery.ToLower() ||
+                         d.userFullname.ToLower().Contains(searchQuery.ToLower())));
 
                     if (filteredList.Count() == 0)
                     {
-                        Response.Write("<script>alert('No logs found for the entered activity. Search activity in capital letters and with space in between each word.');</script>");
+                        //display message if search query is not found
+                        lblSearchError.Text = "No logs found for the entered role or name.";
+                        //Response.Write("<script>alert('No logs found for the entered role or name.');</script>");
                     }
                     else
                     {
@@ -354,29 +392,30 @@ namespace WRS2big_Web.Admin
                         foreach (var entry in filteredList)
                         {
                             string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                           // string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.role, entry.userFullname, entry.userActivity, timestamp);
+                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.role, entry.userActivity, timestamp);
                         }
                     }
                 }
                 else
                 {
-                    Response.Write("<script>alert('Error retrieving logs.');</script>");
+                    lblSearchError.Text = "Error retrieving logs.";
+                    //Response.Write("<script>alert('Error retrieving logs.');</script>");
                 }
+
+                lblSearchResult.Text = "Below is the record of" + " " + searchQuery;
 
                 // Bind the DataTable to the GridView
                 GridLogs.DataSource = userLogsTable;
                 GridLogs.DataBind();
 
-                txtSearch.Text = null;
-
+                txtSearch.Text = string.Empty;
             }
             catch (Exception ex)
             {
                 Response.Write("<script>alert('An error occurred while processing your request. '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
             }
         }
+       
         //Sorting data base on the dates entered by the user
         protected void generateSortedData_Click(object sender, EventArgs e)
         {
