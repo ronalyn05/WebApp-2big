@@ -54,8 +54,9 @@ namespace WRS2big_Web.Admin
                     drdOrderType.Enabled = false;
                     drdUnit_Size.Enabled = false;
                     drdProdName.Enabled = false;
+                    txtQty.Enabled = false;
 
-                    warning.Text = "You have reached your 'ORDER TRANSACTION LIMIT'. You can't cater walk-in orders using the platform.";
+                    warning.Text = "WARNING: You have reached your 'ORDER TRANSACTION LIMIT'. You can't cater walk-in orders using the platform.  If you wish to continue using the system, subscribe to a different package.";
                 }
 
             }
@@ -63,112 +64,133 @@ namespace WRS2big_Web.Admin
         //STORE DATA TO WALKINORDER TBL AND CALCULATE ITS TOTAL AMOUNT
         protected void btnPayment_Click(object sender, EventArgs e)
         {
-            string idno = (string)Session["idno"];
-            string name = (string)Session["fullname"];
-            try
+            if (Session["role"] != null || Session["idno"] != null || Session["fullName"] != null)
             {
-                // INSERT DATA TO TABLE = WALKINORDERS
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
+                string idno = (string)Session["idno"];
+                string name = (string)Session["fullname"];
+                string role = (string)Session["role"];
+                string currentRole = "";
 
-                // Convert input values to numerical format
-                int qty;
-                decimal price, discount, totalAmount, discountAmount, subtotal;
-                
-
-                if (!int.TryParse(txtQty.Text, out qty))
+                if (role == "Cashier")
                 {
-                    throw new ArgumentException("Invalid quantity value");
-                }
-                if (!decimal.TryParse(lblprice.Text, out price))
-                {
-                    throw new ArgumentException("Invalid price value");
-                }
-                if (!decimal.TryParse(lblDiscount.Text, out discount))
-                {
-                    // If the discount value is not a valid decimal, assume it is zero
-                    discount = 0;
+                    currentRole = "Cashier";
                 }
                 else
-                { 
-                    discount = decimal.Parse(lblDiscount.Text);
-                }
-
-                // Calculate total amount only if a valid discount value is entered
-                if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
                 {
-                    //discount /= 100; // 
-                    discountAmount = price * discount * qty;
-                    subtotal = price * qty; 
-                    totalAmount = subtotal - discountAmount;
-                                                            
-                    lblDiscount.Text = discountAmount.ToString();
+                    currentRole = "Admin";
+                }
+                try
+                {
+                    // INSERT DATA TO TABLE = WALKINORDERS
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    // Convert input values to numerical format
+                    int qty;
+                    decimal price, discount, totalAmount, discountAmount, subtotal;
+
+
+                    if (!int.TryParse(txtQty.Text, out qty))
+                    {
+                        throw new ArgumentException("Invalid quantity value");
+                    }
+                    if (!decimal.TryParse(lblprice.Text, out price))
+                    {
+                        throw new ArgumentException("Invalid price value");
+                    }
+                    if (!decimal.TryParse(lblDiscount.Text, out discount))
+                    {
+                        // If the discount value is not a valid decimal, assume it is zero
+                        discount = 0;
+                    }
+                    else
+                    {
+                        discount = decimal.Parse(lblDiscount.Text);
+                    }
+
+                    // Calculate total amount only if a valid discount value is entered
+                    if (decimal.TryParse(lblprice.Text, out price) && int.TryParse(txtQty.Text, out qty))
+                    {
+                        //discount /= 100; // 
+                        discountAmount = price * discount * qty;
+                        subtotal = price * qty;
+                        totalAmount = subtotal - discountAmount;
+
+                        lblDiscount.Text = discountAmount.ToString();
+                        lblAmount.Text = totalAmount.ToString();
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert ('Invalid price or quantity value. Please enter valid decimal numbers.');  location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
+                        return;
+                    }
+
+                    // Update data with the calculated total amount, discount and adjusted quantity
+                    var data = new WalkInOrders
+                    {
+                        adminId = int.Parse(idno),
+                        orderNo = idnum,
+                        productName = drdProdName.SelectedValue,
+                        productUnitSize = drdUnit_Size.SelectedValue,
+                        // productSize = drdSize.SelectedValue,
+                        productPrice = price,
+                        productDiscount = discount.ToString(), // Store the discount value in the database
+                        productQty = qty, // Adjust quantity to account for free gallon
+                                          //productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
+                        totalAmount = totalAmount, // Store calculated total amount as decimal
+                        orderType = drdOrderType.Text,
+                        addedBy = name,
+                        dateAdded = DateTime.UtcNow
+                    };
+
+                    SetResponse response;
+                    //USER = tablename, Idno = key(PK ? )
+                    response = twoBigDB.Set("WALKINORDERS/" + data.orderNo, data);
+                    WalkInOrders result = response.ResultAs<WalkInOrders>();
+
+                    // Set the text of the txtTotalAmount textbox to the calculated total amount
                     lblAmount.Text = totalAmount.ToString();
+
+                    //int logsId = (int)Session["logsId"];
+
+                    // Retrieve the existing Users log object from the database
+                    //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
+                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.UtcNow;
+
+
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(idno),
+                            logsId = idnum,
+                            userFullname = name,
+                            activityTime = addedTime,
+                            userActivity = "CATER WALKIN ORDER",
+                            role = currentRole
+                        };
+
+                        //Storing the  info
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    
+
+                    //response = twoBigDB.Set("USERSLOG/" + log.logsId, log);//Storing data to the database
+                    //UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
+                    Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!');</script>");
+                    //Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    Response.Write("<script>alert ('Invalid price or quantity value. Please enter valid decimal numbers.');  location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
-                    return;
+                    Response.Write(ex.Message);
                 }
-
-                // Update data with the calculated total amount, discount and adjusted quantity
-                var data = new WalkInOrders
-                {
-                    adminId = int.Parse(idno),
-                    orderNo = idnum,
-                    productName = drdProdName.SelectedValue,
-                    productUnitSize = drdUnit_Size.SelectedValue,
-                   // productSize = drdSize.SelectedValue,
-                    productPrice = price,
-                    productDiscount = discount.ToString(), // Store the discount value in the database
-                    productQty = qty, // Adjust quantity to account for free gallon
-                    //productQty = (int)(qty - freeGallon), // Adjust quantity to account for free gallon
-                    totalAmount = totalAmount, // Store calculated total amount as decimal
-                    orderType = drdOrderType.Text,
-                    addedBy = name,
-                    dateAdded = DateTime.UtcNow
-                };
-
-                SetResponse response;
-                //USER = tablename, Idno = key(PK ? )
-                response = twoBigDB.Set("WALKINORDERS/" + data.orderNo, data);
-                WalkInOrders result = response.ResultAs<WalkInOrders>();
-
-                // Set the text of the txtTotalAmount textbox to the calculated total amount
-                lblAmount.Text = totalAmount.ToString();
-
-                //int logsId = (int)Session["logsId"];
-
-                // Retrieve the existing Users log object from the database
-                //FirebaseResponse resLog = twoBigDB.Get("USERSLOG/" + logsId);
-                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-               // Get the current date and time
-                DateTime addedTime = DateTime.UtcNow;
-
-                // Log user activity
-                var log = new UsersLogs
-                {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    activityTime = addedTime,
-                    userActivity = "CATER WALKIN ORDER",
-                };
-
-                //Storing the  info
-                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
-                //response = twoBigDB.Set("USERSLOG/" + log.logsId, log);//Storing data to the database
-                //UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
-
-                Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!');</script>");
-                //Response.Write("<script>alert ('Total Amount is: " + data.totalAmount + " PHP!'); location.reload(); window.location.href = '/Admin/WalkIns.aspx'; </script>");
-
             }
-            catch (Exception ex)
-            {
-                Response.Write(ex.Message);
-            }
+            
         }
 
         //RETRIEVING THE PRODUCTS USING SEARCH

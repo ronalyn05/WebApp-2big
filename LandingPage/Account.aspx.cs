@@ -461,6 +461,27 @@ namespace WRS2big_Web.LandingPage
                         Session["businessdaysTo"] = stations.businessDaysTo;
                         Session["businessdaysFrom"] = stations.businessDaysFrom;
 
+                        //generate a random number for users logged
+                        Random rnd = new Random();
+                        int idnum = rnd.Next(1, 10000);
+                        //Get the current date and time
+                        DateTime loginTime = DateTime.Now;
+
+                        //Store the login information in the USERLOG table
+                        var data = new UsersLogs
+                        {
+                            logsId = idnum,
+                            userIdnum = int.Parse(idno),
+                            userFullname = (string)Session["fullName"],
+                            userActivity = "LOGGED IN",
+                            activityTime = loginTime,
+                            role = "Cashier"
+                        };
+
+                        //Storing the  info
+                        var response = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
+                        UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
                         Response.Write("<script>alert ('Login Successfull!');  window.location.href = '/Admin/AdminIndex.aspx'; </script>");
                     }
                     else
@@ -563,7 +584,8 @@ namespace WRS2big_Web.LandingPage
                         userIdnum = int.Parse(idno),
                         userFullname = (string)Session["fullName"],
                         userActivity = "LOGGED IN",
-                        activityTime = loginTime
+                        activityTime = loginTime,
+                        role = "Admin"
                     };
 
                     //Storing the  info

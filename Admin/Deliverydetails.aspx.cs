@@ -36,9 +36,9 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            deliveryTypesGrid();
+          
             //detailsGridView();
-            displayDelDetails();
+            
             // expressDisplay();
             // reservationDisplay();
             //standardDisplay();
@@ -51,7 +51,21 @@ namespace WRS2big_Web.Admin
             updateStandard.Visible = false;
 
 
-            //POPULATE THE UPDATE MODALS WITH THEIR CORRESPONDING EXISTING DATA 
+            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS");
+            Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
+
+
+            if (details != null)
+            {
+                deliveryTypesGrid();
+                displayDelDetails();
+            }
+            else
+            {
+                warning.Text = "No 'Delivery Details' found. Manage the Delivery Details first.";
+                deliveryTypesRow.Visible = false;
+                deliveryDetailsRow.Visible = false;
+            }
 
 
         }
@@ -90,6 +104,7 @@ namespace WRS2big_Web.Admin
                 {
                     foreach (var entry in filteredList)
                     {
+                        
 
                         DataRow row1 = vehicledDetails.NewRow();
                         row1["VEHICLE NAME"] = entry.vehicle1Name;
@@ -111,16 +126,72 @@ namespace WRS2big_Web.Admin
                         row4["VEHICLE FEE"] = entry.vehicle4Fee;
                         vehicledDetails.Rows.Add(row4);
 
-                        string[] swapOptions = entry.swapOptions.Split(',');
-                        foreach (string swapOption in swapOptions)
+
+                        //POPULATE DETAILS IN THE UPDATE MODAL
+                        if (entry.vehicle1Name != null || entry.vehicle1Fee != null || entry.vehicle1Qty != null)
                         {
-                            DataRow row = swapDetails.NewRow();
-                            row["SWAP OPTIONS"] = swapOption.Trim();
-                            if (swapOption.Trim() == "Request Pick-up")
+                            updateV1Name.Attributes["placeholder"] = entry.vehicle1Name;
+                            updateV1Fee.Attributes["placeholder"] = entry.vehicle1Fee;
+                            updateV1Num.Attributes["placehodler"] = entry.vehicle1Qty;
+                        }
+                        if (entry.vehicle2Name != null || entry.vehicle2Fee != null || entry.vehicle2Qty != null)
+                        {
+                            updateV2Name.Attributes["placeholder"] = entry.vehicle2Name;
+                            updateV2Fee.Attributes["placeholder"] = entry.vehicle2Fee;
+                            updateV2Num.Attributes["placehodler"] = entry.vehicle2Qty;
+                        }
+                        if (entry.vehicle3Name != null || entry.vehicle3Fee != null || entry.vehicle3Qty != null)
+                        {
+                            updateV3Name.Attributes["placeholder"] = entry.vehicle3Name;
+                            updateV3Fee.Attributes["placeholder"] = entry.vehicle3Fee;
+                            updateV3Num.Attributes["placehodler"] = entry.vehicle3Qty;
+                        }
+                        if (entry.vehicle4Name != null || entry.vehicle4Fee != null || entry.vehicle4Qty != null)
+                        {
+                            updateV4Name.Attributes["placeholder"] = entry.vehicle4Name;
+                            updateV4Fee.Attributes["placeholder"] = entry.vehicle4Fee;
+                            updateV4Num.Attributes["placehodler"] = entry.vehicle4Qty;
+                        }
+
+                        string[] swapOptions = entry.swapOptions.Split(',');
+                        if (entry.swapOptions != null)
+                        {
+                            foreach (string swapOption in swapOptions)
                             {
-                                row["Fee"] = "per Gallon :" + " " +  entry.perGallonFee;
+                                DataRow row = swapDetails.NewRow();
+                                row["SWAP OPTIONS"] = swapOption.Trim();
+                                if (swapOption.Trim() == "Request Pick-up")
+                                {
+                                    row["Fee"] = "per Gallon :" + " " + entry.perGallonFee;
+                                }
+                                swapDetails.Rows.Add(row);
+
+
+                                //POPULATE DETAILS INTO UPDATE MODAL
+                                if (swapOption.Trim() == "Swap Without Conditions")
+                                {
+                                    updatewithoutCondition.Selected = true;
+                                }
+                                if (swapOption.Trim() == "Swap With Conditions")
+                                {
+                                    updatewithCondition.Selected = true;
+                                }
+                                if (swapOption.Trim() == "Gallon Drop-by")
+                                {
+                                    updategallonDropby.Selected = true;
+                                }
+                                if (swapOption.Trim() == "Request Pick-up")
+                                {
+                                    updatepickupPerGallon.Selected = true;
+                                    updateGallonsFee.Visible = true;
+                                    updatebyGallonsFee.Attributes["placeholder"] = entry.perGallonFee;
+                                }
+                                else
+                                {
+                                    updateGallonsFee.Visible = false;
+                                }
                             }
-                            swapDetails.Rows.Add(row);
+
                         }
 
                         if (entry.paymentMethods != null)
@@ -133,8 +204,22 @@ namespace WRS2big_Web.Admin
                                 if (payment.Trim() == "Gcash")
                                 {
                                     row["Number"] = entry.gcashNumber;
+                                    updategcashChecked.Visible = true;
+                                    updategcashPayment.Selected = true;
+                                    updateGcashNum.Attributes["placeholder"] = entry.gcashNumber;
+
                                 }
                                 paymentDetails.Rows.Add(row);
+
+
+                                if (payment.Trim() == "CashOnDelivery")
+                                {
+                                    updateCOD.Selected = true;
+                                }
+                                if (payment.Trim() == "Points")
+                                {
+                                    updatePoints.Selected = true;
+                                }
                             }
                         }
                         
@@ -145,13 +230,22 @@ namespace WRS2big_Web.Admin
                             DataRow row = orderTypes.NewRow();
                             row["ORDER TYPES"] = orders.Trim();
                             orderTypes.Rows.Add(row);
+
+                            if (orders.Trim() == "Delivery")
+                            {
+                                updatedelivery.Selected = true;
+                            }
+                            if (orders.Trim() == "PickUp")
+                            {
+                                updatePickup.Selected = true;
+                            }
                         }
                         
                     }
                 }
                 else
                 {
-
+                  
                 }
                 //Bind the DataTable to the respective GridViews
                 vehiclesGridview.DataSource = vehicledDetails;
@@ -257,6 +351,7 @@ namespace WRS2big_Web.Admin
                 //hide the dropdown for deliveryDetails
                 btnDeliverytype.Visible = false;
                 drdDeliverytype.Visible = false;
+               
             }
 
 
@@ -344,6 +439,7 @@ namespace WRS2big_Web.Admin
                                 {
                                     userIdnum = int.Parse(idno),
                                     logsId = logID,
+                                    role = "Admin",
                                     userFullname = (string)Session["fullname"],
                                     userActivity = "ADDED STANDARD DELIVERY TYPE",
                                     activityTime = now
@@ -379,6 +475,7 @@ namespace WRS2big_Web.Admin
                                 {
                                     userIdnum = int.Parse(idno),
                                     logsId = logID,
+                                    role = "Admin",
                                     userFullname = (string)Session["fullname"],
                                     userActivity = "ADDED RESERVATION DELIVERY TYPE",
                                     activityTime = now
@@ -405,24 +502,32 @@ namespace WRS2big_Web.Admin
                                 delivery.exEstimatedDelivery = estimatedTime.Text;
                                 delivery.expressProducts = GetSelectedValues(expressOrderMethod);
 
-                                //generate a random number for users logged
-                                //Random rnd = new Random();
-                                int logID = rnd.Next(1, 10000);
-                                // Get the current date and time
-                                DateTime now = DateTime.Now;
-
-                                // Log user activity
-                                var userLog = new UsersLogs
+                                if (Session["role"] != null || Session["idno"] != null)
                                 {
-                                    userIdnum = int.Parse(idno),
-                                    logsId = logID,
-                                    userFullname = (string)Session["fullname"],
-                                    userActivity = "ADDED EXPRESS DELIVERY TYPE",
-                                    activityTime = now
-                                };
+                                    string role = (string)Session["role"];
+                                    string adminID = (string)Session["idno"];
 
-                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
-                               
+                                    //Random rnd = new Random();
+                                    int logsID = rnd.Next(1, 10000);
+
+                                    // Get the current date and time
+                                    DateTime addedTime = DateTime.Now;
+
+                                    // Log user activity
+                                    var log = new UsersLogs
+                                    {
+                                        userIdnum = int.Parse(adminID),
+                                        logsId = logsID,
+                                        role = role,
+                                        userFullname = (string)Session["fullname"],
+                                        userActivity = "ADDED EXPRESS DELIVERY",
+                                        activityTime = addedTime
+                                    };
+
+                                    var reslog = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                                    UsersLogs logRes = reslog.ResultAs<UsersLogs>();//Database Result
+                                }
+
                             }
                             break;
                     }
@@ -509,85 +614,91 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert('Data already exist'); window.location.href = '/Admin/Deliverydetails.aspx';" + ex.Message);
             }
         }
-        //DISPLAY EXPRESS DETAILS
+        //DISPLAY EXPRESS DETAILS IN THE MODAL
         private void expressDisplay()
         {
             nullLabel.Text = "";
-            string idno = (string)Session["idno"];
-            // int adminId = int.Parse(idno);
 
-            // Retrieve all data from the DELIVERY_DETAILS table
-            FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
-            Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
-            var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
-
-            if (filteredList != null)
+            if (Session["idno"] != null)
             {
-                // Create the DataTable to hold the orders
-                //sa pag create sa table
-                DataTable expressTable = new DataTable();
-                expressTable.Columns.Add("EXPRESS ID");
-                expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
-                expressTable.Columns.Add("DELIVERY FEE");
-                expressTable.Columns.Add("EXPRESS PRODUCTS");
-                expressTable.Columns.Add("DATE ADDED");
-                expressTable.Columns.Add("ADDED BY");
+                string idno = (string)Session["idno"];
+                // int adminId = int.Parse(idno);
 
-                if (response != null && response.ResultAs<Delivery>() != null)
+                // Retrieve all data from the DELIVERY_DETAILS table
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS");
+                Dictionary<string, Delivery> deliveryList = response.ResultAs<Dictionary<string, Delivery>>();
+                var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
+
+                if (filteredList != null)
                 {
-                    foreach (var entry in filteredList)
+                    // Create the DataTable to hold the orders
+                    //sa pag create sa table
+                    DataTable expressTable = new DataTable();
+                    expressTable.Columns.Add("EXPRESS ID");
+                    expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
+                    expressTable.Columns.Add("DELIVERY FEE");
+                    expressTable.Columns.Add("EXPRESS PRODUCTS");
+                    expressTable.Columns.Add("DATE ADDED");
+                    expressTable.Columns.Add("ADDED BY");
+
+                    if (response != null && response.ResultAs<Delivery>() != null)
                     {
-                        if (entry.exDeliveryType == "Express")
+                        foreach (var entry in filteredList)
                         {
-                            response = twoBigDB.Get("ADMIN/" + idno);
-                            AdminAccount adminDetail = response.ResultAs<AdminAccount>();
-                            expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressProducts, entry.expressdateAdded, adminDetail.fname + " " + adminDetail.lname);
-
-                           
-                            //POPULATE THE UPDATE MODAL WITH THE RESPECTIVE DETAILS
-                            updateExpressTime.Attributes["placeholder"] = entry.exEstimatedDelivery;
-                            updateExpressDistance.Attributes["placeholder"] = entry.expressDistance.ToString();
-                            updateExpressFee.Attributes["placeholder"] = entry.exDeliveryFee;
-
-                            //  string[] swapOptions = entry.swapOptions.Split(',');
-                            string[] expressProds = entry.expressProducts.Split(',');
-                            foreach (string product in expressProds)
+                            if (entry.exDeliveryType == "Express")
                             {
-                                if (product.Trim() == "Refill")
+                                response = twoBigDB.Get("ADMIN/" + idno);
+                                AdminAccount adminDetail = response.ResultAs<AdminAccount>();
+                                expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressProducts, entry.expressdateAdded, adminDetail.fname + " " + adminDetail.lname);
+
+
+                                //POPULATE THE UPDATE MODAL WITH THE RESPECTIVE DETAILS
+                                updateExpressTime.Attributes["placeholder"] = entry.exEstimatedDelivery;
+                                updateExpressDistance.Attributes["placeholder"] = entry.expressDistance.ToString();
+                                updateExpressFee.Attributes["placeholder"] = entry.exDeliveryFee;
+
+                                //  string[] swapOptions = entry.swapOptions.Split(',');
+                                string[] expressProds = entry.expressProducts.Split(',');
+                                foreach (string product in expressProds)
                                 {
-                                    expressRefill.Selected = true;
-                                }
-                                if (product.Trim() == "other products")
-                                {
-                                    expressOther.Selected = true;
+                                    if (product.Trim() == "Refill")
+                                    {
+                                        expressRefill.Selected = true;
+                                    }
+                                    if (product.Trim() == "other products")
+                                    {
+                                        expressOther.Selected = true;
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            nullLabel.Text = "No 'Express Delivery' data available";
+                            else
+                            {
+                                nullLabel.Text = "No 'Express Delivery' data available";
+                            }
+
                         }
 
                     }
+                    else
+                    {
+                        // Handle null response or invalid selected value
+                        nullLabel.Text = "No 'Express Delivery' data avaialble";
+                    }
+
+                    // Bind the DataTable to the GridView
+                    expressGridview.DataSource = expressTable;
+                    expressGridview.DataBind();
+
+
+                    drdDeliverytype.Visible = true;
+                    btnDeliverytype.Visible = true;
 
                 }
-                else
-                {
-                    // Handle null response or invalid selected value
-                    nullLabel.Text = "No 'Express Delivery' data avaialble";
-                }
-
-                // Bind the DataTable to the GridView
-                expressGridview.DataSource = expressTable;
-                expressGridview.DataBind();
-
-
-                drdDeliverytype.Visible = true;
-                btnDeliverytype.Visible = true;
-               
             }
+
             
         }
+        //DISPLAT STANDARD DETAILS IN THE MODAL
         private void standardDisplay()
         {
             nullLabel.Text = "";
@@ -628,7 +739,7 @@ namespace WRS2big_Web.Admin
                             updatestandardDistance.Attributes["placeholder"] = entry.standistance;
                             updateStandardFee.Attributes["placeholder"] = entry.stanDeliveryFee;
 
-                            //  string[] swapOptions = entry.swapOptions.Split(',');
+                            // GET THE VALUE FROM THE DATABAS AND SPLIT 
                             string[] standardProds = entry.standardProducts.Split(',');
                             foreach (string product in standardProds)
                             {
@@ -669,7 +780,7 @@ namespace WRS2big_Web.Admin
             }
             
         }
-        //DISPLAY RESERVATION DETAILS
+        //DISPLAY RESERVATION DETAILS IN THE MODAL
         private void reservationDisplay()
         {
             nullLabel.Text = "";
@@ -749,6 +860,7 @@ namespace WRS2big_Web.Admin
            
         }
 
+       
         protected void paymentButton_Click(object sender, EventArgs e)
         {
 
@@ -796,7 +908,35 @@ namespace WRS2big_Web.Admin
                 payment.gcashNumber = gcashnum.Text;
 
                 paymentResponse = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, payment);
+
+                if (Session["role"] != null || Session["idno"] != null)
+                {
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
+
+                    Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "ADDED PAYMENT METHODS",
+                        activityTime = addedTime
+                    };
+
+                    var res = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
                 Response.Write("<script>alert ('Payment Methods successsfully added');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+
             }
             else
             {
@@ -879,6 +1019,7 @@ namespace WRS2big_Web.Admin
             {
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
+                int vehicleID = rnd.Next(1, 20000);
 
                 var delivery = new Delivery
                 {
@@ -894,7 +1035,15 @@ namespace WRS2big_Web.Admin
                     vehicle2Fee = vehicle2Fee.Text,
                     vehicle3Fee = vehicle3Fee.Text,
                     vehicle4Fee = vehicle4Fee.Text,
-                    perGallonFee = perGallonFee.Text
+                    perGallonFee = perGallonFee.Text,
+                    vehicle1Qty = vehicle1Qty.Text,
+                    vehicle2Qty = vehicle2Qty.Text,
+                    vehicle3Qty = vehicle3Qty.Text,
+                    vehicle4Qty = vehicle4Qty.Text,
+                    vehicle1ID = vehicleID,
+                    vehicle2ID = vehicleID + 1,
+                    vehicle3ID = vehicleID + 2,
+                    vehicle4ID = vehicleID + 3
                 };
 
                
@@ -904,7 +1053,33 @@ namespace WRS2big_Web.Admin
                 Delivery result = response.ResultAs<Delivery>();
                 //save the deliveryID in the session
                 Session["deliveryID"] = idnum;
-                Response.Write("<script>alert ('Thankyou for setting up your Delivery Details! You can now proceed with creating your Delivery Types'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                if (Session["role"] != null || Session["idno"] != null)
+                {
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
+
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "ADDED VEHICLES",
+                        activityTime = addedTime
+                    };
+
+                    var res= twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
+                Response.Write("<script>alert ('Vehicles Added Successfully'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
             }
@@ -981,118 +1156,126 @@ namespace WRS2big_Web.Admin
 
         protected void updateExpressbutton_Click(object sender, EventArgs e)
         {
-            var idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-            //INSERT DATA TO TABLE
-            Random rnd = new Random();
-            int idnum = rnd.Next(1, 10000);
-
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
-            var all = allDelivery.Body;
-            Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
-
-            // Loop through all the deliverydetails
-            foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
+            if (Session["idno"] != null)
             {
-                if (entry.Value.adminId == adminId)
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+
+
+                FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
+                var all = allDelivery.Body;
+                Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
+
+                // Loop through all the deliverydetails
+                foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
                 {
-                    int deliveryID = entry.Value.deliveryId;
-                    Session["deliveryID"] = deliveryID;
+                    if (entry.Value.adminId == adminId)
+                    {
+                        int deliveryID = entry.Value.deliveryId;
+                        Session["deliveryID"] = deliveryID;
+                    }
+                }
+
+                int deliveryIdno = (int)Session["deliveryID"];
+
+                // Check if there is an existing delivery object for this admin
+                FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
+                Delivery delivery = null;
+                if (resDelivery.Body != "null")
+                {
+                    delivery = resDelivery.ResultAs<Delivery>();
+
+                    var updatedExpress = new Delivery
+                    {
+                       //EDITABLE
+                        swapOptions = delivery.swapOptions,
+                        vehicle1Fee = delivery.vehicle1Fee,
+                        vehicle1Name = delivery.vehicle1Name,
+                        vehicle2Fee = delivery.vehicle2Fee,
+                        vehicle2Name = delivery.vehicle2Name,
+                        vehicle3Fee = delivery.vehicle3Fee,
+                        vehicle3Name = delivery.vehicle3Name,
+                        vehicle4Fee = delivery.vehicle4Fee,
+                        vehicle4Name = delivery.vehicle4Name,
+                        orderTypes = delivery.orderTypes,
+                        perGallonFee = delivery.perGallonFee,
+                        exDeliveryType = delivery.exDeliveryType,
+                        stanDeliverytype = delivery.stanDeliverytype,
+                        resDeliveryType = delivery.resDeliveryType,
+
+
+                        //NOT EDITABLE 
+                        exEstimatedDelivery = delivery.exEstimatedDelivery,
+                        expressDistance = delivery.expressDistance,
+                        expressID = delivery.expressID,
+                        expressProducts = delivery.expressProducts,
+                        expressdateAdded = delivery.expressdateAdded,
+                        resDeliveryFee = delivery.resDeliveryFee,
+                        resDistanceFree = delivery.resDistanceFree,
+                        reservationID = delivery.reservationID,
+                        reservationdateAdded = delivery.reservationdateAdded,
+                        reserveProducts = delivery.reserveProducts,
+                        stanDeliveryFee = delivery.stanDeliveryFee,
+                        stanDeliveryTime = delivery.stanDeliveryTime,
+                        standardDateAdded = delivery.standardDateAdded,
+                        standardID = delivery.standardID,
+                        standardProducts = delivery.standardProducts,
+                        standistance = delivery.standistance
+                    };
+
+
+                    if (!string.IsNullOrEmpty(updateExpressTime.Text))
+                    {
+                        delivery.exEstimatedDelivery = updateExpressTime.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateExpressFee.Text))
+                    {
+                        delivery.exDeliveryFee = updateExpressFee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateExpressDistance.Text))
+                    {
+                        delivery.expressDistance = int.Parse(updateExpressDistance.Text);
+                    }
+                    if (updateExpressChckbx.Items.Cast<ListItem>().Any(item => item.Selected))
+                    {
+                        delivery.expressProducts = string.Join(",", updateExpressChckbx.Items.Cast<ListItem>()
+                            .Where(item => item.Selected)
+                            .Select(item => item.Value));
+                    }
+
+                    // Save the updated delivery object to the database
+                    FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
+                    Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+
+                    if (Session["role"] != null || Session["idno"] != null)
+                    {
+                        string role = (string)Session["role"];
+                        string adminID = (string)Session["idno"];
+
+                        Random rnd = new Random();
+                        int logsID = rnd.Next(1, 10000);
+
+                        // Get the current date and time
+                        DateTime addedTime = DateTime.Now;
+
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(adminID),
+                            logsId = logsID,
+                            role = role,
+                            userFullname = (string)Session["fullname"],
+                            userActivity = "UPDATED EXPRESS DELIVERY",
+                            activityTime = addedTime
+                        };
+
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                    }
                 }
             }
 
-            int deliveryIdno = (int)Session["deliveryID"];
-
-            // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
-            Delivery delivery = null;
-            if (resDelivery.Body != "null")
-            {
-                delivery = resDelivery.ResultAs<Delivery>();
-
-                var updatedExpress = new Delivery
-                {
-                    //NOT EDITABLE
-                    swapOptions = delivery.swapOptions,
-                    vehicle1Fee = delivery.vehicle1Fee,
-                    vehicle1Name = delivery.vehicle1Name,
-                    vehicle2Fee = delivery.vehicle2Fee,
-                    vehicle2Name = delivery.vehicle2Name,
-                    vehicle3Fee = delivery.vehicle3Fee,
-                    vehicle3Name = delivery.vehicle3Name,
-                    vehicle4Fee = delivery.vehicle4Fee,
-                    vehicle4Name = delivery.vehicle4Name,
-                    orderTypes = delivery.orderTypes,
-                    perGallonFee = delivery.perGallonFee,
-                    exDeliveryType = delivery.exDeliveryType,
-                    stanDeliverytype = delivery.stanDeliverytype,
-                    resDeliveryType = delivery.resDeliveryType,
-
-                    //EDITABLE
-                    
-                    exEstimatedDelivery = delivery.exEstimatedDelivery,
-                    expressDistance = delivery.expressDistance,
-                    expressID = delivery.expressID,
-                    expressProducts = delivery.expressProducts,
-                    expressdateAdded = delivery.expressdateAdded,
-                    resDeliveryFee = delivery.resDeliveryFee,
-                    resDistanceFree = delivery.resDistanceFree,
-                    reservationID = delivery.reservationID,
-                    reservationdateAdded = delivery.reservationdateAdded,
-                    reserveProducts = delivery.reserveProducts,
-                    stanDeliveryFee = delivery.stanDeliveryFee,
-                    stanDeliveryTime = delivery.stanDeliveryTime,
-                    standardDateAdded = delivery.standardDateAdded,
-                    standardID = delivery.standardID,
-                    standardProducts = delivery.standardProducts,
-                    standistance = delivery.standistance
-            };
-
-
-                if (!string.IsNullOrEmpty(updateExpressTime.Text))
-                {
-                    delivery.exEstimatedDelivery = updateExpressTime.Text;
-                }
-                if (!string.IsNullOrEmpty(updateExpressFee.Text))
-                {
-                    delivery.exDeliveryFee = updateExpressFee.Text;
-                }
-                if (!string.IsNullOrEmpty(updateExpressDistance.Text))
-                {
-                    delivery.expressDistance = int.Parse(updateExpressDistance.Text);
-                }
-                if (updateExpressChckbx.Items.Cast<ListItem>().Any(item => item.Selected))
-                {
-                    delivery.expressProducts = string.Join(",", updateExpressChckbx.Items.Cast<ListItem>()
-                        .Where(item => item.Selected)
-                        .Select(item => item.Value));
-                }
-
-                // Save the updated delivery object to the database
-                FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
-                Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-
-
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
-                {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED EXPRESS DELIVERY",
-                    activityTime = addedTime
-                };
-
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
-            }
 
         }
 
@@ -1200,25 +1383,31 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED STANDARD DELIVERY",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATED STANDARD DELIVERY",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
             }
         }
 
@@ -1315,26 +1504,223 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script>alert ('Standard Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
 
-                //int logsId = (int)Session["logsId"];
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS");
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse(idno),
-                    logsId = idnum,
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "UPDATED RESERVATION TYPE",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string adminID = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(adminID),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATED RESERVATION DELIVERY",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                }
             }
+        }
+
+        protected void updateDeliveryDetails_Click(object sender, EventArgs e)
+        {
+            if (Session["idno"] != null)
+            {
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+
+
+                FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
+                var all = allDelivery.Body;
+                Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
+
+                // Loop through all the deliverydetails
+                foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
+                {
+                    if (entry.Value.adminId == adminId)
+                    {
+                        int deliveryID = entry.Value.deliveryId;
+                        Session["deliveryID"] = deliveryID;
+                    }
+                }
+
+                int deliveryIdno = (int)Session["deliveryID"];
+
+                // Check if there is an existing delivery object for this admin
+                FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
+                Delivery delivery = null;
+                if (resDelivery.Body != "null")
+                {
+                    delivery = resDelivery.ResultAs<Delivery>();
+
+                    var updatedExpress = new Delivery
+                    {
+                        //EDITABLE
+                        swapOptions = delivery.swapOptions,
+                        vehicle1Fee = delivery.vehicle1Fee,
+                        vehicle1Name = delivery.vehicle1Name,
+                        vehicle2Fee = delivery.vehicle2Fee,
+                        vehicle2Name = delivery.vehicle2Name,
+                        vehicle3Fee = delivery.vehicle3Fee,
+                        vehicle3Name = delivery.vehicle3Name,
+                        vehicle4Fee = delivery.vehicle4Fee,
+                        vehicle4Name = delivery.vehicle4Name,
+                        orderTypes = delivery.orderTypes,
+                        perGallonFee = delivery.perGallonFee,
+                        exDeliveryType = delivery.exDeliveryType,
+                        stanDeliverytype = delivery.stanDeliverytype,
+                        resDeliveryType = delivery.resDeliveryType,
+
+
+                        //NOT EDITABLE 
+                        exEstimatedDelivery = delivery.exEstimatedDelivery,
+                        expressDistance = delivery.expressDistance,
+                        expressID = delivery.expressID,
+                        expressProducts = delivery.expressProducts,
+                        expressdateAdded = delivery.expressdateAdded,
+                        resDeliveryFee = delivery.resDeliveryFee,
+                        resDistanceFree = delivery.resDistanceFree,
+                        reservationID = delivery.reservationID,
+                        reservationdateAdded = delivery.reservationdateAdded,
+                        reserveProducts = delivery.reserveProducts,
+                        stanDeliveryFee = delivery.stanDeliveryFee,
+                        stanDeliveryTime = delivery.stanDeliveryTime,
+                        standardDateAdded = delivery.standardDateAdded,
+                        standardID = delivery.standardID,
+                        standardProducts = delivery.standardProducts,
+                        standistance = delivery.standistance
+                    };
+
+                    if (!string.IsNullOrEmpty(updatebyGallonsFee.Text))
+                    {
+                        delivery.perGallonFee = updatebyGallonsFee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateGcashNum.Text))
+                    {
+                        delivery.gcashNumber = updateGcashNum.Text;
+                    }
+                    //VEHICLE 1
+                    if (!string.IsNullOrEmpty(updateV1Name.Text))
+                    {
+                        delivery.vehicle1Name = updateV1Name.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV1Fee.Text))
+                    {
+                        delivery.vehicle1Fee = updateV1Fee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV1Num.Text))
+                    {
+                        delivery.vehicle1Qty = updateV1Num.Text;
+                    }
+                    //VEHICLE 2
+                    if (!string.IsNullOrEmpty(updateV2Name.Text))
+                    {
+                        delivery.vehicle2Name = updateV2Name.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV2Fee.Text))
+                    {
+                        delivery.vehicle2Fee = updateV2Fee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV2Num.Text))
+                    {
+                        delivery.vehicle2Qty = updateV2Num.Text;
+                    }
+                    //VEHICLE 3
+                    if (!string.IsNullOrEmpty(updateV3Name.Text))
+                    {
+                        delivery.vehicle3Name = updateV3Name.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV3Fee.Text))
+                    {
+                        delivery.vehicle3Fee = updateV3Fee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV3Num.Text))
+                    {
+                        delivery.vehicle3Qty = updateV3Num.Text;
+                    }
+                    //VEHICLE 4
+                    if (!string.IsNullOrEmpty(updateV4Name.Text))
+                    {
+                        delivery.vehicle4Name = updateV4Name.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV4Fee.Text))
+                    {
+                        delivery.vehicle4Fee = updateV4Fee.Text;
+                    }
+                    if (!string.IsNullOrEmpty(updateV4Num.Text))
+                    {
+                        delivery.vehicle4Qty = updateV4Num.Text;
+                    }
+
+
+                    //FOR THE CHECKBOXES
+                    if (updateOrderTypesChck.Items.Cast<ListItem>().Any(item => item.Selected))
+                    {
+                        delivery.orderTypes = string.Join(",", updateOrderTypesChck.Items.Cast<ListItem>()
+                            .Where(item => item.Selected)
+                            .Select(item => item.Value));
+                    }
+                    if (updateSwap.Items.Cast<ListItem>().Any(item => item.Selected))
+                    {
+                        delivery.swapOptions = string.Join(",", updateSwap.Items.Cast<ListItem>()
+                            .Where(item => item.Selected)
+                            .Select(item => item.Value));
+                    }
+                    if (updatePayment.Items.Cast<ListItem>().Any(item => item.Selected))
+                    {
+                        delivery.paymentMethods = string.Join(",", updatePayment.Items.Cast<ListItem>()
+                            .Where(item => item.Selected)
+                            .Select(item => item.Value));
+                    }
+
+
+                    // Save the updated delivery object to the database
+                    FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
+                    Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                    if (Session["role"] != null || Session["idno"] != null)
+                    {
+                        string role = (string)Session["role"];
+                        string adminID = (string)Session["idno"];
+
+                        Random rnd = new Random();
+                        int logsID = rnd.Next(1, 10000);
+
+                        // Get the current date and time
+                        DateTime addedTime = DateTime.Now;
+
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(adminID),
+                            logsId = logsID,
+                            role = role,
+                            userFullname = (string)Session["fullname"],
+                            userActivity = "UPDATED DELIVERY DETAILS",
+                            activityTime = addedTime
+                        };
+
+                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                    }
+                    
+                }
+            }
+        }
+
+        protected void removeVehicle_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

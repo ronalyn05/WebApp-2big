@@ -134,13 +134,36 @@ namespace WRS2big_Web.superAdmin
 
                 //Combine the URLs into a single list.
                 List<string> allImageUrls = new List<string>();
-                allImageUrls.AddRange(businessProofUrls);
-                allImageUrls.AddRange(validIDProofUrls);
 
-                uploadedImages.DataSource = allImageUrls;
-                uploadedImages.DataBind();
+                if (allImageUrls != null)
+                {
+                    if (businessProofUrls != null)
+                    {
+                        allImageUrls.AddRange(businessProofUrls);
+                    }
+
+                    if (validIDProofUrls != null)
+                    {
+                        allImageUrls.AddRange(validIDProofUrls);
+                    }
+                }
+
+               
+
+                if (allImageUrls == null || allImageUrls.Count == 0)
+                {
+                    noUploaded.Text = "No images available.";
+                    noUploaded.Visible = true;
+                }
+                else
+                {
+                    //null coalescing operator (??)
+                    //checks if allImageUrls is null and, if so, sets it to an empty list to prevent any null reference exceptions during data binding.
+                    uploadedImages.DataSource = allImageUrls ?? new List<string>();
+                    uploadedImages.DataBind();
+                }
             }
-           
+
         }
 
         //public string getProofLink()

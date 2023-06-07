@@ -256,7 +256,7 @@ namespace WRS2big_Web.superAdmin
             }
             if (customerTable.Rows.Count == 0)
             {
-                Response.Write("<script>alert ('Client not found!'); window.location.href = '/superAdmin/RefillingStationReports.aspx'; </script>");
+                Response.Write("<script>alert ('Customer not found!'); window.location.href = '/superAdmin/CustomerReports.aspx'; </script>");
 
             }
 

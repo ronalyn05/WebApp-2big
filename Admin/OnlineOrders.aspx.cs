@@ -95,6 +95,11 @@ namespace WRS2big_Web.Admin
                 }
 
             }
+            else
+            {
+                // Display an error message 
+                Response.Write("<script>alert ('Session Expired! Please login again.'); location.reload(); window.location.href = '/LandingPage/Account.aspx';</script>");
+            }
         }
         //Fetch the employee 'driver' and get the id 
         private void PopulateOrderDropdown()
@@ -129,47 +134,97 @@ namespace WRS2big_Web.Admin
         //DISPLAY ALL ORDER 
         private void displayAll_order()
         {
-            string idno = (string)Session["idno"];
-            //string selectedDeliveryType = drdDeliveryType.SelectedValue;
-
-            try
+            if (Session["idno"] != null)
             {
-                FirebaseResponse response = twoBigDB.Get("ORDERS");
-                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+                string idno = (string)Session["idno"];
+                //string selectedDeliveryType = drdDeliveryType.SelectedValue;
 
-
-                DataTable ordersTable = new DataTable();
-                ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
-                ordersTable.Columns.Add("STATUS");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("ORDER TYPE");
-                ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("RESERVATION TIME");
-                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
-                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
-                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
-                ordersTable.Columns.Add("TOTAL AMOUNT");
-                ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("STORE NAME");
-
-
-
-                if (response != null && response.ResultAs<Order>() != null)
+                try
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
+                    FirebaseResponse response = twoBigDB.Get("ORDERS");
+                    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-                    foreach (var order in filteredList)
+
+                    DataTable ordersTable = new DataTable();
+                    ordersTable.Columns.Add("ORDER ID");
+                    ordersTable.Columns.Add("CUSTOMER ID");
+                    ordersTable.Columns.Add("DRIVER ID");
+                    ordersTable.Columns.Add("STATUS");
+                    ordersTable.Columns.Add("DELIVERY TYPE");
+                    ordersTable.Columns.Add("PAYMENT METHOD");
+                    ordersTable.Columns.Add("ORDER TYPE");
+                    ordersTable.Columns.Add("RESERVATION DATE");
+                    ordersTable.Columns.Add("RESERVATION TIME");
+                    ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                    ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                    ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                    ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                    ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                    ordersTable.Columns.Add("TOTAL AMOUNT");
+                    ordersTable.Columns.Add("ORDER DATE ");
+                    ordersTable.Columns.Add("STORE NAME");
+
+
+
+                    if (response != null && response.ResultAs<Order>() != null)
                     {
-                        if (order.order_OrderTypeValue == "PickUp")
+                        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
+
+                        foreach (var order in filteredList)
                         {
-                            if (order.order_Products != null)
+                            if (order.order_OrderTypeValue == "PickUp")
+                            {
+                                if (order.order_Products != null)
+                                {
+                                    string productrefill_order = "";
+                                    string otherproduct_order = "";
+                                    string productrefill_qty = "";
+                                    string otherproduct_qty = "";
+
+                                    foreach (var product in order.order_Products)
+                                    {
+                                        if (product.offerType == "Product Refill")
+                                        {
+                                            productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            productrefill_qty += product.qtyPerItem;
+                                        }
+                                        else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+                                        else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+
+                                    }
+
+                                    string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                    //string dateOrder = order.order_deliveryReservationDeliveryReserveDate == DateTime.MinValue ? "" : order.order_deliveryReservationDeliveryReserveDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                    //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                    //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                    if (order.order_DeliveryTypeValue == "Reservation")
+                                    {
+                                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                            order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime,
+                                            order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                            order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
+                                    }
+                                    else
+                                    {
+                                        ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
+                                       order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime,
+                                       order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                       order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
+                                    }
+
+                                }
+                            }
+                            else if (order.order_OrderTypeValue == "Delivery")
                             {
                                 string productrefill_order = "";
                                 string otherproduct_order = "";
@@ -178,6 +233,7 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
+
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
@@ -197,62 +253,13 @@ namespace WRS2big_Web.Admin
                                 }
 
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                //string dateOrder = order.order_deliveryReservationDeliveryReserveDate == DateTime.MinValue ? "" : order.order_deliveryReservationDeliveryReserveDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                //string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                                if (order.order_DeliveryTypeValue == "Reservation")
-                                {
-                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                        order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate, order.order_deliveryReservationDeliveryReserveTime, 
-                                        order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                        order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
-                                }
-                                else
-                                {
-                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
-                                   order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, 
-                                   order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                   order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
-                                }
-                              
+
+                                ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
+                                    order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime,
+                                    order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                    order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
                             }
                         }
-                        else if (order.order_OrderTypeValue == "Delivery")
-                        {
-                            string productrefill_order = "";
-                            string otherproduct_order = "";
-                            string productrefill_qty = "";
-                            string otherproduct_qty = "";
-
-                            foreach (var product in order.order_Products)
-                            {
-
-                                if (product.offerType == "Product Refill")
-                                {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    productrefill_qty += product.qtyPerItem;
-                                }
-                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-
-                            }
-
-                            string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod,
-                                order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, 
-                                order.order_deliveryReservationDeliveryTypeSelected, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount, dateOrder, order.order_StoreName);
-                        }
-                    }
 
                         if (ordersTable.Rows.Count == 0)
                         {
@@ -264,60 +271,105 @@ namespace WRS2big_Web.Admin
                             gridView_order.DataSource = ordersTable;
                             gridView_order.DataBind();
                         }
+                    }
+                    else
+                    {
+                        lblError.Text = "No Orders Found";
+                        lblError.Visible = true;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lblError.Text = "No Orders Found";
+                    lblError.Text = "There was an error retrieving orders" + ex.Message;
                     lblError.Visible = true;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                lblError.Text = "There was an error retrieving orders" + ex.Message;
-                lblError.Visible = true;
+                // Display an error message 
+                Response.Write("<script>alert ('Session Expired! Please login again.'); location.reload(); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
+
         }
 
         //DISPLAY THE EXPRESS ORDER
         private void displayExpress_order()
         {
-            string idno = (string)Session["idno"];
-            try
+            if (Session["idno"] != null)
             {
-                FirebaseResponse response = twoBigDB.Get("ORDERS");
-                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
-
-                DataTable ordersTable = new DataTable();
-                ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
-                ordersTable.Columns.Add("STATUS");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("ORDER TYPE");
-                ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("RESERVATION TIME");
-                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
-                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
-                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
-                ordersTable.Columns.Add("TOTAL AMOUNT");
-                ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("STORE NAME");
-
-                if (response != null && response.ResultAs<Order>() != null)
+                string idno = (string)Session["idno"];
+                try
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Express") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
-                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash")).OrderByDescending(d => d.orderDate);
+                    FirebaseResponse response = twoBigDB.Get("ORDERS");
+                    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-                    foreach (var order in filteredList)
+                    DataTable ordersTable = new DataTable();
+                    ordersTable.Columns.Add("ORDER ID");
+                    ordersTable.Columns.Add("CUSTOMER ID");
+                    ordersTable.Columns.Add("DRIVER ID");
+                    ordersTable.Columns.Add("STATUS");
+                    ordersTable.Columns.Add("DELIVERY TYPE");
+                    ordersTable.Columns.Add("PAYMENT METHOD");
+                    ordersTable.Columns.Add("ORDER TYPE");
+                    ordersTable.Columns.Add("RESERVATION DATE");
+                    ordersTable.Columns.Add("RESERVATION TIME");
+                    ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                    ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                    ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                    ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                    ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                    ordersTable.Columns.Add("TOTAL AMOUNT");
+                    ordersTable.Columns.Add("ORDER DATE ");
+                    ordersTable.Columns.Add("STORE NAME");
+
+                    if (response != null && response.ResultAs<Order>() != null)
                     {
-                        if (order.order_OrderTypeValue == "PickUp")
+                        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Express") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
+                        //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Gcash")).OrderByDescending(d => d.orderDate);
+
+                        foreach (var order in filteredList)
                         {
-                            if (order.order_Products != null)
+                            if (order.order_OrderTypeValue == "PickUp")
+                            {
+                                if (order.order_Products != null)
+                                {
+                                    string productrefill_order = "";
+                                    string otherproduct_order = "";
+                                    string productrefill_qty = "";
+                                    string otherproduct_qty = "";
+
+                                    foreach (var product in order.order_Products)
+                                    {
+                                        if (product.offerType == "Product Refill")
+                                        {
+                                            productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            productrefill_qty += product.qtyPerItem;
+                                        }
+                                        else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+                                        else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+
+                                    }
+
+                                    string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod, order.order_OrderTypeValue,
+                                    order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                    productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                    order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_StoreName);
+                                }
+                            }
+                            else if (order.order_OrderTypeValue == "Delivery")
                             {
                                 string productrefill_order = "";
                                 string otherproduct_order = "";
@@ -326,6 +378,7 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
+
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
@@ -347,117 +400,126 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod, order.order_OrderTypeValue,
-                                order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                                     order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                     productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                     order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                    dateOrder, order.order_StoreName);
                             }
                         }
-                        else if (order.order_OrderTypeValue == "Delivery")
+
+                        if (ordersTable.Rows.Count == 0)
                         {
-                            string productrefill_order = "";
-                            string otherproduct_order = "";
-                            string productrefill_qty = "";
-                            string otherproduct_qty = "";
-
-                            foreach (var product in order.order_Products)
-                            {
-
-                                if (product.offerType == "Product Refill")
-                                {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    productrefill_qty += product.qtyPerItem;
-                                }
-                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-
-                            }
-
-                            string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue, order.orderPaymentMethod, order.order_OrderTypeValue,
-                                 order.order_deliveryReservationDeliveryReserveDate, order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                 productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                 order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                dateOrder, order.order_StoreName);
+                            lblError.Text = "No  Orders Found";
+                            lblError.Visible = true;
                         }
-                    }
-
-                    if (ordersTable.Rows.Count == 0)
-                    {
-                        lblError.Text = "No  Orders Found";
-                        lblError.Visible = true;
+                        else
+                        {
+                            gridView_order.DataSource = ordersTable;
+                            gridView_order.DataBind();
+                        }
                     }
                     else
                     {
-                        gridView_order.DataSource = ordersTable;
-                        gridView_order.DataBind();
+                        lblError.Text = "No Orders Found";
+                        lblError.Visible = true;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lblError.Text = "No Orders Found";
+                    lblError.Text = "There was an error retrieving orders" + ex.Message;
                     lblError.Visible = true;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                lblError.Text = "There was an error retrieving orders" + ex.Message;
-                lblError.Visible = true;
+                // Display an error message 
+                Response.Write("<script>alert ('Session Expired! Please login again.'); location.reload(); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
+
         }
        
         //   DISPLAY THE STANDARD ORDER
         private void displayStandard_order()
         {
-            string idno = (string)Session["idno"];
-
-            try
+            if (Session["idno"] != null)
             {
-                FirebaseResponse response = twoBigDB.Get("ORDERS");
-                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+                string idno = (string)Session["idno"];
 
-                DataTable ordersTable = new DataTable();
-                ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
-                ordersTable.Columns.Add("STATUS");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("ORDER TYPE");
-                ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("RESERVATION TIME");
-                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
-                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
-                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
-                ordersTable.Columns.Add("TOTAL AMOUNT");
-                ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("STORE NAME");
-
-
-
-                if (response != null && response.ResultAs<Order>() != null)
+                try
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Standard") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
-                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
+                    FirebaseResponse response = twoBigDB.Get("ORDERS");
+                    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-                    foreach (var order in filteredList)
+                    DataTable ordersTable = new DataTable();
+                    ordersTable.Columns.Add("ORDER ID");
+                    ordersTable.Columns.Add("CUSTOMER ID");
+                    ordersTable.Columns.Add("DRIVER ID");
+                    ordersTable.Columns.Add("STATUS");
+                    ordersTable.Columns.Add("DELIVERY TYPE");
+                    ordersTable.Columns.Add("PAYMENT METHOD");
+                    ordersTable.Columns.Add("ORDER TYPE");
+                    ordersTable.Columns.Add("RESERVATION DATE");
+                    ordersTable.Columns.Add("RESERVATION TIME");
+                    ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                    ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                    ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                    ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                    ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                    ordersTable.Columns.Add("TOTAL AMOUNT");
+                    ordersTable.Columns.Add("ORDER DATE ");
+                    ordersTable.Columns.Add("STORE NAME");
+
+
+
+                    if (response != null && response.ResultAs<Order>() != null)
                     {
-                        if (order.order_OrderTypeValue == "PickUp")
+                        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Standard") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
+                        //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
+
+                        foreach (var order in filteredList)
                         {
-                            if (order.order_Products != null)
+                            if (order.order_OrderTypeValue == "PickUp")
+                            {
+                                if (order.order_Products != null)
+                                {
+                                    string productrefill_order = "";
+                                    string otherproduct_order = "";
+                                    string productrefill_qty = "";
+                                    string otherproduct_qty = "";
+
+                                    foreach (var product in order.order_Products)
+                                    {
+                                        if (product.offerType == "Product Refill")
+                                        {
+                                            productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            productrefill_qty += product.qtyPerItem;
+                                        }
+                                        else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+                                        else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+
+                                    }
+
+                                    string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                        order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate,
+                                        order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                        productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                        order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                        dateOrder, order.order_StoreName);
+                                }
+                            }
+                            else if (order.order_OrderTypeValue == "Delivery")
                             {
                                 string productrefill_order = "";
                                 string otherproduct_order = "";
@@ -466,6 +528,7 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
+
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
@@ -487,117 +550,130 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
+                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate,
                                     order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                                     productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                    order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                    dateOrder, order.order_StoreName);
+                                   order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                   dateOrder, order.order_StoreName);
                             }
                         }
-                        else if (order.order_OrderTypeValue == "Delivery")
+
+                        if (ordersTable.Rows.Count == 0)
                         {
-                            string productrefill_order = "";
-                            string otherproduct_order = "";
-                            string productrefill_qty = "";
-                            string otherproduct_qty = "";
-
-                            foreach (var product in order.order_Products)
-                            {
-
-                                if (product.offerType == "Product Refill")
-                                {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    productrefill_qty += product.qtyPerItem;
-                                }
-                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-
-                            }
-
-                            string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
-                                order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                               order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                            lblError.Text = "No  Orders Found";
+                            lblError.Visible = true;
                         }
-                    }
-
-                    if (ordersTable.Rows.Count == 0)
-                    {
-                        lblError.Text = "No  Orders Found";
-                        lblError.Visible = true;
+                        else
+                        {
+                            gridView_order.DataSource = ordersTable;
+                            gridView_order.DataBind();
+                        }
                     }
                     else
                     {
-                        gridView_order.DataSource = ordersTable;
-                        gridView_order.DataBind();
+                        lblError.Text = "No Orders Found";
+                        lblError.Visible = true;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lblError.Text = "No Orders Found";
+                    lblError.Text = "There was an error retrieving orders" + ex.Message;
                     lblError.Visible = true;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                lblError.Text = "There was an error retrieving orders" + ex.Message;
-                lblError.Visible = true;
+                // Display an error message 
+                Response.Write("<script>alert ('Session Expired! Please login again.'); location.reload(); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
+
         }
         private void displayReservation_order()
         {
-            string idno = (string)Session["idno"];
-
-            try
+            if (Session["idno"] != null)
             {
-                FirebaseResponse response = twoBigDB.Get("ORDERS");
-                Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+                string idno = (string)Session["idno"];
 
-                DataTable ordersTable = new DataTable();
-                ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
-                ordersTable.Columns.Add("STATUS");
-                ordersTable.Columns.Add("DELIVERY TYPE");
-                ordersTable.Columns.Add("PAYMENT METHOD");
-                ordersTable.Columns.Add("ORDER TYPE");
-                ordersTable.Columns.Add("RESERVATION DATE");
-                ordersTable.Columns.Add("RESERVATION TIME");
-                ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
-                ordersTable.Columns.Add("PRODUCT REFILL ORDER");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
-                ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
-                ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
-                ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
-                ordersTable.Columns.Add("GALLON CONDITION / OPTION");
-                ordersTable.Columns.Add("TOTAL AMOUNT");
-                ordersTable.Columns.Add("ORDER DATE ");
-                ordersTable.Columns.Add("STORE NAME");
-
-
-
-                if (response != null && response.ResultAs<Order>() != null)
+                try
                 {
-                    var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Reservation") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
-                    //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
+                    FirebaseResponse response = twoBigDB.Get("ORDERS");
+                    Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
-                    foreach (var order in filteredList)
+                    DataTable ordersTable = new DataTable();
+                    ordersTable.Columns.Add("ORDER ID");
+                    ordersTable.Columns.Add("CUSTOMER ID");
+                    ordersTable.Columns.Add("DRIVER ID");
+                    ordersTable.Columns.Add("STATUS");
+                    ordersTable.Columns.Add("DELIVERY TYPE");
+                    ordersTable.Columns.Add("PAYMENT METHOD");
+                    ordersTable.Columns.Add("ORDER TYPE");
+                    ordersTable.Columns.Add("RESERVATION DATE");
+                    ordersTable.Columns.Add("RESERVATION TIME");
+                    ordersTable.Columns.Add("RESERVATION DELIVERY TYPE SELECTED");
+                    ordersTable.Columns.Add("PRODUCT REFILL ORDER");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT ORDER ");
+                    ordersTable.Columns.Add("PRODUCT REFILL QUANTITY");
+                    ordersTable.Columns.Add("THIRD PARTY PRODUCT  QUANTITY");
+                    ordersTable.Columns.Add("ADDTIONAL MODE OF PAYMENT");
+                    ordersTable.Columns.Add("GALLON CONDITION / OPTION");
+                    ordersTable.Columns.Add("TOTAL AMOUNT");
+                    ordersTable.Columns.Add("ORDER DATE ");
+                    ordersTable.Columns.Add("STORE NAME");
+
+
+
+                    if (response != null && response.ResultAs<Order>() != null)
                     {
-                        if (order.order_OrderTypeValue == "PickUp")
+                        var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.order_DeliveryTypeValue == "Reservation") && (d.order_OrderStatus == "Pending")).OrderByDescending(d => d.orderDate);
+                        //var filteredList = orderlist.Values.Where(d => d.admin_ID.ToString() == idno && (d.orderPaymentMethod == "Points")).OrderByDescending(d => d.orderDate);
+
+                        foreach (var order in filteredList)
                         {
-                            if (order.order_Products != null)
+                            if (order.order_OrderTypeValue == "PickUp")
+                            {
+                                if (order.order_Products != null)
+                                {
+                                    string productrefill_order = "";
+                                    string otherproduct_order = "";
+                                    string productrefill_qty = "";
+                                    string otherproduct_qty = "";
+
+                                    foreach (var product in order.order_Products)
+                                    {
+                                        if (product.offerType == "Product Refill")
+                                        {
+                                            productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            productrefill_qty += product.qtyPerItem;
+                                        }
+                                        else if (product.offerType == "other Product") // corrected spelling of "Other Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+                                        else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
+                                        {
+                                            otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
+                                            otherproduct_qty += product.qtyPerItem + " " + " ";
+                                        }
+
+                                    }
+
+                                    string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                    ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                        order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate,
+                                        order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
+                                        productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                        order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                        dateOrder, order.order_StoreName);
+
+                                    //ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
+                                    //   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
+                                    //   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
+                                    //   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                                }
+                            }
+                            else if (order.order_OrderTypeValue == "Delivery")
                             {
                                 string productrefill_order = "";
                                 string otherproduct_order = "";
@@ -606,6 +682,7 @@ namespace WRS2big_Web.Admin
 
                                 foreach (var product in order.order_Products)
                                 {
+
                                     if (product.offerType == "Product Refill")
                                     {
                                         productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
@@ -627,237 +704,178 @@ namespace WRS2big_Web.Admin
                                 string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
                                 ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_ReservationDate, 
+                                    order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate,
                                     order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
                                     productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
                                     order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                    dateOrder, order.order_StoreName);
-
-                                //ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                //   order.order_OrderTypeValue, productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                //   order.orderPaymentMethod, order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                                //   dateOrder, order.order_ReservationDate, order.order_StoreName);
+                                   dateOrder, order.order_StoreName);
                             }
                         }
-                        else if (order.order_OrderTypeValue == "Delivery")
+
+                        if (ordersTable.Rows.Count == 0)
                         {
-                            string productrefill_order = "";
-                            string otherproduct_order = "";
-                            string productrefill_qty = "";
-                            string otherproduct_qty = "";
-
-                            foreach (var product in order.order_Products)
-                            {
-
-                                if (product.offerType == "Product Refill")
-                                {
-                                    productrefill_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    productrefill_qty += product.qtyPerItem;
-                                }
-                                else if (product.offerType == "other Product") // corrected spelling of "Other Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-                                else if (product.offerType == "thirdparty product") // corrected spelling of "thirdparty Product"
-                                {
-                                    otherproduct_order += product.pro_refillQty + " " + product.pro_refillUnitVolume + " " + product.order_ProductName + " " + " ";
-                                    otherproduct_qty += product.qtyPerItem + " " + " ";
-                                }
-
-                            }
-
-                            string dateOrder = order.orderDate == DateTime.MinValue ? "" : order.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                            ordersTable.Rows.Add(order.orderID, order.cusId, order.driverId, order.order_OrderStatus, order.order_DeliveryTypeValue,
-                                order.orderPaymentMethod, order.order_OrderTypeValue, order.order_deliveryReservationDeliveryReserveDate, 
-                                order.order_deliveryReservationDeliveryReserveTime, order.order_deliveryReservationDeliveryTypeSelected,
-                                productrefill_order, otherproduct_order, productrefill_qty, otherproduct_qty,
-                                order.orderPaymentMethod2, order.order_RefillSelectedOption, order.order_TotalAmount,
-                               dateOrder, order.order_StoreName);
+                            lblError.Text = "No  Orders Found";
+                            lblError.Visible = true;
                         }
-                    }
-
-                    if (ordersTable.Rows.Count == 0)
-                    {
-                        lblError.Text = "No  Orders Found";
-                        lblError.Visible = true;
+                        else
+                        {
+                            gridView_order.DataSource = ordersTable;
+                            gridView_order.DataBind();
+                        }
                     }
                     else
                     {
-                        gridView_order.DataSource = ordersTable;
-                        gridView_order.DataBind();
+                        lblError.Text = "No Orders Found";
+                        lblError.Visible = true;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    lblError.Text = "No Orders Found";
+                    lblError.Text = "There was an error retrieving orders" + ex.Message;
                     lblError.Visible = true;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                lblError.Text = "There was an error retrieving orders" + ex.Message;
-                lblError.Visible = true;
+                // Display an error message 
+                Response.Write("<script>alert ('Session Expired! Please login again.'); location.reload(); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
+
         }
 
         //UPDATING THE STATUS ORDER FOR COD IF ACCEPTED
         protected void btnAccept_Click(object sender, EventArgs e)
         {
 
-            // Get the admin ID from the session
-            string idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-            string name = (string)Session["fullname"];
-            // Get the log ID from the session 
-            //int logsId = (int)Session["logsId"];
+          
 
-            try
+            if (Session["role"] != null || Session["idno"] != null || Session["fullname"] != null)
             {
+                string role = (string)Session["role"];
+                // Get the admin ID from the session
+                string idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+                string name = (string)Session["fullname"];
 
-                //INSERT DATA TO TABLE
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-
-
-                // Get the GridViewRow that contains the clicked button
-                Button btn = (Button)sender;
-                GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-                // Get the order ID from the first cell in the row
-                int orderID = int.Parse(row.Cells[2].Text);
-
-                // Retrieve the existing order object from the database
-                FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
-                Order existingOrder = response.ResultAs<Order>();
-
-                
-
-                if (response != null && response.ResultAs<Order>() != null)
+                try
                 {
-                    //// Check if the order status is "Accepted", "Payment Received", or "Delivered"
-                    //if (existingOrder.order_OrderStatus != "Pending")
-                    //{
-                    //    // Disable the button
-                    //    btn.Enabled = false;
 
-                    //    // Store the disabled state in the session
-                    //    Session["DisabledButton_" + orderID] = true;
-                    //}
+                    //INSERT DATA TO TABLE
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
 
-                    //if (existingOrder.order_OrderStatus != "Pending")
-                    //{
-                    //    Response.Write("<script>alert ('Order has already been accepted!');</script>");
-                    //    return;
-                    //}
-                  
-                    // Check if the order already has a driver assigned
-                    if (existingOrder.driverId != 0)
+
+                    // Get the GridViewRow that contains the clicked button
+                    Button btn = (Button)sender;
+                    GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+                    // Get the order ID from the first cell in the row
+                    int orderID = int.Parse(row.Cells[2].Text);
+
+                    // Retrieve the existing order object from the database
+                    FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+                    Order existingOrder = response.ResultAs<Order>();
+
+
+
+                    if (response != null && response.ResultAs<Order>() != null)
                     {
-                        // Get the driver object from the database
-                        FirebaseResponse driverRes = twoBigDB.Get("EMPLOYEES/" + existingOrder.driverId);
-                        Employee driver = driverRes.ResultAs<Employee>();
+                        //// Check if the order status is "Accepted", "Payment Received", or "Delivered"
+                        //if (existingOrder.order_OrderStatus != "Pending")
+                        //{
+                        //    // Disable the button
+                        //    btn.Enabled = false;
 
+                        //    // Store the disabled state in the session
+                        //    Session["DisabledButton_" + orderID] = true;
+                        //}
 
-                        // Accept the order with the assigned driver
-                        existingOrder.driverId = driver.emp_id;
-                        existingOrder.order_OrderStatus = "Accepted";
-                        existingOrder.dateOrderAccepted = DateTime.Now;
-                        existingOrder.orderAcceptedBy = name;
+                        //if (existingOrder.order_OrderStatus != "Pending")
+                        //{
+                        //    Response.Write("<script>alert ('Order has already been accepted!');</script>");
+                        //    return;
+                        //}
 
-                        response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
-
-                        //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
-                        //Random rnd = new Random();
-                        int ID = rnd.Next(1, 20000);
-                        var Notification = new Model.Notification
+                        // Check if the order already has a driver assigned
+                        if (existingOrder.driverId != 0)
                         {
-                            admin_ID = adminId,
-                            sender = "Admin",
-                            orderID = orderID,
-                            cusId = existingOrder.cusId,
-                            receiver = "Customer",
-                            title = "Order Accepted",
-                            driverId = existingOrder.driverId,
-                            body = "Your order is now accepted and is assigned to a driver! Check the order page to view the details of your order",
-                            notificationDate = DateTime.Now,
-                            status = "unread",
-                            notificationID = ID
+                            // Get the driver object from the database
+                            FirebaseResponse driverRes = twoBigDB.Get("EMPLOYEES/" + existingOrder.driverId);
+                            Employee driver = driverRes.ResultAs<Employee>();
 
-                        };
 
-                        SetResponse notifResponse;
-                        notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                        Notification notif = notifResponse.ResultAs<Notification>();//Database Result
-
-                        //SEND NOTIFICATION TO DRIVER
-                        int notifID = rnd.Next(1, 20000);
-                        var driverNotif = new Model.Notification
-                        {
-                            admin_ID = adminId,
-                            orderID = orderID,
-                            cusId = existingOrder.cusId,
-                            driverId = driver.emp_id,
-                            sender = "Admin",
-                            title = "New Assigned Order",
-                            receiver = "Driver",
-                            body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order",
-                            notificationDate = DateTime.Now,
-                            status = "unread",
-                            notificationID = notifID
-                        };
-                        SetResponse driverNotifRes;
-                        driverNotifRes = twoBigDB.Set("NOTIFICATION/" + notifID, driverNotif);//Storing data to the database
-                        Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
-
-                        Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-
-                        // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS" );
-                        UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                        // Get the current date and time
-                        DateTime addedTime = DateTime.Now;
-
-                        // Log user activity
-                        var log = new UsersLogs
-                        {
-                            userIdnum = int.Parse(idno),
-                            logsId = idnum,
-                            //orderId = orderID,
-                            userFullname = (string)Session["fullname"],
-                            userActivity = "ACCEPTED ORDER",
-                            activityTime = addedTime
-                        };
-
-                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
-
-                        displayAll_order();
-                        displayExpress_order();
-                        displayReservation_order();
-                        displayStandard_order();
-                    }
-                    else
-                    {
-                        // Get a list of all available drivers
-                        FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
-                        Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
-
-                        List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && (emp.emp_role == "Driver"
-                                                                                && emp.emp_availability == "Available")).ToList();
-                        // Check if the order status is "Pickup"
-                        if (existingOrder.order_OrderTypeValue == "PickUp")
-                        {
+                            // Accept the order with the assigned driver
+                            existingOrder.driverId = driver.emp_id;
                             existingOrder.order_OrderStatus = "Accepted";
-                            existingOrder.driverId =  existingOrder.driverId; // clear the driver ID
                             existingOrder.dateOrderAccepted = DateTime.Now;
                             existingOrder.orderAcceptedBy = name;
 
                             response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                            // Display an error message indicating that no driver will be assigned 
-                            Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                            //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
+                            //Random rnd = new Random();
+                            int ID = rnd.Next(1, 20000);
+                            var Notification = new Model.Notification
+                            {
+                                admin_ID = adminId,
+                                sender = "Admin",
+                                orderID = orderID,
+                                cusId = existingOrder.cusId,
+                                receiver = "Customer",
+                                title = "Order Accepted",
+                                driverId = existingOrder.driverId,
+                                body = "Your order is now accepted and is assigned to a driver! Check the order page to view the details of your order",
+                                notificationDate = DateTime.Now,
+                                status = "unread",
+                                notificationID = ID
+
+                            };
+
+                            SetResponse notifResponse;
+                            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                            Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                            //SEND NOTIFICATION TO DRIVER
+                            int notifID = rnd.Next(1, 20000);
+                            var driverNotif = new Model.Notification
+                            {
+                                admin_ID = adminId,
+                                orderID = orderID,
+                                cusId = existingOrder.cusId,
+                                driverId = driver.emp_id,
+                                sender = "Admin",
+                                title = "New Assigned Order",
+                                receiver = "Driver",
+                                body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order",
+                                notificationDate = DateTime.Now,
+                                status = "unread",
+                                notificationID = notifID
+                            };
+                            SetResponse driverNotifRes;
+                            driverNotifRes = twoBigDB.Set("NOTIFICATION/" + notifID, driverNotif);//Storing data to the database
+                            Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
+
+                            Response.Write("<script>alert ('Order Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+
+                            //Random rnd = new Random();
+                            int logsID = rnd.Next(1, 10000);
+
+                            // Get the current date and time
+                            DateTime addedTime = DateTime.Now;
+
+                            // Log user activity
+                            var log = new UsersLogs
+                            {
+                                userIdnum = int.Parse(idno),
+                                logsId = logsID,
+                                role = role,
+                                userFullname = (string)Session["fullname"],
+                                userActivity = "ACCEPTED ORDER",
+                                activityTime = addedTime,
+                              
+                            };
+
+                            twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
                             displayAll_order();
                             displayExpress_order();
@@ -866,84 +884,24 @@ namespace WRS2big_Web.Admin
                         }
                         else
                         {
-                            // Check if any available driver is available to accept the order
-                            if (allDrivers.Count > 0)
+                            // Get a list of all available drivers
+                            FirebaseResponse driverResponse = twoBigDB.Get("EMPLOYEES");
+                            Dictionary<string, Employee> driverData = driverResponse.ResultAs<Dictionary<string, Employee>>();
+
+                            List<Employee> allDrivers = driverData.Values.Where(emp => emp.adminId.ToString() == idno && (emp.emp_role == "Driver"
+                                                                                    && emp.emp_availability == "Available")).ToList();
+                            // Check if the order status is "Pickup"
+                            if (existingOrder.order_OrderTypeValue == "PickUp")
                             {
-                                // Assign the order to the first available driver
-                                Employee driver = allDrivers[0];
-                                existingOrder.driverId = driver.emp_id;
                                 existingOrder.order_OrderStatus = "Accepted";
+                                existingOrder.driverId = existingOrder.driverId; // clear the driver ID
                                 existingOrder.dateOrderAccepted = DateTime.Now;
-                                existingOrder.dateDriverAssigned = DateTime.Now;
-                                existingOrder.driverAssignedBy = name;
                                 existingOrder.orderAcceptedBy = name;
 
                                 response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
-                                //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
-                                //Random rnd = new Random();
-                                int ID = rnd.Next(1, 20000);
-                                var Notification = new Model.Notification
-                                {
-                                    admin_ID = adminId,
-                                    sender = "Admin",
-                                    orderID = orderID,
-                                    cusId = existingOrder.cusId,
-                                    receiver = "Customer",
-                                    title = "Order Accepted",
-                                    driverId = existingOrder.driverId,
-                                    body = "Your order is now accepted and is assigned to a driver! Check the order page to view the details of your order",
-                                    notificationDate = DateTime.Now,
-                                    status = "unread",
-                                    notificationID = ID
-
-                                };
-
-                                SetResponse notifResponse;
-                                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
-
-                                //SEND NOTIFICATION TO DRIVER
-                                int notifID = rnd.Next(1, 20000);
-                                var driverNotif = new Model.Notification
-                                {
-                                    admin_ID = adminId,
-                                    orderID = orderID,
-                                    cusId = existingOrder.cusId,
-                                    driverId = driver.emp_id,
-                                    sender = "Admin",
-                                    title = "New Assigned Order",
-                                    receiver = "Driver",
-                                    body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order",
-                                    notificationDate = DateTime.Now,
-                                    status = "unread",
-                                    notificationID = notifID
-                                };
-                                SetResponse driverNotifRes;
-                                driverNotifRes = twoBigDB.Set("NOTIFICATION/" + notifID, driverNotif);//Storing data to the database
-                                Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
-
-                                Response.Write("<script>alert ('Order has been Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
-
-                                // Retrieve the existing Users log object from the database
-                                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/");
-                                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                                // Get the current date and time
-                                DateTime addedTime = DateTime.Now;
-
-                                // Log user activity
-                                var log = new UsersLogs
-                                {
-                                    userIdnum = int.Parse(idno),
-                                    logsId = idnum,
-                                    //orderId = orderID,
-                                    userFullname = (string)Session["fullname"],
-                                    userActivity = "ACCEPTED ORDER",
-                                    activityTime = addedTime
-                                };
-
-                                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                                // Display an error message indicating that no driver will be assigned 
+                                Response.Write("<script>alert ('This order will be pick up by the customer. No driver will be assigned.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
 
                                 displayAll_order();
                                 displayExpress_order();
@@ -952,18 +910,108 @@ namespace WRS2big_Web.Admin
                             }
                             else
                             {
-                                // No drivers are currently available, display an error message
-                                Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                                // Check if any available driver is available to accept the order
+                                if (allDrivers.Count > 0)
+                                {
+                                    // Assign the order to the first available driver
+                                    Employee driver = allDrivers[0];
+                                    existingOrder.driverId = driver.emp_id;
+                                    existingOrder.order_OrderStatus = "Accepted";
+                                    existingOrder.dateOrderAccepted = DateTime.Now;
+                                    existingOrder.dateDriverAssigned = DateTime.Now;
+                                    existingOrder.driverAssignedBy = name;
+                                    existingOrder.orderAcceptedBy = name;
+
+                                    response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                                    //SEND NOTIFICATION TO CUSTOMER FOR ORDER BEING DECLINED
+                                    //Random rnd = new Random();
+                                    int ID = rnd.Next(1, 20000);
+                                    var Notification = new Model.Notification
+                                    {
+                                        admin_ID = adminId,
+                                        sender = "Admin",
+                                        orderID = orderID,
+                                        cusId = existingOrder.cusId,
+                                        receiver = "Customer",
+                                        title = "Order Accepted",
+                                        driverId = existingOrder.driverId,
+                                        body = "Your order is now accepted and is assigned to a driver! Check the order page to view the details of your order",
+                                        notificationDate = DateTime.Now,
+                                        status = "unread",
+                                        notificationID = ID
+
+                                    };
+
+                                    SetResponse notifResponse;
+                                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                                    //SEND NOTIFICATION TO DRIVER
+                                    int notifID = rnd.Next(1, 20000);
+                                    var driverNotif = new Model.Notification
+                                    {
+                                        admin_ID = adminId,
+                                        orderID = orderID,
+                                        cusId = existingOrder.cusId,
+                                        driverId = driver.emp_id,
+                                        sender = "Admin",
+                                        title = "New Assigned Order",
+                                        receiver = "Driver",
+                                        body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order",
+                                        notificationDate = DateTime.Now,
+                                        status = "unread",
+                                        notificationID = notifID
+                                    };
+                                    SetResponse driverNotifRes;
+                                    driverNotifRes = twoBigDB.Set("NOTIFICATION/" + notifID, driverNotif);//Storing data to the database
+                                    Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
+
+                                    Response.Write("<script>alert ('Order has been Accepted!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+
+
+
+
+                                    //Random rnd = new Random();
+                                    int logsID = rnd.Next(1, 10000);
+
+                                    // Get the current date and time
+                                    DateTime addedTime = DateTime.Now;
+
+                                    // Log user activity
+                                    var log = new UsersLogs
+                                    {
+                                        userIdnum = int.Parse(idno),
+                                        logsId = logsID,
+                                        role = role,
+                                        userFullname = (string)Session["fullname"],
+                                        userActivity = "ACCEPTED ORDER",
+                                        activityTime = addedTime
+                                    };
+
+                                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+
+                                    displayAll_order();
+                                    displayExpress_order();
+                                    displayReservation_order();
+                                    displayStandard_order();
+                                }
+                                else
+                                {
+                                    // No drivers are currently available, display an error message
+                                    Response.Write("<script>alert ('There are no available drivers to accept this order. Wait for an available driver to deliver this order.'); location.reload(); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    // Show error message
+                    Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                // Show error message
-                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
-            }
+           
 
         }
         //SAVING ORDER ID FOR ASSIGNING THE DRIVER
@@ -997,6 +1045,7 @@ namespace WRS2big_Web.Admin
             // Get the admin ID from the session
             string idno = (string)Session["idno"];
             string name = (string)Session["fullname"];
+            string role = (string)Session["role"];
 
             // Get the order ID from the hidden field
             int orderID = int.Parse(hfAssignDriver.Value);
@@ -1045,7 +1094,8 @@ namespace WRS2big_Web.Admin
                 {
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
-                    userFullname = (string)Session["fullname"],
+                    role = role,
+                    userFullname = name,
                     activityTime = addedTime,
                     userActivity = "ASSIGNED THE DRIVER TO DELIVER THE ORDER",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
@@ -1161,24 +1211,33 @@ namespace WRS2big_Web.Admin
 
                 Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/OnlineOrders.aspx';</script>");
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+               
 
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse((string)Session["idno"]),
-                    logsId = rnd.Next(1, 10000),
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "DECLINED ORDER",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string idno = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "DECLINED ORDER",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                }
+
             }
 
             displayAll_order();

@@ -1013,6 +1013,7 @@ namespace WRS2big_Web.Admin
 
             // Get the reason input value
             string reason = reasonInput.Value;
+            
 
             // Retrieve the existing order object from the database
             FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
@@ -1082,24 +1083,30 @@ namespace WRS2big_Web.Admin
 
                 Response.Write("<script>alert ('Order Declined!'); location.reload(); window.location.href = '/Admin/WaterOrders.aspx';</script>");
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse((string)Session["idno"]),
-                    logsId = rnd.Next(1, 10000),
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "DECLINED ORDER",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string idno = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "DECLINED ORDER",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                }
             }
             displayDeclined_order();
             gridOrder.Visible = true;
@@ -1602,24 +1609,30 @@ namespace WRS2big_Web.Admin
 
                 Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/WaterOrders.aspx';</script>");
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse((string)Session["idno"]),
-                    logsId = rnd.Next(1, 10000),
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "DECLINED ORDER",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string idno = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "DECLINED ORDER",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                }
 
                 displayDeclinedGcash_order();
                 gridGcash_order.Visible = true;
@@ -2131,24 +2144,30 @@ namespace WRS2big_Web.Admin
 
                 Response.Write("<script>alert ('Order Declined!'); window.location.href = '/Admin/WaterOrders.aspx';</script>");
 
-                // Retrieve the existing Users log object from the database
-                FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + (int)Session["logsId"]);
-                UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                // Get the current date and time
-                DateTime addedTime = DateTime.Now;
-
-                // Log user activity
-                var log = new UsersLogs
+                if (Session["role"] != null || Session["idno"] != null)
                 {
-                    userIdnum = int.Parse((string)Session["idno"]),
-                    logsId = rnd.Next(1, 10000),
-                    userFullname = (string)Session["fullname"],
-                    userActivity = "DECLINED ORDER",
-                    activityTime = addedTime
-                };
+                    string role = (string)Session["role"];
+                    string idno = (string)Session["idno"];
 
-                twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+                    //Random rnd = new Random();
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsID,
+                        role = role,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "DECLINED ORDER",
+                        activityTime = addedTime
+                    };
+
+                    twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                }
             }
 
             displayDeclinedPoints_order();
@@ -2658,25 +2677,30 @@ namespace WRS2big_Web.Admin
                         notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                         Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
-                        //ADMINLOGS
-                        // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
-                        UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                        // Get the current date and time
-                        DateTime addedTime = DateTime.Now;
-
-                        // Log user activity
-                        var log = new UsersLogs
+                        if (Session["role"] != null || Session["idno"] != null)
                         {
-                            userIdnum = int.Parse(idno),
-                            logsId = idnum,
-                            userFullname = (string)Session["fullname"],
-                            userActivity = "RECEIVED PAYMENT",
-                            activityTime = addedTime
-                        };
+                            string role = (string)Session["role"];
+                            string adminID = (string)Session["idno"];
 
-                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                            //Random rnd = new Random();
+                            int logsID = rnd.Next(1, 10000);
+
+                            // Get the current date and time
+                            DateTime addedTime = DateTime.Now;
+
+                            // Log user activity
+                            var log = new UsersLogs
+                            {
+                                userIdnum = int.Parse(adminID),
+                                logsId = logsID,
+                                role = role,
+                                userFullname = (string)Session["fullname"],
+                                userActivity = "RECEIVED PAYMENT",
+                                activityTime = addedTime
+                            };
+
+                            twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        }
 
                     }
                     else
@@ -2953,25 +2977,30 @@ namespace WRS2big_Web.Admin
                         notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
                         Notification notif = notifResponse.ResultAs<Notification>();//Database Result
 
-                        //ADMINLOGS
-                        // Retrieve the existing Users log object from the database
-                        FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + logsId);
-                        UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-                        // Get the current date and time
-                        DateTime addedTime = DateTime.Now;
-
-                        // Log user activity
-                        var log = new UsersLogs
+                        if (Session["role"] != null || Session["idno"] != null)
                         {
-                            userIdnum = int.Parse(idno),
-                            logsId = idnum,
-                            userFullname = (string)Session["fullname"],
-                            userActivity = "RECEIVED PAYMENT",
-                            activityTime = addedTime
-                        };
+                            string role = (string)Session["role"];
+                            //string idno = (string)Session["idno"];
 
-                        twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                            //Random rnd = new Random();
+                            int logsID = rnd.Next(1, 10000);
+
+                            // Get the current date and time
+                            DateTime addedTime = DateTime.Now;
+
+                            // Log user activity
+                            var log = new UsersLogs
+                            {
+                                userIdnum = int.Parse(idno),
+                                logsId = logsID,
+                                role = role,
+                                userFullname = (string)Session["fullname"],
+                                userActivity = "RECEIVED PAYMENT",
+                                activityTime = addedTime
+                            };
+
+                            twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        }
 
                         displayPointsPaymentReceived_order();
                     }
