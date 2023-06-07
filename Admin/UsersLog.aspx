@@ -77,7 +77,7 @@
                                                                     <asp:DropDownList ID="drdRole" CssClass="text-center" runat="server" Height="40px" Width="364px">
                                                                         <%--<asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>--%>
                                                                         <asp:ListItem Text="View All" Value="0"></asp:ListItem>
-                                                                        <asp:ListItem Text="Owner" Value="1"></asp:ListItem>
+                                                                        <asp:ListItem Text="Owner/Admin" Value="1"></asp:ListItem>
                                                                         <asp:ListItem Text="Cashier" Value="2"></asp:ListItem>
                                                                         <asp:ListItem Text="Driver" Value="3"></asp:ListItem>
                                                                     </asp:DropDownList>
@@ -123,6 +123,7 @@
                                                                                                     <%--the gridview starts here--%>
                                                                                                     <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
                                                                                                         <asp:Label ID="lblSearchError" runat="server" CssClass="text-c-red" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                                                                         <br />
                                                                                                         <asp:Label ID="lblSearchResult" runat="server" CssClass="text-c-blue" Font-Bold="true" Font-Size="Large"></asp:Label>
                                                                                                         <br />
                                                                                                         <hr />
