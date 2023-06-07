@@ -50,9 +50,10 @@
                                             <div class="clearfix">
                                                 <%-- add product button--%>
                                                 <br />
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managedetails"><i class="fa fa-plus"></i>Delivery Details</button>
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i>Add Delivery Types</button>
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managePayment"><i class="fa fa-plus"></i>Add Payment Methods</button>
+                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managedetails" id="DeliverydetailsModal" runat="server"><i class="fa fa-plus"></i>Delivery Details</button>
+                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage" id="deliveryTypesModal" runat="server"><i class="fa fa-plus"></i>Add Delivery Types</button>
+                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".managePayment" id="paymentMethodsModal" runat="server"><i class="fa fa-plus"></i>Add Payment Methods</button>
+                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manageVehicles" id="vehiclesModal" runat="server"><i class="fa fa-plus"></i>Add Vehicles</button>
 
                                                 <br />
                                                 <br />
@@ -122,7 +123,63 @@
 
                                                     }
                                                 </script>
+                                                <div class="modal fade manageVehicles col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
+                                                        <div class="modal-content col-xl-10 col-md-10" style="/*background-color: red; */ margin-left: 370px">
+                                                            <div id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="vehicleModal"></h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                            <div id="deliveryChecked">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <strong>Add the vehicles you use for the delivery:</strong> <br />
+                                                                                    <strong>Note: The vehicle fee on every vehicle will be added to the total payable amount of the customer. If you dont want to add a vehicle fee, please enter zero(0) </strong>
+                                                                                    <br />
+                                                                                    <br />
 
+                                                                                    <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <asp:TextBox ID="vehicle5Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle5Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle5Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON ADD VEHICLES--%>
+                                                                        <asp:Button ID="addVehicles" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="addVehicles_Click" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
                                                 <%-- MODAL FOR Delivery TYPES--%>
                                                 <div class="modal fade manage col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
@@ -581,55 +638,8 @@
                                                                                 </asp:CheckBoxList>
                                                                             </div>
                                                                             <br />
-                                                                            <!--OPTIONS FOR DELIVERY WHEN CLICKED-->
-                                                                            <div id="deliveryChecked" style="display: none">
-                                                                                <div class="col-md-12 col-sm-12">
-                                                                                    <strong>Manage the vehicle types you use for the delivery:</strong>
-                                                                                    <br />
-                                                                                    <br />
-
-                                                                                    <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle2Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle3Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-
-                                                                                    <br />
-                                                                                    <br />
-                                                                                    <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle4Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <br />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div id="anothervehicle" style="display: none">
-                                                                            </div>
 
                                                                             <hr />
-                                                                            <!--SCRIPT FOR DELIVERY WHEN CLICKED-->
-                                                                            <script>
-                                                                                function vehicleTypeOptions() {
-                                                                                    var delivery = document.getElementById("delivery");
-                                                                                    var stanfields = document.getElementById("deliveryChecked");
-
-                                                                                    if (delivery.checked) {
-                                                                                        stanfields.style.display = "none";
-
-                                                                                    } else {
-
-                                                                                        stanfields.style.display = "block";
-
-                                                                                    }
-                                                                                }
-                                                                            </script>
                                                                             <br />
                                                                             <div id="swapOptions">
                                                                                 <strong>Swap Gallon Options</strong>
@@ -722,7 +732,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <%-- set data button--%>
-                                                                        <asp:Button ID="vehicleAdded" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="vehicleAdded_Click" AutoPostBack="false" />
+                                                                        <asp:Button ID="deliveryDetailsAdded" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="deliveryDetailsAdded_Click" AutoPostBack="false" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -768,25 +778,25 @@
 
                                                                                     <asp:TextBox ID="updateV1Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
-                                                                                    <asp:TextBox ID="updateV1Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV1Num" Width="250px" Height="40px" TextMode="Number"  runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                   
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV2Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="updateV2Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV2Num" Width="250px" Height="40px" TextMode="Number"  runat="server" Style="margin-left: 50px;"></asp:TextBox>
 
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV3Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="updateV3Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV3Num" Width="250px" Height="40px" TextMode="Number" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                    
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV4Name" Width="250px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="updateV4Num" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="updateV4Num" Width="250px" Height="40px" TextMode="Number"  runat="server" Style="margin-left: 50px;"></asp:TextBox>
 
                                                                                     <br />
                                                                                 </div>
@@ -1004,8 +1014,7 @@
                                                                                 <Columns>
                                                                                     <asp:TemplateField>
                                                                                         <ItemTemplate>
-                                                                                             <asp:Button runat="server" ID="removeVehicle" OnClick="removeVehicle_Click" Text="Remove" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                            
+                                                                                             
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
                                                                                 </Columns>
@@ -1075,8 +1084,8 @@
                                                                                 <Columns>
                                                                                     <asp:TemplateField>
                                                                                         <ItemTemplate>
-                                                                                            <%-- <asp:Button runat="server" ID="viewDeliveryType" OnClick="viewDeliveryType_Click" Text="Open" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
-                                                                                            --%>
+                                                                                            <asp:Button runat="server" ID="removeVehicle" OnClick="removeVehicle_Click" Text="Remove" Style="background-color: transparent; font-size: 16px;" class="active btn waves-effect text-center" />
+                                                                                            
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
                                                                                 </Columns>
