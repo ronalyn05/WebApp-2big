@@ -347,6 +347,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = employee_id,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "ADDED EMPLOYEE DETAILS"
                 };
@@ -641,6 +642,7 @@ namespace WRS2big_Web.Admin
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
+                    role = "Admin",
                     activityTime = addedTime,
                     userActivity = "UPDATED EMPLOYEE DETAILS",
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
@@ -682,10 +684,9 @@ namespace WRS2big_Web.Admin
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
+            string empSearch = txtSearch.Text;
             try
             {
-                string empSearch =txtSearch.Text;
-
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(empSearch))
                 {

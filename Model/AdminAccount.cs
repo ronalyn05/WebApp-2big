@@ -294,10 +294,13 @@ namespace WRS2big_Web.Model
     }
     public class DriversLog
     {
-        public int empId { get; set; }
+        public int logsId { get; set; }
+        public int driverId { get; set; }
+        public int admin_ID { get; set; }
         public DateTime date { get; set; }
         public string actions { get; set; }
         public string driverName { get; set; }
+        public string role { get; set; }
 
     }
 

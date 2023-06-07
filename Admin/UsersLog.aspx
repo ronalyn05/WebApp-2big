@@ -63,37 +63,34 @@
                                                             <%-- SORT BY DATE--%>
 
                                                             <h7 style="margin-left: 20px">Start Date:</h7>
-                                                            <asp:TextBox ID="sortStart" Style="margin-left: 20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="sortStart" Style="margin-left: 20px" TextMode="Date" Width="150px" Height="40px" runat="server"></asp:TextBox>
                                                             <h7 style="margin-left: 20px">End Date:</h7>
-                                                            <asp:TextBox ID="sortEnd" Style="margin-left: 20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="sortEnd" Style="margin-left: 20px" TextMode="Date" Width="150px" Height="40px" runat="server"></asp:TextBox>
 
                                                             <asp:Button runat="server" ID="generateSortedData" class="btn btn-primary" OnClick="generateSortedData_Click" Height="40" Text="Sort Date" />
                                                             <asp:LinkButton runat="server" ID="clearSort" OnClick="clearSort_Click" Text="Clear"></asp:LinkButton>
-
+                                                            <%-- <br />
+                                                            <br />--%>
+                                                            <hr />
                                                             <div style="display: flex; justify-content: space-between;">
-                                                  
-                                                    <div style="float: right;" >
-                                                        <asp:DropDownList ID="drdRole" CssClass="text-center" runat="server" Height="40px" Width="364px">
-                                                            <%--<asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>--%>
-                                                            <asp:ListItem Text="View All" Value="0"></asp:ListItem>
-                                                            <asp:ListItem Text="Owner" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="Cashier" Value="2"></asp:ListItem>
-                                                            <asp:ListItem Text="Driver" Value="3"></asp:ListItem>
-                                                           
-                                                        </asp:DropDownList>
-                                                        <asp:Button ID="btnViewRole" runat="server" Text="View" OnClick="btnViewRole_Click" CssClass="btn-primary" Height="40px" />
-                                                    </div>
-                                                     <%--<div style="float: right;">
-                                                                                         <h6>Note:  (decline order if unforeseen emergency arises) 
-                                                                                    </h6>
-                                                                                    </div>--%>
-                                                </div>
-                                                            <div style="float: right;">
-                                                                <asp:TextBox ID="txtSearch" Width="545px" Placeholder="search by activity (must be in capital letters and spacing in between words)...." ToolTip="enter activity to search in capital letters and with space in between each word" Height="40px" runat="server"></asp:TextBox>
-                                                                <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px" />
-                                                                <%--<asp:TextBox ID="txtSearch" Placeholder="search activity (must be in capital letters)...." ToolTip="enter activity to search in capital letters and with space in between each word" Width ="364px" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> 
-                                                         <asp:Button ID="btnSearchLogs" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchLogs_Click"/>--%>
+                                                                <div style="float: left;">
+                                                                    <asp:DropDownList ID="drdRole" CssClass="text-center" runat="server" Height="40px" Width="364px">
+                                                                        <%--<asp:ListItem Text="View orders by delivery type" Selected="False"></asp:ListItem>--%>
+                                                                        <asp:ListItem Text="View All" Value="0"></asp:ListItem>
+                                                                        <asp:ListItem Text="Owner/Admin" Value="1"></asp:ListItem>
+                                                                        <asp:ListItem Text="Cashier" Value="2"></asp:ListItem>
+                                                                        <asp:ListItem Text="Driver" Value="3"></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                    <asp:Button ID="btnViewRole" runat="server" Text="View" OnClick="btnViewRole_Click" CssClass="btn-primary" Height="40px" />
+                                                                </div>
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div style="float: right;">
+                                                                        <asp:TextBox ID="txtSearch" Width="350px" Placeholder="search by role, firstname or fullname" ToolTip="enter role, firstname or fullname to search" Height="40px" runat="server"></asp:TextBox>
+                                                                        <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px" />
+                                                                        </div>
+                                                                </div>
                                                             </div>
+
                                                             <div class="card-header-right">
                                                                 <ul class="list-unstyled card-option">
                                                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -110,8 +107,8 @@
                                                                 <div class="modal-content">
                                                                     <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                                                         <div class="modal-header">
-                                                                            <h4 class="modal-title" id="myModalLabel3">ACTIVITY DETAILS: 
-                                                                                <asp:Label ID="lbluserId" runat="server" Font-Underline="true" ForeColor="#0066ff" />
+                                                                            <h4 class="modal-title" id="myModalLabel3">ACTIVITY DETAILS
+                                                                               <%-- <asp:Label ID="lbluserId" runat="server" Font-Underline="true" ForeColor="#0066ff" />--%>
                                                                             </h4>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                         </div>
@@ -125,8 +122,11 @@
                                                                                                 <div class="tab-pane active">
                                                                                                     <%--the gridview starts here--%>
                                                                                                     <div style="overflow: auto; height: 600px; text-align: center;" class="texts">
-
+                                                                                                        <asp:Label ID="lblSearchError" runat="server" CssClass="text-c-red" Font-Bold="true" Font-Size="Large"></asp:Label>
+                                                                                                         <br />
+                                                                                                        <asp:Label ID="lblSearchResult" runat="server" CssClass="text-c-blue" Font-Bold="true" Font-Size="Large"></asp:Label>
                                                                                                         <br />
+                                                                                                        <hr />
                                                                                                         <asp:GridView runat="server" ID="GridLogs" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                                             SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
 
@@ -157,20 +157,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="card-block">
-                                                            <%-- <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                            <asp:ListItem Selected="False" Text="---Sort-----"></asp:ListItem>
-                                                            <asp:ListItem Text="Activity (alphabetically, A-Z)" Value="0"></asp:ListItem>
-                                                           <asp:ListItem Text="Activity (alphabetically, Z-A)" Value="1"></asp:ListItem>
-                                                           <asp:ListItem Text="Date (New to Old)" Value="2"></asp:ListItem>
-                                                           <asp:ListItem Text="Date (Old to New)" Value="3"></asp:ListItem>
-                                                        </asp:DropDownList>
-
-                                                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px"/>
-                                                        <br />--%>
-                                                            <%-- </div>
-                                                    <div class="card-footer">--%>
-                                                            <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Update Records" OnClick="btnEdit_Click"/>
-                                                            --%>
                                                             <div class="table-responsive">
                                                                 <div class="tab-content">
                                                                     <div class="tab-pane active">
@@ -180,12 +166,7 @@
                                                                             <br />
                                                                             <asp:GridView runat="server" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                 SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
-                                                                                <%-- <asp:GridView runat="server" ID="gridUserLog" class="texts table-responsive table-hover" style=" text-align:center; overflow-y: auto; max-height: 500px; margin-left: 14px;" 
-                                                   BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="5" HtmlEncode="false" Width="1850px" CssClass="m-r-0" GridLines="Horizontal" 
-                                                   ForeColor="Black" CellSpacing="5" Font-Size="14px">--%>
-                                                                                <%-- <asp:GridView runat="server" OnRowDataBound="gridUserLog_RowDataBound" ID="gridUserLog" CellPadding="3" Width="975px" CssClass="auto-style1" 
-                                                                        SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" >--%>
-
+                                                                      
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                 <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />

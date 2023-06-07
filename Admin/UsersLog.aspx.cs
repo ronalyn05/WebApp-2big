@@ -33,71 +33,87 @@ namespace WRS2big_Web.Admin
             twoBigDB = new FireSharp.FirebaseClient(config);
 
             lblErrorActivity.Visible = false;
+            lblSearchError.Visible = false;
+            lblSearchResult.Visible = false;
 
             displayAll();
 
         }
+        //DISPLAY ALL LOGS
         private void displayAll()
         {
             string idno = (string)Session["idno"];
 
-
-            // Get the log ID from the session
-            //int logsId = (int)Session["logsId"];
-
-            // Retrieve all orders from the ORDERS table
+            // Retrieve all user logs from the ADMINLOGS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
 
-            // Create the DataTable to hold the orders
-            //sa pag create sa table 
+            // Retrieve all driver logs from the DRIVERSLOG table
+            FirebaseResponse responseDriver = twoBigDB.Get("DRIVERSLOG");
+            Dictionary<string, DriversLog> driverlog = responseDriver.ResultAs<Dictionary<string, DriversLog>>();
+
+            // Create the DataTable to hold the logs
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER ID");
             userLogTable.Columns.Add("USER NAME");
             userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
             userLogTable.Columns.Add("TIMESTAMP");
 
-            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null &&
+                responseDriver != null && responseDriver.ResultAs<Dictionary<string, DriversLog>>() != null)
             {
-                // Loop through the orders and add them to the DataTable
-                foreach (var entry in filteredList)
+                // Filtered user logs based on the user ID and order by descending date
+                var filteredList = userlog.Values
+                    .Where(d => d.userIdnum.ToString() == idno)
+                    .OrderByDescending(d => d.activityTime);
+
+                // Filtered driver logs based on the admin ID and order by descending date
+                var filteredDriverList = driverlog.Values
+                    .Where(d => d.admin_ID.ToString() == idno)
+                    .OrderByDescending(d => d.date);
+
+                // Combine user logs and driver logs into a single list
+                var combinedList = filteredList.Select(entry => new
                 {
-                    string activity = entry.userActivity;
+                    LogId = entry.logsId,
+                    UserId = entry.userIdnum,
+                    UserName = entry.userFullname,
+                    UserRole = entry.role,
+                    Activity = entry.userActivity,
+                    Timestamp = entry.activityTime
+                })
+                .Union(filteredDriverList.Select(entry => new
+                {
+                    LogId = entry.logsId,
+                    UserId = entry.driverId,
+                    UserName = entry.driverName,
+                    UserRole = entry.role,
+                    Activity = entry.actions.ToUpper(),
+                    Timestamp = entry.date
+                }))
+                .OrderByDescending(d => d.Timestamp);
+
+                // Loop through the combined list and add them to the DataTable
+                foreach (var entry in combinedList)
+                {
+                    string activity = entry.Activity;
 
                     if (activity == "0")
                     {
                         activity = "";
                     }
 
-                    string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string timestamp = entry.Timestamp == DateTime.MinValue ? "" : entry.Timestamp.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
-
-                    ////Retrieve the existing Users log object from the database
-                    //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
-                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-
-                    //// Log user activity
-                    //var log = new UsersLogs
-                    //{
-                    //    userIdnum = int.Parse(idno),
-                    //    logsId = logsId,
-                    //    userFullname = (string)Session["fullname"],
-                    //    activityTime = existingLog.activityTime,
-                    //    userActivity = activity
-                    //};
-                    //// Update the userLogTable with the user's activity
-                    //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
-
+                    userLogTable.Rows.Add(entry.LogId, entry.UserId, entry.UserName, entry.UserRole, activity, timestamp);
                 }
             }
             else
             {
                 // Handle null response or invalid selected value
+                lblErrorActivity.Visible = true;
                 lblErrorActivity.Text = "No record found";
             }
 
@@ -105,6 +121,9 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
         }
+
+        
+        //DISPLAY OWNER LOGS
         private void displayOwner()
         {
             string idno = (string)Session["idno"];
@@ -112,13 +131,12 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
-
+            
             // Create the DataTable to hold the orders
             //sa pag create sa table 
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER ID");
             userLogTable.Columns.Add("USER NAME");
             userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
@@ -126,6 +144,14 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found for the owner.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -140,7 +166,7 @@ namespace WRS2big_Web.Admin
 
                         string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
+                        userLogTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.role, activity, timestamp);
 
                     }
 
@@ -166,6 +192,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
+                lblErrorActivity.Visible = true;
                 lblErrorActivity.Text = "No record found";
             }
 
@@ -173,6 +200,7 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
         }
+        //DISPLAY CASHIER LOGS
         private void displayCashier()
         {
             string idno = (string)Session["idno"];
@@ -184,13 +212,12 @@ namespace WRS2big_Web.Admin
             // Retrieve all orders from the ORDERS table
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
 
             // Create the DataTable to hold the orders
             //sa pag create sa table 
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER ID");
             userLogTable.Columns.Add("USER NAME");
             userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
@@ -198,6 +225,15 @@ namespace WRS2big_Web.Admin
 
             if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno).OrderByDescending(d => d.activityTime);
+
+                if (filteredList.Count() == 0)
+                {
+                    lblErrorActivity.Text = "No logs found for the cashier.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
+
                 // Loop through the orders and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
@@ -212,39 +248,42 @@ namespace WRS2big_Web.Admin
 
                         string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
+                        userLogTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.role, activity, timestamp);
 
                     }
-
-                    ////Retrieve the existing Users log object from the database
-                    //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
-                    //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
-
-
-                    //// Log user activity
-                    //var log = new UsersLogs
-                    //{
-                    //    userIdnum = int.Parse(idno),
-                    //    logsId = logsId,
-                    //    userFullname = (string)Session["fullname"],
-                    //    activityTime = existingLog.activityTime,
-                    //    userActivity = activity
-                    //};
-                    //// Update the userLogTable with the user's activity
-                    //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
-
                 }
+               
+                ////Retrieve the existing Users log object from the database
+                //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
+                //UsersLogs existingLog = resLog.ResultAs<UsersLogs>();
+
+
+                //// Log user activity
+                //var log = new UsersLogs
+                //{
+                //    userIdnum = int.Parse(idno),
+                //    logsId = logsId,
+                //    userFullname = (string)Session["fullname"],
+                //    activityTime = existingLog.activityTime,
+                //    userActivity = activity
+                //};
+                //// Update the userLogTable with the user's activity
+                //twoBigDB.Update("ADMINLOGS/" + log.logsId, log);
+
+
             }
             else
             {
                 // Handle null response or invalid selected value
-                lblErrorActivity.Text = "No record found";
+                lblErrorActivity.Visible = true;
+                lblErrorActivity.Text = "No record found cashier";
             }
 
             // Bind the DataTable to the GridView
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
         }
+        //DISPLAY DRIVER LOGS
         private void displayDriver()
         {
             string idno = (string)Session["idno"];
@@ -253,36 +292,45 @@ namespace WRS2big_Web.Admin
             // Get the log ID from the session
             //int logsId = (int)Session["logsId"];
 
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("DRIVERSLOG/");
-            Dictionary<string, DriversLog> driverlog = response.ResultAs<Dictionary<string, DriversLog>>();
-            //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            var filteredList = driverlog.Values.Where(d => d.empId.ToString() == idno).OrderByDescending(d => d.date);
+            // Retrieve all orders from the DRIVERSLOG table
+            FirebaseResponse responseDriver = twoBigDB.Get("DRIVERSLOG");
+            Dictionary<string, DriversLog> driverlog = responseDriver.ResultAs<Dictionary<string, DriversLog>>();
 
-            // Create the DataTable to hold the orders
-            //sa pag create sa table 
+
+            // Create the DataTable to hold the users log
             DataTable userLogTable = new DataTable();
-            userLogTable.Columns.Add("EMP ID");
+            userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER ID");
             userLogTable.Columns.Add("USER NAME");
             userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
             userLogTable.Columns.Add("TIMESTAMP");
 
-            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            if (responseDriver != null && responseDriver.ResultAs<Dictionary<string, UsersLogs>>() != null)
             {
-                // Loop through the orders and add them to the DataTable
-                foreach (var entry in filteredList)
+                //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
+                var filtered_driverList = driverlog.Values.Where(d => d.admin_ID.ToString() == idno).OrderByDescending(d => d.date);
+
+                if (filtered_driverList.Count() == 0)
                 {
-                    string activity = entry.actions;
-                    string role = "Driver";
+                    lblErrorActivity.Text = "No logs found for the driver.";
+                    //Response.Write("<script>alert('No logs found for the entered role.');</script>");
+                }
+                // Loop through the orders and add them to the DataTable
+                foreach (var driver in filtered_driverList)
+                {
+                    //string role = driver.role.ToUpper();
+
+                    string activity = driver.actions.ToUpper();
+
                     if (activity == "0")
                     {
                         activity = "";
                     }
 
-                    string timestamp = entry.date == DateTime.MinValue ? "" : entry.date.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    string timestamp = driver.date == DateTime.MinValue ? "" : driver.date.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                    userLogTable.Rows.Add(entry.empId, entry.driverName, role, activity, timestamp);
+                    userLogTable.Rows.Add(driver.logsId, driver.driverId, driver.driverName, driver.role, activity, timestamp);
 
                     ////Retrieve the existing Users log object from the database
                     //FirebaseResponse resLog = twoBigDB.Get("ADMINLOGS/" + entry.logsId);
@@ -306,7 +354,7 @@ namespace WRS2big_Web.Admin
             else
             {
                 // Handle null response or invalid selected value
-                lblErrorActivity.Text = "No record found";
+                lblErrorActivity.Text = "No record found for the driver";
             }
 
             // Bind the DataTable to the GridView
@@ -314,124 +362,200 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataBind();
         }
 
-        //SEARCH ACTIVITY
+        //SEARCH ROLE OR FIRSTNAME OF OWNER, CASHIER, OR DRIVER
         protected void btnSearchLogs_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "modal", "$('#view').modal();", true);
 
             string idno = (string)Session["idno"];
-            string activity = txtSearch.Text;
+            string searchQuery = txtSearch.Text;
+
             try
             {
-                
+                // Check if the search query is valid
+                if (string.IsNullOrEmpty(searchQuery))
+                {
+                    Response.Write("<script>alert ('Please enter a valid user role, first name, or full name!');</script>");
+                    return;
+                }
+
+                // Retrieve all user logs from the database
+                FirebaseResponse response = twoBigDB.Get("ADMINLOGS");
+                Dictionary<string, UsersLogs> loglist = response.ResultAs<Dictionary<string, UsersLogs>>();
 
                 // Retrieve all orders from the ORDERS table
-                FirebaseResponse responselist = twoBigDB.Get("ADMINLOGS");
-                Dictionary<string, UsersLogs> loglist = responselist.ResultAs<Dictionary<string, UsersLogs>>();
+                FirebaseResponse responseDriver = twoBigDB.Get("DRIVERSLOG");
+                Dictionary<string, DriversLog> driverlog = responseDriver.ResultAs<Dictionary<string, DriversLog>>();
 
-                // Create the DataTable to hold the orders
+                // Create the DataTable to hold the user logs
                 DataTable userLogsTable = new DataTable();
                 userLogsTable.Columns.Add("LOG ID");
                 userLogsTable.Columns.Add("USER ID");
                 userLogsTable.Columns.Add("USER NAME");
                 userLogsTable.Columns.Add("USER ROLE");
                 userLogsTable.Columns.Add("ACTIVITY");
-                // walkInordersTable.Columns.Add("PRODUCT SIZE");
                 userLogsTable.Columns.Add("TIMESTAMP");
 
-
-                if (responselist != null && responselist.ResultAs<UsersLogs>() != null)
+                if (loglist != null && loglist.Count > 0)
                 {
-                    var filteredList = loglist.Values.Where(d => d.userIdnum.ToString() == idno && d.userActivity.ToString() == activity);
+                    // Filter the user logs based on the search query
+                    var filteredList = loglist.Values.Where(d =>
+                        d.userIdnum.ToString() == idno &&
+                        (d.role.ToLower() == searchQuery.ToLower() ||
+                         d.userFullname.ToLower().Contains(searchQuery.ToLower())));
+                    // Filter the user logs based on the search query
+                    var filtered_driverList = driverlog.Values.Where(d =>
+                        d.admin_ID.ToString() == idno &&
+                        (d.role.ToLower() == searchQuery.ToLower() ||
+                         d.driverName.ToLower().Contains(searchQuery.ToLower())));
 
-                    if (filteredList.Count() == 0)
+                    if (filteredList.Count() == 0 && filtered_driverList.Count() == 0)
                     {
-                        Response.Write("<script>alert('No logs found for the entered activity. Search activity in capital letters and with space in between each word.');</script>");
+                        //display message if search query is not found
+                        lblSearchError.Text = "No logs found for the entered role or name.";
+                        //Response.Write("<script>alert('No logs found for the entered role or name.');</script>");
                     }
                     else
                     {
-                        // Loop through the entries and add them to the DataTable
+                        // Loop through the entries admin logs and add them to the DataTable
                         foreach (var entry in filteredList)
                         {
                             string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                           // string dateAdded = entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.userFullname, entry.role, entry.userActivity, timestamp);
+                        }
+                        // Loop through the entries for drivers log and add them to the DataTable
+                        foreach (var driver in filtered_driverList)
+                        {
+                            string timestamp = driver.date == DateTime.MinValue ? "" : driver.date.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                            userLogsTable.Rows.Add(entry.logsId, entry.userIdnum, entry.role, entry.userFullname, entry.userActivity, timestamp);
+                            userLogsTable.Rows.Add(driver.logsId, driver.driverId, driver.driverName, driver.role, driver.actions.ToUpper(), timestamp);
                         }
                     }
                 }
                 else
                 {
-                    Response.Write("<script>alert('Error retrieving logs.');</script>");
+                    lblSearchError.Visible = true;
+                    lblSearchError.Text = "Error retrieving logs.";
+                    //Response.Write("<script>alert('Error retrieving logs.');</script>");
                 }
+                lblSearchResult.Visible = true;
+                lblSearchResult.Text = "Below is the record of" + " " + searchQuery;
 
                 // Bind the DataTable to the GridView
                 GridLogs.DataSource = userLogsTable;
                 GridLogs.DataBind();
 
-                txtSearch.Text = null;
-
+                txtSearch.Text = string.Empty;
             }
             catch (Exception ex)
             {
                 Response.Write("<script>alert('An error occurred while processing your request. '); location.reload(); window.location.href = '/Admin/UsersLog.aspx'; </script>" + ex.Message);
             }
         }
+
         //Sorting data base on the dates entered by the user
         protected void generateSortedData_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
 
-            if (string.IsNullOrEmpty(sortStart.Text) || string.IsNullOrEmpty(sortEnd.Text))
+            if (string.IsNullOrEmpty(sortStart.Text) && string.IsNullOrEmpty(sortEnd.Text))
             {
                 // Handle the missing start or end date condition 
-                Response.Write("<script>alert ('You must choose a Start and End Date of the logs you want to view.');</script>");
+                Response.Write("<script>alert ('You must choose a Start or End Date of the logs you want to view.');</script>");
                 return; // Exit the method or return the appropriate response
             }
 
             // Get the start and end dates entered by the user
-            DateTime startDate = DateTime.Parse(sortStart.Text);
-            DateTime endDate = DateTime.Parse(sortEnd.Text).AddDays(1); // Add 1 day to include the end date
+            DateTime? startDate = null;
+            DateTime? endDate = null;
+
+            if (!string.IsNullOrEmpty(sortStart.Text))
+            {
+                startDate = DateTime.Parse(sortStart.Text);
+            }
+
+            if (!string.IsNullOrEmpty(sortEnd.Text))
+            {
+                endDate = DateTime.Parse(sortEnd.Text).AddDays(1); // Add 1 day to include the end date;
+            }
+
+            // Check if both start and end dates are the same, then consider only the start date
+            if (startDate.HasValue && endDate.HasValue && startDate.Value.Date == endDate.Value.Date)
+            {
+                endDate = null;
+            }
 
             // Retrieve user logs within the specified date range
             FirebaseResponse response = twoBigDB.Get("ADMINLOGS/");
             Dictionary<string, UsersLogs> userlog = response.ResultAs<Dictionary<string, UsersLogs>>();
 
+            // Retrieve driver logs within the specified date range
+            FirebaseResponse responseDriver = twoBigDB.Get("DRIVERSLOG");
+            Dictionary<string, DriversLog> driverlog = responseDriver.ResultAs<Dictionary<string, DriversLog>>();
+
             // Create the DataTable to hold the filtered logs
             DataTable userLogTable = new DataTable();
             userLogTable.Columns.Add("LOG ID");
+            userLogTable.Columns.Add("USER ID");
             userLogTable.Columns.Add("USER NAME");
             userLogTable.Columns.Add("USER ROLE");
             userLogTable.Columns.Add("ACTIVITY");
             userLogTable.Columns.Add("TIMESTAMP");
 
-            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null)
+            if (response != null && response.ResultAs<Dictionary<string, UsersLogs>>() != null &&
+                responseDriver != null && responseDriver.ResultAs<Dictionary<string, DriversLog>>() != null)
             {
-                var filteredList = userlog.Values
-                    .Where(d => d.userIdnum.ToString() == idno && d.activityTime >= startDate && d.activityTime < endDate)
-                    .OrderByDescending(d => d.activityTime);
+                // Combine user logs and driver logs into a single list
+                var logsList = userlog.Values
+                    .Where(d => d.userIdnum.ToString() == idno &&
+                                (!startDate.HasValue || d.activityTime >= startDate.Value) &&
+                                (!endDate.HasValue || d.activityTime < endDate.Value))
+                    .Select(entry => new
+                    {
+                        LogId = entry.logsId,
+                        UserId = entry.userIdnum,
+                        UserName = entry.userFullname,
+                        UserRole = entry.role,
+                        Activity = entry.userActivity,
+                        Timestamp = entry.activityTime
+                    })
+                    .Union(driverlog.Values
+                        .Where(d => (!startDate.HasValue || d.date >= startDate.Value) &&
+                                    (!endDate.HasValue || d.date < endDate.Value))
+                        .Select(entry => new
+                        {
+                            LogId = entry.logsId,
+                            UserId = entry.driverId,
+                            UserName = entry.driverName,
+                            UserRole = entry.role,
+                            Activity = entry.actions.ToUpper(),
+                            Timestamp = entry.date
+                        }))
+                    .OrderByDescending(d => d.Timestamp);
 
-                if (filteredList.Any())
+                if (logsList.Any())
                 {
                     // Loop through the filtered logs and add them to the DataTable
-                    foreach (var entry in filteredList)
+                    foreach (var entry in logsList)
                     {
-                        string activity = entry.userActivity;
+                        string activity = entry.Activity;
 
                         if (activity == "0")
                         {
                             activity = "";
                         }
 
-                        string timestamp = entry.activityTime == DateTime.MinValue ? "" : entry.activityTime.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        string timestamp = entry.Timestamp == DateTime.MinValue ? "" : entry.Timestamp.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        userLogTable.Rows.Add(entry.logsId, entry.userFullname, entry.role, activity, timestamp);
+                        userLogTable.Rows.Add(entry.LogId, entry.UserId, entry.UserName, entry.UserRole, activity, timestamp);
                     }
                 }
                 else
                 {
                     lblErrorActivity.Visible = true;
-                    lblErrorActivity.Text = "No logs available between " + startDate.ToString("MMMM dd, yyyy") + " and " + endDate.ToString("MMMM dd, yyyy");
+                    lblErrorActivity.Text = "No logs available between " +
+                        (startDate.HasValue ? startDate.Value.ToString("MMMM dd, yyyy") : string.Empty) + " and " +
+                        (endDate.HasValue ? endDate.Value.ToString("MMMM dd, yyyy") : string.Empty);
                 }
             }
             else
@@ -445,31 +569,29 @@ namespace WRS2big_Web.Admin
             gridUserLog.DataSource = userLogTable;
             gridUserLog.DataBind();
         }
+        //view base in the role chosen
         protected void btnViewRole_Click(object sender, EventArgs e)
         {
-
             string selectedOption = drdRole.SelectedValue;
+
             try
             {
                 if (selectedOption == "0")
                 {
                     displayAll();
                     //lblViewOrders.Text = "ALL ORDER";
-
                 }
                 else if (selectedOption == "1")
                 {
                     //lblViewOrders.Text = "EXPRESS ORDER";
                     displayOwner();
                     //lblError.Visible = false;
-
                 }
                 else if (selectedOption == "2")
                 {
                     //lblViewOrders.Text = "STANDARD ORDER";
                     displayCashier();
                     //lblError.Visible = false;
-
                 }
                 else if (selectedOption == "3")
                 {
@@ -478,6 +600,8 @@ namespace WRS2big_Web.Admin
                     //lblError.Visible = false;
                 }
 
+                // Sort the displayed logs based on the chosen roles and the entered dates
+                //generateSortedData_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -488,9 +612,9 @@ namespace WRS2big_Web.Admin
         //clear the sorting textbox fields
         protected void clearSort_Click(object sender, EventArgs e)
         {
-            sortStart.Text = "";
+            sortStart.Text = ""; 
             sortEnd.Text = "";
-            Response.Write("<script> window.location.href = '/superAdmin/UsersLog.aspx'; </script>");
+            Response.Write("<script> window.location.href = '/Admin/UsersLog.aspx'; </script>");
             
         }
     }
