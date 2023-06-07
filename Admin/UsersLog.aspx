@@ -85,7 +85,7 @@
                                                                 </div>
                                                                 <div style="display: flex; justify-content: space-between;">
                                                                     <div style="float: right;">
-                                                                        <asp:TextBox ID="txtSearch" Width="350px" Placeholder="search by role or firstname" ToolTip="enter  role or firstname to search" Height="40px" runat="server"></asp:TextBox>
+                                                                        <asp:TextBox ID="txtSearch" Width="350px" Placeholder="search by role, firstname or fullname" ToolTip="enter role, firstname or fullname to search" Height="40px" runat="server"></asp:TextBox>
                                                                         <asp:Button ID="btnSearchLogs" runat="server" Text="Search" OnClick="btnSearchLogs_Click" CssClass="btn-primary" Height="40px" />
                                                                         </div>
                                                                 </div>
