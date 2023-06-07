@@ -50,22 +50,57 @@ namespace WRS2big_Web.Admin
             updateReservation.Visible = false;
             updateStandard.Visible = false;
 
-
-            FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS");
-            Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
-
-
-            if (details != null)
+            if (Session["idno"] != null)
             {
-                deliveryTypesGrid();
-                displayDelDetails();
+                var adminID = (string)Session["idno"];
+
+                FirebaseResponse getDetails = twoBigDB.Get("DELIVERY_DETAILS");
+                Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
+
+                bool hasMatchingEntries = false;
+
+                if (details != null)
+                {
+                    foreach (KeyValuePair<string, Delivery> entry in details)
+                    {
+                        if (entry.Value.adminId == int.Parse(adminID))
+                        {
+                            // At least one matching entry found
+                            hasMatchingEntries = true;
+                            break;
+                        }
+                    }
+
+                    if (hasMatchingEntries)
+                    {
+                        // There are matching entries, perform the desired actions
+                        deliveryTypesGrid();
+                        displayDelDetails();
+                    }
+                    else
+                    {
+                        // No matching entries found
+                        warning.Text = "No 'Delivery Details' found. Manage the Delivery Details first.";
+                        deliveryTypesRow.Visible = false;
+                        deliveryDetailsRow.Visible = false;
+                        paymentMethodsModal.Visible = false;
+                        deliveryTypesModal.Visible = false;
+                        vehiclesModal.Visible = false;
+                    }
+                }
+                else
+                {
+                    // No entries found in "DELIVERY_DETAILS"
+                    warning.Text = "No 'Delivery Details' found. Manage the Delivery Details first.";
+                    deliveryTypesRow.Visible = false;
+                    deliveryDetailsRow.Visible = false;
+                    paymentMethodsModal.Visible = false;
+                    deliveryTypesModal.Visible = false;
+                    vehiclesModal.Visible = false;
+                }
+
             }
-            else
-            {
-                warning.Text = "No 'Delivery Details' found. Manage the Delivery Details first.";
-                deliveryTypesRow.Visible = false;
-                deliveryDetailsRow.Visible = false;
-            }
+
 
 
         }
@@ -357,187 +392,198 @@ namespace WRS2big_Web.Admin
 
 
         }
+
+        //CREATING DELIVERY DETAILS
         protected void btnDeliverydetails_Click(object sender, EventArgs e)
         {
-            var idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-            //generate a random number
-            Random rnd = new Random();
-
-            FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
-            var all = allDelivery.Body;
-            Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
-
-            // Loop through all the deliverydetails
-            foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
+            if (Session["idno"] != null)
             {
-                if (entry.Value.adminId == adminId)
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+                //generate a random number
+                Random rnd = new Random();
+
+                FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
+                var all = allDelivery.Body;
+                Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
+
+                // Loop through all the deliverydetails
+                foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
                 {
-                    int deliveryID = entry.Value.deliveryId;
-                    Session["deliveryID"] = deliveryID;
-                } 
-            }
+                    if (entry.Value.adminId == adminId)
+                    {
+                        int deliveryID = entry.Value.deliveryId;
+                        Session["deliveryID"] = deliveryID;
+                    }
+                }
 
-            int deliveryIdno = (int)Session["deliveryID"];
+                int deliveryIdno = (int)Session["deliveryID"];
 
-            // Check if there is an existing delivery object for this admin
-            FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
-            Delivery delivery = null;
-            if (resDelivery.Body != "null")
-            {
-                delivery = resDelivery.ResultAs<Delivery>();
+                // Check if there is an existing delivery object for this admin
+                FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
+                Delivery delivery = null;
+                if (resDelivery.Body != "null")
+                {
+                    delivery = resDelivery.ResultAs<Delivery>();
+
+                }
+                else
+                {
+                    Response.Write("<script>alert ('You must setup your Delivery Details first before you can set up your Delivery Types');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+
+                // Loop through the items in the CheckBoxList to check which delivery types are selected
+                foreach (ListItem item in radDevType.Items)
+                {
+                    if (item.Selected)
+                    {
+                        switch (item.Value)
+                        {
+                            case "Standard":
+                                // check If there is an existing standard delivery type
+                                if (delivery.stanDeliverytype == "Standard")
+                                {
+                                    Response.Write("<script>alert ('FAILED! Existing STANDARD Delivery type! You already created Standard delivery. You can update the Standard Delivery in the Delivery details page');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+                                    break;
+                                }
+                                else
+                                {
+                                    DateTime operatingHrsFrom = DateTime.ParseExact(standardSchedFrom.Text, "HH:mm", CultureInfo.InvariantCulture);
+                                    DateTime operatingHrsTo = DateTime.ParseExact(standardSchedTo.Text, "HH:mm", CultureInfo.InvariantCulture);
+
+                                    // Convert the times to 12-hour format with AM and PM
+                                    string operatingHrsFrom12Hr = operatingHrsFrom.ToString("h:mm tt");
+                                    string operatingHrsTo12Hr = operatingHrsTo.ToString("h:mm tt");
+
+                                    string standardSchedule = operatingHrsFrom12Hr + "-" + operatingHrsTo12Hr;
+
+                                    int standardID = new Random().Next(1, 10000);
+                                    delivery.stanDeliverytype = "Standard";
+                                    delivery.standardDateAdded = DateTime.Now;
+                                    delivery.standardID = standardID;
+                                    delivery.stanDeliveryFee = DeliveryFee.Text;
+                                    delivery.stanDeliveryTime = standardSchedule;
+                                    delivery.standistance = FreeDelivery.Text;
+                                    //delivery.stanOrderType = GetSelectedValues(DeliveryType);
+                                    delivery.standardProducts = GetSelectedValues(OrderMethod);
+
+
+                                    int logID = rnd.Next(1, 10000);
+                                    // Get the current date and time
+                                    DateTime now = DateTime.Now;
+
+                                    // Log user activity
+                                    var userLog = new UsersLogs
+                                    {
+                                        userIdnum = int.Parse(idno),
+                                        logsId = logID,
+                                        role = "Admin",
+                                        userFullname = (string)Session["fullname"],
+                                        userActivity = "ADDED STANDARD DELIVERY TYPE",
+                                        activityTime = now
+                                    };
+
+                                    FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
+
+                                }
+                                break;
+                            case "Reservation":
+                                // If there is an existing reservation delivery object, update it, otherwise create a new one
+                                if (delivery.resDeliveryType == "Reservation")
+                                {
+                                    Response.Write("<script>alert ('FAILED! Existing RESERVATION Delivery type! You already created Reservation delivery.');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+                                    break;
+                                }
+                                else
+                                {
+                                    int reserveID = new Random().Next(1, 10000);
+                                    delivery.resDeliveryType = "Reservation";
+                                    delivery.reservationdateAdded = DateTime.Now;
+                                    delivery.reservationID = reserveID;
+                                    delivery.resDeliveryFee = resDelFee.Text;
+                                    delivery.resDistanceFree = resFreeDel.Text;
+                                    delivery.reserveProducts = GetSelectedValues(reserveOrderMethod);
+
+                                    int logID = rnd.Next(1, 10000);
+                                    // Get the current date and time
+                                    DateTime now = DateTime.Now;
+
+                                    // Log user activity
+                                    var userLog = new UsersLogs
+                                    {
+                                        userIdnum = int.Parse(idno),
+                                        logsId = logID,
+                                        role = "Admin",
+                                        userFullname = (string)Session["fullname"],
+                                        userActivity = "ADDED RESERVATION DELIVERY TYPE",
+                                        activityTime = now
+                                    };
+
+                                    FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
+                                }
+                                break;
+                            case "Express":
+                                // check If there is an existing express delivery type
+                                if (delivery.exDeliveryType == "Express")
+                                {
+                                    Response.Write("<script>alert ('FAILED! Existing EXPRESS Delivery type! You already created Express delivery.');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+                                    break;
+                                }
+                                else
+                                {
+                                    int expressID = new Random().Next(1, 10000);
+                                    delivery.exDeliveryType = "Express";
+                                    delivery.expressDistance = int.Parse(expressDistance.Text);
+                                    delivery.expressdateAdded = DateTime.Now;
+                                    delivery.expressID = expressID;
+                                    delivery.exDeliveryFee = expressdeliveryFee.Text;
+                                    delivery.exEstimatedDelivery = estimatedTime.Text;
+                                    delivery.expressProducts = GetSelectedValues(expressOrderMethod);
+
+                                    if (Session["role"] != null || Session["idno"] != null)
+                                    {
+                                        string role = (string)Session["role"];
+                                        string adminID = (string)Session["idno"];
+
+                                        //Random rnd = new Random();
+                                        int logsID = rnd.Next(1, 10000);
+
+                                        // Get the current date and time
+                                        DateTime addedTime = DateTime.Now;
+
+                                        // Log user activity
+                                        var log = new UsersLogs
+                                        {
+                                            userIdnum = int.Parse(adminID),
+                                            logsId = logsID,
+                                            role = role,
+                                            userFullname = (string)Session["fullname"],
+                                            userActivity = "ADDED EXPRESS DELIVERY",
+                                            activityTime = addedTime
+                                        };
+
+                                        var reslog = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                                        UsersLogs logRes = reslog.ResultAs<UsersLogs>();//Database Result
+                                    }
+
+                                }
+                                break;
+                        }
+                    }
+                }
+                // Save the updated delivery object to the database
+                FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryIdno, delivery);
+                Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
             }
             else
             {
-                Response.Write("<script>alert ('You must setup your Delivery Details first before you can set up your Delivery Types');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+                Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
 
             }
 
-            // Loop through the items in the CheckBoxList to check which delivery types are selected
-            foreach (ListItem item in radDevType.Items)
-            {
-                if (item.Selected)
-                {
-                    switch (item.Value)
-                    {
-                        case "Standard":
-                            // check If there is an existing standard delivery type
-                            if (delivery.stanDeliverytype == "Standard")
-                            {
-                                Response.Write("<script>alert ('FAILED! Existing STANDARD Delivery type! You already created Standard delivery. You can update the Standard Delivery in the Delivery details page');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-                                break;
-                            }
-                            else
-                            {
-                                DateTime operatingHrsFrom = DateTime.ParseExact(standardSchedFrom.Text, "HH:mm", CultureInfo.InvariantCulture);
-                                DateTime operatingHrsTo = DateTime.ParseExact(standardSchedTo.Text, "HH:mm", CultureInfo.InvariantCulture);
 
-                                // Convert the times to 12-hour format with AM and PM
-                                string operatingHrsFrom12Hr = operatingHrsFrom.ToString("h:mm tt");
-                                string operatingHrsTo12Hr = operatingHrsTo.ToString("h:mm tt");
-
-                                string standardSchedule = operatingHrsFrom12Hr + "-" + operatingHrsTo12Hr;
-
-                                int standardID = new Random().Next(1, 10000);
-                                delivery.stanDeliverytype = "Standard";
-                                delivery.standardDateAdded = DateTime.Now;
-                                delivery.standardID = standardID;
-                                delivery.stanDeliveryFee = DeliveryFee.Text;
-                                delivery.stanDeliveryTime = standardSchedule;
-                                delivery.standistance = FreeDelivery.Text;
-                                //delivery.stanOrderType = GetSelectedValues(DeliveryType);
-                                delivery.standardProducts = GetSelectedValues(OrderMethod);
-
-
-                                int logID = rnd.Next(1, 10000);
-                                // Get the current date and time
-                                DateTime now = DateTime.Now;
-
-                                // Log user activity
-                                var userLog = new UsersLogs
-                                {
-                                    userIdnum = int.Parse(idno),
-                                    logsId = logID,
-                                    role = "Admin",
-                                    userFullname = (string)Session["fullname"],
-                                    userActivity = "ADDED STANDARD DELIVERY TYPE",
-                                    activityTime = now
-                                };
-
-                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
-
-                            }
-                            break;
-                        case "Reservation":
-                            // If there is an existing reservation delivery object, update it, otherwise create a new one
-                            if (delivery.resDeliveryType == "Reservation")
-                            {
-                                Response.Write("<script>alert ('FAILED! Existing RESERVATION Delivery type! You already created Reservation delivery.');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-                                break;
-                            }
-                            else
-                            {
-                                int reserveID = new Random().Next(1, 10000);
-                                delivery.resDeliveryType = "Reservation";
-                                delivery.reservationdateAdded = DateTime.Now;
-                                delivery.reservationID = reserveID;
-                                delivery.resDeliveryFee = resDelFee.Text;
-                                delivery.resDistanceFree = resFreeDel.Text;
-                                delivery.reserveProducts = GetSelectedValues(reserveOrderMethod);
-
-                                int logID = rnd.Next(1, 10000);
-                                // Get the current date and time
-                                DateTime now = DateTime.Now;
-
-                                // Log user activity
-                                var userLog = new UsersLogs
-                                {
-                                    userIdnum = int.Parse(idno),
-                                    logsId = logID,
-                                    role = "Admin",
-                                    userFullname = (string)Session["fullname"],
-                                    userActivity = "ADDED RESERVATION DELIVERY TYPE",
-                                    activityTime = now
-                                };
-
-                                FirebaseResponse exResponse = twoBigDB.Set("ADMINLOGS/" + userLog.logsId, userLog);//Storing data to the database
-                            }
-                            break;
-                        case "Express":
-                            // check If there is an existing express delivery type
-                            if (delivery.exDeliveryType == "Express")
-                            {
-                                Response.Write("<script>alert ('FAILED! Existing EXPRESS Delivery type! You already created Express delivery.');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-                                break;
-                            }
-                            else
-                            {
-                                int expressID = new Random().Next(1, 10000);
-                                delivery.exDeliveryType = "Express";
-                                delivery.expressDistance = int.Parse(expressDistance.Text);
-                                delivery.expressdateAdded = DateTime.Now;
-                                delivery.expressID = expressID;
-                                delivery.exDeliveryFee = expressdeliveryFee.Text;
-                                delivery.exEstimatedDelivery = estimatedTime.Text;
-                                delivery.expressProducts = GetSelectedValues(expressOrderMethod);
-
-                                if (Session["role"] != null || Session["idno"] != null)
-                                {
-                                    string role = (string)Session["role"];
-                                    string adminID = (string)Session["idno"];
-
-                                    //Random rnd = new Random();
-                                    int logsID = rnd.Next(1, 10000);
-
-                                    // Get the current date and time
-                                    DateTime addedTime = DateTime.Now;
-
-                                    // Log user activity
-                                    var log = new UsersLogs
-                                    {
-                                        userIdnum = int.Parse(adminID),
-                                        logsId = logsID,
-                                        role = role,
-                                        userFullname = (string)Session["fullname"],
-                                        userActivity = "ADDED EXPRESS DELIVERY",
-                                        activityTime = addedTime
-                                    };
-
-                                    var reslog = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
-                                    UsersLogs logRes = reslog.ResultAs<UsersLogs>();//Database Result
-                                }
-
-                            }
-                            break;
-                    }
-                }
-            }
-            // Save the updated delivery object to the database
-            FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryIdno, delivery);
-            Response.Write("<script>alert ('You successfully created the Delivery Types you offer to your business');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-
-        
         }
 
         //RADIO BUTTON SELECTION FOT DELIVERY TYPE
@@ -948,148 +994,6 @@ namespace WRS2big_Web.Admin
 
 
 
-        protected void viewButton_Click(object sender, EventArgs e)
-        {
-            //    //Get the GridViewRow that contains the clicked button
-            //    Button btn = (Button)sender;
-            //    GridViewRow row = (GridViewRow)btn.NamingContainer;
-            //    string idno = (string)Session["idno"];
-            //    int adminID = int.Parse(idno);
-
-            //    //Get the order ID from the first cell in the row
-            //    int typeId = int.Parse(row.Cells[1].Text);
-
-            //    FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + adminID);
-            //    Model.DeliveryDetails delivery = response.ResultAs<Model.DeliveryDetails>();
-
-            //    if (typeId == delivery.expressID)
-            //    {
-            //        nullLabel.Text = "";
-
-            //        // Create the DataTable to hold the orders
-            //        //sa pag create sa table
-            //        DataTable expressTable = new DataTable();
-            //        expressTable.Columns.Add("EXPRESS ID");
-            //        expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
-            //        expressTable.Columns.Add("DELIVERY FEE");
-            //        expressTable.Columns.Add("REFILL SWAP OPTIONS");
-            //        expressTable.Columns.Add("ORDER TYPE");
-            //        expressTable.Columns.Add("ORDER METHOD");
-            //        expressTable.Columns.Add("DATE ADDED");
-            //        expressTable.Columns.Add("PAYMENT METHOD");
-            //        expressTable.Columns.Add("ADDED BY");
-
-            //        if (response != null && response.ResultAs<Model.DeliveryDetails>() != null)
-            //        {
-
-            //                if (entry.exDeliveryType == "Express")
-            //                {
-            //                    //expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressSwapOptions,
-            //                    //                  entry.exOrderType, entry.exOrderMethod, entry.expressdateAdded, entry.paymentMethods, entry.adminId);
-            //                    expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressdateAdded, entry.paymentMethods, entry.adminId);
-            //                }
-            //                else
-            //                {
-            //                    nullLabel.Text = "No 'Express Delivery' data avaialble";
-            //                }
-
-
-            //        }
-            //        else
-            //        {
-            //            // Handle null response or invalid selected value
-            //            nullLabel.Text = "No 'Express Delivery' data avaialble";
-            //        }
-
-            //        // Bind the DataTable to the GridView
-            //        expressGridview.DataSource = expressTable;
-            //        expressGridview.DataBind();
-
-            //    }
-
-
-        }
-
-        protected void vehicleAdded_Click(object sender, EventArgs e)
-        {
-            string idno = (string)Session["idno"];
-            int adminId = int.Parse(idno);
-
-            try
-            {
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-                int vehicleID = rnd.Next(1, 20000);
-
-                var delivery = new Delivery
-                {
-                    adminId = adminId,
-                    deliveryId = idnum,
-                    orderTypes = GetSelectedValues(orderTypes),
-                    swapOptions = GetSelectedValues(swapOptionItems),
-                    vehicle1Name = vehicle1Name.Text,
-                    vehicle2Name = vehicle2Name.Text,
-                    vehicle3Name = vehicle3Name.Text,
-                    vehicle4Name = vehicle4Name.Text,
-                    vehicle1Fee = vehicle1Fee.Text,
-                    vehicle2Fee = vehicle2Fee.Text,
-                    vehicle3Fee = vehicle3Fee.Text,
-                    vehicle4Fee = vehicle4Fee.Text,
-                    perGallonFee = perGallonFee.Text,
-                    vehicle1Qty = vehicle1Qty.Text,
-                    vehicle2Qty = vehicle2Qty.Text,
-                    vehicle3Qty = vehicle3Qty.Text,
-                    vehicle4Qty = vehicle4Qty.Text,
-                    vehicle1ID = vehicleID,
-                    vehicle2ID = vehicleID + 1,
-                    vehicle3ID = vehicleID + 2,
-                    vehicle4ID = vehicleID + 3
-                };
-
-               
-
-                SetResponse response;
-                response = twoBigDB.Set("DELIVERY_DETAILS/" + idnum, delivery);
-                Delivery result = response.ResultAs<Delivery>();
-                //save the deliveryID in the session
-                Session["deliveryID"] = idnum;
-
-                if (Session["role"] != null || Session["idno"] != null)
-                {
-                    string role = (string)Session["role"];
-                    string adminID = (string)Session["idno"];
-
-                    //Random rnd = new Random();
-                    int logsID = rnd.Next(1, 10000);
-
-                    // Get the current date and time
-                    DateTime addedTime = DateTime.Now;
-
-                    // Log user activity
-                    var log = new UsersLogs
-                    {
-                        userIdnum = int.Parse(adminID),
-                        logsId = logsID,
-                        role = role,
-                        userFullname = (string)Session["fullname"],
-                        userActivity = "ADDED VEHICLES",
-                        activityTime = addedTime
-                    };
-
-                    var res= twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
-                    UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
-                }
-                Response.Write("<script>alert ('Vehicles Added Successfully'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-
-
-            }
-            catch
-            {
-                Response.Write("<script>alert ('Something went wrong'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
-
-            }
-        }
-
         protected void selectAll_CheckedChanged(object sender, EventArgs e)
         {
             GridViewRow row = ((sender as CheckBox).NamingContainer as GridViewRow);
@@ -1154,6 +1058,8 @@ namespace WRS2big_Web.Admin
 
 
 
+
+        //UPDATES
         protected void updateExpressbutton_Click(object sender, EventArgs e)
         {
             if (Session["idno"] != null)
@@ -1663,6 +1569,7 @@ namespace WRS2big_Web.Admin
                     }
 
 
+
                     //FOR THE CHECKBOXES
                     if (updateOrderTypesChck.Items.Cast<ListItem>().Any(item => item.Selected))
                     {
@@ -1721,6 +1628,165 @@ namespace WRS2big_Web.Admin
         protected void removeVehicle_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void addVehicles_Click(object sender, EventArgs e)
+        {
+            if (Session["idno"] != null)
+            {
+                var idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+                //generate a random number
+                Random rnd = new Random();
+                int vehicleID = new Random().Next(1, 10000);
+
+                FirebaseResponse allDelivery = twoBigDB.Get("DELIVERY_DETAILS/");
+                var all = allDelivery.Body;
+                Dictionary<string, Model.Delivery> adminAllDelivery = JsonConvert.DeserializeObject<Dictionary<string, Model.Delivery>>(all);
+
+                // Loop through all the deliverydetails
+                foreach (KeyValuePair<string, Model.Delivery> entry in adminAllDelivery)
+                {
+                    if (entry.Value.adminId == adminId)
+                    {
+                        int deliveryID = entry.Value.deliveryId;
+                        Session["deliveryID"] = deliveryID;
+                    }
+                }
+
+                int deliveryIdno = (int)Session["deliveryID"];
+
+                // Check if there is an existing delivery object for this admin
+                FirebaseResponse resDelivery = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryIdno);
+                Delivery delivery = null;
+                if (resDelivery.Body != null)
+                {
+                   
+
+                    delivery = resDelivery.ResultAs<Delivery>();
+
+                    delivery.vehicle1Name = vehicle1Name.Text;
+                    delivery.vehicle2Name = vehicle2Name.Text;
+                    delivery.vehicle3Name = vehicle3Name.Text;
+                    delivery.vehicle4Name = vehicle4Name.Text;
+
+                    delivery.vehicle1Fee = vehicle1Fee.Text;
+                    delivery.vehicle2Fee = vehicle2Fee.Text;
+                    delivery.vehicle3Fee = vehicle3Fee.Text;
+                    delivery.vehicle4Fee = vehicle4Fee.Text;
+
+                    delivery.vehicle1Qty = vehicle1Qty.Text;
+                    delivery.vehicle2Qty = vehicle2Qty.Text;
+                    delivery.vehicle4Qty = vehicle4Qty.Text;
+
+                    delivery.vehicle1ID = vehicleID;
+                    delivery.vehicle2ID = vehicleID + 1;
+                    delivery.vehicle3ID = vehicleID + 2;
+                    delivery.vehicle4ID = vehicleID + 3;
+
+
+                    int logsID = rnd.Next(1, 10000);
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now;
+
+                    // Log user activity
+                    var log = new UsersLogs
+                    {
+                        userIdnum = int.Parse(idno),
+                        logsId = logsID,
+                        role = "Admin",
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "ADDED VEHICLES",
+                        activityTime = addedTime
+                    };
+
+                    var reslog = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                    UsersLogs logRes = reslog.ResultAs<UsersLogs>();//Database Result
+
+                }
+                else
+                {
+                    Response.Write("<script>alert ('You must setup your Delivery Details first before you can set up your Delivery Types');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+
+                
+                // Save the updated delivery object to the database
+                FirebaseResponse res = twoBigDB.Set("DELIVERY_DETAILS/" + deliveryIdno, delivery);
+                Response.Write("<script>alert ('You successfully added the Vehicles you can use for your delivery');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+            }
+            else
+            {
+                Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+
+            }
+        }
+
+        protected void deliveryDetailsAdded_Click(object sender, EventArgs e)
+        {
+            if (Session["idno"] != null)
+            {
+                string idno = (string)Session["idno"];
+                int adminId = int.Parse(idno);
+
+                try
+                {
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+                   
+
+                    var delivery = new Delivery
+                    {
+                        adminId = adminId,
+                        deliveryId = idnum,
+                        orderTypes = GetSelectedValues(orderTypes),
+                        swapOptions = GetSelectedValues(swapOptionItems),
+
+                    };
+
+                    SetResponse response;
+                    response = twoBigDB.Set("DELIVERY_DETAILS/" + idnum, delivery);
+                    Delivery result = response.ResultAs<Delivery>();
+                    //save the deliveryID in the session
+                    Session["deliveryID"] = idnum;
+
+                    if (Session["role"] != null || Session["idno"] != null)
+                    {
+                        string role = (string)Session["role"];
+                        string adminID = (string)Session["idno"];
+
+                        //Random rnd = new Random();
+                        int logsID = rnd.Next(1, 10000);
+
+                        // Get the current date and time
+                        DateTime addedTime = DateTime.Now;
+
+                        // Log user activity
+                        var log = new UsersLogs
+                        {
+                            userIdnum = int.Parse(adminID),
+                            logsId = logsID,
+                            role = role,
+                            userFullname = (string)Session["fullname"],
+                            userActivity = "CREATED DELIVERY DETAILS",
+                            activityTime = addedTime
+                        };
+
+                        var res = twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+                        UsersLogs logRes = res.ResultAs<UsersLogs>();//Database Result
+                    }
+                    Response.Write("<script>alert ('Delivery details Added Successfully'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+
+                }
+                catch
+                {
+                    Response.Write("<script>alert ('Something went wrong'); window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+            }
         }
     }
 }
