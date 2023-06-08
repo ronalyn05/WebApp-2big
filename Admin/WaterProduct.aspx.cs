@@ -207,7 +207,7 @@ namespace WRS2big_Web.Admin
                                 }
 
                                 //Get the total of ordered gallons 
-                                totalOrderedGallons += orderedGallons * order.order_overallQuantities;
+                                totalOrderedGallons += orderedGallons * order.order_overAllQuantities;
 
                             }
 
@@ -230,7 +230,7 @@ namespace WRS2big_Web.Admin
                                     declinedGallons = double.Parse(order.order_Products[0].qtyPerItem) / gallonsPerML;
                                 }
                                 // Get the total of declined gallons
-                                totalDeclinedGallons += declinedGallons * order.order_overallQuantities;
+                                totalDeclinedGallons += declinedGallons * order.order_overAllQuantities;
                             }
                         }
                         

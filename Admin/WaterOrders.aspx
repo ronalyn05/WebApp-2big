@@ -314,6 +314,12 @@
                                                                                                                       <strong class="text-left font-weight-bold">Overall Quantity:</strong>
                                                                                                                     <asp:Label Style="text-align: left;" ID="lblOverallQuantity" runat="server" ForeColor="Black" Font-Size="11"></asp:Label>
                                                                                                                     <br />
+                                                                                                                    <strong class="text-left font-weight-bold">Vehicle Fee :</strong>
+                                                                                                                    <asp:Label Style="text-align: left;" ID="lblVehicleFee" runat="server" ForeColor="Black" Font-Size="11"></asp:Label>
+                                                                                                                    <br />
+                                                                                                                    <strong class="text-left font-weight-bold">Delivery Fee :</strong>
+                                                                                                                    <asp:Label Style="text-align: left;" ID="lbldeliveryFee" runat="server" ForeColor="Black" Font-Size="11"></asp:Label>
+                                                                                                                    <br />
                                                                                                                     <strong class="text-left font-weight-bold">Initial Total Amount :</strong>
                                                                                                                     <asp:Label Style="text-align: left;" ID="lblInitialtotalAmount" runat="server" ForeColor="Black" Font-Size="11"></asp:Label>
                                                                                                                     <br />
@@ -413,6 +419,38 @@
                                                                                 </div>
                                                                             </div>
                                                                             <%-- end for modal view--%>
+                                                                             <!-- MODAL FOR ASSIGNING DRIVER -->
+                                    <div class="modal fade" id="assignDriver" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Re-Assign Driver</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">X</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12 col-sm-12">
+                                                                        <div style="display: flex;">
+                                                                            <h6>Which driver would you like to assign to deliver the customer's order?</h6>
+                                                                        </div>
+                                                                        
+                                                        <asp:DropDownList ID="drdAssignDriver" runat="server" class="text-center" Height="40px" Width="364px" >
+                                                                          <%-- <asp:ListItem Selected="False" Text="Select driver to assign"></asp:ListItem>--%>
+                                                                       </asp:DropDownList>
+                                                             </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <%--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>--%>
+                                                    <asp:Button ID="btnSubmit" runat="server" Text="Submit" class="btn btn-primary btn-sm" OnClick="btnSubmit_Click" />
+                                                   <%-- <button type="button" class="btn btn-primary" runat="server" id="btnSubmitDecline" OnClick="btnSubmitDecline_Click">Submit</button>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <asp:HiddenField runat="server" ID="hfAssignDriver" />
+                                    </div>
                                                                             <%-- MODAL TO DISPLAY THE GCASH PAYMENT PROOF --%>
                                                                             <div class="modal fade" id="viewPaymentProof" tabindex="-1" role="dialog" aria-hidden="true">
                                                                                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -462,7 +500,7 @@
                                                                                         <div style="float: right;">
                                                                                             <h6>Note: Choose status : 
                                                                                                     <br />
-                                                                                                - 'Accepted' (to be able to decline accepted order if unforeseen emergency arise)
+                                                                                                - 'Accepted' (to be able to decline accepted order or re-assign driver if unforeseen emergency arise)
                                                                                                     <br />
                                                                                                 - 'Delivered' (to be able to receive the payment that is successfully deliverd)
                                                                                             </h6>
@@ -508,6 +546,7 @@
                                                                                                         <Columns>
                                                                                                             <asp:TemplateField HeaderText="ACTION">
                                                                                                                 <ItemTemplate>
+                                                                                                                    <asp:Button ID="btnAssign" runat="server" Text="Re-Assign Driver" OnClick="btnAssignDriverClick" Style="background-color: transparent; font-size: 18px; border-color: blue; border-style: solid" />
                                                                                                                     <asp:Button ID="btnDecline" runat="server" Text="Decline" OnClick="btnDecline_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
                                                                                                                     <asp:Button ID="btnPrintOnlineOrder" runat="server" Text="View Invoice" OnClick="btnPrintReceiptsOnline_Click" CssClass="btn btn-primary" />
                                                                                                                 </ItemTemplate>
@@ -562,7 +601,7 @@
                                                                                     <div style="float: right;">
                                                                                         <h6>Note: Choose status : 
                                                                                                 <br />
-                                                                                            - 'Accepted' (to be able to decline accepted order if unforeseen emergency arise)
+                                                                                            - 'Accepted' (to be able to decline accepted order or re-assign driver if unforeseen emergency arise)
                                                                                                 <br />
                                                                                             - 'Delivered' (to be able to receive the payment that is successfully deliverd)
                                                                                         </h6>
@@ -638,6 +677,7 @@
                                                                                                     <Columns>
                                                                                                         <asp:TemplateField HeaderText="ACTION">
                                                                                                             <ItemTemplate>
+                                                                                                                <asp:Button ID="btnAssign" runat="server" Text="Re-Assign Driver" OnClick="btnAssignDriverClick" Style="background-color: transparent; font-size: 18px; border-color: blue; border-style: solid" />
                                                                                                                 <asp:Button ID="btnDeclineGcash" runat="server" Text="Decline" OnClick="btnDeclineGcash_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
                                                                                                                  <asp:Button ID="btnPrintOnlineOrder" runat="server" Text="View Invoice" OnClick="btnPrintReceiptsOnline_Click" CssClass="btn btn-primary" />
                                                                                                             </ItemTemplate>
@@ -688,7 +728,7 @@
                                                                                     <div style="float: right;">
                                                                                         <h6>Note: Choose status : 
                                                                                                 <br />
-                                                                                            - 'Accepted' (to be able to decline accepted order if unforeseen emergency arise)
+                                                                                            - 'Accepted' (to be able to decline accepted order or re-assign driver if unforeseen emergency arise)
                                                                                                 <br />
                                                                                             - 'Delivered' (to be able to receive the payment that is successfully deliverd)
                                                                                         </h6>
@@ -751,6 +791,7 @@
                                                                                                     <Columns>
                                                                                                         <asp:TemplateField HeaderText="ACTION">
                                                                                                             <ItemTemplate>
+                                                                                                                <asp:Button ID="btnAssign" runat="server" Text="Re-Assign Driver" OnClick="btnAssignDriverClick" Style="background-color: transparent; font-size: 18px; border-color: blue; border-style: solid" />
                                                                                                                 <asp:Button ID="btnDeclinePoints" runat="server" Text="Decline" OnClick="btnDeclinePoints_Click" Style="background-color: transparent; font-size: 18px; border-color: red; border-style: solid" />
                                                                                                                  <asp:Button ID="btnPrintOnlineOrder" runat="server" Text="View Invoice" OnClick="btnPrintReceiptsOnline_Click" CssClass="btn btn-primary" />
                                                                                                             </ItemTemplate>

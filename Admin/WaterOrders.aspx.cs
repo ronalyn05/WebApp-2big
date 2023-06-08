@@ -37,6 +37,7 @@ namespace WRS2big_Web.Admin
                 //onlineordersDisplay();
                 //lblOrder.Text = "LIST OF ONLINE ORDERS";
                 walkinordersDisplay();
+                PopulateAssignDriver();
                 //displayAllCOD_order();
                 //displayAllGcash_order();
                 //displayAllPoints_order();
@@ -44,7 +45,37 @@ namespace WRS2big_Web.Admin
             }
 
         }
-      
+        //Fetch the employee 'driver' and get the id 
+        private void PopulateAssignDriver()
+        {
+            // Fetch all the employees from the database
+            FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+            Dictionary<string, Employee> employees = response.ResultAs<Dictionary<string, Employee>>();
+
+            if (response != null && employees != null)
+            {
+                // Create a list to store the driver employee IDs
+                List<int> empDriver = new List<int>();
+
+                // Iterate over the employees and add the IDs for employees with the role "Driver" to the list
+                foreach (var employee in employees.Values)
+                {
+                    if (employee.emp_role != null && employee.emp_role.ToLower() == "driver")
+                    {
+                        empDriver.Add(employee.emp_id);
+                    }
+                }
+
+                // Bind the driver employee IDs to the dropdown
+                drdAssignDriver.DataSource = empDriver;
+                drdAssignDriver.DataBind();
+
+                // Set a default item as the first item in the dropdown
+                drdAssignDriver.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select driver to assign", ""));
+            }
+        }
+
+
         //DISPLAY WALKIN ORDERS
         private void walkinordersDisplay()
         {
@@ -206,8 +237,6 @@ namespace WRS2big_Web.Admin
             // Show the modal popup
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "printReceipts", "$('#printReceipts').modal('show');", true);
         }
-
-     
         //generate pdf to print ORDER RECEIPTS for walkin order
         private string GenerateInvoiceHtml(int orderID)
         {
@@ -408,8 +437,8 @@ namespace WRS2big_Web.Admin
                         onlineordersTable.Columns.Add("PRICE");
                         //onlineordersTable.Columns.Add("OVERALL QUANTITY");
                         onlineordersTable.Columns.Add("DISCOUNT");
-                        onlineordersTable.Columns.Add("VEHICLE FEE");
-                        onlineordersTable.Columns.Add("DELIVERY FEE");
+                        //onlineordersTable.Columns.Add("VEHICLE FEE");
+                        //onlineordersTable.Columns.Add("DELIVERY FEE");
                         //onlineordersTable.Columns.Add("TOTAL AMOUNT");
 
 
@@ -435,16 +464,18 @@ namespace WRS2big_Web.Admin
                         lblCashier_ownerName.Text = onlineOrder.orderAcceptedBy;
                         lbl_transNo.Text = orderID.ToString();
                         lbl_date.Text = onlineOrder.orderDate == DateTime.MinValue ? "" : onlineOrder.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        lblOverallQuantity.Text = onlineOrder.order_overallQuantities.ToString();
+                        lblOverallQuantity.Text = onlineOrder.order_overAllQuantities.ToString();
                         lblInitialtotalAmount.Text = "Php." + " " + onlineOrder.order_InitialAmount.ToString();
                         lblTotalAmount.Text = "Php." + " " + onlineOrder.order_TotalAmount.ToString();
+                        lblVehicleFee.Text = onlineOrder.ordervehiclefee.ToString();
+                        lbldeliveryFee.Text = onlineOrder.orderDeliveryfee.ToString();
                         //lblInitialtotalAmount.Text = onlineOrder.order_InitialAmount.ToString();
                         //lblTotalAmount.Text = onlineOrder.order_TotalAmount.ToString();
 
-                      
+
                         // Retrieve the total amount, vehicle fee and delivery fee from the order
-                        int vehicleFee = onlineOrder.ordervehiclefee;
-                        int deliveryFee = onlineOrder.orderDeliveryfee;
+                        //int vehicleFee = onlineOrder.ordervehiclefee;
+                        //decimal deliveryFee = onlineOrder.orderDeliveryfee;
 
                         string productname = " ";
                         string productunit = " ";
@@ -461,14 +492,21 @@ namespace WRS2big_Web.Admin
                                  qtyperItem = product.qtyPerItem;
 
                             onlineordersTable.Rows.Add(
-                               productname,
-                               productunit,
-                               qtyperItem,
-                               productprice,
-                               discount,
-                               vehicleFee,
-                               deliveryFee
-                           );
+                              productname,
+                              productunit,
+                              qtyperItem,
+                              productprice,
+                              discount
+                          );
+                            // onlineordersTable.Rows.Add(
+                            //    productname,
+                            //    productunit,
+                            //    qtyperItem,
+                            //    productprice,
+                            //    discount,
+                            //    vehicleFee,
+                            //    deliveryFee
+                            //);
                         }
                         
                         // Bind the DataTable to the GridView
@@ -516,6 +554,8 @@ namespace WRS2big_Web.Admin
             string overallQty = lblOverallQuantity.Text;
             string initialAmount = lblInitialtotalAmount.Text;
             string totalAmount = lblTotalAmount.Text;
+            string vehiclefee = lblVehicleFee.Text;
+            string deliveryfee = lbldeliveryFee.Text;
 
 
             // Create the HTML content for the invoice
@@ -595,8 +635,6 @@ namespace WRS2big_Web.Admin
                                                 <th>QTY PER ITEM</th>
                                                 <th>PRICE</th>
                                                 <th>DISCOUNT</th>
-                                                <th>VEHICLE FEE</th>
-                                                <th>DELIVERY FEE</th>
                                             </tr>
                                         </thead>
                                         <tbody>";
@@ -610,8 +648,8 @@ namespace WRS2big_Web.Admin
                 string quantity = row.Cells[2].Text;
                 string price = row.Cells[3].Text;
                 string discount = row.Cells[4].Text;
-                string vehicleFee = row.Cells[5].Text;
-                string deliveryFee = row.Cells[6].Text;
+                //string vehicleFee = row.Cells[5].Text;
+                //string deliveryFee = row.Cells[6].Text;
 
                 invoiceHtml += $@"<tr>
                             <td>{productname}</td>
@@ -619,8 +657,7 @@ namespace WRS2big_Web.Admin
                             <td>{quantity}</td>
                             <td>{price}</td>
                             <td>{discount}</td>
-                            <td>{vehicleFee}</td>
-                            <td>{deliveryFee}</td>
+                          
                         </tr>";
             }
 
@@ -629,6 +666,10 @@ namespace WRS2big_Web.Admin
                 <br />
                 <hr />
                 <strong>Overall Quantity: {overallQty}</strong>
+                <br />
+                <strong>Vehicle Fee: {vehiclefee}</strong>
+                <br />
+                <strong>Delivery Fee: {deliveryfee}</strong>
                 <br />
                 <strong>Initial Total Amount: {initialAmount}</strong>
                 <br />
@@ -1878,7 +1919,6 @@ namespace WRS2big_Web.Admin
                 lblGcashError.Visible = true;
             }
         }
-
         //DISPLAY ALL POINTS ORDER 
         private void displayAllPoints_order()
         {
@@ -2409,7 +2449,6 @@ namespace WRS2big_Web.Admin
                 lblPointsErrorMessage.Visible = true;
             }
         }
-
         //SEARCH COD ORDERS
         protected void btnView_Click(object sender, EventArgs e)
         {
@@ -2545,7 +2584,6 @@ namespace WRS2big_Web.Admin
             }
 
         }
-
         //DISPLAY GCASH PROOF IMAGE
         protected void btnPaymentProof_Click(object sender, EventArgs e)
         {
@@ -2713,7 +2751,7 @@ namespace WRS2big_Web.Admin
                     int schedNotifID = rnd.Next(1, 20000);
 
                     //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                    if (existingOrder.order_overallQuantities <= 2)
+                    if (existingOrder.order_overAllQuantities <= 2)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2743,7 +2781,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 2 && existingOrder.order_overallQuantities <= 5)
+                    else if (existingOrder.order_overAllQuantities > 2 && existingOrder.order_overAllQuantities <= 5)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2773,7 +2811,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 5 && existingOrder.order_overallQuantities <= 8)
+                    else if (existingOrder.order_overAllQuantities > 5 && existingOrder.order_overAllQuantities <= 8)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2803,7 +2841,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 8 && existingOrder.order_overallQuantities <= 15)
+                    else if (existingOrder.order_overAllQuantities > 8 && existingOrder.order_overAllQuantities <= 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2833,7 +2871,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 15)
+                    else if (existingOrder.order_overAllQuantities > 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -2868,7 +2906,6 @@ namespace WRS2big_Web.Admin
                 }
             }
         }
-
     //    UPDATING THE STATUS ORDERS POINTS IN RECEIVEING POINTS PAYMENT
         protected void btnPaymentAcceptPoints_Click(object sender, EventArgs e)
         {
@@ -3015,7 +3052,7 @@ namespace WRS2big_Web.Admin
                     int schedNotifID = rnd.Next(1, 20000);
 
                     //condition to check if the quantity is less than or equal to 2, schedule notif after 2 days since ordered. 
-                    if (existingOrder.order_overallQuantities <= 2)
+                    if (existingOrder.order_overAllQuantities <= 2)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -3045,7 +3082,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 2 && existingOrder.order_overallQuantities <= 5)
+                    else if (existingOrder.order_overAllQuantities > 2 && existingOrder.order_overAllQuantities <= 5)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -3075,7 +3112,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 5 && existingOrder.order_overallQuantities <= 8)
+                    else if (existingOrder.order_overAllQuantities > 5 && existingOrder.order_overAllQuantities <= 8)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -3105,7 +3142,7 @@ namespace WRS2big_Web.Admin
                         Debug.WriteLine($"ORDERED DATE: {orderedDate}");
                         Debug.WriteLine($"SCHEDULE: {schedule}");
                     }
-                    else if (existingOrder.order_overallQuantities > 8 && existingOrder.order_overallQuantities <= 15)
+                    else if (existingOrder.order_overAllQuantities > 8 && existingOrder.order_overAllQuantities <= 15)
                     {
                         //get the ordered date from the order
                         DateTime orderedDate = existingOrder.orderDate;
@@ -3140,6 +3177,94 @@ namespace WRS2big_Web.Admin
             }
 
 
+        }
+        //SAVING ORDER ID FOR ASSIGNING THE DRIVER
+        protected void btnAssignDriverClick(object sender, EventArgs e)
+        {
+            // Retrieve the button that was clicked
+            Button btnAssign = (Button)sender;
+            // Get the order ID from the command argument
+            //int orderID = int.Parse(btnDecline.CommandArgument);
+            // Find the GridView row containing the button
+            GridViewRow row = (GridViewRow)btnAssign.NamingContainer;
+
+            // Get the order ID from the specific column
+            int orderIDColumnIndex = 1; //  the actual column index of the order ID
+            int orderID = int.Parse(row.Cells[orderIDColumnIndex].Text);
+
+            // Store the order ID in a hidden field for later use
+            hfAssignDriver.Value = orderID.ToString();
+
+            // Show the modal popup
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "assignDriver", "$('#assignDriver').modal('show');", true);
+
+        }
+        //RE-ASSIGNING THE DRIVER
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            //  generate a random number for employee logged
+            Random rnd = new Random();
+            int idnum = rnd.Next(1, 10000);
+
+            // Get the admin ID from the session
+            string idno = (string)Session["idno"];
+            string name = (string)Session["fullname"];
+            string role = (string)Session["role"];
+
+            // Get the order ID from the hidden field
+            int orderID = int.Parse(hfAssignDriver.Value);
+
+            // Get the reason input value
+            string driverId = drdAssignDriver.SelectedValue;
+
+            try
+            {
+
+                // Retrieve the existing order object from the database
+                FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
+                Order existingOrder = response.ResultAs<Order>();
+
+                if (response != null && response.ResultAs<Order>() != null)
+                {
+                    if (existingOrder.order_OrderTypeValue == "Delivery")
+                    {
+                        // Update the existing order object with the new driver ID
+                        existingOrder.driverId = int.Parse(driverId);
+                        existingOrder.dateDriverAssigned = DateTime.Now;
+                        existingOrder.driverAssignedBy = name;
+
+                        // Update the existing order object in the database
+                        response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
+
+                        // Show success message
+                        Response.Write("<script>alert('You have successfully re-assigned driver " + driverId + " to order number " + orderID + ". You can now proceed to accept the order.'); </script>");
+                    }
+                    else
+                    {
+                        // Show  message
+                        Response.Write("<script>alert('You are not allowed to re-assign driver since order wil be pick up by the customer.'); </script>");
+                    }
+                }
+                // Get the current date and time
+                DateTime addedTime = DateTime.Now;
+
+                var log = new UsersLogs
+                {
+                    userIdnum = int.Parse(idno),
+                    logsId = idnum,
+                    role = role,
+                    userFullname = name,
+                    activityTime = addedTime,
+                    userActivity = "RE-ASSIGNED THE DRIVER TO DELIVER THE ORDER",
+                    // userActivity = UserActivityType.UpdatedEmployeeRecords
+                };
+                twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+            }
+            catch (Exception ex)
+            {
+                // Show error message
+                Response.Write("<script>alert ('An error occurred while processing your request.');</script>" + ex.Message);
+            }
         }
 
     }
