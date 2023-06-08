@@ -306,12 +306,10 @@
   <ItemGroup>
     <Content Include="Admin\AdminIndex.aspx" />
     <Content Include="Admin\AdminProfile.aspx" />
-    <Content Include="Admin\ContactDeveloper.aspx" />
     <Content Include="Admin\CustomerRecord.aspx" />
     <Content Include="Admin\Deliverydetails.aspx" />
     <Content Include="Admin\EmployeeRecord.aspx" />
     <Content Include="Admin\ListGraph.aspx" />
-    <Content Include="Admin\PackageAPage.aspx" />
     <Content Include="Admin\PackageBPage.aspx" />
     <Content Include="Admin\PackageCPage.aspx" />
     <Content Include="Admin\SubscriptionPackages.aspx" />
@@ -496,7 +494,6 @@
     <Content Include="Admin\SubscriptionSuccess.aspx" />
     <Content Include="LandingPage\ConfirmResetPass.aspx" />
     <Content Include="LandingPage\Index.aspx" />
-    <Content Include="Admin\BasicPlanSub.aspx" />
     <Content Include="Admin\PremiumPlanSub.aspx" />
     <Content Include="LandingPage\ResetPassword.aspx" />
     <Content Include="LandingPage\Terms.aspx" />
@@ -644,13 +641,6 @@
     <Compile Include="Admin\AdminProfile.aspx.designer.cs">
       <DependentUpon>AdminProfile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ContactDeveloper.aspx.cs">
-      <DependentUpon>ContactDeveloper.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\ContactDeveloper.aspx.designer.cs">
-      <DependentUpon>ContactDeveloper.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\CustomerRecord.aspx.cs">
       <DependentUpon>CustomerRecord.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -678,13 +668,6 @@
     </Compile>
     <Compile Include="Admin\ListGraph.aspx.designer.cs">
       <DependentUpon>ListGraph.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\PackageAPage.aspx.cs">
-      <DependentUpon>PackageAPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\PackageAPage.aspx.designer.cs">
-      <DependentUpon>PackageAPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\PackageBPage.aspx.cs">
       <DependentUpon>PackageBPage.aspx</DependentUpon>
@@ -800,13 +783,6 @@
     </Compile>
     <Compile Include="LandingPage\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\BasicPlanSub.aspx.cs">
-      <DependentUpon>BasicPlanSub.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\BasicPlanSub.aspx.designer.cs">
-      <DependentUpon>BasicPlanSub.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\PremiumPlanSub.aspx.cs">
       <DependentUpon>PremiumPlanSub.aspx</DependentUpon>
