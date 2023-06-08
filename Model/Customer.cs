@@ -47,7 +47,7 @@ namespace WRS2big_Web.Model
         public string order_OrderStatus { get; set; }
         public string order_OrderTypeValue { get; set; }
         public List<OrderProduct> order_Products { get; set; }
-        public int order_overallQuantities { get; set; }
+        public int order_overAllQuantities { get; set; }
         public string order_ReservationDate { get; set; }
         public string order_StoreName { get; set; }
         public decimal order_TotalAmount { get; set; }
@@ -66,7 +66,7 @@ namespace WRS2big_Web.Model
         public string orderDeclinedBy { get; set; }
         public DateTime dateOrderDelivered { get; set; }
         public DateTime dateDriverAssigned { get; set; }
-        public int orderDeliveryfee { get; set; }
+        public decimal orderDeliveryfee { get; set; }
         public int ordervehiclefee { get; set; }
         public string driverAssignedBy { get; set; }
 
