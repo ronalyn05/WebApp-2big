@@ -312,6 +312,15 @@ namespace WRS2big_Web.LandingPage
         protected global::System.Web.UI.WebControls.Label lblErrorUpload;
 
         /// <summary>
+        /// terms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton terms;
+
+        /// <summary>
         /// btnSignup control.
         /// </summary>
         /// <remarks>

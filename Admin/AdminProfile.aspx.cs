@@ -359,7 +359,7 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     userActivity = "UPDATE PROFILE",
-                    // userActivity = UserActivityType.AddedProductRefill,
+                    role = "Admin",
                     activityTime = addedTime
                 };
 
@@ -428,7 +428,7 @@ namespace WRS2big_Web.Admin
                 logsId = idnum,
                 userFullname = (string)Session["fullname"],
                 userActivity = "UPLOADED PROFILE IMAGE",
-              
+                role = "Admin",
                 activityTime = addedTime
             };
 
@@ -536,6 +536,7 @@ namespace WRS2big_Web.Admin
                 {
                     userIdnum = int.Parse(idno),
                     logsId = idnum,
+                    role =  "Admin",
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
                     userActivity = "UPDATED STATION DETAILS",
@@ -649,6 +650,7 @@ namespace WRS2big_Web.Admin
                     logsId = idnum,
                     userFullname = (string)Session["fullname"],
                     activityTime = addedTime,
+                    role = "Admin",
                     userActivity = "ADDED THE STATION DETAILS",
                 };
 
