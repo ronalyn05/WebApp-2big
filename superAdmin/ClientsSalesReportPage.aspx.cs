@@ -252,7 +252,7 @@ namespace WRS2big_Web.superAdmin
 
                             ordersTable.Rows.Add(clientOrders.orderID,
                                 orderedCus.firstName + " " + orderedCus.lastName,
-                                clientOrders.order_overallQuantities,
+                                clientOrders.order_overAllQuantities,
                                 "₱." + " " + clientOrders.order_TotalAmount,
                                 orderType,
                                 clientOrders.orderDate
@@ -402,7 +402,7 @@ namespace WRS2big_Web.superAdmin
 
                         ordersTable.Rows.Add(clientOrder.orderID,
                             orderedCus.firstName + " " + orderedCus.lastName,
-                            clientOrder.order_overallQuantities,
+                            clientOrder.order_overAllQuantities,
                             clientOrder.order_TotalAmount,
                             orderType,
                             clientOrder.orderDate
