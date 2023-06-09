@@ -93,6 +93,8 @@ namespace WRS2big_Web.Model
         public DateTime dateUpdated { get; set; }
         public string status_ModifiedBy { get; set; }
         public DateTime statusDateModified { get; set; }
+
+        public string FullName => emp_firstname + " " + emp_lastname; // Property that returns the driver's full name
     }
 
     public class TankSupply
@@ -315,7 +317,7 @@ namespace WRS2big_Web.Model
         public DateTime rewardsDateAdded { get; set; }
         public string addedBy { get; set; }
     }
-    public class DiscounCoupon
+    public class DiscountCoupon
     {
         public int couponId { get; set; }
         public int adminId { get; set; }
@@ -325,6 +327,7 @@ namespace WRS2big_Web.Model
         public string couponDescription { get; set; }
         public string couponAppliedToProductOffers { get; set; }
         public string couponAppliedTo_productRefillUnitSizes { get; set; }
+        public string couponAppliedTo_otherProductUnitSizes { get; set; }
         public string couponAppliedTo_thirdpartyProductUnitSizes { get; set; }
         public DateTime couponExpirationFrom { get; set; }
         public DateTime couponExpirationTo { get; set; }
