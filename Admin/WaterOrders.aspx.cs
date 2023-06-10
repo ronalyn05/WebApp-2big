@@ -874,11 +874,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
+
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -902,20 +910,27 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        //if(entry.orderPaymentMethod == "CashOnDelivery")
-                        //{
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
 
-                        //}
-                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                                 dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
-                                 dateDelivered, datePayment, entry.paymentReceivedBy);
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                         dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
+                                         dateDelivered, datePayment, entry.paymentReceivedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -959,12 +974,19 @@ namespace WRS2big_Web.Admin
                     FirebaseResponse response = twoBigDB.Get("ORDERS");
                     Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                    // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                    FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                    Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                    // Fetch all the employees from the database
+                    FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                    Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                     // Create the DataTable to hold the orders
                     DataTable ordersTable = new DataTable();
                     ordersTable.Columns.Add("ORDER ID");
-                    ordersTable.Columns.Add("CUSTOMER ID");
-                    ordersTable.Columns.Add("DRIVER ID");
+                    ordersTable.Columns.Add("CUSTOMER NAME");
+                    ordersTable.Columns.Add("DRIVER NAME");
                     ordersTable.Columns.Add("STATUS");
                     ordersTable.Columns.Add("DELIVERY TYPE");
                     ordersTable.Columns.Add("ORDER TYPE");
@@ -983,13 +1005,24 @@ namespace WRS2big_Web.Admin
                         
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
+                    {
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
                         {
-                            string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                            string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            string customerName = customer.firstName + " " + customer.lastName;
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -1165,12 +1198,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1190,12 +1230,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1243,12 +1295,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1267,12 +1326,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, 
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1318,13 +1389,20 @@ namespace WRS2big_Web.Admin
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
+                
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
 
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1344,12 +1422,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTime.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1396,12 +1486,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1425,20 +1522,28 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        //if(entry.orderPaymentMethod == "CashOnDelivery")
-                        //{
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        //}
-                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                                 dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
-                                 dateDelivered, datePayment, entry.paymentReceivedBy);
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                         dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
+                                         dateDelivered, datePayment, entry.paymentReceivedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -1485,12 +1590,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1510,12 +1622,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -1694,12 +1818,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1719,12 +1850,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1773,12 +1916,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1797,12 +1947,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1852,12 +2014,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1877,12 +2046,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -1931,12 +2112,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -1960,20 +2148,28 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        //if(entry.orderPaymentMethod == "CashOnDelivery")
-                        //{
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        //}
-                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                                 dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
-                                 dateDelivered, datePayment, entry.paymentReceivedBy);
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string datePayment = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                         dateOrder, dateAccepted, entry.orderAcceptedBy, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy,
+                                         dateDelivered, datePayment, entry.paymentReceivedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -2019,12 +2215,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -2044,12 +2247,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateAccepted = entry.dateOrderAccepted == DateTime.MinValue ? "" : entry.dateOrderAccepted.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateAccepted, entry.orderAcceptedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
                     if (ordersTable.Rows.Count == 0)
                     {
@@ -2226,12 +2441,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -2251,12 +2473,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
-                           dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDeclined = entry.dateOrderDeclined == DateTime.MinValue ? "" : entry.dateOrderDeclined.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName, entry.orderPaymentMethod, entry.order_TotalAmount,
+                                   dateOrder, dateDeclined, entry.orderDeclinedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -2304,12 +2538,19 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -2328,12 +2569,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string dateDelivered = entry.dateOrderDelivered == DateTime.MinValue ? "" : entry.dateOrderDelivered.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, dateDelivered, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -2377,17 +2630,23 @@ namespace WRS2big_Web.Admin
 
             try
             {
-
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse response = twoBigDB.Get("ORDERS");
                 Dictionary<string, Order> orderlist = response.ResultAs<Dictionary<string, Order>>();
 
+                // Retrieve all customers from the CUSTOMER table and compare the current customer name
+                FirebaseResponse customerResponse = twoBigDB.Get("CUSTOMER");
+                Dictionary<string, Customer> customerlist = customerResponse.ResultAs<Dictionary<string, Customer>>();
+
+                // Fetch all the employees from the database
+                FirebaseResponse responseEmp = twoBigDB.Get("EMPLOYEES");
+                Dictionary<string, Employee> employees = responseEmp.ResultAs<Dictionary<string, Employee>>();
 
                 // Create the DataTable to hold the orders
                 DataTable ordersTable = new DataTable();
                 ordersTable.Columns.Add("ORDER ID");
-                ordersTable.Columns.Add("CUSTOMER ID");
-                ordersTable.Columns.Add("DRIVER ID");
+                ordersTable.Columns.Add("CUSTOMER NAME");
+                ordersTable.Columns.Add("DRIVER NAME");
                 ordersTable.Columns.Add("STATUS");
                 ordersTable.Columns.Add("DELIVERY TYPE");
                 ordersTable.Columns.Add("ORDER TYPE");
@@ -2407,12 +2666,24 @@ namespace WRS2big_Web.Admin
                     // Loop through the orders and add them to the DataTable
                     foreach (var entry in filteredList)
                     {
-                        string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                        // Retrieve the customer details based on the customer ID from the order
+                        if (customerlist.TryGetValue(entry.cusId.ToString(), out Customer customer))
+                        {
+                            string customerName = customer.firstName + " " + customer.lastName;
 
-                        ordersTable.Rows.Add(entry.orderID, entry.cusId, entry.driverId, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
-                            entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            // Retrieve the driver details based on the driver ID from the order
+                            if (employees.TryGetValue(entry.driverId.ToString(), out Employee driver))
+                            {
+                                string driverName = driver.FullName;
+
+                                string datePaymentReceived = entry.datePaymentReceived == DateTime.MinValue ? "" : entry.datePaymentReceived.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateDriverAssigned = entry.dateDriverAssigned == DateTime.MinValue ? "" : entry.dateDriverAssigned.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                                string dateOrder = entry.orderDate == DateTimeOffset.MinValue ? "" : entry.orderDate.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                                ordersTable.Rows.Add(entry.orderID, customerName, driverName, entry.order_OrderStatus, entry.order_DeliveryTypeValue, entry.order_OrderTypeValue, entry.order_StoreName,
+                                    entry.orderPaymentMethod, entry.order_TotalAmount, dateOrder, datePaymentReceived, entry.paymentReceivedBy, dateDriverAssigned, entry.driverAssignedBy);
+                            }
+                        }
                     }
 
                     if (ordersTable.Rows.Count == 0)
@@ -3329,6 +3600,11 @@ namespace WRS2big_Web.Admin
                     // userActivity = UserActivityType.UpdatedEmployeeRecords
                 };
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
+
+                displayAcceptedGcash_order();
+                displayAcceptedPoints_order();
+                displayAccepted_order();
+
             }
             catch (Exception ex)
             {
