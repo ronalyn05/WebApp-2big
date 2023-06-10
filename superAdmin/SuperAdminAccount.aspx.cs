@@ -13,6 +13,7 @@ using System.IO;
 using WRS2big_Web.Model;
 using System.Text;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace WRS2big_Web.superAdmin
 {
@@ -47,9 +48,8 @@ namespace WRS2big_Web.superAdmin
                 double longitude = double.Parse(Request.Form["long"]);
 
 
-
                 // Password validation
-                string password = id_passwordreg.Text;
+                string password = Server.HtmlEncode(id_passwordreg.Text);
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
                     !password.Any(c => !char.IsLetterOrDigit(c)))
@@ -85,6 +85,8 @@ namespace WRS2big_Web.superAdmin
                     return;
                 }
 
+                // Encrypt the password using SHA-256
+                string hashedPassword = GetSHA256Hash(password);
 
                 var data = new SuperAccount
                 {
@@ -95,7 +97,7 @@ namespace WRS2big_Web.superAdmin
                     bdate = txtbirthdate.Text,
                     phone = contactNum,
                     email = txtEmail.Text,
-                    pass = password,
+                    pass = hashedPassword,
                     dateRegistered = DateTime.Now,
                     userRole = "Super Admin",
                     address = address
@@ -107,15 +109,61 @@ namespace WRS2big_Web.superAdmin
                 response = twoBigDB.Set("SUPERADMIN/" + data.superIDno, data);//Storing data to the database
                 SuperAccount res = response.ResultAs<SuperAccount>();//Database Result
 
+                //SAVE LOGS TO SUPER ADMIN
+                //Get the current date and time
+                DateTime logTime = DateTime.Now;
+
+                //generate a random number for users logged
+                //Random rnd = new Random();
+                int logID = rnd.Next(1, 10000);
+
+                //var idno = (string)Session["SuperIDno"];
+                //string superName = (string)Session["superAdminName"];
+
+                //Store the login information in the USERLOG table
+                var log = new Model.superLogs
+                {
+                    logsId = logID,
+                    superID = idnum,
+                    superFullname = txtfname.Text + txtmname.Text + txtlname.Text,
+                    superActivity = "CREATED NEW SUPERADMIN ACCOUNT",
+                    activityTime = logTime
+                };
+
+                //Storing the  info
+                response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                Model.superLogs resLog = response.ResultAs<Model.superLogs>();//Database Result
+
+                //SEND NOTIFICATION TO CUSTOMER 
+                //Random rnd = new Random();
+                int ID = rnd.Next(1, 20000);
+                var Notification = new Model.Notification
+                {
+                   
+                    sender = "System",
+                    title = "Super Admin New Account",
+                    receiver = "Super Admin",
+                    body = "A user just created a SuperAdmin Account! SuperAdmin:" + txtfname.Text + txtmname.Text + txtlname.Text,
+                    notificationDate = DateTime.Now,
+                    status = "unread",
+                    notificationID = ID,
+                    superAdmin_ID = idnum,
+
+                };
+
+                SetResponse notifResponse;
+                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
 
                 Response.Write("<script>alert ('Super Admin Account " + res.superIDno + " created! Use this id number to log in.'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
             }
             catch
             {
-                Response.Write("<script>alert('Data already exist'); window.location.href = 'SuperAdminAccountAccount.aspx'; </script>");
+                Response.Write("<script>alert('Something went wrong! Try again.'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
             }
         }
-        // To validate the terms and condition
+       
 
         //LOGGING IN 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -123,14 +171,18 @@ namespace WRS2big_Web.superAdmin
             try
             {
                 //DEFAULT CREDENTIALS
-                string defaultemail = "12345";
+                string defaultemail = "42223";
                 string defaultpass = "TechniqueServices";
+
                 string uEmail = txt_idno.Text;
                 string uPass = txt_password.Text;
 
                 //Get the id number and password entered by the user
                 string idno = txt_idno.Text.Trim();
                 string password = txt_password.Text.Trim();
+
+                // Encrypt the password using SHApassword-256
+                string hashedPassword = GetSHA256Hash(uPass);
 
                 //generate a random number for users logged
                 Random rnd = new Random();
@@ -180,6 +232,7 @@ namespace WRS2big_Web.superAdmin
                 }
                 else
                 {
+
                     FirebaseResponse response;
                     response = twoBigDB.Get("SUPERADMIN/" + idno);
                     SuperAccount user = response.ResultAs<SuperAccount>(); //Database result
@@ -188,8 +241,10 @@ namespace WRS2big_Web.superAdmin
                     //Check if the id number and password are valid
                     if (user != null)
                     {
+                        Debug.WriteLine($"PASS FROM DB:{user.pass}");
+                        Debug.WriteLine($"ENTERED: {hashedPassword}");
                         //LOG-IN FOR CREATED ACCOUNT
-                        if (user.pass == password)
+                        if (user.pass == hashedPassword)
                         {
                             //Generate a unique key for the USERLOG table using the Push method
                             //var userLogResponse = twoBigDB.Push("USERLOG/", userLog);
@@ -241,18 +296,16 @@ namespace WRS2big_Web.superAdmin
 
 
                         }
-
-
                         else
                         {
                             // Login failed, display error message
                             //lblError.Text = "Invalid email or password!";
-                            Response.Write("<script>alert('Invalid email or password');</script>");
+                            Response.Write("<script>alert('Incorrect password! Try again.');</script>");
                         }
                     }
                     else
                     {
-                        Response.Write("<script>alert('User is not found!');</script>");
+                        Response.Write("<script>alert('ID Number not found!Try again.');</script>");
                     }
                 }
 
@@ -263,6 +316,24 @@ namespace WRS2big_Web.superAdmin
             {
                 // Handle the exception and log the error message
                 Response.Write("<script>alert('Something went wrong!');</script>");
+            }
+        }
+
+        //ENCRYPTING THE PASSWORD
+        private string GetSHA256Hash(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = sha256.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return sb.ToString();
             }
         }
     }

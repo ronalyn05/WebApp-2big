@@ -78,6 +78,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox gcashnum;
 
         /// <summary>
+        /// RegularExpressionValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
+
+        /// <summary>
         /// paymentButton control.
         /// </summary>
         /// <remarks>
@@ -246,7 +255,7 @@ namespace WRS2big_Web.Admin
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList radDevType;
+        protected global::System.Web.UI.WebControls.RadioButtonList radDevType;
 
         /// <summary>
         /// standardRadio control.
@@ -744,13 +753,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox updateV1Fee;
 
         /// <summary>
-        /// updateV1Num control.
+        /// updateV1Min control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox updateV1Num;
+        protected global::System.Web.UI.WebControls.TextBox updateV1Min;
+
+        /// <summary>
+        /// updateV1Max control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateV1Max;
 
         /// <summary>
         /// updateV2Name control.
@@ -771,13 +789,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox updateV2Fee;
 
         /// <summary>
-        /// updateV2Num control.
+        /// updateV2Min control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox updateV2Num;
+        protected global::System.Web.UI.WebControls.TextBox updateV2Min;
+
+        /// <summary>
+        /// updateV2Max control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateV2Max;
 
         /// <summary>
         /// updateV3Name control.
@@ -798,13 +825,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox updateV3Fee;
 
         /// <summary>
-        /// updateV3Num control.
+        /// updateV3Min control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox updateV3Num;
+        protected global::System.Web.UI.WebControls.TextBox updateV3Min;
+
+        /// <summary>
+        /// updateV3Max control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateV3Max;
 
         /// <summary>
         /// updateV4Name control.
@@ -825,13 +861,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox updateV4Fee;
 
         /// <summary>
-        /// updateV4Num control.
+        /// updateV4Min control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox updateV4Num;
+        protected global::System.Web.UI.WebControls.TextBox updateV4Min;
+
+        /// <summary>
+        /// updateV4Max control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox updateV4Max;
 
         /// <summary>
         /// updateSwap control.
@@ -967,6 +1012,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox updateGcashNum;
+
+        /// <summary>
+        /// RegexValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegexValidator;
 
         /// <summary>
         /// updateDeliveryDetails control.
