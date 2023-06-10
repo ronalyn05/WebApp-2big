@@ -37,9 +37,10 @@
 
     <!-- Include the Leaflet CSS file -->
     <link rel="stylesheet" href="/assets/leaflet/leaflet.css" />
-
+    <link href="../assets/leaflet/leaflet.css" rel="stylesheet" />
     <!-- Include the Leaflet JavaScript file -->
     <script src="/assets/leaflet/leaflet.js"></script>
+    <script src="../assets/leaflet/leaflet.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -133,6 +134,9 @@
                                                 }
                                             </script>
 
+                                        <div style="color: black" class="card card-block">
+                                            <h5>SUPER ADMIN ACCOUNT</h5>
+                                        </div>
                                             <button type="button" id="btnlogin" class="togglebtn btn btn-primary waves-effect text-center active" onclick="showLogin()">Login</button>
                                             <button type="button" id="btnregister" class="togglebtn btn btn-primary waves-effect text-center active" onclick="showRegister()">Sign Up</button>
 
@@ -292,7 +296,7 @@
                                             <%-- WRS Location--%>
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <label>Refilling Station Address:</label>
+                                                    <label>Address:</label>
                                                     <div class="input-group-sm">
                                                         <asp:TextBox runat="server" ID="address" placeholder="Station Address" ReadOnly="true" class="form-control"> </asp:TextBox>
 
@@ -467,19 +471,6 @@
                                             });
                                         </script>
                                         <!-- Show Password END-->
-                                        <%--<div class="row m-t-25 text-left">
-                                            <div class="col-md-12">
-                                                <div>
-
-                                                    <hr />
-                                                    <label>
-                                                        <span class="text-inverse">By signing up, you agree to 2BiG's <a href="#" data-toggle="modal" data-target=".termsCondition">Terms and Conditions </a>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
 
                                         <!-- SignUp  -->
                                         <div class="row m-t-30">
