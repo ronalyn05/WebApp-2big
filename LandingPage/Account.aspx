@@ -109,79 +109,89 @@
                             <div class="text-center">
                                 <img src="/images/2ndLogo.png" style="width: 500px" alt="logo.png">
                             </div>
-                            <%-- MODAL FOR Delivery details--%>
-                            <%--  <div class="modal fade termsCondition col-xl-8 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-10">
-                                    <div class="modal-content col-xl-10 col-md-10" style="/*background-color: red; */ margin-left: 550px">
-                                        <div id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            <%-- MODAL FOR TERMS AND CONDITIONS--%>
+                            <div class="modal fade termsCondition col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
+                                    <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
+                                        <div id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                             <div class="modal-header">
-
+                                                <h4 class="modal-title" id="myModalLabel2">Terms and Conditions</h4>
+                                                <%--exit button--%>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="col-md-10 col-sm-18 ">
-                                                    <div class="x_content">
-                                                        <h5>Terms and Conditions</h5>
-
-                                                        <p>Greetings Users,</p>
-                                                        <p style="font-size: larger">
-                                                            <center>Welcome to 2BiG:<br />
-                                                                A Web and Mobile Water Refilling Station Management System. </center>
-                                                            <br />
-                                                            These terms and conditions outline the rules and regulations for the use of  <strong>'2BIG WRS Management System'     </strong>
-
-                                                            <br />
-                                                            <br />
-                                                            By accessing this website we assume you accept these terms and conditions in full.
-                                                            <br />
-                                                            Do not continue to use <strong>'2BIG WRS Management System'     </strong>if you do not accept all of the terms and conditions stated on this page.
-                                                            <br />
-
-
-                                                            <br />
-                                                            <br />
-                                                            <strong>Cookies
+                                                <div class="col-md-18 col-sm-18 ">
+                                                    <div class="x_content"  style="font-size:16px;color:black">
+                                                        <center>
+                                                        <asp:Label runat="server" style="font-size:16px">
+                                                            This End-User License Agreement <strong>("Agreement")</strong> is a legal agreement between you (referred to as "Licensee" or "you") and <strong>[Technique Services] </strong> (referred to as "Licensor" or "we" or "us"), governing the use of
+                                                            <strong> [2BiG: WRS Management System]</strong> (referred to as the "Software").
+                                                        </asp:Label>
+                                                        </center> <br /><br />
+                                                        <asp:Label runat="server" style="">
+                                                            <strong>
+                                                                ACCEPTANCE OF TERMS <br />
                                                             </strong>
-                                                            <br />
+                                                            By installing, copying, or using the Software, you agree to be bound by the terms of this Agreement. If you do not agree to these terms, you may not use the Software <br /><br />
+                                                            <strong>
+                                                                GRANT OF LICENSE <br />
 
-                                                            We employ the use of cookies. By using <strong>'2BIG WRS Management System'     </strong>you consent to the use of cookies in accordance with  <strong>'2BIG WRS Management System'     </strong>privacy policy.
-                                                                Most of the modern day interactive websites use cookies to enable us to retrieve user details for each visit.
-
-                                                                <br />
-                                                            Cookies are used in some areas of our site to enable the functionality of this area and ease of use for those people visiting.
-                                                              
-
-                                                                 <strong>License</strong>
-                                                            <br />
-
-                                                            Unless otherwise stated,<strong>  '2BIG WRS Management System'     </strong>and/or its licensors own the intellectual property rights for all material on<strong>  '2BIG WRS Management System'     </strong>
-
-                                                            All intellectual property rights are reserved. 
-                                                                <br />
-                                                            <strong>Disclaimer
-                                                                <br />
                                                             </strong>
+                                                            Subject to the terms and conditions of this Agreement, Licensor grants you a non-exclusive, non-transferable, limited license to install and use the Software for your personal or internal business purposes, 
+                                                            in accordance with the documentation and any additional usage guidelines provided by Licensor. <br /> <br />
+                                                            <strong>
+                                                                INTELLECTUAL PROPERTY RIGHTS <br />
+                                                            </strong>
+                                                            The Software is protected by copyright and other intellectual property laws. Licensor retains all rights, title, and interest in and to the Software, including any and all intellectual property rights.
+                                                            This Agreement does not transfer any ownership rights to you. <br /> <br />
 
-                                                            To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website (including, without limitation, any warranties implied by law in respect of satisfactory quality, fitness for purpose and/or the use of reasonable care and skill).
+                                                            <strong> TERMINATION </strong> <br />
+                                                            This Agreement is effective until terminated. Licensor may terminate this Agreement at any time if you fail to comply with its terms and conditions. Upon termination, you must cease all use of the Software and destroy all copies in your possession. <br /><br />
+                                                            </asp:Label>
 
-                                                                
-                                                                 <br />
-                                                            The limitations and exclusions of liability set out in this Section and elsewhere in this disclaimer:
-                                                            <br />
+                                                            <strong>
+                                                                SUBSCRIPTION TERMS <br />
+                                                            </strong>
+                                                            a. To fully use the Software, you must subscribe to the package offered. All packages are on a monthly basis and require payment of the corresponding fees. The available package is described on our website or within the Software. <br />
+b. Some subscription package is not renewable. At the end of each monthly period, your subscription will automatically expire, and you will need to resubscribe to continue using the Software. <br />
+c. If you subscribed to the free package and wish to change to a non-free package, you may do so within 5 days after the initial subscription. After this 5-day period, you may not change your package until the next subscription cycle. <br />
+d. To change the package, you must follow the instructions provided within the Software or on our website. Additional fees may apply for the new package, and any unused portion of the previously subscribed package will not be refunded. <br /><br />
+                                                            <strong>
+                                                                UPLOAD OF VALID IDs AND BUSINESS PROOFS
+                                                            </strong> <br />
+a. As part of the subscription process or in connection with the use of certain features or services within the Software, you may be required to upload and provide valid identification documents (Valid IDs) and business proofs, such as a Business Permit or equivalent documentation. <br />
+b. You agree that any Valid IDs and business proofs you upload must be legitimate and accurate. Falsifying or providing fraudulent documents is strictly prohibited and may result in legal consequences. <br />
+c. Licensor reserves the right to verify the authenticity and validity of the uploaded documents. If any document is found to be fraudulent, Licensor may terminate your subscription and take appropriate legal action. <br /><br />
+                                                            <strong>
+                                                                REVENUE OWNERSHIP <br />
+                                                            </strong>
+a. Licensor clarifies that the super admin or the developers of the Software do not earn from the earnings of your business through the online platform. The earnings generated by your business using the Software belong solely to you, the Licensee. <br />
+b. Licensor is not responsible for any financial transactions, revenue sharing, or profit distribution between you and any third parties using the Software. It is your sole responsibility to manage and distribute your business earnings. <br /><br />
+                                                            <strong> 
+                                                                EMPLOYEE MANAGEMENT <br />
+                                                            </strong>
+                                                            a. The Employee Management feature in the Software provides functionality for creating user accounts for cashiers and drivers. It does not include managing or covering the pay or salary of the employees. The Software does not handle or facilitate any salary-related transactions or calculations for your employees. <br />
+b. You, as the Licensee, are solely responsible for managing the payment and salary of your employees. <br /><br />
+                                                            <strong>
+                                                                PRODUCT PRICING LIABILITY <br />
+                                                                  </strong>
+a. The prices of the products you offer through the Software are solely determined by you, the Licensee. Licensor does not control or influence the pricing of your products. <br />
+b. You acknowledge and agree that you are solely responsible for setting up and maintaining the prices of your products. Any complaints or issues related to the prices of your products are your sole liability, and Licensor shall not be held responsible for any such complaints or issues. <br />
 
-                                                            are subject to the preceding paragraph; and
-                                                                govern all liabilities arising under the disclaimer or in relation to the subject matter of this disclaimer, including liabilities that arise in contract, tort (including negligence) and for breach of statutory duty.
-                                                                <br />
-                                                            To the extent that the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.
-                                                        </p>
+                                                          
+
+                                                        </asp:Label>
+
+
                                                     </div>
-
+                                                </div>
+                                                <div class="modal-footer">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>--%>
+                            </div>
                         </div>
                         <div class="col-xl-6 col-md-12" style="align-content: center; margin-left: 480px; top: 113px; left: 171px;">
                             <div class="card">
@@ -221,14 +231,15 @@
                                             <%--                                            @*username*@--%>
                                             <div class="col">
                                                 <div class="">
-                                                     
-                                                     <label>Plese choose your Role:</label><br />
-                                                    <asp:DropDownList runat="server" ID="roleType" style="font-size:18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged" AutoPostBack="true">
+
+                                                    <label>Plese choose your Role:</label><br />
+                                                    <asp:DropDownList runat="server" ID="roleType" Style="font-size: 18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged" AutoPostBack="true">
                                                         <asp:ListItem Enabled="false"></asp:ListItem>
                                                         <asp:ListItem Value="Admin"> Admin</asp:ListItem>
                                                         <asp:ListItem Value="Cashier">Cashier</asp:ListItem>
                                                     </asp:DropDownList>
-                                                    <br /><br />
+                                                    <br />
+                                                    <br />
                                                     <%--<label>Email:</label>--%>
                                                     <label>ID Number:</label>
                                                     <div class="input-group">
@@ -266,8 +277,8 @@
                                         </div>
                                         <div class="row m-t-25 text-left">
                                             <div class="col-md-12">
-                                              <asp:LinkButton runat="server" Text="Forgot Password? Reset your password." href="ResetPassword.aspx"></asp:LinkButton>
-                                               
+                                                <asp:LinkButton runat="server" Text="Forgot Password? Reset your password." href="ResetPassword.aspx"></asp:LinkButton>
+
                                             </div>
                                         </div>
                                         <%-- @*Show Password script*@--%>
@@ -564,7 +575,7 @@
                                                             <br />
                                                             Upload a picture of your choosen business document.
                                                             <br />
-                                                            </label>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -617,18 +628,18 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
-                                                        <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" AllowMultiple="true"  Accept="image/*"/>
-                                                        
-                                                         <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />
+                                                        <asp:FileUpload ID="businessProof" runat="server" Height="90" Width="300px" AllowMultiple="true" Accept="image/*" />
+
+                                                        <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <div class="input-group-sm">
-                                                        <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" AllowMultiple="true"   Accept="image/*"/>
-                                                      
-                                                         <asp:Label ID="lblErrorUpload" runat="server" ForeColor="Red"></asp:Label><br />
+                                                        <asp:FileUpload ID="validIDUpload" runat="server" Height="90" Width="300px" AllowMultiple="true" Accept="image/*" />
+
+                                                        <asp:Label ID="lblErrorUpload" runat="server" ForeColor="Red"></asp:Label><br />
                                                     </div>
                                                 </div>
                                             </div>
@@ -672,11 +683,11 @@
                                             </div>
                                         </div>--%>
 
-
+                                        <asp:LinkButton runat="server" ID="terms" data-toggle="modal" data-target=".termsCondition"> By Signing-up, you agree to our <strong> Terms and Conditions </strong></asp:LinkButton>
                                         <!-- SignUp  -->
                                         <div class="row m-t-30">
                                             <div class="col-md-12">
-                                                <%--                                        @*buttons*@--%>
+                                                <%-- @*buttons*@--%>
                                                 <div class="d-flex justify-content-center">
                                                     <%--SIGN UP BUTTON--%>
 

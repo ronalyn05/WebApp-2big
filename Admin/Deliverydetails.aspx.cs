@@ -58,6 +58,8 @@ namespace WRS2big_Web.Admin
                 Dictionary<string, Delivery> details = getDetails.ResultAs<Dictionary<string, Delivery>>();
 
                 bool hasMatchingEntries = false;
+                bool hasVehicle1Name = false; // Flag to check if a matching entry with Vehicle1Name is found
+                bool haspaymentMethod = false; 
 
                 if (details != null)
                 {
@@ -67,20 +69,34 @@ namespace WRS2big_Web.Admin
                         {
                             // At least one matching entry found
                             hasMatchingEntries = true;
-                            break;
+
+                            // Check if the matching entry has a non-null Vehicle1Name value
+                            if (!string.IsNullOrEmpty(entry.Value.vehicle1Name))
+                            {
+                                hasVehicle1Name = true;
+
+                                if (!string.IsNullOrEmpty(entry.Value.paymentMethods))
+                                {
+                                    haspaymentMethod = true;
+                                    break;
+                                }
+                                
+                            }
                         }
                     }
 
-                    if (hasMatchingEntries)
+                    if (hasMatchingEntries && hasVehicle1Name && haspaymentMethod)
                     {
-                        // There are matching entries, perform the desired actions
+                        // There are matching entries with Vehicle1Name, perform the desired actions
                         deliveryTypesGrid();
                         displayDelDetails();
+                        vehiclesModal.Visible = false;   
+                        paymentMethodsModal.Visible = false;
                     }
                     else
                     {
-                        // No matching entries found
-                        warning.Text = "No 'Delivery Details' found. Manage the Delivery Details first.";
+                        // No matching entries with Vehicle1Name found
+                        warning.Text = "No 'Delivery Details' found with a Vehicle1Name value. Manage the Delivery Details first.";
                         deliveryTypesRow.Visible = false;
                         deliveryDetailsRow.Visible = false;
                         paymentMethodsModal.Visible = false;
@@ -98,8 +114,8 @@ namespace WRS2big_Web.Admin
                     deliveryTypesModal.Visible = false;
                     vehiclesModal.Visible = false;
                 }
-
             }
+
 
 
 
@@ -121,8 +137,10 @@ namespace WRS2big_Web.Admin
                 var filteredList = deliveryList.Values.Where(d => d.adminId.ToString() == idno);
 
                 DataTable vehicledDetails = new DataTable();
+                vehicledDetails.Columns.Add("VEHICLE ID");
                 vehicledDetails.Columns.Add("VEHICLE NAME");
                 vehicledDetails.Columns.Add("VEHICLE FEE");
+                vehicledDetails.Columns.Add("max. GALLON QTY");
 
                 DataTable swapDetails = new DataTable();
                 swapDetails.Columns.Add("SWAP OPTIONS");
@@ -142,50 +160,58 @@ namespace WRS2big_Web.Admin
                         
 
                         DataRow row1 = vehicledDetails.NewRow();
+                        row1["VEHICLE ID"] = entry.vehicle1ID;
                         row1["VEHICLE NAME"] = entry.vehicle1Name;
                         row1["VEHICLE FEE"] = entry.vehicle1Fee;
+                        row1["max. GALLON QTY"] = entry.vehicle1MinQty + "-" + entry.vehicle1MaxQty;
                         vehicledDetails.Rows.Add(row1);
 
                         DataRow row2 = vehicledDetails.NewRow();
+                        row2["VEHICLE ID"] = entry.vehicle2ID;
                         row2["VEHICLE NAME"] = entry.vehicle2Name;
                         row2["VEHICLE FEE"] = entry.vehicle2Fee;
+                        row2["max. GALLON QTY"] = entry.vehicle2MinQty + "-" + entry.vehicle2MaxQty;
                         vehicledDetails.Rows.Add(row2);
 
                         DataRow row3 = vehicledDetails.NewRow();
+                        row3["VEHICLE ID"] = entry.vehicle3ID;
                         row3["VEHICLE NAME"] = entry.vehicle3Name;
                         row3["VEHICLE FEE"] = entry.vehicle3Fee;
+                        row3["max. GALLON QTY"] = entry.vehicle3MinQty + "-" + entry.vehicle3MaxQty;
                         vehicledDetails.Rows.Add(row3);
 
                         DataRow row4 = vehicledDetails.NewRow();
+                        row4["VEHICLE ID"] = entry.vehicle4ID;
                         row4["VEHICLE NAME"] = entry.vehicle4Name;
                         row4["VEHICLE FEE"] = entry.vehicle4Fee;
+                        row4["max. GALLON QTY"] = entry.vehicle4MinQty + "-" + entry.vehicle4MaxQty;
                         vehicledDetails.Rows.Add(row4);
 
 
                         //POPULATE DETAILS IN THE UPDATE MODAL
-                        if (entry.vehicle1Name != null || entry.vehicle1Fee != null || entry.vehicle1Qty != null)
+                        if (entry.vehicle1Name != null || entry.vehicle1Fee != null || entry.vehicle1MinQty != null || entry.vehicle1MaxQty != null)
                         {
                             updateV1Name.Attributes["placeholder"] = entry.vehicle1Name;
                             updateV1Fee.Attributes["placeholder"] = entry.vehicle1Fee;
-                            updateV1Num.Attributes["placehodler"] = entry.vehicle1Qty;
+                            updateV1Num.Attributes["placeholder"] = entry.vehicle1MinQty;
                         }
-                        if (entry.vehicle2Name != null || entry.vehicle2Fee != null || entry.vehicle2Qty != null)
+                        if (entry.vehicle2Name != null || entry.vehicle2Fee != null || entry.vehicle2MinQty != null || entry.vehicle2MaxQty != null)
                         {
                             updateV2Name.Attributes["placeholder"] = entry.vehicle2Name;
                             updateV2Fee.Attributes["placeholder"] = entry.vehicle2Fee;
-                            updateV2Num.Attributes["placehodler"] = entry.vehicle2Qty;
+                            updateV2Num.Attributes["placeholder"] = entry.vehicle2MinQty;
                         }
-                        if (entry.vehicle3Name != null || entry.vehicle3Fee != null || entry.vehicle3Qty != null)
+                        if (entry.vehicle3Name != null || entry.vehicle3Fee != null || entry.vehicle3MinQty != null || entry.vehicle3MaxQty != null)
                         {
                             updateV3Name.Attributes["placeholder"] = entry.vehicle3Name;
                             updateV3Fee.Attributes["placeholder"] = entry.vehicle3Fee;
-                            updateV3Num.Attributes["placehodler"] = entry.vehicle3Qty;
+                            updateV3Num.Attributes["placeholder"] = entry.vehicle3MinQty;
                         }
-                        if (entry.vehicle4Name != null || entry.vehicle4Fee != null || entry.vehicle4Qty != null)
+                        if (entry.vehicle4Name != null || entry.vehicle4Fee != null || entry.vehicle4MinQty != null || entry.vehicle4MaxQty != null)
                         {
                             updateV4Name.Attributes["placeholder"] = entry.vehicle4Name;
                             updateV4Fee.Attributes["placeholder"] = entry.vehicle4Fee;
-                            updateV4Num.Attributes["placehodler"] = entry.vehicle4Qty;
+                            updateV4Num.Attributes["placeholder"] = entry.vehicle4MinQty;
                         }
 
                         string[] swapOptions = entry.swapOptions.Split(',');
@@ -275,6 +301,8 @@ namespace WRS2big_Web.Admin
                                 updatePickup.Selected = true;
                             }
                         }
+
+                        Session["deliveryID"] = entry.deliveryId;
                         
                     }
                 }
@@ -543,7 +571,7 @@ namespace WRS2big_Web.Admin
 
                                     if (Session["role"] != null || Session["idno"] != null)
                                     {
-                                        string role = (string)Session["role"];
+                                       
                                         string adminID = (string)Session["idno"];
 
                                         //Random rnd = new Random();
@@ -557,7 +585,7 @@ namespace WRS2big_Web.Admin
                                         {
                                             userIdnum = int.Parse(adminID),
                                             logsId = logsID,
-                                            role = role,
+                                            role = "Admin",
                                             userFullname = (string)Session["fullname"],
                                             userActivity = "ADDED EXPRESS DELIVERY",
                                             activityTime = addedTime
@@ -957,7 +985,7 @@ namespace WRS2big_Web.Admin
 
                 if (Session["role"] != null || Session["idno"] != null)
                 {
-                    string role = (string)Session["role"];
+                    //string role = (string)Session["role"];
                     string adminID = (string)Session["idno"];
 
                     Random rnd = new Random();
@@ -971,7 +999,7 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(adminID),
                         logsId = logsID,
-                        role = role,
+                        role = "Admin",
                         userFullname = (string)Session["fullname"],
                         userActivity = "ADDED PAYMENT METHODS",
                         activityTime = addedTime
@@ -1156,7 +1184,7 @@ namespace WRS2big_Web.Admin
 
                     if (Session["role"] != null || Session["idno"] != null)
                     {
-                        string role = (string)Session["role"];
+                        //string role = (string)Session["role"];
                         string adminID = (string)Session["idno"];
 
                         Random rnd = new Random();
@@ -1170,7 +1198,7 @@ namespace WRS2big_Web.Admin
                         {
                             userIdnum = int.Parse(adminID),
                             logsId = logsID,
-                            role = role,
+                            role = "Admin",
                             userFullname = (string)Session["fullname"],
                             userActivity = "UPDATED EXPRESS DELIVERY",
                             activityTime = addedTime
@@ -1305,7 +1333,7 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(adminID),
                         logsId = logsID,
-                        role = role,
+                        role = "Admin",
                         userFullname = (string)Session["fullname"],
                         userActivity = "UPDATED STANDARD DELIVERY",
                         activityTime = addedTime
@@ -1426,7 +1454,7 @@ namespace WRS2big_Web.Admin
                     {
                         userIdnum = int.Parse(adminID),
                         logsId = logsID,
-                        role = role,
+                        role = "Admin",
                         userFullname = (string)Session["fullname"],
                         userActivity = "UPDATED RESERVATION DELIVERY",
                         activityTime = addedTime
@@ -1526,7 +1554,7 @@ namespace WRS2big_Web.Admin
                     }
                     if (!string.IsNullOrEmpty(updateV1Num.Text))
                     {
-                        delivery.vehicle1Qty = updateV1Num.Text;
+                        delivery.vehicle1MinQty = updateV1Num.Text;
                     }
                     //VEHICLE 2
                     if (!string.IsNullOrEmpty(updateV2Name.Text))
@@ -1539,7 +1567,7 @@ namespace WRS2big_Web.Admin
                     }
                     if (!string.IsNullOrEmpty(updateV2Num.Text))
                     {
-                        delivery.vehicle2Qty = updateV2Num.Text;
+                        delivery.vehicle2MinQty = updateV2Num.Text;
                     }
                     //VEHICLE 3
                     if (!string.IsNullOrEmpty(updateV3Name.Text))
@@ -1552,7 +1580,7 @@ namespace WRS2big_Web.Admin
                     }
                     if (!string.IsNullOrEmpty(updateV3Num.Text))
                     {
-                        delivery.vehicle3Qty = updateV3Num.Text;
+                        delivery.vehicle3MinQty = updateV3Num.Text;
                     }
                     //VEHICLE 4
                     if (!string.IsNullOrEmpty(updateV4Name.Text))
@@ -1565,7 +1593,7 @@ namespace WRS2big_Web.Admin
                     }
                     if (!string.IsNullOrEmpty(updateV4Num.Text))
                     {
-                        delivery.vehicle4Qty = updateV4Num.Text;
+                        delivery.vehicle4MinQty = updateV4Num.Text;
                     }
 
 
@@ -1573,7 +1601,7 @@ namespace WRS2big_Web.Admin
                     //FOR THE CHECKBOXES
                     if (updateOrderTypesChck.Items.Cast<ListItem>().Any(item => item.Selected))
                     {
-                        delivery.orderTypes = string.Join(",", updateOrderTypesChck.Items.Cast<ListItem>()
+                        delivery.orderTypes = string.Join(",",updateOrderTypesChck.Items.Cast<ListItem>()
                             .Where(item => item.Selected)
                             .Select(item => item.Value));
                     }
@@ -1585,7 +1613,7 @@ namespace WRS2big_Web.Admin
                     }
                     if (updatePayment.Items.Cast<ListItem>().Any(item => item.Selected))
                     {
-                        delivery.paymentMethods = string.Join(",", updatePayment.Items.Cast<ListItem>()
+                        delivery.paymentMethods = string.Join(",",  updatePayment.Items.Cast<ListItem>()
                             .Where(item => item.Selected)
                             .Select(item => item.Value));
                     }
@@ -1593,7 +1621,7 @@ namespace WRS2big_Web.Admin
 
                     // Save the updated delivery object to the database
                     FirebaseResponse res = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryIdno, delivery);
-                    Response.Write("<script>alert ('Express Delivery updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+                    Response.Write("<script>alert ('Delivery details updated successfully');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
 
                     if (Session["role"] != null || Session["idno"] != null)
                     {
@@ -1611,7 +1639,7 @@ namespace WRS2big_Web.Admin
                         {
                             userIdnum = int.Parse(adminID),
                             logsId = logsID,
-                            role = role,
+                            role = "Admin",
                             userFullname = (string)Session["fullname"],
                             userActivity = "UPDATED DELIVERY DETAILS",
                             activityTime = addedTime
@@ -1623,10 +1651,143 @@ namespace WRS2big_Web.Admin
                     
                 }
             }
+            else
+            {
+                Response.Write("<script>alert('Session Expired. Please login again'); window.location.href='/LandingPage/Account.aspx'; </script>");
+            }
         }
 
         protected void removeVehicle_Click(object sender, EventArgs e)
         {
+            // Get the GridViewRow that contains the clicked button
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            // Get the vehicle ID from the first cell in the row
+            int vehicleID = int.Parse(row.Cells[1].Text);
+
+            if (Session["deliveryID"] != null)
+            {
+                var deliveryID = (string)Session["deliveryID"];
+
+                // Retrieve the existing order object from the database
+                FirebaseResponse response = twoBigDB.Get("DELIVERY_DETAILS/" + deliveryID);
+                Model.Delivery delivery = response.ResultAs<Model.Delivery>();
+
+                if (vehicleID == delivery.vehicle1ID)
+                {
+                    delivery.vehicle1stat = "Unavailable";
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
+                    //generate a random number for users logged
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    //Store the login information in the USERLOG table
+                    var profilelog = new UsersLogs
+                    {
+                        userIdnum = delivery.adminId,
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATE PROFILE",
+                        role = "Admin",
+                        activityTime = addedTime
+                    };
+
+                    //Storing the  info
+                    response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
+
+                    response = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryID, delivery);
+                    Response.Write("<script>alert ('You successfully removed a vehicle');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+
+                }
+                else if (vehicleID == delivery.vehicle2ID)
+                {
+                    delivery.vehicle1stat = "Unavailable";
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
+                    //generate a random number for users logged
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    //Store the login information in the USERLOG table
+                    var profilelog = new UsersLogs
+                    {
+                        userIdnum = delivery.adminId,
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATE PROFILE",
+                        role = "Admin",
+                        activityTime = addedTime
+                    };
+
+                    //Storing the  info
+                    response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
+
+                    response = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryID, delivery);
+                    Response.Write("<script>alert ('You successfully removed a vehicle');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+                else if (vehicleID == delivery.vehicle3ID)
+                {
+                    delivery.vehicle1stat = "Unavailable";
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
+                    //generate a random number for users logged
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    //Store the login information in the USERLOG table
+                    var profilelog = new UsersLogs
+                    {
+                        userIdnum = delivery.adminId,
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATE PROFILE",
+                        role = "Admin",
+                        activityTime = addedTime
+                    };
+
+                    //Storing the  info
+                    response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
+
+                    response = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryID, delivery);
+                    Response.Write("<script>alert ('You successfully removed a vehicle');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+                else if (vehicleID == delivery.vehicle4ID)
+                {
+                    delivery.vehicle1stat = "Unavailable";
+
+                    // Get the current date and time
+                    DateTime addedTime = DateTime.Now; ;
+                    //generate a random number for users logged
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
+
+                    //Store the login information in the USERLOG table
+                    var profilelog = new UsersLogs
+                    {
+                        userIdnum = delivery.adminId,
+                        logsId = idnum,
+                        userFullname = (string)Session["fullname"],
+                        userActivity = "UPDATE PROFILE",
+                        role = "Admin",
+                        activityTime = addedTime
+                    };
+
+                    //Storing the  info
+                    response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
+
+                    response = twoBigDB.Update("DELIVERY_DETAILS/" + deliveryID, delivery);
+                    Response.Write("<script>alert ('You successfully removed a vehicle');  window.location.href = '/Admin/Deliverydetails.aspx'; </script>");
+
+                }
+            }
+
 
         }
 
@@ -1675,9 +1836,15 @@ namespace WRS2big_Web.Admin
                     delivery.vehicle3Fee = vehicle3Fee.Text;
                     delivery.vehicle4Fee = vehicle4Fee.Text;
 
-                    delivery.vehicle1Qty = vehicle1Qty.Text;
-                    delivery.vehicle2Qty = vehicle2Qty.Text;
-                    delivery.vehicle4Qty = vehicle4Qty.Text;
+                    delivery.vehicle1MinQty = vehicle1MinQty.Text;
+                    delivery.vehicle2MinQty = vehicle2MinQty.Text;
+                    delivery.vehicle3MinQty = vehicle3MinQty.Text;
+                    delivery.vehicle4MinQty = vehicle4MinQty.Text;
+
+                    delivery.vehicle1MaxQty = vehicle1MaxQty.Text;
+                    delivery.vehicle2MaxQty = vehicle2MaxQty.Text;
+                    delivery.vehicle3MaxQty = vehicle3MaxQty.Text;
+                    delivery.vehicle4MaxQty = vehicle4MaxQty.Text;
 
                     delivery.vehicle1ID = vehicleID;
                     delivery.vehicle2ID = vehicleID + 1;
@@ -1754,7 +1921,7 @@ namespace WRS2big_Web.Admin
 
                     if (Session["role"] != null || Session["idno"] != null)
                     {
-                        string role = (string)Session["role"];
+                        
                         string adminID = (string)Session["idno"];
 
                         //Random rnd = new Random();
@@ -1768,7 +1935,7 @@ namespace WRS2big_Web.Admin
                         {
                             userIdnum = int.Parse(adminID),
                             logsId = logsID,
-                            role = role,
+                            role = "Admin",
                             userFullname = (string)Session["fullname"],
                             userActivity = "CREATED DELIVERY DETAILS",
                             activityTime = addedTime

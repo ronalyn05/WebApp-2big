@@ -123,6 +123,7 @@
 
                                                     }
                                                 </script>
+                                                <%--  MODAL FOR VEHICLE--%>
                                                 <div class="modal fade manageVehicles col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
                                                         <div class="modal-content col-xl-10 col-md-10" style="/*background-color: red; */ margin-left: 370px">
@@ -144,28 +145,28 @@
 
                                                                                     <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1MinQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1MaxQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle2Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2MinQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2MaxQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle3Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-
+                                                                                    <asp:TextBox ID="vehicle3MinQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3MaxQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle4Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4MinQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4MaxQty" Width="50px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
                                                                                     <br />
-                                                                                    <asp:TextBox ID="vehicle5Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle5Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle5Qty" Width="250px" Height="40px" TextMode="Number" Placeholder="number of gallons:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                 </div>
 
                                                                         </div>
@@ -645,9 +646,7 @@
                                                                                 <strong>Swap Gallon Options</strong>
                                                                                 <h6>Note: This will give your customers an option on how you can swap their gallons for the REFILL</h6>
                                                                                 <asp:CheckBoxList ID="swapOptionItems" runat="server">
-                                                                                    <asp:ListItem Value="Swap Without Conditions">  &nbsp; Swap with no Conditions 
-
-                                                                                    </asp:ListItem>
+                                                                                    <asp:ListItem Value="Swap without Conditions"> &nbsp; Swap without Conditions</asp:ListItem>
                                                                                     <asp:ListItem Value="Swap With Conditions"> &nbsp; Swap with Conditions</asp:ListItem>
                                                                                     <asp:ListItem Value="Gallon Drop-by" ID="gallonDropby"> &nbsp; Gallon Drop-by</asp:ListItem>
                                                                                     <asp:ListItem Value="Request Pick-up" ID="pickupPerGallon" onclick="perGallonFee();"> &nbsp; Request Gallon Pickup</asp:ListItem>

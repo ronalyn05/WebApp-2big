@@ -150,10 +150,15 @@ namespace WRS2big_Web.Model
         public string vehicle4Fee { get; set; }
         public string perGallonFee { get; set; }
 
-        public string vehicle1Qty { get; set; }
-        public string vehicle2Qty { get; set; }
-        public string vehicle3Qty { get; set; }
-        public string vehicle4Qty { get; set; }
+        public string vehicle1MinQty { get; set; }
+        public string vehicle2MinQty { get; set; }
+        public string vehicle3MinQty { get; set; }
+        public string vehicle4MinQty { get; set; }
+
+        public string vehicle1MaxQty { get; set; }
+        public string vehicle2MaxQty { get; set; }
+        public string vehicle3MaxQty { get; set; }
+        public string vehicle4MaxQty { get; set; }
 
         public string vehicle1stat { get; set; }
         public string vehicle2stat { get; set; }

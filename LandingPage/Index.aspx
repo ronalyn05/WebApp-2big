@@ -315,6 +315,7 @@
 
 
 <body>
+    <form runat="server">
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
         <div class="pcoded-container navbar-wrapper">
@@ -415,7 +416,7 @@
                         <div class="text-center">
                             <div class="align-items-center ">
                                 <video autoplay loop muted controls>
-                                    <source src="/images/EXPLAINER_VIDEO.mp4" type="video/mp4">
+                                    <source src="/images/Updated_ExplainerVideo.mp4" type="video/mp4">
                                 </video>
                             </div>
                         </div>
@@ -597,133 +598,110 @@
               <a name="subscription"> </a>          
         <main class="font-mktg">
             <div class="position-relative">
-                <div class="p-responsive container-xl text-center">
+                <div class="d-none d-md-block position-absolute width-full left-0 right-0 z-n1" style="top: 40%">
+                    <img class="width-full height-auto"
+                        src="https://github.githubassets.com/images/modules/site/features/launchpad/backgrounds/bg-whats-new.svg"
+                        aria-hidden="true" alt="" width="1676" height="1040">
+                </div>
 
+                <div class="p-responsive container-xl text-center">
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <img src="/images/2ndLogo.png" style="width: 500px" alt="logo.png">
+                    </div>
                     <div class="p-responsive container-xl text-center mt-7 mt-md-8 mt-lg-9 mb-5 mb-lg-9">
                         <h6 class="h4-mktg">Take your desired package <br /> and start growing your business now!</h6>
                     </div>
-                    
-                    <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center" style="margin-left:250px">
-
-                        <!--PACKAGE A HERE-->
-                        <div class="col-lg-5 mb-3 mb-lg-0">
-                            <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="1"
-                                data-max-seats="4">
-                                <div
-                                    class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
-                                    <div class="px-3 pt-4 pb-3">
-                                        <asp:Label class="mb-2 h5-mktg" ID="packageAName" runat="server"> </asp:Label>
-                                        <br />
-                                        <br />
-                                        <asp:Label class=" lh-condensed mb-2" ID="packageAdescription" runat="server" Style="font-size: 16px; color: black">  </asp:Label>
-                                        <br />
-                                        <br />
-                                        <div hidden class="js-monthly-cost tooltipped-n tooltipped-multiline tooltipped-no-delay"
-                                            data-plan="free">
-                                            <h3 class="mb-0">
-                                                <span class="d-flex flex-justify-center flex-items-center">
-                                                    <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
-                                                        <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
-                                                        <asp:Label runat="server" class="js-computed-value" ID="packageAPrice"></asp:Label>
-                                                        <br />
-                                                    </span>
-                                                </span>
-                                                <asp:Label runat="server" ID="durationA" class="text-normal f4 color-fg-muted js-pricing-cost-suffix js-monthly-suffix"></asp:Label>
+                    <div class="d-lg-flex flex-items-stretch gutter-lg-condensed text-center">
+                        <asp:Repeater ID="packagesRepeater" runat="server" OnItemDataBound="packagesRepeater_ItemDataBound">
+                            <ItemTemplate>
+                                <!-- Package Container -->
+                                <div class="col-lg-5 mb-3 mb-lg-0" id='<%# "packagesPanel" + Eval("packageID") %>'>
+                                    
+                                    <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="1" data-max-seats="4">
+                                        <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
+                                            <div class="px-3 pt-4 pb-3">
+                                                <!-- Package Name -->
+                                                <asp:Label class="mb-2 h5-mktg" ID="packageName" runat="server"></asp:Label>
                                                 <br />
-                                            </h3>
-                                        </div>
-                                    </div>
-
-                                    <div
-                                        class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
-                                        <br />
-                                        <h4>Features:</h4>
-                                        <br />
-                                        <!--FEATURES AREA HERE-->
-                                        <asp:Repeater ID="featuresPackageA" runat="server">
-                                            <ItemTemplate>
-
-                                                <div class="col-10 d-none d-md-block text-left" style="font-size: 16px; height: 50px">
-                                                    <div class="height-full">
-                                                        <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
-                                                        <%# Container.DataItem%>
-                                                    </div>
-                                                </div>
-                                            </ItemTemplate>
-                                        </asp:Repeater>
-                                        <div class="mt-2">
-                                            <a class="btn-mktg d-block btn-muted-mktg" href="Account.aspx">View Package details
-                                            </a> <br />
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <!--PACKAGE B HERE-->
-                        <div class="col-lg-5 mb-3 mb-lg-0">
-                            <div class="height-full position-relative rounded-3 px-2 pt-5 pb-2 js-pricing-plan" data-min-seats="5" data-max-seats="10">
-                                <p class="position-absolute left-0 right-0 h5 text-center text-uppercase color-text-white js-recommended-plan-caption" hidden style="top: 6px;">Most popular</p>
-                                <div class="d-md-flex flex-column flex-justify-between height-full rounded-3 color-shadow-extra-large color-bg-default">
-                                    <div class="px-3 pt-4 pb-3">
-                                        <asp:Label runat="server" class="mb-2 h5-mktg" ID="packageBName"></asp:Label>
-                                        <br />
-                                        <br />
-                                        <asp:Label runat="server" class="lh-condensed" ID="packageBdescription" Style="font-size: 16px; color: black"></asp:Label>
-                                        <br />
-                                        <br />
-                                        <div hidden class="js-monthly-cost tooltipped-n tooltipped-multiline tooltipped-no-delay"
-                                            data-plan="business">
-                                            <h3 class="mb-0">
-                                                <span class="d-flex flex-justify-center flex-items-center">
-                                                    <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
-                                                        <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
-                                                        <asp:Label runat="server" class="js-computed-value" ID="packageBPrice"></asp:Label>
-                                                        <br />
-
-                                                    </span>
-                                                </span>
-                                                <asp:Label runat="server" ID="durationB" class="text-normal f4 color-fg-muted js-pricing-cost-suffix js-monthly-suffix"></asp:Label>
                                                 <br />
-                                            </h3>
-                                        </div>
-
-                                    </div>
-                                    <div
-                                        class="d-lg-block flex-auto text-left rounded-bottom-3  px-3 py-2 js-compare-features-item">
-                                        <br />
-                                        <h4>Features:</h4>
-                                        <br />
-                                        <asp:Repeater ID="featuresPackageB" runat="server">
-                                            <ItemTemplate>
-
-                                                <div class="col-10 d-none d-md-block text-left" style="font-size: 16px; height: 50px">
-                                                    <div class="height-full">
-                                                        <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
-                                                        <%# Container.DataItem%>
-                                                    </div>
+                                                <!-- Package Description -->
+                                                <asp:Label class="lh-condensed mb-2" ID="packageDescription" runat="server" Style="font-size: 16px; color: black"></asp:Label>
+                                                <br />
+                                                <br />
+                                                <div hidden class="js-monthly-cost tooltipped-n tooltipped-multiline tooltipped-no-delay" data-plan="free">
+                                                    <h3 class="mb-0">
+                                                        <span class="d-flex flex-justify-center flex-items-center">
+                                                            <span class="d-flex flex-items-center f0-mktg text-normal mr-2">
+                                                                <sup class="f3 color-fg-muted v-align-middle mr-1">₱</sup>
+                                                                <!-- Package Price -->
+                                                                <asp:Label runat="server" class="js-computed-value" ID="packagePrice"></asp:Label>
+                                                                <br />
+                                                            </span>
+                                                        </span>
+                                                        <!-- Package Duration -->
+                                                        <asp:Label runat="server" ID="packageDuration" class="text-normal f4 color-fg-muted js-pricing-cost-suffix js-monthly-suffix"></asp:Label>
+                                                        <br />
+                                                    </h3>
                                                 </div>
-                                            </ItemTemplate>
-                                        </asp:Repeater>
-                                        
+                                            </div>
+                                            <div class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
+                                                <br />
+                                                <h4>
+                                                    PACKAGE EXCLUSIVE :
+                                                </h4>
+                                                <br />
+                                                 <asp:Image ID="Image2" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                 <asp:Label class="lh-condensed mb-2" ID="renewable" runat="server" Style="font-size: 16px; color: black"></asp:Label> <br />
+                                                <br />
+                                                 <asp:Image ID="Image4" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                 <asp:Label class="lh-condensed mb-2" ID="orderLimit" runat="server" Style="font-size: 16px; color: black"></asp:Label> <br />
+                                                <br />
+                                                 <asp:Image ID="Image3" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" /> 
+                                                 <asp:Label class="lh-condensed mb-2" ID="unliProducts" runat="server" Style="font-size: 16px; color: black"></asp:Label><br />
+                                            </div>
+                                            <div class="d-lg-block flex-auto text-left rounded-bottom-3 px-3 js-compare-features-item">
+                                                <br />
+                                                <h4>FEATURES:</h4>
+                                                <br />
+                                                <!-- Features Repeater -->
+                                                <asp:Repeater ID='featuresRepeater' runat="server">
+                                                    <ItemTemplate>
+                                                        <div class="col-10 d-none d-md-block text-left" style="font-size: 16px; height: 50px">
+                                                            <div class="height-full">
+                                                                <asp:Image ID="Image1" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                                <%# Container.DataItem %>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-10 d-md-none text-left" style="font-size: 16px; height: 50px">
+                                                            <div class="height-full">
+                                                                <asp:Image ID="Image2" src="https://img.icons8.com/?size=512&id=21319&format=png" runat="server" Width="20" Height="20" />
+                                                                <%# Container.DataItem %>
+                                                            </div>
+                                                        </div>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </div>
+                                     <!--PAYPAL BUTTON-->
+                                            
                                         <div class="mt-2">
-                                            <a class="btn-mktg d-block btn-muted-mktg" href="Account.aspx">View Package details
-                                            </a>
+                                            <div>
+                                                
+                                            </div>
+                                            <div class="btn-mktg d-block btn-muted-mktg" id="paypalContainer" runat="server">
+                                               <asp:LinkButton runat="server" ID="subsribeNow" OnClick="subsribeNow_Click"> Subscribe now !</asp:LinkButton>
+                                            </div>
+                                        </div> <br />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
+                            </ItemTemplate>
+                        </asp:Repeater>
+   
 
                     </div>
-
-
-
-
                 </div>
             </div>
 
@@ -875,6 +853,8 @@
             </div>
         </div>
     </div>
+    </form>
+
 </body>
 </html>
 

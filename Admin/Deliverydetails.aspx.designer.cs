@@ -105,13 +105,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox vehicle1Fee;
 
         /// <summary>
-        /// vehicle1Qty control.
+        /// vehicle1MinQty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle1Qty;
+        protected global::System.Web.UI.WebControls.TextBox vehicle1MinQty;
+
+        /// <summary>
+        /// vehicle1MaxQty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle1MaxQty;
 
         /// <summary>
         /// vehicle2Name control.
@@ -132,13 +141,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox vehicle2Fee;
 
         /// <summary>
-        /// vehicle2Qty control.
+        /// vehicle2MinQty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle2Qty;
+        protected global::System.Web.UI.WebControls.TextBox vehicle2MinQty;
+
+        /// <summary>
+        /// vehicle2MaxQty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle2MaxQty;
 
         /// <summary>
         /// vehicle3Name control.
@@ -159,13 +177,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox vehicle3Fee;
 
         /// <summary>
-        /// vehicle3Qty control.
+        /// vehicle3MinQty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle3Qty;
+        protected global::System.Web.UI.WebControls.TextBox vehicle3MinQty;
+
+        /// <summary>
+        /// vehicle3MaxQty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vehicle3MaxQty;
 
         /// <summary>
         /// vehicle4Name control.
@@ -186,40 +213,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox vehicle4Fee;
 
         /// <summary>
-        /// vehicle4Qty control.
+        /// vehicle4MinQty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle4Qty;
+        protected global::System.Web.UI.WebControls.TextBox vehicle4MinQty;
 
         /// <summary>
-        /// vehicle5Name control.
+        /// vehicle4MaxQty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle5Name;
-
-        /// <summary>
-        /// vehicle5Fee control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle5Fee;
-
-        /// <summary>
-        /// vehicle5Qty control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox vehicle5Qty;
+        protected global::System.Web.UI.WebControls.TextBox vehicle4MaxQty;
 
         /// <summary>
         /// addVehicles control.
