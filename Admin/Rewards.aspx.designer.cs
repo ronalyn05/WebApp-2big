@@ -33,6 +33,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox txtrewardspointsPerTxnOrAmount;
 
         /// <summary>
+        /// rangeValidator4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator4;
+
+        /// <summary>
         /// txtminRange_perAmount control.
         /// </summary>
         /// <remarks>
@@ -42,6 +51,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox txtminRange_perAmount;
 
         /// <summary>
+        /// rangeValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator2;
+
+        /// <summary>
         /// txtmaxRange_perAmount control.
         /// </summary>
         /// <remarks>
@@ -49,6 +67,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtmaxRange_perAmount;
+
+        /// <summary>
+        /// rangeValidator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator3;
 
         /// <summary>
         /// btnSet control.
@@ -87,13 +114,22 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.TextBox txtpromoDiscountValue;
 
         /// <summary>
-        /// reqlname control.
+        /// RequiredFieldValidator5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator reqlname;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
+
+        /// <summary>
+        /// rangeValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator;
 
         /// <summary>
         /// txtpromodescription control.
@@ -141,6 +177,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.ListItem otherproductRadio;
 
         /// <summary>
+        /// thirdPartyproductRadio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListItem thirdPartyproductRadio;
+
+        /// <summary>
         /// chUnitSizes_proRefill control.
         /// </summary>
         /// <remarks>
@@ -159,6 +204,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes_otherProduct;
 
         /// <summary>
+        /// chUnitSizes_thirdparty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chUnitSizes_thirdparty;
+
+        /// <summary>
         /// txtpromo_pointsToClaimReward control.
         /// </summary>
         /// <remarks>
@@ -175,6 +229,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+
+        /// <summary>
+        /// rangeValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator1;
 
         /// <summary>
         /// txtpromoExpirationFrom control.

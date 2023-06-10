@@ -69,17 +69,20 @@
                                                   <h5>Points to earn:</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
                                                 <asp:TextBox ID="txtrewardspointsPerTxnOrAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the reward points to earn by the customer per transaction or per amount"></asp:TextBox>
+                                                   <asp:RangeValidator ID="rangeValidator4" runat="server" ControlToValidate="txtrewardspointsPerTxnOrAmount" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red"></asp:RangeValidator>
                                               </div>
                                                   <div class="col-md-12 col-sm-12">
                                                   <h5>Minimum range per amount (applies for per amount only):</h5>
                                                   <asp:TextBox ID="txtminRange_perAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the minimum range amount"></asp:TextBox>
+                                                       <asp:RangeValidator ID="rangeValidator2" runat="server" ControlToValidate="txtminRange_perAmount" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red"></asp:RangeValidator>
                                                 </div>
 
                                                 <div class="col-md-12 col-sm-12">
                                                   <h5>Maximum range per amount (applies for per amount only):</h5>
                                                 <%--<label for="points">Points:</labe>l>--%>
                                                 <asp:TextBox ID="txtmaxRange_perAmount" runat="server" CssClass="form-control" TextMode="Number" step="any" placeholder="Enter the maximum range amount"></asp:TextBox>
-                                              </div>
+                                              <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="txtmaxRange_perAmount" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red"></asp:RangeValidator>
+                                                </div>
                                             </div>
                                                  <script type="text/javascript">
                                                      function disableMinMaxRange() {
@@ -168,37 +171,48 @@
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoname" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
                                                    <div class="col-md-12 col-sm-12 ">
-                                            <h5>Coupon Discount Value :</h5>
+                                                       <h5>Coupon Discount Value :</h5>
                                             <asp:TextBox ID="txtpromoDiscountValue" runat="server" TextMode="Number" class="form-control" placeholder="Enter discount percentage in number base on the coupon you offered"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoDiscountValue" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromoDiscountValue" ValidationGroup="a"></asp:RequiredFieldValidator>
+                                            <asp:RangeValidator ID="rangeValidator" runat="server" ControlToValidate="txtpromoDiscountValue" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red" ValidationGroup="a"></asp:RangeValidator>
                                             </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Coupon Description:</h5>
                                             <asp:TextBox ID="txtpromodescription" runat="server" ToolTip="eg: Get 10% off on your next purchase " class="form-control" placeholder="Enter coupon description"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="*** required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromodescription" ValidationGroup="a"></asp:RequiredFieldValidator>
                                             </div>
+                                                <br />
                                                      <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any product offers that applies to the coupon you offered:</h5>
                                                     <asp:CheckBoxList ID="checkPromo_productOffered" runat="server" RepeatDirection="Horizontal" AutoPostBack="false">
                                                         <asp:ListItem Text="Product Refill" Value="Product Refill" ID="pro_refillRadio" ></asp:ListItem>
-                                                        <asp:ListItem Text="Third Party Product" Value="Third Party Product" ID="otherproductRadio" ></asp:ListItem>
+                                                        <asp:ListItem Text="other Product (in-store)" Value="other Product" ID="otherproductRadio" ></asp:ListItem>
+                                                        <asp:ListItem Text="Third Party Product" Value="Third Party Product" ID="thirdPartyproductRadio" ></asp:ListItem>
                                                     </asp:CheckBoxList>
                                             </div>
+                                                <br />
                                                     <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any unit and sizes of product refill offers that applies to the coupon you offered:</h5>
-                                                    <asp:CheckBoxList ID="chUnitSizes_proRefill" runat="server">
+                                                    <asp:CheckBoxList ID="chUnitSizes_proRefill" runat="server" RepeatDirection="Horizontal">
+                                                    </asp:CheckBoxList>
+                                            </div>
+                                                <br />
+                                                 <div class="col-md-12 col-sm-12 ">
+                                                  <h5>Choose any unit and sizes of other product offers that applies to the coupon you offered:</h5>
+                                                    <asp:CheckBoxList ID="chUnitSizes_otherProduct" runat="server" RepeatDirection="Horizontal">
                                                     </asp:CheckBoxList>
                                             </div>
                                                 <div class="col-md-12 col-sm-12 ">
                                                   <h5>Choose any unit and sizes of third party product offers that applies to the coupon you offered:</h5>
-                                                    <asp:CheckBoxList ID="chUnitSizes_otherProduct" runat="server">
+                                                    <asp:CheckBoxList ID="chUnitSizes_thirdparty" runat="server" RepeatDirection="Horizontal">
                                                     </asp:CheckBoxList>
                                             </div>
                                                  <div class="col-md-12 col-sm-12 ">
                                             <h5>Points required to claim the discount coupon:</h5>
                                             <asp:TextBox ID="txtpromo_pointsToClaimReward" runat="server" TextMode="Number" class="form-control" placeholder="Enter points required to claim the discount coupon"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="***required***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpromo_pointsToClaimReward" ValidationGroup="a"></asp:RequiredFieldValidator>
-                                            </div>
+                                           <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="txtpromo_pointsToClaimReward" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red" ValidationGroup="a"></asp:RangeValidator>
+                                                     </div>
                                                      <div class="col-md-12 col-sm-12 ">
                                             <h5>Discount coupon expiration:</h5>
                                                          <br />

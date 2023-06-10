@@ -419,7 +419,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <%-- end for modal view--%>
-                                                                             <!-- MODAL FOR ASSIGNING DRIVER -->
+                                                                             <!-- MODAL FOR RE - ASSIGNING DRIVER -->
                                     <div class="modal fade" id="assignDriver" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
@@ -439,6 +439,15 @@
                                                         <asp:DropDownList ID="drdAssignDriver" runat="server" class="text-center" Height="40px" Width="364px" >
                                                                           <%-- <asp:ListItem Selected="False" Text="Select driver to assign"></asp:ListItem>--%>
                                                                        </asp:DropDownList>
+                                                             </div>
+                                                        <br />
+                                                        <div class="col-md-12 col-sm-12">
+                                                                        <div style="display: flex;">
+                                                                            <h6>Reasons for Re-Assigning Driver</h6>
+                                                                        </div>
+                                                                       
+                                                        <textarea class="form-control" id="txtRe_assigningDriver" runat="server" rows="5"></textarea>
+                                                       
                                                              </div>
                                                     </div>
                                                 </div>
