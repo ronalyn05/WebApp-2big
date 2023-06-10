@@ -71,10 +71,10 @@ namespace WRS2big_Web.LandingPage
                 if (password.Length < 8 || password.Length > 20 ||
                     !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
                     !password.Any(c => !char.IsLetterOrDigit(c)))
-                {
-                    Response.Write("<script>alert('Password must be in between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
-                    return;
-                }
+                    {
+                        Response.Write("<script>alert('Password must be in between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+                        return;
+                    }
 
                 // Contact number validation
                 string contactNum = txtphoneNum.Text;

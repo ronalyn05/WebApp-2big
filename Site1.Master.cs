@@ -94,7 +94,7 @@ namespace WRS2big_Web
             else
             {
 
-                Response.Write("<script>alert ('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+                Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
             }
 
 

@@ -163,10 +163,10 @@ namespace WRS2big_Web.Model
         public string vehicle3stat { get; set; }
         public string vehicle4stat { get; set; }
 
-        public int vehicle1ID { get; set; }
-        public int vehicle2ID { get; set; }
-        public int vehicle3ID { get; set; }
-        public int vehicle4ID { get; set; }
+        public string vehicle1ID { get; set; }
+        public string vehicle2ID { get; set; }
+        public string vehicle3ID { get; set; }
+        public string vehicle4ID { get; set; }
 
         //STANDARD
         public int standardID { get; set; }

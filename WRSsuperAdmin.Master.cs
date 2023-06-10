@@ -221,7 +221,10 @@ namespace WRS2big_Web
                 Session["currentClient"] = currentClient;
                 Response.Write("<script>window.location.href = '/superAdmin/clientSubscriptionHistory.aspx'; </script>");
             }
-
+            else
+            {
+                Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
+            }
 
         }
 
@@ -328,7 +331,10 @@ namespace WRS2big_Web
             }
             else
             {
-                // noNotifications.Text = "No Notifications";
+                Response.Write("<script>alert ('Something went wrong!');</script>");
+                //Redirect to the same page to reload it
+                Response.Redirect(Request.RawUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
             }
 
         }

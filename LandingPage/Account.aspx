@@ -12,7 +12,7 @@
       <![endif]-->
     <!-- Meta -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
     <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
@@ -37,10 +37,10 @@
 
     <!-- Include the Leaflet CSS file -->
     <link rel="stylesheet" href="/assets/leaflet/leaflet.css" />
-
+    <script src="../assets/leaflet/leaflet.js"></script>
     <!-- Include the Leaflet JavaScript file -->
     <script src="/assets/leaflet/leaflet.js"></script>
-
+    <link href="../assets/leaflet/leaflet.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -180,7 +180,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
 
                                                           
 
-                                                        </asp:Label>
+                                                       
 
 
                                                     </div>
