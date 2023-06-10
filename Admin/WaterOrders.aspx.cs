@@ -54,103 +54,103 @@ namespace WRS2big_Web.Admin
 
             if (response != null && employees != null)
             {
-                // Create a list to store the driver employee IDs
-                List<int> empDriver = new List<int>();
+                // Create a list to store the driver employees
+                List<Employee> driverEmployees = new List<Employee>();
 
-                // Iterate over the employees and add the IDs for employees with the role "Driver" to the list
+                // Iterate over the employees and add the employees with the role "Driver" to the list
                 foreach (var employee in employees.Values)
                 {
                     if (employee.emp_role != null && employee.emp_role.ToLower() == "driver")
                     {
-                        empDriver.Add(employee.emp_id);
+                        driverEmployees.Add(employee);
                     }
                 }
 
-                // Bind the driver employee IDs to the dropdown
-                drdAssignDriver.DataSource = empDriver;
+                // Bind the driver employees' names to the dropdown
+                drdAssignDriver.DataSource = driverEmployees;
+                drdAssignDriver.DataTextField = "FullName"; //  property that returns the driver's full name
+                drdAssignDriver.DataValueField = "emp_id"; //  property holding the employee's ID
                 drdAssignDriver.DataBind();
 
                 // Set a default item as the first item in the dropdown
                 drdAssignDriver.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select driver to assign", ""));
             }
         }
-
-
         //DISPLAY WALKIN ORDERS
         private void walkinordersDisplay()
-        {
-            string idno = (string)Session["idno"];
-            decimal discount;
+            {
+                string idno = (string)Session["idno"];
+                decimal discount;
 
-            // Retrieve all orders from the ORDERS table
-            FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
-            Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
+                // Retrieve all orders from the ORDERS table
+                FirebaseResponse response = twoBigDB.Get("WALKINORDERS");
+                Dictionary<string, WalkInOrders> otherproductsList = response.ResultAs<Dictionary<string, WalkInOrders>>();
             
 
-            // Create the DataTable to hold the orders
-            DataTable walkInordersTable = new DataTable();
-            walkInordersTable.Columns.Add("ORDER ID");
-            walkInordersTable.Columns.Add("ORDER TYPE");
-            walkInordersTable.Columns.Add("PRODUCT NAME");
-            walkInordersTable.Columns.Add("PRODUCT UNIT");
-            walkInordersTable.Columns.Add("PRICE");
-            walkInordersTable.Columns.Add("QUANTITY");
-            walkInordersTable.Columns.Add("DISCOUNT");
-            walkInordersTable.Columns.Add("TOTAL AMOUNT");
-            walkInordersTable.Columns.Add("DATE");
-            walkInordersTable.Columns.Add("ADDED BY");
+                // Create the DataTable to hold the orders
+                DataTable walkInordersTable = new DataTable();
+                walkInordersTable.Columns.Add("ORDER ID");
+                walkInordersTable.Columns.Add("ORDER TYPE");
+                walkInordersTable.Columns.Add("PRODUCT NAME");
+                walkInordersTable.Columns.Add("PRODUCT UNIT");
+                walkInordersTable.Columns.Add("PRICE");
+                walkInordersTable.Columns.Add("QUANTITY");
+                walkInordersTable.Columns.Add("DISCOUNT");
+                walkInordersTable.Columns.Add("TOTAL AMOUNT");
+                walkInordersTable.Columns.Add("DATE");
+                walkInordersTable.Columns.Add("ADDED BY");
 
-            // Get the selected date range from the dropdown list
-            //string dateRange = ddlDateRange.SelectedValue;
+                // Get the selected date range from the dropdown list
+                //string dateRange = ddlDateRange.SelectedValue;
 
-            if (response != null && response.ResultAs<WalkInOrders>() != null)
-            {
-                var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
-
-                // Loop through the filtered orders and add them to the DataTable
-                foreach (var entry in filteredList)
+                if (response != null && response.ResultAs<WalkInOrders>() != null)
                 {
-                    if (!decimal.TryParse(entry.productDiscount.ToString(), out discount))
+                    var filteredList = otherproductsList.Values.Where(d => d.adminId.ToString() == idno);
+
+                    // Loop through the filtered orders and add them to the DataTable
+                    foreach (var entry in filteredList)
                     {
-                        // If the discount value is not a valid decimal, assume it is zero
-                        discount = 0;
+                        if (!decimal.TryParse(entry.productDiscount.ToString(), out discount))
+                        {
+                            // If the discount value is not a valid decimal, assume it is zero
+                            discount = 0;
+                        }
+                        else
+                        {
+                            // Convert discount from percentage to decimal
+                            discount /= 100;
+                        }
+
+                        string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                        //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
+                        //    entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
+
+
+                        walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
+                                             entry.productPrice, entry.productQty, discount,
+                                             entry.totalAmount, dateAdded, entry.addedBy);
+                    }
+
+                    if (walkInordersTable.Rows.Count == 0)
+                    {
+                        lblWalkinError.Text = "No record found";
+                        lblWalkinError.Visible = true;
                     }
                     else
                     {
-                        // Convert discount from percentage to decimal
-                        discount /= 100;
+                        // Bind the DataTable to the GridView
+                        gridWalkIn.DataSource = walkInordersTable;
+                        gridWalkIn.DataBind();
                     }
-
-                    string dateAdded = entry.dateAdded == DateTime.MinValue ? "" : entry.dateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-
-                    //walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productSize + " " + entry.productUnit,
-                    //    entry.productPrice, entry.productQty, discount, entry.totalAmount, dateAdded, entry.addedBy);
-
-
-                    walkInordersTable.Rows.Add(entry.orderNo, entry.orderType, entry.productName, entry.productUnitSize,
-                                         entry.productPrice, entry.productQty, discount,
-                                         entry.totalAmount, dateAdded, entry.addedBy);
-                }
-
-                if (walkInordersTable.Rows.Count == 0)
-                {
-                    lblWalkinError.Text = "No record found";
-                    lblWalkinError.Visible = true;
+               
                 }
                 else
                 {
-                    // Bind the DataTable to the GridView
-                    gridWalkIn.DataSource = walkInordersTable;
-                    gridWalkIn.DataBind();
+                    // Handle null response or invalid selected value
+                    lblWalkinError.Text = "No record found";
                 }
-               
             }
-            else
-            {
-                // Handle null response or invalid selected value
-                lblWalkinError.Text = "No record found";
-            }
-        }
         //Print wALKIN receipts
         protected void btnPrintReceipts_Click(object sender, EventArgs e)
         {
@@ -3214,8 +3214,11 @@ namespace WRS2big_Web.Admin
             // Get the order ID from the hidden field
             int orderID = int.Parse(hfAssignDriver.Value);
 
-            // Get the reason input value
+            // Get the driver id to assing
             string driverId = drdAssignDriver.SelectedValue;
+            //Get the reason input value
+            string reason = txtRe_assigningDriver.Value;
+
 
             try
             {
@@ -3229,6 +3232,7 @@ namespace WRS2big_Web.Admin
                     if (existingOrder.order_OrderTypeValue == "Delivery")
                     {
                         // Update the existing order object with the new driver ID
+                        int previousDriverId = existingOrder.driverId; // Retrieve the previous driver ID
                         existingOrder.driverId = int.Parse(driverId);
                         existingOrder.dateDriverAssigned = DateTime.Now;
                         existingOrder.driverAssignedBy = name;
@@ -3237,7 +3241,72 @@ namespace WRS2big_Web.Admin
                         response = twoBigDB.Update("ORDERS/" + orderID, existingOrder);
 
                         // Show success message
-                        Response.Write("<script>alert('You have successfully re-assigned driver " + driverId + " to order number " + orderID + ". You can now proceed to accept the order.'); </script>");
+                        Response.Write("<script>alert('You have successfully re-assigned driver " + driverId + " to order number " + orderID + ".'); </script>");
+
+                        //SEND NOTIFICATION TO CUSTOMER FOR ORDER THAT HAVE BEEN RE-ASSIGNED
+                        //Random rnd = new Random();
+                        int ID = rnd.Next(1, 20000);
+                        var Notification = new Model.Notification
+                        {
+                            admin_ID = int.Parse(idno),
+                            sender = "Admin",
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            receiver = "Customer",
+                            title = "Re-assigning Driver",
+                            driverId = existingOrder.driverId,
+                            body =  reason,
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = ID
+
+                        };
+
+                        SetResponse notifResponse;
+                        notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                        Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                        //SEND NOTIFICATION TO CURRENT DRIVER
+                        int notifID = rnd.Next(1, 20000);
+                        var driverNotif = new Model.Notification
+                        {
+                            admin_ID = int.Parse(idno),
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            driverId = existingOrder.driverId,
+                            sender = "Admin",
+                            title = "New Assigned Order",
+                            receiver = "Driver",
+                            body = "Order ID:" + orderID + " has been assigned to you. Check the order page for the details of the order and wait for the confirmation of the customer if they want to push through the order.",
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = notifID
+                        };
+                        SetResponse driverNotifRes;
+                        driverNotifRes = twoBigDB.Set("NOTIFICATION/" + notifID, driverNotif);//Storing data to the database
+                        Notification Drivernotif = driverNotifRes.ResultAs<Notification>();//Database Result
+
+
+                        // Send notification to the previous driver
+                        int previousDriverNotifID = rnd.Next(1, 20000);
+                        var previousDriverNotif = new Model.Notification
+                        {
+                            admin_ID = int.Parse(idno),
+                            orderID = orderID,
+                            cusId = existingOrder.cusId,
+                            driverId = previousDriverId, // Use the previous driver ID
+                            sender = "Admin",
+                            title = "Order Reassigned",
+                            receiver = "Driver",
+                            body = "Order ID: " + orderID + " has been reassigned to another driver.",
+                            notificationDate = DateTime.Now,
+                            status = "unread",
+                            notificationID = previousDriverNotifID
+                        };
+
+                        SetResponse previousDriverNotifRes;
+                        previousDriverNotifRes = twoBigDB.Set("NOTIFICATION/" + previousDriverNotifID, previousDriverNotif);
+                        Notification DriverNotif = previousDriverNotifRes.ResultAs<Notification>();
                     }
                     else
                     {
@@ -3245,6 +3314,7 @@ namespace WRS2big_Web.Admin
                         Response.Write("<script>alert('You are not allowed to re-assign driver since order wil be pick up by the customer.'); </script>");
                     }
                 }
+
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
 

@@ -27,6 +27,7 @@ namespace WRS2big_Web.Model
         public List<StationCustomerAccess> orderedStore { get; set; }
         // public string CusSecurityQuestion { get; set; }
 
+        public string FullName => firstName + " " + lastName; // Property that returns the driver's full name
 
     }
     public class StationCustomerAccess

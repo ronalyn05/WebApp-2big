@@ -44,14 +44,26 @@ namespace WRS2big_Web.Admin
 
             // Add the unit and sizes data of refill products to the CheckBoxList
             HashSet<string> refillUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
+            HashSet<string> otherproductUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
             foreach (var product in filteredRefillList)
             {
                 string unitofVolume = product.pro_refillUnitVolume;
                 string qty = product.pro_refillQty;
+                string unitSizes = qty + " " + unitofVolume;
+
                 if (!string.IsNullOrEmpty(unitofVolume) && !string.IsNullOrEmpty(qty))
                 {
-                    string unitSizes = qty + " " + unitofVolume;
-                    refillUnitSizesSet.Add(unitSizes);
+                    if(product.offerType == "Product Refill")
+                    {
+                        refillUnitSizesSet.Add(unitSizes);
+                    }
+                    else if (product.offerType == "other Product")
+                    {
+                        otherproductUnitSizesSet.Add(unitSizes);
+                    }
+
+
+
                 }
             }
 
@@ -59,6 +71,11 @@ namespace WRS2big_Web.Admin
             {
                 chUnitSizes_proRefill.Items.Add(new ListItem(unitSizes));
             }
+            foreach (string unitSizes in otherproductUnitSizesSet)
+            {
+                chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
+            }
+
 
             // Add the unit and sizes data of other products to the CheckBoxList
             HashSet<string> otherUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
@@ -75,7 +92,7 @@ namespace WRS2big_Web.Admin
 
             foreach (string unitSizes in otherUnitSizesSet)
             {
-                chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
+                chUnitSizes_thirdparty.Items.Add(new ListItem(unitSizes));
             }
 
             promoOfferedReportsDisplay();
@@ -95,7 +112,7 @@ namespace WRS2big_Web.Admin
             FirebaseResponse response = twoBigDB.Get("REWARDSYSTEM/");
             Dictionary<string, RewardSystem> userReward = response.ResultAs<Dictionary<string, RewardSystem>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-          
+
 
             // Create the DataTable to hold the orders
             DataTable rewardTable = new DataTable();
@@ -117,13 +134,13 @@ namespace WRS2big_Web.Admin
                 // Loop through the entries and add them to the DataTable
                 foreach (var entry in filteredList)
                 {
-                    
-                        string dateAdded = entry.rewardsDateAdded == DateTime.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
-                        //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
 
-                        rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
-                            entry.reward_minRange_perAmount, entry.reward_maxRange_perAmount, dateAdded, entry.addedBy);
-                    
+                    string dateAdded = entry.rewardsDateAdded == DateTime.MinValue ? "" : entry.rewardsDateAdded.ToString("MMMM dd, yyyy hh:mm:ss tt");
+                    //string dateUpdated = entry.dateUpdated == DateTimeOffset.MinValue ? "" : entry.dateUpdated.ToString("MMMM dd, yyyy hh:mm:ss tt");
+
+                    rewardTable.Rows.Add(entry.rewardId, entry.rewardWaysToEarn, entry.rewardPointsToEarn,
+                        entry.reward_minRange_perAmount, entry.reward_maxRange_perAmount, dateAdded, entry.addedBy);
+
                 }
 
             }
@@ -151,9 +168,9 @@ namespace WRS2big_Web.Admin
 
             // Retrieve all records from the PROMO_OFFERED table
             FirebaseResponse response = twoBigDB.Get("DISCOUNTCOUPON/");
-            Dictionary<string, DiscounCoupon> userReward = response.ResultAs<Dictionary<string, DiscounCoupon>>();
+            Dictionary<string, DiscountCoupon> userReward = response.ResultAs<Dictionary<string, DiscountCoupon>>();
             //var filteredList = userlog.Values.Where(d => d.userIdnum.ToString() == idno);
-            
+
 
             // Create the DataTable to hold the orders
             DataTable promoOfferedTable = new DataTable();
@@ -168,9 +185,9 @@ namespace WRS2big_Web.Admin
             promoOfferedTable.Columns.Add("DATE ADDED");
             promoOfferedTable.Columns.Add("ADDED BY");
 
-           
+
             //condition to fetch the other product data
-            if (response != null && response.ResultAs<DiscounCoupon>() != null)
+            if (response != null && response.ResultAs<DiscountCoupon>() != null)
             {
                 //  var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -188,7 +205,7 @@ namespace WRS2big_Web.Admin
                     promoOfferedTable.Rows.Add(entry.couponId, entry.couponName, entry.couponDescription, entry.couponAppliedToProductOffers,
                              entry.couponAppliedTo_productRefillUnitSizes, entry.couponAppliedTo_thirdpartyProductUnitSizes, promoValidFrom,
                              promoValidUntil, dateAdded, entry.addedBy);
-                    
+
                 }
             }
             else
@@ -196,8 +213,8 @@ namespace WRS2big_Web.Admin
                 // Handle null response or invalid selected value
                 lblMessage.Text = "No data found ";
             }
-            
-            
+
+
             // Bind the DataTable to the GridView
             gridPromoReports.DataSource = promoOfferedTable;
             gridPromoReports.DataBind();
@@ -234,7 +251,7 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script> alert('Please fill all the required fields.'); </script>");
                     return;
                 }
-                
+
                 // Convert discount value to an integer
                 int discountValue = 0;
                 if (!int.TryParse(txtpromoDiscountValue.Text, out discountValue))
@@ -316,7 +333,7 @@ namespace WRS2big_Web.Admin
                 }
 
                 // Add the reward promo to the database
-                var data = new DiscounCoupon
+                var data = new DiscountCoupon
                 {
                     couponId = idnum,
                     adminId = int.Parse(idno),
@@ -376,7 +393,7 @@ namespace WRS2big_Web.Admin
                 Response.Write("<pre>" + ex.ToString() + "</pre>");
             }
         }
-       
+
         //STORE REWARD
         protected void btnAddReward_Click(object sender, EventArgs e)
         {
@@ -415,7 +432,7 @@ namespace WRS2big_Web.Admin
                 {
                     waysToEarnPoints_selectedValues = waysToEarnPoints_selectedValues.TrimEnd(',');
                 }
-              //  // Convert rewards points to earn to an integer
+                //  // Convert rewards points to earn to an integer
                 //string rewardspoints = " ";
                 //if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text) && !decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out rewardspoints))
                 //{
@@ -574,7 +591,7 @@ namespace WRS2big_Web.Admin
                     lblReward.Visible = false;
                     gridRewardReport.Visible = false;
                     promoOfferedReportsDisplay();
-                    
+
                 }
             }
             catch (Exception ex)
@@ -592,7 +609,7 @@ namespace WRS2big_Web.Admin
 
             try
             {
-               
+
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(searchname))
                 {
@@ -606,7 +623,7 @@ namespace WRS2big_Web.Admin
 
                 // Retrieve all orders from the ORDERS table
                 FirebaseResponse responselist = twoBigDB.Get("DISCOUNTCOUPON");
-                Dictionary<string, DiscounCoupon> promolist = responselist.ResultAs<Dictionary<string, DiscounCoupon>>();
+                Dictionary<string, DiscountCoupon> promolist = responselist.ResultAs<Dictionary<string, DiscountCoupon>>();
 
                 // Create the DataTable to hold the orders
                 DataTable promoOfferedTable = new DataTable();
@@ -622,7 +639,7 @@ namespace WRS2big_Web.Admin
                 promoOfferedTable.Columns.Add("ADDED BY");
 
                 //condition to fetch the other product data
-                if (responselist != null && responselist.ResultAs<DiscounCoupon>() != null)
+                if (responselist != null && responselist.ResultAs<DiscountCoupon>() != null)
                 {
                     var filteredList = promolist.Values.Where(d => d.adminId.ToString() == idno);
 
@@ -649,7 +666,7 @@ namespace WRS2big_Web.Admin
                     lblMessageError.Text = "No data found for " + " " + searchname;
                 }
 
-                
+
 
                 gridPromoOffered.DataSource = promoOfferedTable;
                 gridPromoOffered.DataBind();
@@ -673,7 +690,7 @@ namespace WRS2big_Web.Admin
             string searchname = txtSearchReward.Text;
             try
             {
-                
+
 
                 // Check if the employee ID is valid
                 if (string.IsNullOrEmpty(searchname))
@@ -721,7 +738,7 @@ namespace WRS2big_Web.Admin
                     //Response.Write("<script>alert('Error retrieving product data.');</script>");
                     lblMessageError.Text = "No data found for " + " " + searchname;
                 }
-               
+
                 // Bind the DataTable to the GridView
                 gridReward.DataSource = rewardTable;
                 gridReward.DataBind();
