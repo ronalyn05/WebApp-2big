@@ -146,7 +146,7 @@
                                                                                     <br />
 
                                                                                     <h5 style="color: black; font-family: Bahnschrift; margin-left: 20px">ONLINE ORDERS - SALES</h5>
-                                                                                    <asp:Label runat="server" Style="color: red" ID="onlineOrdersLabel"></asp:Label>
+                                                                                    <asp:Label runat="server" Style="margin-left: 700px; color: red" ID="onlineOrdersLabel"></asp:Label>
                                                                                     <center>
                                                                                         <asp:GridView runat="server" ID="clientSalesReport" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1300px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
 

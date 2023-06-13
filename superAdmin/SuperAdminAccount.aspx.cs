@@ -192,6 +192,7 @@ namespace WRS2big_Web.superAdmin
                 //LOG-IN FOR DEFAULT ACCOUNT
                 if (uEmail == defaultemail && uPass == defaultpass)
                 {
+
                     string superAdmin = "Technique Services";
 
                     Session["SuperIDno"] = defaultemail;

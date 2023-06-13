@@ -156,13 +156,13 @@ namespace WRS2big_Web.LandingPage
                         {
                             // Upload the file to Firebase Storage
                             var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                            var task = storage.Child("clientBusinessProof").Child(uniqueFileName).PutAsync(file.InputStream);
+                            var task = storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
 
                             // Wait for the upload task to complete
                             await task;
 
                             // Get the download URL of the uploaded file
-                            string proofUrl = await storage.Child("clientBusinessProof").Child(uniqueFileName).GetDownloadUrlAsync();
+                            string proofUrl = await storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
 
                             // Save the link to the list
                             businessProofs.Add(proofUrl);
@@ -195,13 +195,13 @@ namespace WRS2big_Web.LandingPage
                         {
                             // Upload the file to Firebase Storage
                             var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                            var task = storage.Child("clientValidID").Child(uniqueFileName).PutAsync(file.InputStream);
+                            var task = storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
 
                             // Wait for the upload task to complete
                             await task;
 
                             // Get the download URL of the uploaded file
-                            string proofUrl = await storage.Child("clientValidID").Child(uniqueFileName).GetDownloadUrlAsync();
+                            string proofUrl = await storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
 
                             // Save the link to the list
                             validIDs.Add(proofUrl);

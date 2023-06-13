@@ -84,20 +84,11 @@ namespace WRS2big_Web.Model
         public string subStatus { get; set; } //active or expired/inactive
         public string packageDescription { get; set; }
         public int orderLimit { get;set; }
+        public DateTime dateStatusUpdated { get; set; }
+        public DateTime dateSubscribed { get; set; }
 
     }
-    public class Messages
-    {
-        public int messageID { get; set; }
 
-        public string body { get; set; }
-        public string sender {get;set;}
-        public string receiver { get; set; }
-        public int clientID { get; set; }
-        public DateTime sent { get; set; } //time message sent
-        public string status { get; set; } //read or unread
-
-    }
     public class PackagePlans
     {
         public int packageID { get; set; }

@@ -60,6 +60,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.Button viewSorted;
 
         /// <summary>
+        /// declinedLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label declinedLabel;
+
+        /// <summary>
         /// subscriptionReport control.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,24 @@ namespace WRS2big_Web.superAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView subscriptionReport;
+
+        /// <summary>
+        /// expiredSubscriptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView expiredSubscriptions;
+
+        /// <summary>
+        /// activeSubscriptions control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView activeSubscriptions;
 
         /// <summary>
         /// clientSubHistoryButton control.

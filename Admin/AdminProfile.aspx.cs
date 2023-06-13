@@ -44,6 +44,9 @@ namespace WRS2big_Web.Admin
             fetchAdminData();
             fetchStationData();
             SubscriptionStatus();
+            
+
+
 
             string role = (string)Session["role"];
             
@@ -73,6 +76,71 @@ namespace WRS2big_Web.Admin
                 }
 
             }
+        }
+        private void DisplayImages()
+        {
+            if (Session["idno"] != null)
+            {
+
+                var clientID = Session["idno"].ToString();
+
+                FirebaseResponse businessProof = twoBigDB.Get("ADMIN/" + clientID + "/Links/Businessproofs");
+                //Model.Links proof = businessProof.ResultAs<Model.Links>();
+                List<string> businessProofUrls = JsonConvert.DeserializeObject<List<string>>(businessProof.Body);
+
+                if (businessProof == null)
+                {
+                    Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+                }
+                FirebaseResponse validID = twoBigDB.Get("ADMIN/" + clientID + "/Links/ValidIDs");
+                //Model.Links valid = validID.ResultAs<Model.Links>();
+                List<string> validIDProofUrls = JsonConvert.DeserializeObject<List<string>>(validID.Body);
+
+                if (validID == null)
+                {
+                    Response.Write("<script> alert('Session Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+                }
+
+                //Combine the URLs into a single list.
+                List<string> allImageUrls = new List<string>();
+
+                if (allImageUrls != null)
+                {
+                    if (businessProofUrls != null)
+                    {
+                        allImageUrls.AddRange(businessProofUrls);
+                    }
+
+                    if (validIDProofUrls != null)
+                    {
+                        allImageUrls.AddRange(validIDProofUrls);
+                    }
+                }
+
+
+
+                if (allImageUrls == null || allImageUrls.Count == 0)
+                {
+                    noUploaded.Text = "No images available.";
+                    noUploaded.Visible = true;
+                }
+                else
+                {
+                   
+                    //null coalescing operator (??)
+                    //checks if allImageUrls is null and, if so, sets it to an empty list to prevent any null reference exceptions during data binding.
+                    uploadedImages.DataSource = allImageUrls ?? new List<string>();
+                    uploadedImages.DataBind();
+                }
+            }
+            else
+            {
+                Response.Write("<script> alert(' Expired! Please login again');window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+
+            }
+
         }
         private void SubscriptionStatus() //to send the notification depending on the subscription status
         {
@@ -143,12 +211,14 @@ namespace WRS2big_Web.Admin
             //string name = refillStation.stationName;
             string days = refillStation.businessDaysFrom;
 
+            //POPULATE THE STATION DETAILS IN THE TEXTBOXES
+            lblStationName.Text = refillStation.stationName;
+            lblAddress.Text = refillStation.stationAddress;
+
             //to check if naka add na ug station details
             if (days != null)
             {
                 //POPULATE THE STATION DETAILS IN THE TEXTBOXES
-                lblStationName.Text = refillStation.stationName;
-                lblAddress.Text = refillStation.stationAddress;
                 lblOperatingHours.Text = refillStation.operatingHrsFrom + "- " + refillStation.operatingHrsTo + "";
                 lblBusinessday.Text = refillStation.businessDaysFrom + " - " + refillStation.businessDaysTo;
 
@@ -224,6 +294,8 @@ namespace WRS2big_Web.Admin
         {
             if (Session["idno"] != null)
             {
+                DisplayImages();
+
                 var adminID = Session["idno"].ToString();
 
                 FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID);
@@ -264,45 +336,94 @@ namespace WRS2big_Web.Admin
 
                     //to GET the subscription details
                     string subStatus = admin.subStatus;
+                    string status = admin.status;
                     //check if naka subscribe na ba ang admin 
-                    if (subStatus == "Subscribed")
+                    if (status == "Approved")
                     {
-                        subscribeBTN.Visible = false;
-
-                        FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
-                        Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
-
-                        if (subscription != null)
+                        if (subStatus == "Subscribed")
                         {
-                            string subscribedPlan = subscription.packageName;
-                            DateTime start = subscription.subStart;
-                            DateTime end = subscription.expiration;
+                            subscribeBTN.Visible = false;
 
-                            //populate the textboxes for the subscription details
-                            LblSubPlan.Text = subscribedPlan;
+                            FirebaseResponse subDetails = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package/");
+                            Model.Subscribed_Package subscription = subDetails.ResultAs<Model.Subscribed_Package>();
 
-                            DateTime subscriptionStart = start;
-                            LblDateStarted.Text = subscriptionStart.ToString("MMMM dd, yyyy - hh:mm tt");
-                            DateTime subscriptionEnd = end;
-                            LblSubEnd.Text = subscriptionEnd.ToString("MMMM dd, yyyy - hh:mm tt");
+                            if (subscription != null)
+                            {
+                                string subscribedPlan = subscription.packageName;
+                                DateTime start = subscription.subStart;
+                                DateTime end = subscription.expiration;
 
+                                //populate the textboxes for the subscription details
+                                LblSubPlan.Text = subscribedPlan;
+
+                                DateTime subscriptionStart = start;
+                                LblDateStarted.Text = subscriptionStart.ToString("MMMM dd, yyyy - hh:mm tt");
+                                DateTime subscriptionEnd = end;
+                                LblSubEnd.Text = subscriptionEnd.ToString("MMMM dd, yyyy - hh:mm tt");
+
+
+                            }
+                        }
+
+                        else if (subStatus == "notSubscribed")
+                        {
+                            warningMsg.Text = "Warning: You haven't subscribed to a package yet. Access to the features are disabled since your status is 'Not Subscribed' ";
+                            subscriptionLabel.Text = "You haven't subscribed to a plan yet. Please proceed with the subscription now.";
+                            changePackage.Visible = false;
+                            renewBTN.Visible = false;
+                            Label1.Visible = false;
+                            LblSubPlan.Visible = false;
+                            Label5.Visible = false;
+                            LblDateStarted.Visible = false;
+                            Label6.Visible = false;
+                            LblSubEnd.Visible = false;
 
                         }
                     }
-                    else if (subStatus == "notSubscribed")
+                    else if (status == "Declined")
                     {
-                        warningMsg.Text = "Warning: You haven't subscribed to a package yet. Access to the features are disabled since your status is 'Not Subscribed' ";
-                        subscriptionLabel.Text = "You haven't subscribed to a plan yet. Please proceed with the subscription now.";
-                        changePackage.Visible = false;
-                        renewBTN.Visible = false;
-                        Label1.Visible = false;
-                        LblSubPlan.Visible = false;
-                        Label5.Visible = false;
-                        LblDateStarted.Visible = false;
-                        Label6.Visible = false;
-                        LblSubEnd.Visible = false;
-                       
+
+                        FirebaseResponse adminNotif = twoBigDB.Get("NOTIFICATION");
+                        var adminBody = adminNotif.Body;
+                        Dictionary<string, Model.Notification> adminAllNotifs = JsonConvert.DeserializeObject<Dictionary<string, Model.Notification>>(adminBody);
+
+                        //int unreadCount = 0;
+
+                        if (adminAllNotifs != null)
+                        {
+                            // Create a list to store all the notifications with the receiver as "Admin"
+                            List<Model.Notification> AdminNotifications = new List<Model.Notification>();
+
+                            // Loop through all the notifications
+                            foreach (KeyValuePair<string, Model.Notification> entry in adminAllNotifs)
+                            {
+                                // Check if the current notification has the receiver as "Admin"
+                                if (entry.Value.receiver == "Admin" && entry.Value.admin_ID == admin.idno)
+                                {
+                                    // Add the current notification to the list of admin notifications
+                                    AdminNotifications.Add(entry.Value);
+
+                                }
+                            }
+                            foreach(var notifs in AdminNotifications)
+                            {
+                                if (notifs.title == "Application Declined")
+                                {
+                                    string reason = notifs.body;
+                                    warningMsg.Text = "Your application is DECLINED ! If you wish to continue using the system, you must comply with the requirements. Read the reasons provided to further understand the problem with your application.";
+                                    declinereason.Text = "REASON:" + " " + reason;
+                                    return;
+                                }
+                            }
+                        }    
                     }
+                    else if (status == "Pending")
+                    {
+                        uploadbtnNewproofs.Visible = false;
+                        newUploadBtn.Visible = false;
+                        warningMsg.Text = "Your application is still PENDING. You will be notified about the result of your application in no time.";
+                    }
+
 
                 }
                 else
@@ -751,7 +872,157 @@ namespace WRS2big_Web.Admin
         protected void confirmChangePackage_Click(object sender, EventArgs e)
         {
             
-            Response.Write("<script>alert('Redirecting you to the active packages');window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
+            Response.Write("<script>window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
+        }
+
+        protected async void uploadbtnNewproofs_Click(object sender, EventArgs e)
+        {
+            //CREATE LIST TO STORE THE LINKS
+            List<string> businessProofs = new List<string>();
+            List<string> validIDs = new List<string>();
+
+            string fname = (string)Session["fname"];
+            string lname = (string)Session["lname"];
+
+            //BUSINESS PROOF UPLOAD
+            if (uploadBussProofs.HasFile)
+            {
+                foreach (HttpPostedFile file in uploadBussProofs.PostedFiles)
+                {
+                    string fileName = Path.GetFileName(file.FileName);
+                    string fileExtension = Path.GetExtension(fileName);
+
+                    // Generate a unique file name
+                    string uniqueFileName = fname + lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+                    try
+                    {
+                        // Upload the file to Firebase Storage
+                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                        var task = storage.Child("clientBusinessProof").Child(fname + lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+                        // Wait for the upload task to complete
+                        await task;
+
+                        // Get the download URL of the uploaded file
+                        string proofUrl = await storage.Child("clientBusinessProof").Child(fname + lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+                        // Save the link to the list
+                        businessProofs.Add(proofUrl);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any exceptions that occur during the upload process
+                        // You can log the exception details or handle the error in a way that suits your application
+                        Console.WriteLine("Error uploading file: " + ex.Message);
+                    }
+                }
+
+            }
+
+
+            Debug.WriteLine($"PROOFS : {string.Join(", ", businessProofs)}");
+
+            //VALID ID UPLOAD
+            if (uploadnewValid.HasFile)
+            {
+                foreach (HttpPostedFile file in uploadnewValid.PostedFiles)
+                {
+                    string fileName = Path.GetFileName(file.FileName);
+                    string fileExtension = Path.GetExtension(fileName);
+
+                    
+                  
+                    // Generate a unique file name
+                    string uniqueFileName = fname + lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+                    try
+                    {
+                        // Upload the file to Firebase Storage
+                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                        var task = storage.Child("clientValidID").Child(fname+lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+                        // Wait for the upload task to complete
+                        await task;
+
+                        // Get the download URL of the uploaded file
+                        string proofUrl = await storage.Child("clientValidID").Child(fname + lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+                        // Save the link to the list
+                        validIDs.Add(proofUrl);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any exceptions that occur during the upload process
+                        // You can log the exception details or handle the error in a way that suits your application
+                        Console.WriteLine("Error uploading file: " + ex.Message);
+                    }
+                }
+
+            }
+            Debug.WriteLine($"VALIDID: {string.Join(", ", validIDs)}");
+
+            var clientID = Session["idno"].ToString();
+
+            var links = new Links
+            {
+                Businessproofs = businessProofs,
+                ValidIDs = validIDs,
+
+            };
+
+            FirebaseResponse response = twoBigDB.Get("ADMIN/" + clientID);
+            Model.AdminAccount adminDetails = response.ResultAs<Model.AdminAccount>();
+
+            adminDetails.status = "Pending";
+
+            //SAVE THE LINKS OF THE NEW UPLOADED PROOFS IN THE REALTIME DB
+            response = twoBigDB.Update("ADMIN/" + clientID + "/Links/", links);
+            Links Linkresult = response.ResultAs<Links>();//Database Result
+
+            //UPDATE STATUS BACK INTO PENDING
+            response = twoBigDB.Update("ADMIN/" + clientID, adminDetails);
+
+            //SEND NOTIFICATION
+            Random rnd = new Random();
+            int ID = rnd.Next(1, 20000);
+
+            var Notification = new Model.Notification
+            {
+                admin_ID = int.Parse(clientID),
+                sender = "System",
+                title = "Re-evaluate Client",
+                receiver = "Super Admin",
+                body = fname + " " + lname  + " " + "Submitted another Proof for Evaluation.Check it out now",
+                notificationDate = DateTime.Now,
+                status = "unread",
+                notificationID = ID
+
+            };
+
+            SetResponse notifResponse;
+            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+            Model.Notification notif = notifResponse.ResultAs<Model.Notification>();//Database Result
+
+            // Get the current date and time
+            DateTime addedTime = DateTime.Now; ;
+            int logID = rnd.Next(1, 10000);
+
+            //Store the login information in the USERLOG table
+            var profilelog = new UsersLogs
+            {
+                userIdnum = int.Parse(clientID),
+                logsId = logID,
+                userFullname = (string)Session["fullname"],
+                userActivity = "RESUBMITTED APPLICATION",
+                role = "Admin",
+                activityTime = addedTime
+            };
+
+            //Storing the  info
+            response = twoBigDB.Set("ADMINLOGS/" + profilelog.logsId, profilelog);//Storing data to the database
+
+            Response.Write("<script>alert('New Proofs Uploaded! Please wait for account approval');window.location.href = '/Admin/AdminProfile.aspx';</script>");
         }
     }
 }
