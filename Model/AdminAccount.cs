@@ -31,9 +31,6 @@ namespace WRS2big_Web.Model
 
 
     }
-
-
-
     public class Links
     {
         public List<string> Businessproofs { get; set; }
@@ -108,8 +105,6 @@ namespace WRS2big_Web.Model
         public DateTime dateAdded { get; set; }
         public DateTime dateUpdated { get; set; }
     }
-
-
     public class thirdpartyProducts
     {
         public int adminId { get; set; }
@@ -211,7 +206,6 @@ namespace WRS2big_Web.Model
         //public string swapOptions { get; set; }
         //public DateTime dateAdded { get; set; }
     }
-
     public class standardDelivery
     {
         public int standardID { get; set; }
@@ -239,7 +233,6 @@ namespace WRS2big_Web.Model
         public string addedBy { get; set; }
 
     }
-
     public class reservationDelivery
     {
         public int reservationID { get; set; }
@@ -272,7 +265,6 @@ namespace WRS2big_Web.Model
         public string addedBy { get; set; }
         public string updatedBy { get; set; }
     }
-
     public class WalkInOrders
     {
         public int adminId { get; set; }
@@ -310,7 +302,6 @@ namespace WRS2big_Web.Model
         public string role { get; set; }
 
     }
-
     public class RewardSystem
     {
         public int rewardId { get; set; }

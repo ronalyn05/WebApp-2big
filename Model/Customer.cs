@@ -110,8 +110,11 @@ namespace WRS2big_Web.Model
         public int orderId { get; set; }
         public int adminID { get; set; }
         public int cusId { get; set; }
+        public string customerFirstName { get; set; }
+        public string customerLastName { get; set; }
         public string feedback { get; set; }
         public int ratings { get; set; }
+        public DateTime reviewedDate { get; set; }
     }
 
 }
