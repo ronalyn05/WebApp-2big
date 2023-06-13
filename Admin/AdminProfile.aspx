@@ -57,20 +57,29 @@
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
                                                                             <%-- <div class="item form-group">--%>
-                                                                            <h4 style="color: black; font-family: Bahnschrift" runat="server" id="changeModalTitle"> CHANGE PACKAGE</h4> <br />
+                                                                            <h4 style="color: black; font-family: Bahnschrift" runat="server" id="changeModalTitle">CHANGE PACKAGE</h4>
+                                                                            <br />
 
                                                                             <div class="col-md-12 col-sm-12" style="font-size: 20px">
-                                                                                <h4 style="font-size: 16px; color: black">Current Subscription: </h4> <br />
+                                                                                <h4 style="font-size: 16px; color: black">Current Subscription: </h4>
+                                                                                <br />
                                                                                 <center>
-                                                                                    <h4 style="font-size: 16px; color: black;" id="currentSubscription" runat="server"></h4> <br />
+                                                                                    <h4 style="font-size: 16px; color: black;" id="currentSubscription" runat="server"></h4>
+                                                                                    <br />
                                                                                 </center>
-                                                                                <h4 style="font-size: 16px; color: black">Expiration: </h4> <br />
+                                                                                <h4 style="font-size: 16px; color: black">Expiration: </h4>
+                                                                                <br />
                                                                                 <center>
-                                                                                    <h4 style="font-size: 16px; color: black;" id="currentExpiration" runat="server"></h4> <br />
+                                                                                    <h4 style="font-size: 16px; color: black;" id="currentExpiration" runat="server"></h4>
+                                                                                    <br />
                                                                                 </center>
                                                                                 <hr />
-                                                                               <br />
-                                                                                <p style="font-size: 16px; color: black;"> Are you sure you want to change your current package? <br /> Important Note: If you change your package, the amount you paid for you current subscription will not be refunded.</p>
+                                                                                <br />
+                                                                                <p style="font-size: 16px; color: black;">
+                                                                                    Are you sure you want to change your current package?
+                                                                                    <br />
+                                                                                    Important Note: If you change your package, the amount you paid for you current subscription will not be refunded.
+                                                                                </p>
 
                                                                             </div>
                                                                             <br />
@@ -78,9 +87,9 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <asp:Button ID="cancelButton" runat="server" Text="Cancel" class="btn btn-primary btn-sm"  data-dismiss="modal"/>
+                                                                        <asp:Button ID="cancelButton" runat="server" Text="Cancel" class="btn btn-primary btn-sm" data-dismiss="modal" />
                                                                         <%-- CONFIRM  BUTTON--%>
-                                                                        <asp:Button ID="confirmChangePackage" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="confirmChangePackage_Click"/>
+                                                                        <asp:Button ID="confirmChangePackage" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="confirmChangePackage_Click" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -135,12 +144,12 @@
 
                                                                         <asp:LinkButton ID="subscribeBTN" href="SubscriptionPackages.aspx" class="active btn btn-primary waves-effect text-right" runat="server" Style="font-size: 18px;"> Subscribe now </asp:LinkButton>
                                                                         <asp:LinkButton ID="renewBTN" OnClick="renewBTN_Click" class="active btn btn-primary waves-effect text-right" runat="server" Style="font-size: 18px;">Renew </asp:LinkButton>
-                                                                        <button ID="changePackage" class="active btn btn-primary waves-effect text-right" runat="server" data-toggle="modal" data-target=".changePackage" data-dismiss="modal" Style="font-size: 18px;"> Change Package </button>
+                                                                        <button id="changePackage" class="active btn btn-primary waves-effect text-right" runat="server" data-toggle="modal" data-target=".changePackage" data-dismiss="modal" style="font-size: 18px;">Change Package </button>
                                                                     </div>
 
                                                                     <%--</form>--%>
                                                                 </div>
-                                                        </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -209,8 +218,90 @@
                                                                     <%--<asp:Button ID="btnEditStation" class="active btn btn-success btn-sm waves-effect text-right" runat="server" Text="Update" OnClick="btnEditStationDetails_Click"/>--%>
                                                                 </div>
                                                                 <%--</form>--%>
-                                                        </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--MODAL FOR UPLOADED DOCUMENTS-->
+                                                <div class="modal fade uploadedDocuments col-md-12 col-md-12" id="subscribedModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md col-md-10 col-md-15">
+                                                        <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
+                                                            <div id="demo-form4" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Uploaded Business Proof and Valid ID</h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeuploadedModal"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content">
+                                                                            
+                        
+                                                                                <asp:Label runat="server" Style="font-size: 16px; color: red; margin-left: 700px" ID="noUploaded"> </asp:Label>
+                                                                                <asp:Repeater ID="uploadedImages" runat="server">
+
+                                                                                    <ItemTemplate>
+                                                                                        <a href='<%# Container.DataItem %>'>
+                                                                                            
+
+                                                                                                <img id="ImageItem" runat="server" src='<%# Container.DataItem %>' width="350" height="350" style="border-color: black" />
+                                                                                          
+
+                                                                                        </a>
+
+                                                                                    </ItemTemplate>
+
+                                                                                </asp:Repeater>
+                                                                                <hr />
+                                                                                
+                                                                          
+                                                                             <button type="button" id="newUploadBtn" runat="server" class="active btn waves-effect text-center"  data-dismiss="modal" data-toggle="modal" data-target=".uploadNew" style="background-color: transparent; font-size: 20px;"><i class="ti-clip"></i>Upload new documents</button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <%--  BUTTON ADD PAYMENT METHOD--%>
+                                                                        <%--                                                                        <asp:Button ID="paymentButton" runat="server" Text="Confirm" class="btn btn-primary btn-sm" />--%>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <!--MODAL FOR UPLOADED DOCUMENTS-->
+                                                <%--SUBSCRIPTION DETAILS--%>
+                                                <div class="modal fade uploadNew" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-md">
+                                                        <div class="modal-content">
+                                                            <div data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="myModalLabel6">Upload new Business Proofs and Valid ID</h4>
+                                                                    <%--exit button--%>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                        <div class="x_content"> 
+                                                                    <center>
+                                                                    <%--file upload--%>
+                                                                         <asp:Label ID="label" runat="server" ForeColor="Black">Upload Business Proofs:</asp:Label>
+                                                                    <asp:FileUpload ID="uploadBussProofs" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
+                                                                    <br /> <br />
+                                                                  <asp:Label ID="label2" runat="server" ForeColor="Black">Upload Valid ID:</asp:Label> <br />
+                                                                    <asp:FileUpload ID="uploadnewValid" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
+                                                                    <br />
+                                                                </center>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="modal-footer">
+                                                                      <asp:Button ID="uploadbtnNewproofs" runat="server" Text="Upload Now" class="btn btn-primary btn-sm" OnClick="uploadbtnNewproofs_Click"/>
+                                                                    </div>
+
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <%--EDIT PROFILE INFORMATION HERE --%>
@@ -263,13 +354,16 @@
 
                                                                 </div>
                                                                 <%--</form>--%>
-                                                        </div>
                                                             </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <%--Edit profile information ends here--%>
                                                 <!-- Page-body start -->
-                                                <asp:Label runat="server" ID="warningMsg" Style="font-size: 18px; color: red"></asp:Label><br />
+                                                <asp:Label runat="server" ID="warningMsg" Style="font-size: 18px; color: black"></asp:Label><br />
+                                                <center>
+                                                    <asp:Label runat="server" ID="declinereason" Style="font-size: 18px; color: red"></asp:Label><br />
+                                                </center>
                                                 <br />
                                                 <div class="row">
 
@@ -321,7 +415,9 @@
                                                                     <br />
                                                                     <%-- EDIT PROFILE INFORMATION MODAL --%>
                                                                     <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".editprofile" style="background-color: transparent; font-size: 20px;"><i class="ti-marker"></i>Edit Profile Information</button>
-
+                                                                    <br />
+                                                                    <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".uploadedDocuments" style="background-color: transparent; font-size: 20px;"><i class="ti-clip"></i>Uploaded Documents</button>
+                                                                    <br />
                                                                     <br />
                                                                     <%-- REFILLING STATION MANAGEMENT --%>
                                                                     <%-- <button type="button" class="active btn waves-effect text-center" data-toggle="modal" data-target=".editInfo" style="background-color:transparent;font-size:20px;"><i class="ti-marker"></i>Edit Personal Info</button> --%>
@@ -357,7 +453,7 @@
                                                                         <div class="tab-pane active" id="Profile">
                                                                             <%-- <h5>Personal Information</h5>
                                                                 <hr>--%>
-                                                                            <form class="form" action="##" method="POST" id="ProfilePage">
+                                                                            <div class="form" action="##" method="POST" id="ProfilePage">
                                                                                 <div class="form-group">
                                                                                     <div class="col-xs-12" style="font-size: 16px">
                                                                                         <%--  DISPLAY DATA STARTS HERE--%>
@@ -408,22 +504,9 @@
                                                                                         <hr />
                                                                                     </div>
                                                                                 </div>
-                                                                            </form>
+                                                                            </div>
                                                                         </div>
-                                                                        <!--/SETTINGS TAB-pane-->
-                                                                        <div class="tab-pane" id="Settings">
 
-                                                                            <h6>Profile Settings and Privacy</h6>
-
-                                                                            <hr>
-                                                                            <center>
-                                                                                <button class="active btn btn-round waves-effect text-center" style="background-color: #bae1ff; font-size: 20px;"><a data-toggle="tab" href="#ManageProfile"><i class=" ti-key "></i>Change Password</a></button>
-                                                                            </center>
-
-
-
-                                                                        </div>
-                                                                        <!--/ SETTINGS tab-pane-->
 
                                                                     </div>
                                                                     <!--/tab-content-->
@@ -432,6 +515,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
 
                                             </div>
@@ -445,12 +529,4 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
 </asp:Content>

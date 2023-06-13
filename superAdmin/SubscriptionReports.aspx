@@ -72,13 +72,16 @@
                                                                               <asp:DropDownList runat="server" ID="modalDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
                                                                                 <asp:ListItem Value="All"> All </asp:ListItem>
                                                                                 <asp:ListItem Value="Active"> Active Subscriptions </asp:ListItem>
-                                                                                <asp:ListItem Value="Inactive"> Inactive Subscriptions </asp:ListItem>
+                                                                                <asp:ListItem Value="Expired"> Expired Subscriptions </asp:ListItem>
                                                                               
 
                                                                             </asp:DropDownList>
-                                                                            <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" Text="view" />
-                                                                            <br /><br />
+                                                                            <asp:Button runat="server" ID="viewSorted" class="btn btn-primary" Height="40" OnClick="viewSorted_Click" Text="view" />
+
+                                                                            <br />  
+                                                                            <br />
                                                                             <div>
+                                                                                 <asp:Label runat="server" style="margin-left:10px" id="declinedLabel"></asp:Label>
                                                                                 <asp:GridView runat="server" ID="subscriptionReport" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1300px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
 
                                                                                     <Columns>
@@ -102,7 +105,56 @@
                                                                                     <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
                                                                                     <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                     <SortedDescendingHeaderStyle BackColor="#242121" />
-                                                                                </asp:GridView> <br /><br />
+                                                                                </asp:GridView> 
+                                                                                <asp:GridView runat="server" ID="expiredSubscriptions" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1300px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+
+                                                                                    <Columns>
+                                                                                        <asp:TemplateField>
+
+                                                                                            <ItemTemplate>
+                                                                                               <%-- <asp:Button runat="server" Text="History" ID="viewSubscriptionHistory" Style="font-size: 16px; margin-left: 10px" class="btn btn-primary btn-sm text-center" OnClick="viewSubscriptionHistory_Click" />--%>
+                                                                                               <%--  <button type="button" style="font-size: 14px; margin-left: 50px" height="40" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".clientSubHistory"><i class="fa fa-book" ></i>Subscription History</button>--%>
+                                                                                                <asp:CheckBox runat="server" Style="font-size: 18px" ID="selectedClient"  OnCheckedChanged="selectedClient_CheckedChanged" AutoPostBack="true"/>
+                                                                                                 
+                                                                                            </ItemTemplate>
+
+                                                                                        </asp:TemplateField>
+
+                                                                                    </Columns>
+                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                </asp:GridView>
+                                                                                <asp:GridView runat="server" ID="activeSubscriptions" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="1300px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
+
+                                                                                    <Columns>
+                                                                                        <asp:TemplateField>
+
+                                                                                            <ItemTemplate>
+                                                                                               <%-- <asp:Button runat="server" Text="History" ID="viewSubscriptionHistory" Style="font-size: 16px; margin-left: 10px" class="btn btn-primary btn-sm text-center" OnClick="viewSubscriptionHistory_Click" />--%>
+                                                                                               <%--  <button type="button" style="font-size: 14px; margin-left: 50px" height="40" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".clientSubHistory"><i class="fa fa-book" ></i>Subscription History</button>--%>
+                                                                                                <asp:CheckBox runat="server" Style="font-size: 18px" ID="selectedClient"  OnCheckedChanged="selectedClient_CheckedChanged" AutoPostBack="true"/>
+                                                                                                 
+                                                                                            </ItemTemplate>
+
+                                                                                        </asp:TemplateField>
+
+                                                                                    </Columns>
+                                                                                    <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                                                                                    <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                                    <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
+                                                                                    <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                                                                                    <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                                                                                    <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                                                                                    <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                                                                                    <SortedDescendingHeaderStyle BackColor="#242121" />
+                                                                                </asp:GridView>
+                                                                                <br /><br />
                                                                                 <asp:Button runat="server" Text="Subscription History" ID="clientSubHistoryButton" Style="font-size: 16px; margin-left: 10px" class="btn btn-primary btn-sm text-center" OnClick="clientSubHistory_Click"/>
                                                                                     
                                                                                     <%-- <button type="button" style="font-size: 14px; margin-left: 50px" height="40" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".clientSubHistory" id="clientHistory"  runat="server">Subscription History</button>--%>

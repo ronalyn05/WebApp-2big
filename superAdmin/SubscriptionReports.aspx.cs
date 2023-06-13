@@ -39,34 +39,46 @@ namespace WRS2big_Web.superAdmin
 
                 clientSubHistoryButton.Visible = false;
 
+                
+
+                displayActiveSubscriptions();
+                displayAllSubscriptions();
+                displayExpiredSubscriptions();
+                activeSubscriptions.Visible = false;
+                expiredSubscriptions.Visible = false;
+
                 Session["ModalOpen"] = null;
             }
 
-
+            Session["ModalOpen"] = null;
 
 
         }
+        //LOAD THE SUBSCRIPTION SALES 
         private void LoadSales()
         {
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
-            Model.superAdminClients all = response.ResultAs<Model.superAdminClients>();
+
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+            Model.subscriptionLogs all = response.ResultAs<Model.subscriptionLogs>();
             var data = response.Body;
-            Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
+            Dictionary<string, Model.subscriptionLogs> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(data);
 
             if (data != null && subscribed != null)
             {
                 // Create a list to hold the sales data
-                List<Model.superAdminClients> salesList = new List<Model.superAdminClients>();
+                List<Model.subscriptionLogs> salesList = new List<Model.subscriptionLogs>();
 
                 decimal totalAmount = 0;
-                foreach (KeyValuePair<string, Model.superAdminClients> entry in subscribed)
+                foreach (KeyValuePair<string, Model.subscriptionLogs> entry in subscribed)
                 {
+
+                        salesList.Add(entry.Value);
                     
-                    salesList.Add(entry.Value);
+                   
                 }
-              
+
                 // Sort the sales list in descending order by date and time
-                salesList.Sort((x, y) => y.dateSubscribed.CompareTo(x.dateSubscribed));
+                salesList.Sort((x, y) => y.activityTime.CompareTo(x.activityTime));
 
                 DataTable salesTable = new DataTable();
                 salesTable.Columns.Add("SUBSCRIPTION ID");
@@ -75,10 +87,10 @@ namespace WRS2big_Web.superAdmin
                 salesTable.Columns.Add("CLIENT NAME");
                 salesTable.Columns.Add("AMOUNT");
 
-                foreach (Model.superAdminClients sale in salesList)
+                foreach (Model.subscriptionLogs sale in salesList)
                 {
-                    totalAmount += sale.amount;
-                    salesTable.Rows.Add(sale.subscriptionID, sale.dateSubscribed, sale.type, sale.fullname, sale.amount);
+                    totalAmount += sale.total;
+                    salesTable.Rows.Add(sale.logsId, sale.activityTime, sale.type, sale.userFullname, sale.total);
                 }
 
                 // Apply paging
@@ -211,15 +223,13 @@ namespace WRS2big_Web.superAdmin
         ////END OF SORTING VIA HEADER
 
 
-
-
-
         private void loadSubscriptions()
         {
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");//CHANGE TO ADMIN TABLE
-            Model.superAdminClients all = response.ResultAs<Model.superAdminClients>();
+
+            FirebaseResponse response = twoBigDB.Get("ADMIN");//CHANGE TO ADMIN TABLE
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
             var data = response.Body;
-            Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
+            Dictionary<string, Model.AdminAccount> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
             
             if (data != null && subscribed != null)
             {
@@ -232,10 +242,20 @@ namespace WRS2big_Web.superAdmin
                 clientsTable.Columns.Add("PACKAGE");
                 clientsTable.Columns.Add("STATUS");
 
-                foreach (KeyValuePair<string, Model.superAdminClients> entry in subscribed)
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in subscribed)
                 {
+                    
+                    if (entry.Value.subStatus == "Subscribed")
+                    {
+                        //GET THE SUBSCRIBED PACKAGE DETAILS
+                        response = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/Subscribed_Package");//CHANGE TO ADMIN TABLE
+                        Model.Subscribed_Package planDet = response.ResultAs<Model.Subscribed_Package>();
 
-                    clientsTable.Rows.Add(entry.Value.clientID,entry.Value.dateSubscribed, entry.Value.fullname, entry.Value.amount, entry.Value.plan, entry.Value.currentSubStatus);
+
+                        clientsTable.Rows.Add(entry.Value.idno, planDet.subStart, entry.Value.fname + " " + entry.Value.lname,
+                            planDet.packagePrice, planDet.packageName, planDet.subStatus);
+
+                    }
 
                 }
                 // Bind DataTable to GridView control
@@ -253,11 +273,13 @@ namespace WRS2big_Web.superAdmin
         protected void modalSearch_Click(object sender, EventArgs e)
         {
             string searched = searchClient.Text;
+            string selectedValue = modalDropdown.SelectedValue;
+            Session["ModalOpen"] = true;
 
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");//CHANGE TO ADMIN TABLE
-            Model.superAdminClients all = response.ResultAs<Model.superAdminClients>();
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
             var data = response.Body;
-            Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
+            Dictionary<string, Model.AdminAccount> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
             if (data != null && subscribed != null)
             {
@@ -270,15 +292,33 @@ namespace WRS2big_Web.superAdmin
                 clientsTable.Columns.Add("PACKAGE");
                 clientsTable.Columns.Add("STATUS");
 
-                foreach (KeyValuePair<string, Model.superAdminClients> entry in subscribed)
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in subscribed)
                 {
-                    int clientID = entry.Value.clientID;
+                    int clientID = entry.Value.idno;
                     response = twoBigDB.Get("ADMIN/" + clientID);
                     AdminAccount admin = response.ResultAs<AdminAccount>();
 
-                    if (searched == admin.fname || searched == admin.lname || searched == admin.mname || searched == entry.Key)
+                    if ((selectedValue == "All" || selectedValue == entry.Value.status) && (searched == admin.fname || searched == admin.lname || searched == admin.mname || searched == entry.Key) )
+                    //if (searched == admin.fname || searched == admin.lname || searched == admin.mname || searched == entry.Key)
                     {
-                        clientsTable.Rows.Add(entry.Value.clientID, entry.Value.dateSubscribed, entry.Value.fullname, entry.Value.amount, entry.Value.plan, entry.Value.currentSubStatus);
+                        //GET THE SUBSCRIBED PACKAGE DETAILS
+                        response = twoBigDB.Get("ADMIN/" + clientID + "/Subscribed_Package");//CHANGE TO ADMIN TABLE
+                        Model.Subscribed_Package planDet = response.ResultAs<Model.Subscribed_Package>();
+
+                        response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+                        Model.subscriptionLogs logs = response.ResultAs<Model.subscriptionLogs>();
+                        var datalog = response.Body;
+                        Dictionary<string, Model.subscriptionLogs> subscribedlogs = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(datalog);
+
+                        foreach (KeyValuePair<string, Model.subscriptionLogs> logsentry in subscribedlogs)
+                        {
+                            if (logsentry.Value.userIdnum == clientID)
+                            {
+                                clientsTable.Rows.Add(entry.Value.idno, planDet.subStart, entry.Value.fname + " " + entry.Value.lname, planDet.packagePrice, planDet.packageName, planDet.subStatus);
+
+                            }
+
+                        }
 
                     }
 
@@ -286,8 +326,43 @@ namespace WRS2big_Web.superAdmin
                 if (clientsTable.Rows.Count == 0)
                 {
                     searchClient.Text = "";
-                    Response.Write("<script>alert ('Client not found!');</script>");
+                    Session["ModalOpen"] = true;
+                    Response.Write("<script>alert ('Client not found!'); window.location.href = '/superAdmin/SubscriptionReports.aspx';</script>");
 
+                }
+                if (selectedValue == "All")
+                {
+                    subscriptionReport.DataSource = clientsTable;
+                    subscriptionReport.DataBind();
+                    subscriptionReport.Visible = true;
+
+
+                    expiredSubscriptions.Visible = true;
+                    activeSubscriptions.Visible = false;
+                  
+                   
+                    //declinedGridView.Visible = false;
+                }
+                else if (selectedValue == "Active")
+                {
+                    activeSubscriptions.DataSource = clientsTable;
+                    activeSubscriptions.DataBind();
+                    activeSubscriptions.Visible = true;
+                  
+
+                    expiredSubscriptions.Visible = false;
+                    subscriptionReport.Visible = false;
+                    
+                }
+                else if (selectedValue == "Expired")
+                {
+                    expiredSubscriptions.DataSource = clientsTable;
+                    expiredSubscriptions.DataBind();
+                    expiredSubscriptions.Visible = true;
+
+                    activeSubscriptions.Visible = false;
+                    subscriptionReport.Visible = false;
+                  
                 }
                 // Bind DataTable to GridView control
                 subscriptionReport.DataSource = clientsTable;
@@ -342,16 +417,25 @@ namespace WRS2big_Web.superAdmin
 
             CheckBox client = (CheckBox)selected.NamingContainer.FindControl("selectedClient");
 
-            if (client != null && client.Checked)
+            if (client != null)
             {
-                clientSubHistoryButton.Visible = true;
-                Session["ModalOpen"] = selected.Checked;
+                if (client.Checked)
+                {
+                    clientSubHistoryButton.Visible = true;
+                    Session["ModalOpen"] = true;
+                }
+                // Add an additional condition to prevent closing the modal when unchecked
+                else if (Session["ModalOpen"] != null && (bool)Session["ModalOpen"])
+                {
+                    clientSubHistoryButton.Visible = true;
+                }
+                else
+                {
+                    Session["ModalOpen"] = null;
+                }
+            }
 
-            }
-            else
-            {
-                Session["ModalOpen"] = null;
-            }
+
 
             List<int> selectedClient = new List<int>();
 
@@ -427,10 +511,10 @@ namespace WRS2big_Web.superAdmin
 
         protected void generateSortedData_Click(object sender, EventArgs e)
         {
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
-            Model.superAdminClients all = response.ResultAs<Model.superAdminClients>();
+            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+            Model.subscriptionLogs all = response.ResultAs<Model.subscriptionLogs>();
             var data = response.Body;
-            Dictionary<string, Model.superAdminClients> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
+            Dictionary<string, Model.subscriptionLogs> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(data);
 
             if (data != null && subscribed != null)
             {
@@ -448,7 +532,7 @@ namespace WRS2big_Web.superAdmin
                 DateTime endDate = DateTime.Parse(sortEnd.Text).AddDays(1); // Add one day to include the end date
 
                 // Filter the data based on the selected dates
-                var filteredData = subscribed.Values.Where(s => s.dateSubscribed >= startDate && s.dateSubscribed < endDate);
+                var filteredData = subscribed.Values.Where(s => s.activityTime >= startDate && s.activityTime < endDate);
 
                 // Check if the filtered data is empty
                 if (!filteredData.Any())
@@ -464,10 +548,10 @@ namespace WRS2big_Web.superAdmin
 
 
                 // Create a list to hold the filtered sales data
-                List<Model.superAdminClients> salesList = new List<Model.superAdminClients>(filteredData);
+                List<Model.subscriptionLogs> salesList = new List<Model.subscriptionLogs>(filteredData);
 
                 // Sort the sales list in descending order by date and time
-                salesList.Sort((x, y) => y.dateSubscribed.CompareTo(x.dateSubscribed));
+                salesList.Sort((x, y) => y.activityTime.CompareTo(x.activityTime));
 
                 DataTable salesTable = new DataTable();
                 salesTable.Columns.Add("SUBSCRIPTION ID");
@@ -478,10 +562,10 @@ namespace WRS2big_Web.superAdmin
 
                 decimal totalAmount = 0;
 
-                foreach (Model.superAdminClients sale in salesList)
+                foreach (Model.subscriptionLogs sale in salesList)
                 {
-                    totalAmount += sale.amount;
-                    salesTable.Rows.Add(sale.subscriptionID, sale.dateSubscribed, sale.type, sale.fullname, sale.amount);
+                    totalAmount += sale.total;
+                    salesTable.Rows.Add(sale.logsId, sale.activityTime, sale.type, sale.userFullname, sale.total);
                 }
 
                 // Apply paging
@@ -527,6 +611,31 @@ namespace WRS2big_Web.superAdmin
         protected void closeButton_Click(object sender, EventArgs e)
         {
             searchClient.Text = "";
+            string selectedValue = modalDropdown.SelectedValue;
+
+            if (selectedValue == "All")
+            {
+                displayAllSubscriptions();
+                subscriptionReport.Visible = true;
+                expiredSubscriptions.Visible = false;
+                activeSubscriptions.Visible = false;
+            }
+            else if (selectedValue == "Expired")
+            {
+                displayExpiredSubscriptions();
+                subscriptionReport.Visible = false;
+                expiredSubscriptions.Visible = true;
+                activeSubscriptions.Visible = false;
+            }
+            else if (selectedValue == "Active")
+            {
+                displayActiveSubscriptions();
+                subscriptionReport.Visible = false;
+                expiredSubscriptions.Visible = false;
+                activeSubscriptions.Visible = true;
+            }
+            
+            Session["ModalOpen"] = true;
         }
 
         protected void clientSubHistory_Click(object sender, EventArgs e)
@@ -553,6 +662,235 @@ namespace WRS2big_Web.superAdmin
                 return;
             }
         }
+
+        protected void viewSorted_Click(object sender, EventArgs e)
+        {
+            string selectedValue = modalDropdown.SelectedValue;
+            Session["ModalOpen"] = true;
+
+            if (selectedValue == "All")
+            {
+                subscriptionReport.Visible = true;
+                expiredSubscriptions.Visible = false;
+                activeSubscriptions.Visible = false;
+            }
+            else if (selectedValue == "Active")
+            {
+                subscriptionReport.Visible = false;
+                expiredSubscriptions.Visible = false;
+                activeSubscriptions.Visible = true;
+            }
+            else if (selectedValue == "Expired")
+            {
+                subscriptionReport.Visible = false;
+                expiredSubscriptions.Visible = true;
+                activeSubscriptions.Visible = false;
+            }
+        }
+
+
+        private void displayActiveSubscriptions()
+        {
+            Session["ModalOpen"] = true;
+
+
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+            if (data != null && subscribed != null)
+            {
+                //creating the columns of the gridview
+                DataTable clientsTable = new DataTable();
+                clientsTable.Columns.Add("ID");
+                clientsTable.Columns.Add("DATE SUBSCRIBED");
+                clientsTable.Columns.Add("NAME");
+                clientsTable.Columns.Add("AMOUNT");
+                clientsTable.Columns.Add("PACKAGE");
+                clientsTable.Columns.Add("STATUS");
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in subscribed)
+                {
+                    int clientID = entry.Value.idno;
+                    response = twoBigDB.Get("ADMIN/" + clientID);
+                    AdminAccount admin = response.ResultAs<AdminAccount>();
+
+                    if (entry.Value.currentSubscription == "Active")
+                    {
+                        //GET THE SUBSCRIBED PACKAGE DETAILS
+                        response = twoBigDB.Get("ADMIN/" + clientID + "/Subscribed_Package");//CHANGE TO ADMIN TABLE
+                        Model.Subscribed_Package planDet = response.ResultAs<Model.Subscribed_Package>();
+
+
+                        response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+                        Model.subscriptionLogs logs = response.ResultAs<Model.subscriptionLogs>();
+                        var datalog = response.Body;
+                        Dictionary<string, Model.subscriptionLogs> subscribedlogs = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(datalog);
+
+                        foreach (KeyValuePair<string, Model.subscriptionLogs> logsentry in subscribedlogs)
+                        {
+
+                            if (logsentry.Value.type == "New Subscription")
+                            {
+                                if (logsentry.Value.userIdnum == clientID)
+                                {
+                                    clientsTable.Rows.Add(entry.Value.idno, planDet.subStart, entry.Value.fname + " " + entry.Value.lname, planDet.packagePrice, planDet.packageName, planDet.subStatus);
+
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+                if (clientsTable.Rows.Count == 0)
+                {
+                    searchClient.Text = "";
+                    declinedLabel.Text = "No Subscriptions Found";
+
+                }
+                // Bind DataTable to GridView control
+                activeSubscriptions.DataSource = clientsTable;
+                activeSubscriptions.DataBind();
+            }
+        }
+        private void displayAllSubscriptions()
+        {
+           
+            Session["ModalOpen"] = true;
+
+
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+            if (data != null && subscribed != null)
+            {
+                //creating the columns of the gridview
+                DataTable clientsTable = new DataTable();
+                clientsTable.Columns.Add("ID");
+                clientsTable.Columns.Add("DATE SUBSCRIBED");
+                clientsTable.Columns.Add("NAME");
+                clientsTable.Columns.Add("AMOUNT");
+                clientsTable.Columns.Add("PACKAGE");
+                clientsTable.Columns.Add("STATUS");
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in subscribed)
+                {
+                    int clientID = entry.Value.idno;
+                    response = twoBigDB.Get("ADMIN/" + clientID);
+                    AdminAccount admin = response.ResultAs<AdminAccount>();
+
+                    if (entry.Value.subStatus == "Subscribed")
+                    {
+                        //GET THE SUBSCRIBED PACKAGE DETAILS
+                        response = twoBigDB.Get("ADMIN/" + clientID + "/Subscribed_Package");//CHANGE TO ADMIN TABLE
+                        Model.Subscribed_Package planDet = response.ResultAs<Model.Subscribed_Package>();
+
+                        response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+                        Model.subscriptionLogs logs = response.ResultAs<Model.subscriptionLogs>();
+                        var datalog = response.Body;
+                        Dictionary<string, Model.subscriptionLogs> subscribedlogs = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(datalog);
+
+                        
+                        foreach (KeyValuePair<string, Model.subscriptionLogs> logsentry in subscribedlogs)
+                        {
+                            if (logsentry.Value.type == "New Subscription")
+                            {
+                                if (logsentry.Value.userIdnum == clientID)
+                                {
+                                    clientsTable.Rows.Add(entry.Value.idno, planDet.dateSubscribed, entry.Value.fname + " " + entry.Value.lname, planDet.packagePrice, planDet.packageName, planDet.subStatus);
+
+                                }
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                if (clientsTable.Rows.Count == 0)
+                {
+                    searchClient.Text = "";
+                    declinedLabel.Text = "No Subscriptions Found";
+
+                }
+                // Bind DataTable to GridView control
+                subscriptionReport.DataSource = clientsTable;
+                subscriptionReport.DataBind();
+            }
+        }
+        private void displayExpiredSubscriptions()
+        {
+            Session["ModalOpen"] = true;
+
+
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount all = response.ResultAs<Model.AdminAccount>();
+            var data = response.Body;
+            Dictionary<string, Model.AdminAccount> subscribed = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
+
+            if (data != null && subscribed != null)
+            {
+                //creating the columns of the gridview
+                DataTable clientsTable = new DataTable();
+                clientsTable.Columns.Add("ID");
+                clientsTable.Columns.Add("DATE");
+                clientsTable.Columns.Add("NAME");
+                clientsTable.Columns.Add("AMOUNT");
+                clientsTable.Columns.Add("PACKAGE");
+                clientsTable.Columns.Add("STATUS");
+
+                foreach (KeyValuePair<string, Model.AdminAccount> entry in subscribed)
+                {
+                    int clientID = entry.Value.idno;
+                    response = twoBigDB.Get("ADMIN/" + clientID);
+                    AdminAccount admin = response.ResultAs<AdminAccount>();
+
+                    if (entry.Value.currentSubscription == "Expired" || entry.Value.currentSubscription == "LimitReached")
+                    {
+                        //GET THE SUBSCRIBED PACKAGE DETAILS
+                        response = twoBigDB.Get("ADMIN/" + clientID + "/Subscribed_Package");//CHANGE TO ADMIN TABLE
+                        Model.Subscribed_Package planDet = response.ResultAs<Model.Subscribed_Package>();
+
+                        response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+                        Model.subscriptionLogs logs = response.ResultAs<Model.subscriptionLogs>();
+                        var datalog = response.Body;
+                        Dictionary<string, Model.subscriptionLogs> subscribedlogs = JsonConvert.DeserializeObject<Dictionary<string, Model.subscriptionLogs>>(datalog);
+
+                        foreach (KeyValuePair<string, Model.subscriptionLogs> logsentry in subscribedlogs)
+                        {
+                            if (logsentry.Value.type == "New Subscription")
+                            {
+                                if (logsentry.Value.userIdnum == clientID)
+                                {
+                                    clientsTable.Rows.Add(entry.Value.idno, planDet.dateStatusUpdated, entry.Value.fname + " " + entry.Value.lname, planDet.packagePrice, planDet.packageName, planDet.subStatus);
+
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+                if (clientsTable.Rows.Count == 0)
+                {
+                    searchClient.Text = "";
+                    declinedLabel.Text = "No Expired Subscriptions Found";
+
+                }
+
+                // Bind DataTable to GridView control
+                expiredSubscriptions.DataSource = clientsTable;
+                expiredSubscriptions.DataBind();
+            }
+        }
+
 
         //protected void generateMonthSort_Click(object sender, EventArgs e)
         //{
