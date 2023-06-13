@@ -61,6 +61,7 @@ namespace WRS2big_Web.Model
         public DateTime activityTime { get; set; }
         public decimal total { get; set; }
         public string packageName { get; set; }
+        public string type { get; set; }
     }
     public class SubscriptionPlans
     {

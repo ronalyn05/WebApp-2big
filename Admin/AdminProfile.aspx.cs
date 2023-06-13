@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using FireSharp;
 using System.Web.Optimization;
-
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
@@ -44,6 +43,7 @@ namespace WRS2big_Web.Admin
 
             fetchAdminData();
             fetchStationData();
+            SubscriptionStatus();
 
             string role = (string)Session["role"];
             
@@ -72,6 +72,64 @@ namespace WRS2big_Web.Admin
                     drdBusinessDaysTo.Enabled = false;
                 }
 
+            }
+        }
+        private void SubscriptionStatus() //to send the notification depending on the subscription status
+        {
+            if (Session["idno"] != null)
+            {
+                string adminID = Session["idno"].ToString();
+
+                //get the details of the subscribed package
+                FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
+
+                if (expiration != null)
+                {
+                    //get the package renewable details
+                    adminDet = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + expiration.packageID);
+                    PackagePlans packageDet = adminDet.ResultAs<Model.PackagePlans>();
+
+                    if (packageDet.renewable == "No")
+                    {
+                        DateTime currentDate = DateTime.Now;
+                        DateTime subStart = expiration.subStart;
+                        DateTime finalChangePackage = subStart.AddDays(5); // final expiration date
+
+                        Debug.WriteLine($"NOW: {currentDate}");
+                        Debug.WriteLine($"SUB START: {subStart}");
+                        Debug.WriteLine($"FINAL CHANGE PACKAGE: {finalChangePackage}");
+
+                        if (currentDate <= finalChangePackage)
+                        {
+                            // currentDate is on or before the finalChangePackage, enable the button
+                            changePackage.Visible = true;
+
+                            currentSubscription.InnerText = expiration.packageName;
+
+                            DateTime expirationDate = expiration.expiration;
+                            string formattedExp = expirationDate.ToString("MMMM dd, yyyy - hh:mm tt");
+                            currentExpiration.InnerText = formattedExp;
+
+                        }
+                        else
+                        {
+                            // currentDate is after the finalChangePackage, disable the button
+                            changePackage.Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        changePackage.Visible = false;
+                    }
+
+                    Debug.WriteLine($"NOW: {DateTime.Now}");
+                    Debug.WriteLine($"DATE: {expiration.expiration}");
+                }
+            }
+            else
+            {
+                Response.Write("<script> alert ('Session Expired! Please login again'); window.location.href = '/LandingPage/Account.aspx';</script>");
             }
         }
 
@@ -174,6 +232,8 @@ namespace WRS2big_Web.Admin
 
                 if (adminDet != null)
                 {
+                    DateTime birthdate = DateTime.Parse(admin.bdate);
+
                     //POPULATE THE PERSONAL DETAILS IN THE TEXTBOXES
                     Lbl_Idno.Text = admin.idno.ToString();
                     lblfname.Text = admin.fname;
@@ -181,7 +241,7 @@ namespace WRS2big_Web.Admin
                     lblLname.Text = admin.lname;
                     lblcontactnum.Text = admin.phone;
                     lblemail.Text = admin.email;
-                    lbldob.Text = admin.bdate;
+                    lbldob.Text = birthdate.ToString("MMMM dd, yyyy"); ;
 
                     if (admin.profile_image != null)
                     {
@@ -222,9 +282,9 @@ namespace WRS2big_Web.Admin
                             LblSubPlan.Text = subscribedPlan;
 
                             DateTime subscriptionStart = start;
-                            LblDateStarted.Text = subscriptionStart.ToString();
+                            LblDateStarted.Text = subscriptionStart.ToString("MMMM dd, yyyy - hh:mm tt");
                             DateTime subscriptionEnd = end;
-                            LblSubEnd.Text = subscriptionEnd.ToString();
+                            LblSubEnd.Text = subscriptionEnd.ToString("MMMM dd, yyyy - hh:mm tt");
 
 
                         }
@@ -686,6 +746,12 @@ namespace WRS2big_Web.Admin
                 }
   
             }
+        }
+
+        protected void confirmChangePackage_Click(object sender, EventArgs e)
+        {
+            
+            Response.Write("<script>alert('Redirecting you to the active packages');window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
         }
     }
 }
