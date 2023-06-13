@@ -56,6 +56,7 @@ namespace WRS2big_Web.Admin
                     var result = twoBigDB.Get("ADMIN/" + idno + "/Subscribed_Package");
                     Subscribed_Package currentPackage = result.ResultAs<Subscribed_Package>();
 
+                    //will hide the current subscribed plan of the client if it is NOT RENEWABLE
                     if (currentPackage != null)
                     {
                         int subPackage = currentPackage.packageID;
@@ -68,6 +69,7 @@ namespace WRS2big_Web.Admin
                         packagesRepeater.DataSource = packageList;
                         packagesRepeater.DataBind();
                     }
+                    //if client is currentyly NOT subscribed, all ACTIVE plans will be displayed
                     else
                     {
                         List<Model.PackagePlans> packageList = allFeatures.Values

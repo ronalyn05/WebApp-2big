@@ -15,6 +15,51 @@ namespace WRS2big_Web.Admin
     {
 
         /// <summary>
+        /// changeModalTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl changeModalTitle;
+
+        /// <summary>
+        /// currentSubscription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentSubscription;
+
+        /// <summary>
+        /// currentExpiration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentExpiration;
+
+        /// <summary>
+        /// cancelButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cancelButton;
+
+        /// <summary>
+        /// confirmChangePackage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button confirmChangePackage;
+
+        /// <summary>
         /// subscriptionLabel control.
         /// </summary>
         /// <remarks>
@@ -102,7 +147,7 @@ namespace WRS2big_Web.Admin
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton changePackage;
+        protected global::System.Web.UI.HtmlControls.HtmlButton changePackage;
 
         /// <summary>
         /// Label4 control.
