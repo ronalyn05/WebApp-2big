@@ -93,6 +93,7 @@
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE PRICE:</label>
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                             <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updatePackagePrice"  runat="server"> </asp:TextBox>
+                                                                                                             <asp:RangeValidator ID="rangeValidator2" runat="server" ControlToValidate="updatePackagePrice" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                    <div class="form-group row text" >
@@ -109,24 +110,28 @@
                                                                                                         <label class="col-sm-5 col-form-label" style="font-size:18px;color:black">PACKAGE DURATION:</label>
                                                                                                         <div class="col-sm-10 form-control-round" style="margin-left:70px">  
                                                                                                              <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateDuration" runat="server"></asp:TextBox>
+                                                                                                             <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="updateDuration" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">ORDER TRANSACTION LIMIT:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateOrderLimit" runat="server"> </asp:TextBox>
+                                                                                                             <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="updateOrderLimit" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">PRODUCT LIMIT:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateProductLimit" runat="server"> </asp:TextBox>
+                                                                                                             <asp:RangeValidator ID="rangeValidator4" runat="server" ControlToValidate="updateProductLimit" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="form-group row text"  >
                                                                                                         <label class="col-sm-5 col-form-label " style="font-size:18px;color:black"">MANAGEABLE STATIONS:</label>
                                                                                                         <div class="col-sm-10 form-control-round"  style="margin-left:70px"> 
                                                                                                           <asp:TextBox type="number" class="form-control" style="border-style: solid; border-width: thin; border-color: darkgrey;font-size:18px;color:black" id="updateManagebleStation" runat="server"> </asp:TextBox>
+                                                                                                             <asp:RangeValidator ID="rangeValidator5" runat="server" ControlToValidate="updateManagebleStation" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                                         </div>
                                                                                                     </div>
                                                                                             </div>
