@@ -50,7 +50,7 @@
                                         <div class="">
                                             <div class="clearfix">
                                                 <%-- add employee button--%>
-                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i>Add Employee</button>
+                                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i>Add Employee Account</button>
                                                 <%--  <button type="button" style="font-size: 14px;" class="btn btn-primary btn-md" data-toggle="modal" data-target="#edit"><i class="fa fa-edit"></i>Edit Employee Details</button>--%>
                                                 &nbsp;
                                                  <!-- MODAL FOR EDITING EMPLOYEE DETAILS -->
@@ -142,7 +142,7 @@
                                                         <div class="modal-content">
                                                             <div id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title" id="myModalLabel">Add Employee Record</h4>
+                                                                    <h4 class="modal-title" id="myModalLabel">Add Employee Account</h4>
                                                                     <%--exit button--%>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
@@ -210,7 +210,7 @@
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Password:</strong>
-                                                                                <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password (must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character)"></asp:TextBox>
                                                                              <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>--%>
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="a" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
                                                                                     ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
@@ -257,7 +257,7 @@
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <%--emergency contact--%>
                                                                                 <strong>In case of emergency, Contact:</strong>
-                                                                                <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact" TextMode="Phone" Value=""></asp:TextBox>
+                                                                                <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact  (must be 11 digit)" TextMode="Phone" Value=""></asp:TextBox>
                                                                                  <asp:RegularExpressionValidator ID="RegularExpressionValidator4" ValidationGroup="a" runat="server" ControlToValidate="txtemergencycontact" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
                                                                             <%--    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>--%>
                                                                             </div>
