@@ -197,7 +197,7 @@
                                                                                 <asp:TextBox ID="stockQuantity" Height="40px" TextMode="Number" step="any" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                              <br />
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="stockQuantity"
-                                                                            ErrorMessage="Please enter a valid number of unit for product stock (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                            ErrorMessage="Please enter a valid number of unit for product stock (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                         </div>
@@ -232,10 +232,11 @@
                                                                             <hr />
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Choose only one that is applicable to your product offered</strong>
-                                                                                <asp:RadioButtonList ID="radioType_productoffered" runat="server" RepeatDirection="Horizontal">
+                                                                              <asp:RadioButtonList ID="radioType_productoffered" runat="server" RepeatDirection="Horizontal" onclick="handleProductRefillCheckbox()">
                                                                                     <asp:ListItem Text="Product Refill" Value="Product Refill" />
                                                                                     <asp:ListItem Text="other Product" Value="other Product" />
                                                                                 </asp:RadioButtonList>
+
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Product Name:</strong>
@@ -267,7 +268,7 @@
                                                                                 <asp:TextBox ID="refillQty" Height="40px" Width="464px" Placeholder="Enter how many quantity does the unit of volume have" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                                                  <br />
                                                                                 <asp:RegularExpressionValidator ID="priceValidator" runat="server" ControlToValidate="refillQty"
-                                                                            ErrorMessage="Please enter a valid number of unit (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                            ErrorMessage="Please enter a valid number of unit (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12 ">
@@ -276,7 +277,7 @@
                                                                                 <asp:TextBox ID="refillPrice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                                                  <br />  
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="refillPrice"
-                                                                            ErrorMessage="Please enter a valid price (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                            ErrorMessage="Please enter a valid price (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12 ">
@@ -286,7 +287,7 @@
                                                                                 <asp:TextBox ID="refillDiscount" Height="40px" Width="464px" TextMode="Number" Placeholder="Enter discount offered" step="any" runat="server"></asp:TextBox>
                                                                                 <br />
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="refillDiscount"
-                                                                            ErrorMessage="Please enter a valid discount (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                            ErrorMessage="Please enter a valid discount (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <hr />
                                                                             <strong>This is intended for your other product offered (e.g empty gallon)</strong>
@@ -294,29 +295,22 @@
                                                                             <asp:Label ID="Label6" runat="server" Text="PRODUCT STOCK"></asp:Label>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Unit</strong>
-                                                                                <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="464px">
+                                                                                <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="464px" CssClass="product-stock-dropdown">
                                                                                     <asp:ListItem Selected="False">--- Select one unit applicable for product stock ----</asp:ListItem>
                                                                                     <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
                                                                                     <asp:ListItem Text="Liters" Value="liter/s"></asp:ListItem>
                                                                                     <asp:ListItem Text="Mililiters" Value="mililiter/s"></asp:ListItem>
                                                                                 </asp:DropDownList>
-
-                                                                                <%--  <asp:DropDownList ID="drdProductStock" runat="server" Height="40px" Width="364px" AppendDataBoundItems="false">
-                                                                                    <asp:ListItem Selected="False">--- Select the unit of measurement for your stock---</asp:ListItem>
-                                                                                    <asp:ListItem Text="Bottle" Value="bottle"></asp:ListItem>
-                                                                                    <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
-                                                                                    <asp:ListItem Text="Box/Case" Value="box/case"></asp:ListItem>
-                                                                                </asp:DropDownList>--%>
                                                                             </div>
                                                                             <br />
                                                                             <%--PRODUCT Available--%>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Quantity(Stock)/Number:</strong>
                                                                                 <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
-                                                                                <asp:TextBox ID="txtStockQty" Height="40px" TextMode="Number" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtStockQty" Height="40px" TextMode="Number" CssClass="stock-qty-textbox" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                                  <br />
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtStockQty"
-                                                                            ErrorMessage="Please enter a valid number of unit of the product stock (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                            ErrorMessage="Please enter a valid number of unit of the product stock (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                         </div>
@@ -331,7 +325,23 @@
                                                     </div>
                                                 </div>
                                                 <%-- end set product refill --%>
-                                                <!-- MODAL FOR EDITING PRODUCT DETAILS -->
+                                                            <script>
+                                                                function handleProductRefillCheckbox() {
+                                                                    console.log("handleProductRefillCheckbox called");
+                                                                    var refillCheckbox = document.querySelector("#<%= radioType_productoffered.ClientID %> input:checked");
+                                                                    var stockQtyTextbox = document.querySelector("#<%= txtStockQty.ClientID %>");
+                                                                    var stockDropdown = document.querySelector("#<%= drdProductStock.ClientID %>");
+
+                                                                    if (refillCheckbox && refillCheckbox.value === "Product Refill") {
+                                                                        stockQtyTextbox.disabled = true;
+                                                                        stockDropdown.disabled = true;
+                                                                    } else if (refillCheckbox && refillCheckbox.value === "other Product") {
+                                                                        stockQtyTextbox.disabled = false;
+                                                                        stockDropdown.disabled = false;
+                                                                    }
+                                                                }
+                                                            </script>
+                                                    <!-- MODAL FOR EDITING PRODUCT DETAILS -->
                                                 <div class="modal fade" id="editproduct" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
@@ -350,6 +360,8 @@
                                                                                 <strong>Price:</strong>
                                                                                 <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                 <asp:TextBox ID="txtproductprice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
+                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="txtproductprice"
+                                                                            ErrorMessage="Please enter a valid price (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12 ">
@@ -357,6 +369,8 @@
                                                                                 <br />
                                                                                 <h7>Please enter the discount percentage (%) you offer for this product</h7>
                                                                                 <asp:TextBox ID="txtproductdiscount" Height="40px" Width="464px" TextMode="Number" Placeholder="Enter discount offered you want to update" runat="server"></asp:TextBox>
+                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtproductdiscount"
+                                                                            ErrorMessage="Please enter a valid discount (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
                                                                             <br />
                                                                         </div>

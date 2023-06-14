@@ -49,19 +49,19 @@ namespace WRS2big_Web.Admin
                 foreach (var review in filteredList)
                 {
                     reviewItems.AppendFormat(@"
-            <div class='tab-pane'>
-                <div class='review-item'>
-                    <div class='review-desc'>{0}</div>
-                    <div class='review-info'>
-                        <span><strong>{1}</strong></span><br />
-                        <span>{2}</span>
+                <div class='tab-pane'>
+                    <div class='review-item'>
+                        <div class='review-desc'>{0}</div>
+                        <div class='review-info'>
+                            <span><strong>{1}</strong></span><br />
+                            <span>{2}</span>
+                        </div>
+                        <div class='review-rating'>
+                            {3}
+                        </div>
                     </div>
-                    <div class='review-rating'>
-                        {3}
-                    </div>
-                </div>
-                <hr />
-            </div>",
+                    <hr />
+                </div>",
                            Server.HtmlEncode(review.feedback),
                     $"{review.customerFirstName} {review.customerLastName}", // Combine the first name and last name
                     review.reviewedDate.ToString("MMMM dd, yyyy"),
