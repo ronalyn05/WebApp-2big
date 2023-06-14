@@ -26,9 +26,9 @@ namespace WRS2big_Web
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            if (Session["fname"] != null)
+            if (Session["Superfname"] != null)
             {
-                superLbl.Text = "SUPER ADMIN:" + " " + Session["fname"].ToString();
+                superLbl.Text = "SUPER ADMIN:" + " " + Session["Superfname"].ToString();
             }
             else
             {
@@ -286,7 +286,7 @@ namespace WRS2big_Web
                 Session.Abandon();
                 Session.RemoveAll();
                 Session["SuperIDno"] = null;
-                Session["password"] = null;
+                Session["SuperPass"] = null;
                 Session.Clear();
                 Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
             }

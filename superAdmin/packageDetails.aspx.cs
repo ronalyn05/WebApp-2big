@@ -223,64 +223,71 @@ namespace WRS2big_Web.superAdmin
                 FirebaseResponse currentPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                 Model.PackagePlans current = currentPackage.ResultAs<Model.PackagePlans>();
 
-                FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
+                FirebaseResponse subscribed = twoBigDB.Get("ADMIN/");
 
                 if (subscribed != null)
                 {
-                    Dictionary<string, Model.superAdminClients> all = subscribed.ResultAs<Dictionary<string, Model.superAdminClients>>();
+                    Dictionary<string, Model.AdminAccount> all = subscribed.ResultAs<Dictionary<string, Model.AdminAccount>>();
 
                     bool isClientSubscribed = false; // Flag variable to track if a subscribed client is found
-
-                    foreach (var client in all)
+                    
+                    if (all != null)
                     {
-                        if (client.Value.currentSubStatus == "Active" && client.Value.plan == current.packageName)
+                        foreach (var client in all)
                         {
-                            isClientSubscribed = true;
-                            break; // Exit the loop since a subscribed client is found
+                            subscribed = twoBigDB.Get("ADMIN/" + client.Value.idno + "/Subscribed_Package");
+                            Model.Subscribed_Package currentSubs = subscribed.ResultAs<Model.Subscribed_Package>();
+
+                            if (client.Value.currentSubscription == "Active" && currentSubs.packageName == current.packageName)
+                            {
+                                isClientSubscribed = true;
+                                break; // Exit the loop since a subscribed client is found
+                            }
+                        }
+
+                        if (isClientSubscribed)
+                        {
+                            Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
+                        }
+                        else
+                        {
+                            // Retrieve the existing order object from the database
+                            FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
+                            Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
+
+                            packageDetails.status = "Archived";
+                            response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
+
+                            //SAVE LOGS TO SUPER ADMIN
+                            //Get the current date and time
+                            DateTime logTime = DateTime.Now;
+
+                            //generate a random number for users logged
+                            Random rnd = new Random();
+                            int logID = rnd.Next(1, 10000);
+
+                            var idno = (string)Session["SuperIDno"];
+                            string superName = (string)Session["superAdminName"];
+
+                            //Store the login information in the USERLOG table
+                            var log = new Model.superLogs
+                            {
+                                logsId = logID,
+                                superID = int.Parse(idno),
+                                superFullname = superName,
+                                superActivity = "ARCHIVED PACKAGE:" + " " + packageDetails.packageName,
+                                activityTime = logTime
+                            };
+
+                            //Storing the  info
+                            response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
+                            Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
+
+                            Debug.WriteLine($"ARCHIVE LOG ID: {logID}");
+                            Response.Write("<script>alert ('Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
                         }
                     }
 
-                    if (isClientSubscribed)
-                    {
-                        Response.Write("<script>alert ('Warning! A client is currently subscribed to this package. Archiving this package is not possible at the moment.');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
-                    }
-                    else
-                    {
-                        // Retrieve the existing order object from the database
-                        FirebaseResponse response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
-                        Model.PackagePlans packageDetails = response.ResultAs<Model.PackagePlans>();
-
-                        packageDetails.status = "Archived";
-                        response = twoBigDB.Update("SUBSCRIPTION_PACKAGES/" + packageID, packageDetails);
-
-                        //SAVE LOGS TO SUPER ADMIN
-                        //Get the current date and time
-                        DateTime logTime = DateTime.Now;
-
-                        //generate a random number for users logged
-                        Random rnd = new Random();
-                        int logID = rnd.Next(1, 10000);
-
-                        var idno = (string)Session["SuperIDno"];
-                        string superName = (string)Session["superAdminName"];
-
-                        //Store the login information in the USERLOG table
-                        var log = new Model.superLogs
-                        {
-                            logsId = logID,
-                            superID = int.Parse(idno),
-                            superFullname = superName,
-                            superActivity = "ARCHIVED PACKAGE:" + " " + packageDetails.packageName,
-                            activityTime = logTime
-                        };
-
-                        //Storing the  info
-                        response = twoBigDB.Set("SUPERADMIN_LOGS/" + log.logsId, log);//Storing data to the database
-                        Model.superLogs res = response.ResultAs<Model.superLogs>();//Database Result
-
-                        Debug.WriteLine($"ARCHIVE LOG ID: {logID}");
-                        Response.Write("<script>alert ('Subscription Package archived');window.location.href = '/superAdmin/packageDetails.aspx'; </script>");
-                    }
                 }
             }
 

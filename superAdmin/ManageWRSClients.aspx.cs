@@ -29,7 +29,7 @@ namespace WRS2big_Web.superAdmin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            if (Session["email"] == null && Session["password"] == null)
+            if (Session["SuperEmail"] == null && Session["SuperPass"] == null)
             {
                 Response.Write("<script>alert('Please login your account first'); window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
             }

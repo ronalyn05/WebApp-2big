@@ -306,17 +306,20 @@ namespace WRS2big_Web.superAdmin
                 FirebaseResponse currentPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                 Model.PackagePlans current = currentPackage.ResultAs<Model.PackagePlans>();
 
-                FirebaseResponse subscribed = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
+                FirebaseResponse subscribed = twoBigDB.Get("ADMIN/");
 
                 if (subscribed != null)
                 {
-                    Dictionary<string, Model.superAdminClients> all = subscribed.ResultAs<Dictionary<string, Model.superAdminClients>>();
+                    Dictionary<string, Model.AdminAccount> all = subscribed.ResultAs<Dictionary<string, Model.AdminAccount>>();
 
                     bool isClientSubscribed = false; // Flag variable to track if a subscribed client is found
 
                     foreach (var client in all)
                     {
-                        if (client.Value.currentSubStatus == "Active" && client.Value.plan == current.packageName)
+                        subscribed = twoBigDB.Get("ADMIN/" + client.Value.idno + "/Subscribed_Package");
+                        Model.Subscribed_Package currentSubs = subscribed.ResultAs<Model.Subscribed_Package>();
+
+                        if (client.Value.currentSubscription == "Active" && currentSubs.packageName == current.packageName)
                         {
                             isClientSubscribed = true;
                             break; // Exit the loop since a subscribed client is found

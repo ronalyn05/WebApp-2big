@@ -345,7 +345,7 @@ namespace WRS2big_Web.superAdmin
                     //Random rnd = new Random();
                     int idnum = rnd.Next(1, 10000);
 
-                    string superName = (string)Session["name"];
+                    string superName = (string)Session["superAdminName"];
 
                     //Store the login information in the USERLOG table
                     var data = new superLogs
