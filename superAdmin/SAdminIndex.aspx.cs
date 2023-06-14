@@ -71,16 +71,16 @@ namespace WRS2big_Web.superAdmin
             }
             
 
-            response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
-            Dictionary<string, superAdminClients> subscribed = response.ResultAs<Dictionary<string, superAdminClients>>();
+            response = twoBigDB.Get("SUBSCRIPTION_LOGS");
+            Dictionary<string, subscriptionLogs> subscribed = response.ResultAs<Dictionary<string, subscriptionLogs>>();
 
             if (subscribed != null)
             {
                 decimal totalSale = 0;
                 foreach (var entry in subscribed)
                 {
-                    superAdminClients client = entry.Value;
-                    totalSale += client.amount;
+                    subscriptionLogs client = entry.Value;
+                    totalSale += client.total;
                 }
 
                 totalSubSale.Text = totalSale.ToString();

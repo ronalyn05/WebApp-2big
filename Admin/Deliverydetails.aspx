@@ -147,7 +147,7 @@
                                                                                     <br />
 
                                                                                     <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle1MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle1MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <br />
@@ -172,6 +172,7 @@
                                                                                     <br />
                                                                                 </div>
 
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -183,6 +184,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+
                                                 </div>
                                                 <%-- MODAL FOR Delivery TYPES--%>
                                                 <div class="modal fade manage col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">

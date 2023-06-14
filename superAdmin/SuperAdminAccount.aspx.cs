@@ -192,13 +192,14 @@ namespace WRS2big_Web.superAdmin
                 //LOG-IN FOR DEFAULT ACCOUNT
                 if (uEmail == defaultemail && uPass == defaultpass)
                 {
+
                     string superAdmin = "Technique Services";
 
                     Session["SuperIDno"] = defaultemail;
-                    Session["email"] = uEmail;
-                    Session["password"] = uPass;
+                    Session["SuperEmail"] = uEmail;
+                    Session["SuperPass"] = uPass;
                     Session["superAdminName"] = superAdmin;
-                    Session["fname"] = superAdmin;
+                    Session["Superfname"] = superAdmin;
 
                     //SAVE LOGS TO SUPER ADMIN
                     //Get the current date and time
@@ -253,14 +254,14 @@ namespace WRS2big_Web.superAdmin
                             //string userLogKey = userLogResponse.Result.name;
 
                             Session["SuperIDno"] = idno;
-                            Session["password"] = password;
-                            Session["fname"] = user.fname;
-                            Session["mname"] = user.mname;
-                            Session["lname"] = user.lname;
+                            Session["SuperPass"] = password;
+                            Session["Superfname"] = user.fname;
+                            Session["Supermname"] = user.mname;
+                            Session["Superlname"] = user.lname;
                             Session["superAdminName"] = user.fname + " " + user.mname + " " + user.lname;
-                            Session["dob"] = user.bdate;
-                            Session["contactNumber"] = user.phone;
-                            Session["email"] = user.email;
+                            Session["Superbdate"] = user.bdate;
+                            Session["Superphone"] = user.phone;
+                            Session["SuperEmail"] = user.email;
 
 
 

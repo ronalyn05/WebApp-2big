@@ -65,11 +65,33 @@
                                                             </div>
                                                             <div class="header-search">
                                                                 <div class="input-group">
-                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by Activity"> </asp:TextBox>
+                                                                    <asp:TextBox runat="server" ID="search" Style="margin-left: 50px" Height="40" PlaceHolder="Search by SuperAdmin Name"> </asp:TextBox>
                                                                     <asp:Button runat="server" ID="searchButton" class="btn btn-primary" Height="40" Text="search" />
-                                                                    <%--OnClick="searchButton_Click"--%> 
+                                                                    <asp:Button runat="server" ID="clearSearch"  Height="40" Text="X" OnClick="clearSearch_Click" />
+                                                                  
+                                                                   <asp:DropDownList runat="server" ID="activityDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
+                                                                                <asp:ListItem Value="Login"> LogGed-in </asp:ListItem>
+                                                                                <asp:ListItem Value="Customer Evaluation"> Customer Evaluation</asp:ListItem>
+                                                                                <asp:ListItem Value="Admin Evaluation"> Admin Evaluation </asp:ListItem>
+                                                                                <asp:ListItem Value="Package"> Package</asp:ListItem>
+                                                                                <asp:ListItem Value="Logout"> Logged-out </asp:ListItem> 
+                                                                                
 
+                                                                            </asp:DropDownList>
+                                                                   <asp:Button runat="server" ID="viewActDropdown" class="btn btn-primary" Height="40" OnClick="activityDropdown_Click" Text="view" />
+                                                                    
                                                                 </div>
+                                                                <%--   SORTING CODES HERE --%>
+                                                                <h6 style="color: black; font-family: Bahnschrift;margin-left:20px"> Sort by Date of Activity:</h6>
+                                                               <%-- SORT BY DATE--%>
+                                                                  
+                                                                                    <h7 style="margin-left:20px">Start Date:</h7>
+                                                                                    <asp:TextBox ID="sortStart" style="margin-left:20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox> 
+                                                                                    <h7 style="margin-left:20px">End Date:</h7> 
+                                                                                    <asp:TextBox ID="sortEnd" style="margin-left:20px" TextMode="Date" Width="150px" runat="server"></asp:TextBox>
+
+                                                                                     <asp:Button runat="server" ID="generateSortedData" class="btn btn-primary" OnClick="generateSortedData_Click" Height="40" Text="Generate" />
+                                                                                    <asp:LinkButton runat="server" ID="clearSort" OnClick="clearSort_Click" Text="Clear"></asp:LinkButton> 
 
 
                                                             </div>
@@ -84,6 +106,7 @@
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
                                                                                     <br /> <asp:Label runat="server" style="margin-left:10px" id="customersLabel">SUPER ADMIN LOGS</asp:Label>
+                                                                                      <asp:Label runat="server" Style="margin-left: 700px;color:red" ID="subSalesLabel"></asp:Label>
                                                                                     <asp:GridView runat="server" ID="superAdminLogs" class="texts table-responsive table-hover" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="20" HtmlEncode="false" Width="850px" CssClass="m-r-0" GridLines="Horizontal" ForeColor="Black" CellSpacing="20" Font-Size="14px">
                                                                                         
                                                                                         <Columns>

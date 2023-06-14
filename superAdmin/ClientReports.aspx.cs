@@ -41,10 +41,10 @@ namespace WRS2big_Web.superAdmin
 
         private void DisplayClients()
         {
-            FirebaseResponse response = twoBigDB.Get("SUBSCRIBED_CLIENTS");
-            Model.superAdminClients wrsClients = response.ResultAs<Model.superAdminClients>();
+            FirebaseResponse response = twoBigDB.Get("ADMIN");
+            Model.AdminAccount wrsClients = response.ResultAs<Model.AdminAccount>();
             var data = response.Body;
-            Dictionary<string, Model.superAdminClients> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.superAdminClients>>(data);
+            Dictionary<string, Model.AdminAccount> clients = JsonConvert.DeserializeObject<Dictionary<string, Model.AdminAccount>>(data);
 
             //creating the columns of the gridview
             DataTable plansTable = new DataTable();
@@ -55,11 +55,12 @@ namespace WRS2big_Web.superAdmin
             plansTable.Columns.Add("SUBSCRIBED PLAN");
             plansTable.Columns.Add("STATUS");
 
-            foreach (KeyValuePair<string, Model.superAdminClients> entry in clients)
+            foreach (KeyValuePair<string, Model.AdminAccount> entry in clients)
             {
-                //FirebaseResponse clientResponse = twoBigDB.Get("SUPERADMIN/SUBSCRIBING_CLIENTS" + entry.Key);
-                //Model.superAdminClients subscribingClients = clientResponse.ResultAs<Model.superAdminClients>();
-                plansTable.Rows.Add(entry.Value.clientID, entry.Value.fullname, entry.Value.email, entry.Value.dateSubscribed, entry.Value.plan, entry.Value.status);
+                response = twoBigDB.Get("ADMIN/" + entry.Value.idno + "/Subscribed_Package");
+                Model.Subscribed_Package packageDetails = response.ResultAs<Model.Subscribed_Package>();
+
+                plansTable.Rows.Add(entry.Value.idno, entry.Value.fname + " " + entry.Value.lname + " ", entry.Value.email, packageDetails.dateSubscribed,packageDetails.packageName, entry.Value.status);
 
             }
 

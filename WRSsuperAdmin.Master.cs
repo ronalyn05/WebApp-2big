@@ -26,9 +26,9 @@ namespace WRS2big_Web
         {
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            if (Session["fname"] != null)
+            if (Session["Superfname"] != null)
             {
-                superLbl.Text = "SUPER ADMIN:" + " " + Session["fname"].ToString();
+                superLbl.Text = "SUPER ADMIN:" + " " + Session["Superfname"].ToString();
             }
             else
             {
@@ -221,6 +221,29 @@ namespace WRS2big_Web
                 Session["currentClient"] = currentClient;
                 Response.Write("<script>window.location.href = '/superAdmin/clientSubscriptionHistory.aspx'; </script>");
             }
+            else if (title == "Re-evaluate Client")
+            {
+                var updatedNotif = new Notification
+                {
+                    notificationID = notif.notificationID,
+                    notificationDate = notif.notificationDate,
+                    receiver = notif.receiver,
+                    sender = notif.sender,
+                    title = notif.title,
+                    orderID = notif.orderID,
+                    cusId = notif.cusId,
+                    driverId = notif.driverId,
+                    //UPDATE THE STATUS FROM UNREAD TO READ
+                    status = "read",
+                    body = notif.body,
+                    admin_ID = notif.admin_ID
+                };
+                notification = twoBigDB.Update("NOTIFICATION/" + idnum, updatedNotif);
+
+                int currentClient = notif.admin_ID;
+                Session["currentClient"] = currentClient;
+                Response.Write("<script>window.location.href = '/superAdmin/clientDetails.aspx'; </script>");
+            }
             else
             {
                 Response.Write("<script>alert ('Session Expired. Please login again');  window.location.href = '/superAdmin/SuperAdminAccount.aspx'; </script>");
@@ -263,7 +286,7 @@ namespace WRS2big_Web
                 Session.Abandon();
                 Session.RemoveAll();
                 Session["SuperIDno"] = null;
-                Session["password"] = null;
+                Session["SuperPass"] = null;
                 Session.Clear();
                 Response.Redirect("/superAdmin/SuperAdminAccount.aspx");
             }
