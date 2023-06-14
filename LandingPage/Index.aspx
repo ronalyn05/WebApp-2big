@@ -469,7 +469,7 @@
                                 A platform that provides efficient business management. <br>This platform aims to increase productivity to the business <br>and provide quality services for both business owners and customers.
                             </h2>
                         </div>
-                        <div cell small-24 class="text-center h4">
+                        <div  class="text-center h4 cell small-24">
                             <br>
                             <a href="#subscription" class="button" style="color:darkblue;font-size: 25px;background-color: white;padding: 10px;">
                                 SUBSCRIBE
@@ -790,10 +790,13 @@
                                     </div>
                                 </div>
                             </div> <br>
+
                         </section>
+                                            <div class="btn-mktg d-block btn-muted-mktg" runat="server">
+                                               <asp:LinkButton runat="server" ID="loginDeveloper" OnClick="loginDeveloper_Click"> Login as Developer</asp:LinkButton>
+                                            </div>
 
-
-                        <br />
+                       
                         <section class="cell medium-8 teal-gradient padding-vertical-4">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -810,7 +813,7 @@
 
                                 <div class="col-sm-4">
                                     <br><br><br><br>
-                                    <div cell small-24 class="text-center">
+                                    <div class="text-center">
                                         <a href="https://play.google.com/store/games" class="button" style="color:darkblue;font-size: 25px;padding: 6px;">
                                             <!-- SUBSCRIBE TO 2BIG NOW!-->
 

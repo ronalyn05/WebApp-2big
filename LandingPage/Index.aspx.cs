@@ -197,5 +197,10 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert ('It seems like you are not logged in yet. Please login your account first before you can subscribe. If no account yet, create your account now!');  window.location.href = '/LandingPage/Account.aspx';</script>");
             }
         }
+
+        protected void loginDeveloper_Click(object sender, EventArgs e)
+        {
+            Response.Write("<script>window.location.href = '/superAdmin/SuperAdminAccount.aspx';</script>");
+        }
     }
 }
