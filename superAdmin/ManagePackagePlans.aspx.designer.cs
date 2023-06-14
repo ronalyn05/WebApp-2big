@@ -78,6 +78,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.TextBox packagePrice;
 
         /// <summary>
+        /// rangeValidator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator5;
+
+        /// <summary>
         /// durationTypeSelected control.
         /// </summary>
         /// <remarks>
@@ -96,6 +105,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.TextBox packageDuration;
 
         /// <summary>
+        /// rangeValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator1;
+
+        /// <summary>
         /// packageOrderLimit control.
         /// </summary>
         /// <remarks>
@@ -103,6 +121,15 @@ namespace WRS2big_Web.superAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox packageOrderLimit;
+
+        /// <summary>
+        /// rangeValidator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator2;
 
         /// <summary>
         /// packageMangeStation control.
@@ -114,6 +141,15 @@ namespace WRS2big_Web.superAdmin
         protected global::System.Web.UI.WebControls.TextBox packageMangeStation;
 
         /// <summary>
+        /// rangeValidator3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator3;
+
+        /// <summary>
         /// packageProductLimit control.
         /// </summary>
         /// <remarks>
@@ -121,6 +157,15 @@ namespace WRS2big_Web.superAdmin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox packageProductLimit;
+
+        /// <summary>
+        /// rangeValidator4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rangeValidator4;
 
         /// <summary>
         /// selectAll control.

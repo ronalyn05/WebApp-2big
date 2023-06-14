@@ -337,7 +337,7 @@ namespace WRS2big_Web.superAdmin
                     subscriptionReport.Visible = true;
 
 
-                    expiredSubscriptions.Visible = true;
+                    expiredSubscriptions.Visible = false;
                     activeSubscriptions.Visible = false;
                   
                    
