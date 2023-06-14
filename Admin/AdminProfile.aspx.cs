@@ -152,10 +152,12 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
                 Model.Subscribed_Package expiration = adminDet.ResultAs<Model.Subscribed_Package>();
 
+                    
                 if (expiration != null)
                 {
+                    int packageID = expiration.packageID;
                     //get the package renewable details
-                    adminDet = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + expiration.packageID);
+                    adminDet = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + packageID);
                     PackagePlans packageDet = adminDet.ResultAs<Model.PackagePlans>();
 
                     if (packageDet.renewable == "No")
@@ -858,7 +860,7 @@ namespace WRS2big_Web.Admin
                 if (subscribed.renewable == "No")
                 {
                     //renewBTN.Enabled = false;
-                    Response.Write("<script>alert ('Your current package is not RENEWABLE. Redirecting you to Subscription Packages now.');  window.location.href = '/Admin/SubscriptionPackages.aspx';</script>");
+                    Response.Write("<script>alert ('Your current package is not RENEWABLE. You can CHANGE PACKAGE instead');  window.location.href = '/Admin/AdminProfile.aspx';</script>");
                    
                 }
                 else

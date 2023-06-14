@@ -40,47 +40,65 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminId);
                 Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
 
+                //FETCH THE CURRENT SUBSCRIPTION OF THE CLIENT
+                response = twoBigDB.Get("ADMIN/" + adminId + "/Subscribed_Package");
+                Model.Subscribed_Package exstngPackage = response.ResultAs<Model.Subscribed_Package>();
 
-                string selectedPackageID = Request.QueryString["packageID"];
-                Debug.WriteLine($"PACKAGE ID: {selectedPackageID}");
-                //Session["packageID"] = selectedPackageID;
-
-                FirebaseResponse getPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + selectedPackageID);
-                Model.PackagePlans package = getPackage.ResultAs<Model.PackagePlans>();
-
-
-                if (package != null)
+                if (exstngPackage != null)
                 {
-                    string clientStat = pendingClients.subStatus;
+                    int exstngPackageID = exstngPackage.packageID;
 
-                    if (clientStat == "Subscribed")
+                    string selectedPackageID = Request.QueryString["packageID"];
+                    Debug.WriteLine($"PACKAGE ID: {selectedPackageID}");
+                    //Session["packageID"] = selectedPackageID;
+
+                    //GET THE DETAILS OF THE EXISTING PACKAGE
+                    FirebaseResponse getPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + exstngPackageID);
+                    Model.PackagePlans exstpackage = getPackage.ResultAs<Model.PackagePlans>();
+
+                    //GET THE DETAILS OF THE SELECTED PACKAGE
+                    getPackage = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + selectedPackageID);
+                    Model.PackagePlans package = getPackage.ResultAs<Model.PackagePlans>();
+
+
+                    if (package != null)
                     {
-                        if (package.renewable == "No")
+                        string clientStat = pendingClients.subStatus;
+
+                        if (clientStat == "Subscribed")
                         {
-                            subSuccessTitle.InnerText = "Change Package";
+                            if (exstpackage.renewable == "No")
+                            {
+                                subSuccessTitle.InnerText = "Change Package";
+                            }
+                            else if (package.renewable == "Yes")
+                            {
+                                subSuccessTitle.InnerText = "Subscription Renewal";
+                            }
+
+
                         }
-                        else if (package.renewable == "Yes")
+                        else if (clientStat == "pending")
                         {
-                            subSuccessTitle.InnerText = "Subscription Renewal";
+                            Response.Write("<script>alert ('Subscription Unsuccessful. You cannot subscribe yet since your account is still under review. Please wait until your account is approved before you can subscribe'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+
+                        }
+                        else if (clientStat == "notSubscribed")
+                        {
+                            subSuccessTitle.InnerText = "Subscription Summary";
                         }
 
-
+                        packageName.Text = package.packageName;
+                        packagedescription.Text = package.packageDescription;
+                        packagePrice.Text = package.packagePrice.ToString();
+                        packageDuration.Text = package.packageDuration + " " + package.durationType;
                     }
-                    else if (clientStat == "pending")
-                    {
-                        Response.Write("<script>alert ('Subscription Unsuccessful. You cannot subscribe yet since your account is still under review. Please wait until your account is approved before you can subscribe'); location.reload(); window.location.href = '/Admin/WaitingPage.aspx'; </script>");
-
-                    }
-                    else if (clientStat == "notSubscribed")
-                    {
-                        subSuccessTitle.InnerText = "Subscription Summary";
-                    }
-
-                    packageName.Text = package.packageName;
-                    packagedescription.Text = package.packageDescription;
-                    packagePrice.Text = package.packagePrice.ToString();
-                    packageDuration.Text = package.packageDuration + " " + package.durationType;
                 }
+                else
+                {
+                    newSubscription();
+                }
+
             }
 
             //POPULATE THE PACKAGE DETAILS IN THE CONFIRMATION PAGE
@@ -346,8 +364,10 @@ namespace WRS2big_Web.Admin
                             FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
                             Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
 
-                            //PROCEED TO NEW SUBSCRIPTION
+                            updateAdmin = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                            Model.Subscribed_Package currentPckage = updateAdmin.ResultAs<Model.Subscribed_Package>();
 
+                            //PROCEED TO CHANGE SUBSCRIPTION
                             update.subStatus = "Subscribed";
                             update.currentSubscription = "Active";
                             //subscriptionStatus.subStatus = "Subscribed";
@@ -368,6 +388,7 @@ namespace WRS2big_Web.Admin
                             data.packagePrice = (int)package.packagePrice;
                             data.subStart = DateTime.Now;
                             data.subStatus = "Active";
+                            data.dateSubscribed = currentPckage.dateSubscribed;
                             data.packageID = package.packageID;
                             data.orderLimit = package.packageLimit;
                             data.dateStatusUpdated = DateTime.Now;
@@ -515,12 +536,6 @@ namespace WRS2big_Web.Admin
                 var adminID = Session["idno"].ToString();
 
 
-                FirebaseResponse currentStat = twoBigDB.Get("SUBSCRIBED_CLIENTS/");
-                Dictionary<string, Model.superAdminClients> subscribed = currentStat.ResultAs<Dictionary<string, Model.superAdminClients>>();
-
-                if (subscribed != null)
-                {
-
                     string selectedPackageID = Request.QueryString["packageID"];
                     int packageID = int.Parse(selectedPackageID);
 
@@ -543,10 +558,14 @@ namespace WRS2big_Web.Admin
                             FirebaseResponse updateAdmin = twoBigDB.Get("ADMIN/" + adminID);
                             Model.AdminAccount update = updateAdmin.ResultAs<Model.AdminAccount>();
 
-                           //PERFORM RENEWAL
-                                //to ADD the NEW subscription Status to admin table
-                                update.subStatus = "Subscribed";
+                            updateAdmin = twoBigDB.Get("ADMIN/" + adminID + "/Subscribed_Package");
+                            Model.Subscribed_Package currentPckage = updateAdmin.ResultAs<Model.Subscribed_Package>();
+
+                        //PERFORM RENEWAL
+                        //to ADD the NEW subscription Status to admin table
+                        update.subStatus = "Subscribed";
                                 update.currentSubscription = "Active";
+                                
                                 //subscriptionStatus.subStatus = "Subscribed";
 
                                 updateAdmin = twoBigDB.Update("ADMIN/" + adminID, update);
@@ -564,7 +583,9 @@ namespace WRS2big_Web.Admin
                                 data.packageDescription = package.packageDescription;
                                 data.packagePrice = (int)package.packagePrice;
                                 data.subStart = DateTime.Now;
+                                data.packageID = package.packageID;
                                 data.subStatus = "Active";
+                                data.dateSubscribed = currentPckage.dateSubscribed;
                                 data.orderLimit = package.packageLimit;
                                 data.dateStatusUpdated = DateTime.Now;
 
@@ -678,7 +699,7 @@ namespace WRS2big_Web.Admin
 
                     }
 
-                }
+                
             }
         }
      
