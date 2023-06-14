@@ -184,12 +184,12 @@ namespace WRS2big_Web.Admin
                         if (orders != null)
                         {
                             var filteredOrders = orders.Values.Where(d => d.admin_ID.ToString() == idno &&
-                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending"));
+                                                (d.order_OrderStatus == "Delivered" || d.order_OrderStatus == "Accepted" || d.order_OrderStatus == "Pending" || d.order_OrderStatus == "Out for Delivery" || d.order_OrderStatus == "Payment Received"));
 
                             foreach (Order order in filteredOrders)
                             {
                                 double orderedGallons = 0;
-                                if (order.order_Products[0].pro_refillUnitVolume == "gallon/s" || order.order_Products[0].pro_refillUnitVolume == "gallon")
+                                if (order.order_Products[0].pro_refillUnitVolume == "gallon")
                                 {
                                     orderedGallons = double.Parse(order.order_Products[0].qtyPerItem);
                                 }
@@ -522,7 +522,6 @@ namespace WRS2big_Web.Admin
             int adminId = int.Parse(idno);
             //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
-
 
             try
             {
@@ -862,13 +861,12 @@ namespace WRS2big_Web.Admin
                 {
                     refillunit = " ";
                 }
-                // Get the selected values from the CheckBoxList
-                string offerType_selectedValues = " ";
+                string offerType_selectedValues = "";
                 foreach (ListItem item in radioType_productoffered.Items)
                 {
                     if (item.Selected)
                     {
-                        offerType_selectedValues += item.Value + ",";
+                        offerType_selectedValues += item.Value.Trim() + ",";
                     }
                 }
 
@@ -877,6 +875,7 @@ namespace WRS2big_Web.Admin
                 {
                     offerType_selectedValues = offerType_selectedValues.TrimEnd(',');
                 }
+
 
                 string productStockQty = " ";
                 if (!string.IsNullOrEmpty(txtStockQty.Text))
@@ -948,7 +947,7 @@ namespace WRS2big_Web.Admin
                                 // response = twoBigDB.Set("Product/" + idno + "/Product/" + data.productId, data);
                                 response = twoBigDB.Set("PRODUCTREFILL/" + data.pro_refillId, data);
                                 ProductRefill result = response.ResultAs<ProductRefill>();
-                                Response.Write("<script>alert ('Product Refill  with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
+                                Response.Write("<script>alert ('Product Refill with Id number: " + data.pro_refillId + " is successfully added!'); </script>");
                           
                         }
                         else

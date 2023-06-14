@@ -60,7 +60,7 @@
                                                 <hr />
                                                 <div class="col-md-12 col-sm-12">
                                               <h5>How would you like your customer to earn their reward points?</h5>
-                                                    <asp:RadioButtonList ID="radioWaysToEarnPoints" runat="server" RepeatDirection="Horizontal" onchange="disableMinMaxRange()">
+                                                    <asp:RadioButtonList ID="radioWaysToEarnPoints" runat="server" RepeatDirection="Horizontal" onclick="disableMinMaxRange()">
                                                 <asp:ListItem Text="Per transaction" Value="per transaction" />
                                                 <asp:ListItem Text="Per amount" Value="per amount" />
                                               </asp:RadioButtonList>
@@ -84,24 +84,7 @@
                                               <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="txtmaxRange_perAmount" Type="Double" MinimumValue="0" ErrorMessage="input a number value only" ForeColor="Red"></asp:RangeValidator>
                                                 </div>
                                             </div>
-                                                 <script type="text/javascript">
-                                                     function disableMinMaxRange() {
-                                                         var radioWaysToEarnPoints = document.getElementById('<%= radioWaysToEarnPoints.ClientID %>');
-                                                        var txtminRange_perAmount = document.getElementById('<%= txtminRange_perAmount.ClientID %>');
-                                                        var txtmaxRange_perAmount = document.getElementById('<%= txtmaxRange_perAmount.ClientID %>');
-
-                                                         if (radioWaysToEarnPoints.value == "per transaction") {
-                                                             txtminRange_perAmount.disabled = true;
-                                                             txtmaxRange_perAmount.disabled = true;
-                                                         }
-                                                         else {
-                                                             txtminRange_perAmount.disabled = false;
-                                                             txtmaxRange_perAmount.disabled = false;
-                                                         }
-                                                     }
-                                                 </script>
-
-
+                                                
 <%--                                            <script>
                                                 // Get the relevant elements from the DOM
                                                 var radioCusEarnPoints = document.getElementById("radioWaysToEarnPoints");
@@ -150,6 +133,22 @@
                                              </div>
                                             </div>
                                         <%-- end set REWARD SYSTEM --%>
+                                 <script>
+                                     function disableMinMaxRange() {
+                                         
+                                         var pointsCheckbox = document.querySelector("#<%= radioWaysToEarnPoints.ClientID %> input:checked");
+                                                                    var minrangeAmount = document.querySelector("#<%= txtminRange_perAmount.ClientID %>");
+                                                                    var maxRangeAmount = document.querySelector("#<%= txtmaxRange_perAmount.ClientID %>");
+
+                                         if (pointsCheckbox && pointsCheckbox.value === "per transaction") {
+                                             minrangeAmount.disabled = true;
+                                             maxRangeAmount.disabled = true;
+                                         } else if (pointsCheckbox && pointsCheckbox.value === "per amount") {
+                                             minrangeAmount.disabled = false;
+                                             maxRangeAmount.disabled = false;
+                                         }
+                                     }
+                                 </script>
                                       <%-- MODAL FOR PROMO OFFERED--%>
                                       <div class="modal fade setpromo" tabindex="-1" role="dialog" aria-hidden="true">
                                            <div class="modal-dialog modal-dialog-centered modal-lg">
