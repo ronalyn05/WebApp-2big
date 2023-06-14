@@ -332,7 +332,7 @@ namespace WRS2big_Web.Admin
                 response = twoBigDB.Set("EMPLOYEES/" + data.emp_id, data);
                 Employee obj = response.ResultAs<Employee>();//Database Result
 
-                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); window.location.href = '/Admin/EmployeeRecord.aspx'; </script>");
+                Response.Write("<script> alert('Employee: " + data.emp_firstname + " " + data.emp_lastname + " successfully added!'); </script>");
 
                 // Retrieve the existing employee object from the database
                 FirebaseResponse res = twoBigDB.Get("ADMINLOGS");
@@ -353,6 +353,9 @@ namespace WRS2big_Web.Admin
                 };
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
+                // Clear textbox fields
+                ClearTextBoxes();
+
                 DisplayTable();
             }
             catch (Exception ex)
@@ -360,6 +363,23 @@ namespace WRS2big_Web.Admin
                 Response.Write("<pre>" + ex.ToString() + "</pre>");
 
             }
+        }
+        // Method to clear all textbox fields
+        private void ClearTextBoxes()
+        {
+            txtpass.Text = "";
+            txtcontactnum.Text = "";
+            txtlastname.Text = "";
+            txtfirstname.Text = "";
+            txtmidname.Text = "";
+            BirthDate.Text = "";
+            //drdgender.SelectedIndex = 0;
+            txtaddress.Text = "";
+            txtemail.Text = "";
+            txtdateHired.Text = "";
+            txtemergencycontact.Text = "";
+            //drdrole.SelectedIndex = 0;
+            //Drd_status.SelectedIndex = 0;
         }
         //ENCRYPTING THE PASSWORD
         private string GetSHA256Hash(string input)

@@ -55,7 +55,7 @@
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i>Add Third Party Product Offers</button>
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i>Add Product Refill Offers</button>
                                                 <%--  <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>--%>
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i>Add Tank Supply</button>
+                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i>Add Water Tank Supply</button>
                                                 <%-- <button type="button" style="font-size: 14px; float: right" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i>Edit Product Details</button>--%>
                                                 <%--VIEW BUTTON --%>
                                           &nbsp;
@@ -65,7 +65,7 @@
                                                         <div class="modal-content">
                                                             <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title" id="myModalLabel3">Add Tank Supply</h4>
+                                                                    <h4 class="modal-title" id="myModalLabel3">Add Water Tank Supply</h4>
                                                                     <%--exit button--%>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
@@ -73,7 +73,7 @@
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
                                                                             <%-- <div class="item form-group">--%>
-                                                                            <h4 style="color: black; font-family: Bahnschrift">Set daily amount of tank supply here:</h4>
+                                                                            <h4 style="color: black; font-family: Bahnschrift">Set the daily amount of the water in your tank supply.:</h4>
 
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <%--tank unit --%>

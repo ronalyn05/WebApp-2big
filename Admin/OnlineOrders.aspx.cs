@@ -120,23 +120,31 @@ namespace WRS2big_Web.Admin
 
             if (response != null && employees != null)
             {
-                // Create a list to store the driver employees
-                List<Employee> driverEmployees = new List<Employee>();
+                // Create a list to store the active driver employees
+                List<Employee> activeDriverEmployees = new List<Employee>();
 
-                // Iterate over the employees and add the employees with the role "Driver" to the list
+                // Iterate over the employees and add the active employees with the role "Driver" to the list
                 foreach (var employee in employees.Values)
                 {
-                    if (employee.emp_role != null && employee.emp_role.ToLower() == "driver")
+                    if (employee.emp_role != null && employee.emp_role.ToLower() == "driver" && employee.emp_status != null && employee.emp_status.ToLower() == "active")
                     {
-                        driverEmployees.Add(employee);
+                        activeDriverEmployees.Add(employee);
                     }
                 }
 
-                // Bind the driver employees' names to the dropdown
-                drdAssignDriver.DataSource = driverEmployees;
-                drdAssignDriver.DataTextField = "FullName"; //  property that returns the driver's full name
-                drdAssignDriver.DataValueField = "emp_id"; //  property holding the employee's ID
-                drdAssignDriver.DataBind();
+                if (activeDriverEmployees.Count > 0)
+                {
+                    // Bind the active driver employees' names to the dropdown
+                    drdAssignDriver.DataSource = activeDriverEmployees;
+                    drdAssignDriver.DataTextField = "FullName"; // Property that returns the driver's full name
+                    drdAssignDriver.DataValueField = "emp_id"; // Property holding the employee's ID
+                    drdAssignDriver.DataBind();
+                }
+                else
+                {
+                    // No active drivers, so hide the dropdown
+                    drdAssignDriver.Visible = false;
+                }
 
                 // Set a default item as the first item in the dropdown
                 drdAssignDriver.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select driver to assign", ""));
@@ -1157,7 +1165,7 @@ namespace WRS2big_Web.Admin
                 FirebaseResponse response = twoBigDB.Get("ORDERS/" + orderID);
                 Order existingOrder = response.ResultAs<Order>();
 
-                if (response != null && response.ResultAs<Order>() != null)
+                if (response != null && response.ResultAs<Order>() != null) 
                 {
                     if(existingOrder.order_OrderTypeValue == "Delivery")
                     {
@@ -1383,6 +1391,40 @@ namespace WRS2big_Web.Admin
             }
         }
 
-       
+        //private void PopulateOrderDropdown()
+        //{
+        //    // Fetch all the employees from the database
+        //    FirebaseResponse response = twoBigDB.Get("EMPLOYEES");
+        //    Dictionary<string, Employee> employees = response.ResultAs<Dictionary<string, Employee>>();
+
+        //    if (response != null && employees != null)
+        //    {
+        //        // Create a list to store the driver employees
+        //        List<Employee> driverEmployees = new List<Employee>();
+
+        //        // Iterate over the employees and add the employees with the role "Driver" to the list
+        //        foreach (var employee in employees.Values)
+        //        {
+        //            if (employee.emp_role != null && employee.emp_role.ToLower() == "driver")
+        //            {
+        //                if (employee.emp_status == "Active")
+        //                {
+        //                    driverEmployees.Add(employee);
+        //                }
+
+        //            }
+        //        }
+
+
+        //        // Bind the driver employees' names to the dropdown
+        //        drdAssignDriver.DataSource = driverEmployees;
+        //        drdAssignDriver.DataTextField = "FullName"; //  property that returns the driver's full name
+        //        drdAssignDriver.DataValueField = "emp_id"; //  property holding the employee's ID
+        //        drdAssignDriver.DataBind();
+
+        //        // Set a default item as the first item in the dropdown
+        //        drdAssignDriver.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select driver to assign", ""));
+        //    }
+        //}
     }
 }
