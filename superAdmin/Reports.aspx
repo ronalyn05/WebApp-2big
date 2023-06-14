@@ -70,7 +70,7 @@
                                                                     <asp:Button runat="server" ID="clearSearch"  Height="40" Text="X" OnClick="clearSearch_Click" />
                                                                   
                                                                    <asp:DropDownList runat="server" ID="activityDropdown" Font-Size="18px" Height="40" Width="200px" Style="margin-left: 50px" Placeholder="Sort the data by:">
-                                                                                <asp:ListItem Value="Login"> LogGed-in </asp:ListItem>
+                                                                                <asp:ListItem Value="Login"> Logged-in </asp:ListItem>
                                                                                 <asp:ListItem Value="Customer Evaluation"> Customer Evaluation</asp:ListItem>
                                                                                 <asp:ListItem Value="Admin Evaluation"> Admin Evaluation </asp:ListItem>
                                                                                 <asp:ListItem Value="Package"> Package</asp:ListItem>

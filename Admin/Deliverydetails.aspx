@@ -140,34 +140,58 @@
                                                                         <div class="x_content">
                                                                             <div id="deliveryChecked">
                                                                                 <div class="col-md-12 col-sm-12">
-                                                                                    <strong>Add the vehicles you use for the delivery:</strong>
-                                                                                    <br />
+                                                                                    <strong>Add the vehicle types you have if you offer DELIVERY:</strong>
+
+                                                                                    <br />                                                                                    <br />
                                                                                     <strong>Note: The vehicle fee on every vehicle will be added to the total payable amount of the customer. If you dont want to add a vehicle fee, please enter zero(0) </strong>
                                                                                     <br />
+                                                                                                                                                                        <br />
+                                                                                    <br />
+                                                                                    <strong>VEHICLE NAME: </strong>
+                                                                                    <strong style="margin-left: 65px">VEHICLE FEE:</strong>
+                                                                                    <strong style="margin-left: 150px">MINIMUM Gallons:</strong>
+                                                                                    <strong style="margin-left: 180px">MAXIMUM Gallons:</strong>
                                                                                     <br />
 
-                                                                                    <asp:TextBox ID="vehicle1Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle1Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox> 
+                                                                                    <asp:RangeValidator ID="rangeValidator5" runat="server" ControlToValidate="vehicle1Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
+                                                                                    <asp:TextBox ID="vehicle1MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox> 
+                                                                                     <asp:RangeValidator ID="rangeValidator16" runat="server" ControlToValidate="vehicle1MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
                                                                                     <asp:TextBox ID="vehicle1MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator17" runat="server" ControlToValidate="vehicle1MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
-                                                                                    <asp:TextBox ID="vehicle2Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle2Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle2Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                   <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="vehicle2Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
                                                                                     <asp:TextBox ID="vehicle2MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator18" runat="server" ControlToValidate="vehicle2MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle2MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator19" runat="server" ControlToValidate="vehicle2MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
-                                                                                    <asp:TextBox ID="vehicle3Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle3Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle3Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                   <asp:RangeValidator ID="rangeValidator2" runat="server" ControlToValidate="vehicle3Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
                                                                                     <asp:TextBox ID="vehicle3MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator20" runat="server" ControlToValidate="vehicle3MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle3MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator21" runat="server" ControlToValidate="vehicle3MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
-                                                                                    <asp:TextBox ID="vehicle4Name" Width="360px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle4Fee" Width="250px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="vehicle4Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                   <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="vehicle4Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
                                                                                     <asp:TextBox ID="vehicle4MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator22" runat="server" ControlToValidate="vehicle4MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle4MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator23" runat="server" ControlToValidate="vehicle4MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                 </div>
@@ -241,7 +265,8 @@
                                                                                     <strong>Distance in km for FREE Delivery:</strong>
                                                                                     <br />
                                                                                     <%--                                                                                    <asp:Label ID="Label8" runat="server" Text="Note: If you don't want to offer FREE DELIVERY, set "></asp:Label><br />--%>
-                                                                                    <asp:TextBox ID="FreeDelivery" Width="364px" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                                    <asp:TextBox ID="FreeDelivery" Width="364px" TextMode="Number"  Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                                     <asp:RangeValidator ID="rangeValidator32" runat="server" ControlToValidate="FreeDelivery" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
@@ -249,6 +274,8 @@
                                                                                     <br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="DeliveryFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                                     <asp:RangeValidator ID="rangeValidator33" runat="server" ControlToValidate="DeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+
                                                                                 </div>
                                                                                 <br />
                                                                                 <%--                                                        <div class="col-md-12 col-sm-12 " id="deliveryTypesPanel">
@@ -353,6 +380,7 @@
                                                                                     <strong>Delivery FEE:</strong><br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="resDelFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator4" runat="server" ControlToValidate="resDelFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12">
@@ -439,7 +467,8 @@
                                                                                     <strong>Express Delivery fee:</strong><br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="expressdeliveryFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                                                </div>
+                                                                               <asp:RangeValidator ID="rangeValidator6" runat="server" ControlToValidate="expressdeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
                                                                                     <strong>Distance in km for Delivery:</strong>
@@ -578,7 +607,8 @@
                                                                                     <strong>Express Delivery fee:</strong><br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="updateExpressFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                                                </div>
+                                                                               <asp:RangeValidator ID="rangeValidator7" runat="server" ControlToValidate="updateExpressFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
                                                                                     <strong>Delivery Distance by km:</strong>
@@ -658,7 +688,8 @@
                                                                                         <br />
                                                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                         <asp:TextBox ID="updateStandardFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                                                    </div>
+                                                                                   <asp:RangeValidator ID="rangeValidator8" runat="server" ControlToValidate="updateStandardFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                        </div>
                                                                                     <br />
 
                                                                                     <br />
@@ -716,6 +747,7 @@
                                                                                     <br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="updateReserveFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator9" runat="server" ControlToValidate="updateReserveFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
 
@@ -793,6 +825,7 @@
                                                                                 <div id="byGallonsFee" style="display: none">
                                                                                     <h8 style="margin-left: 50px;">per Gallon Fee:</h8><br />
                                                                                     <asp:TextBox ID="perGallonFee" Width="250px" Height="40px" TextMode="Number" runat="server" Style="margin-left: 80px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator10" runat="server" ControlToValidate="perGallonFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
                                                                                 <hr />
@@ -916,32 +949,44 @@
                                                                                     <br />
                                                                                     <br />
                                                                                     <strong>VEHICLE NAME: </strong>
-                                                                                    <strong style="margin-left: 60px">VEHICLE FEE:</strong>
-                                                                                    <strong style="margin-left: 60px">MINIMUM Gallons:</strong>
-                                                                                    <strong style="margin-left: 30px">MAXIMUM Gallons:</strong>
+                                                                                    <strong style="margin-left: 65px">VEHICLE FEE:</strong>
+                                                                                    <strong style="margin-left: 150px">MINIMUM Gallons:</strong>
+                                                                                    <strong style="margin-left: 180px">MAXIMUM Gallons:</strong>
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV1Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV1Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator11" runat="server" ControlToValidate="updateV1Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV1Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator24" runat="server" ControlToValidate="updateV1Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV1Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator25" runat="server" ControlToValidate="updateV1Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV2Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV2Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator12" runat="server" ControlToValidate="updateV2Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV2Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator26" runat="server" ControlToValidate="updateV2Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV2Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator27" runat="server" ControlToValidate="updateV2Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV3Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV3Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator13" runat="server" ControlToValidate="updateV3Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV3Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator28" runat="server" ControlToValidate="updateV3Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV3Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator29" runat="server" ControlToValidate="updateV3Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV4Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV4Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator14" runat="server" ControlToValidate="updateV4Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV4Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator30" runat="server" ControlToValidate="updateV4Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV4Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
+                                                                                      <asp:RangeValidator ID="rangeValidator31" runat="server" ControlToValidate="updateV4Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                 </div>
                                                                             </div>
@@ -970,6 +1015,7 @@
                                                                                 <div id="updateGallonsFee" runat="server">
                                                                                     <h8 style="margin-left: 50px;">per Gallon Fee:</h8><br />
                                                                                     <asp:TextBox ID="updatebyGallonsFee" Width="250px" Height="40px" TextMode="Number" runat="server" Style="margin-left: 80px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator15" runat="server" ControlToValidate="updatebyGallonsFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
                                                                                 <hr />

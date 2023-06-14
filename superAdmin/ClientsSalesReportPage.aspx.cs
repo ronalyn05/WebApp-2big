@@ -515,14 +515,14 @@ namespace WRS2big_Web.superAdmin
 
                     if (paymentReceivedOrders.Count == 0)
                     {
-                        Response.Write("<script>alert('No Records for ONLINE ORDERS found for this client'); window.location.href = '/superAdmin/StationSales.aspx'; </script>");
-                        return;
+                        Response.Write("<script>alert('No Records for ONLINE ORDERS found for this client'); </script>");
+                     
                     }
 
                     if (addedwalkinOrders.Count == 0)
                     {
-                        Response.Write("<script>alert('No Records for WALK-IN ORDERS found for this client'); window.location.href = '/superAdmin/StationSales.aspx'; </script>");
-                        return;
+                        Response.Write("<script>alert('No Records for WALK-IN ORDERS found for this client');</script>");
+                       
                     }
 
                     List<Model.Order> filteredOrders = paymentReceivedOrders.Where(o => o.orderDate >= startDate && o.orderDate < endDate).ToList();

@@ -32,24 +32,14 @@ namespace WRS2big_Web.Admin
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
 
-            // Retrieve the existing admin data from the database
-            FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminId);
-            Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
-
-            //get the current subscription details of the admin
-            response = twoBigDB.Get("ADMIN/" + adminId + "/Subscribed_Package");
-            Model.Subscribed_Package currentSub = response.ResultAs<Model.Subscribed_Package>();
-
-            //get the package renewable details
-            response = twoBigDB.Get("SUBSCRIPTION_PACKAGES/" + currentSub.packageID);
-            Model.PackagePlans packageDet = response.ResultAs<Model.PackagePlans>();
-
-
-
 
             if (Request.QueryString["packageID"] != null)
             {
-                
+
+                // Retrieve the existing admin data from the database
+                FirebaseResponse response = twoBigDB.Get("ADMIN/" + adminId);
+                Model.AdminAccount pendingClients = response.ResultAs<Model.AdminAccount>();
+
 
                 string selectedPackageID = Request.QueryString["packageID"];
                 Debug.WriteLine($"PACKAGE ID: {selectedPackageID}");
@@ -65,11 +55,11 @@ namespace WRS2big_Web.Admin
 
                     if (clientStat == "Subscribed")
                     {
-                        if (packageDet.renewable == "No")
+                        if (package.renewable == "No")
                         {
                             subSuccessTitle.InnerText = "Change Package";
                         }
-                        else if (packageDet.renewable == "Yes")
+                        else if (package.renewable == "Yes")
                         {
                             subSuccessTitle.InnerText = "Subscription Renewal";
                         }
