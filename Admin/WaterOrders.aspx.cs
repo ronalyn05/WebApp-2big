@@ -944,7 +944,7 @@ namespace WRS2big_Web.Admin
                     else
                     {
                         gridOrder.DataSource = ordersTable;
-                        gridOrder.DataBind();
+                        gridOrder.DataBind(); 
                         gridOrder.Visible = true;
                         gridStatusAccepted.Visible = false;
                         lblMessage.Visible = false;

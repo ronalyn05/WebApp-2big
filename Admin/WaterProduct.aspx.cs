@@ -695,10 +695,7 @@ namespace WRS2big_Web.Admin
                                 addedBy = name,
                                 dateAdded = DateTime.UtcNow
 
-                            };
-                            //// Check if there is already an uploaded image
-                            //if (data.thirdparty_productImage == null)
-                            //{
+                            }; 
                                 // Upload the image to the storage
                                 var storage = new FirebaseStorage("big-system-64b55.appspot.com");
                                 var filePath = $"thirdpartyProduct_images/{data.thirdparty_productId}{fileExtension}";
@@ -886,7 +883,14 @@ namespace WRS2big_Web.Admin
                 {
                     productStockQty = txtStockQty.Text;
                 }
-               
+                //// Check if the user selected "Product Refill"
+                //if (offerType_selectedValues == "Product Refill")
+                //{
+                //    // Disable the textbox and dropdown
+                //    txtStockQty.Enabled = false;
+                //    drdProductStock.Enabled = false;
+                //}
+
                 //UPLOADING THE IMAGE TO THE STORAGE
                 byte[] fileBytes = null;
                 //bool imageUploaded = false; // Add a flag to track if an image was uploaded
@@ -1278,11 +1282,10 @@ namespace WRS2big_Web.Admin
         //SEARCH PRODUCT REPORT
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            string selectedOption = ddlSearchOptions.SelectedValue;
+
             try
             {
-                string selectedOption = ddlSearchOptions.SelectedValue;
-
-
                 if (selectedOption == "0")
                 {
                     lblProductData.Text = "PRODUCT REFILL";

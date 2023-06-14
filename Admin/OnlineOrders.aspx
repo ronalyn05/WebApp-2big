@@ -46,28 +46,6 @@
                                     <!-- Page-body start -->
                                     <!-- page content -->
 
-                                  
-                                        <br />
-                                      
-                                        <%--<div class="modal fade" id="viewPaymentProof" tabindex="-1" role="dialog" aria-hidden="true">
-                                          <div class="modal-dialog modal-dialog-centered modal-md">
-                                            <div class="modal-content">
-                                              <form id="demo-form3" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
-                                                <div class="modal-header">
-                                                  <h4 class="modal-title" id="myModalLabel3">View Payment Proof</h4>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <div class="col-md-12 col-sm-12">
-                                                    <asp:Image ID="" runat="server" CssClass="img-responsive" />
-                                                  </div>
-                                                </div>
-                                              </form>
-                                            </div>
-                                          </div>
-                                        </div>--%>
-
-                                        <br />
                                         <%--  DISPLAYING ORDER DETAILS HERE--%>
                                         <div class="card">
                                             <div class="card-header">
