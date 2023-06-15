@@ -268,7 +268,8 @@ namespace WRS2big_Web.Admin
                 lblError.Text = "No Inactive Employee Record Found";
                 lblError.Visible = true;
             }
-        }
+        }  
+
         //STORE/ADD DATA
         protected void btnAdd_Click(object sender, EventArgs e)
         {
@@ -282,6 +283,30 @@ namespace WRS2big_Web.Admin
                 int employee_id = rnd.Next(1, 10000);
                 //  string employee_id = (string)Session["idno"];
 
+                //VALIDATE BIRTH OF DATE
+
+                DateTime birthdate;
+                if (DateTime.TryParse(BirthDate.Text, out birthdate))
+                {
+                    int age = DateTime.Today.Year - birthdate.Year;
+                    if (birthdate > DateTime.Today.AddYears(-age))
+                        age--;
+
+                    bool isAgeValid = (age >= 18 || (birthdate.Year >= 1992 && birthdate.Year <= 2004));
+
+                    // Check if age is valid
+                    if (!isAgeValid)
+                    {
+                        Response.Write("<script>alert('Invalid birthdate. Employee must be 18 years old or born between 2004 and 1992.');</script>");
+                        return;
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('Invalid birthdate format. Please enter a valid date.');</script>");
+                    return;
+                }
+
                 // Password validation
                 string password = txtpass.Text;
 
@@ -292,7 +317,6 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script>alert('Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
                     return;
                 }
-
                 // Encrypt the password using SHA-256
                 string hashedPassword = GetSHA256Hash(password);
 
@@ -322,7 +346,8 @@ namespace WRS2big_Web.Admin
                     emp_dateHired = txtdateHired.Text,
                     emp_emergencycontact =txtemergencycontact.Text,
                     emp_role = drdrole.SelectedValue,
-                    emp_status =Drd_status.SelectedValue,
+                    //emp_status =Drd_status.SelectedValue,
+                    emp_status = "Active",
                     addedBy = name,
                     dateAdded = DateTime.Now
                 };
