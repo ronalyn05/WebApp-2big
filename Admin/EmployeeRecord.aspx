@@ -82,7 +82,8 @@
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <strong>Email Address:</strong>
                                                                         <asp:TextBox ID="txtEmail_address" runat="server" ToolTip="Enter email address you want to update" placeholder="Enter email address to update" class="form-control"></asp:TextBox>
-                                                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ValidationGroup="a" ErrorMessage="*** employee id required ***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtempId"></asp:RequiredFieldValidator>--%>
+                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" ControlToValidate="txtEmail_address" ErrorMessage="Invalid email format. Only 'example@gmail.com' is accepted." ForeColor="Red"></asp:RegularExpressionValidator>
+
                                                                     </div>
                                                                     <br />
                                                                     <div class="col-md-12 col-sm-12">
@@ -107,24 +108,24 @@
                                                                     <br />
                                                                     <h4>Forgot Employee Password? </h4>
                                                                     <hr />
-                                                                     <div class="col-md-12 col-sm-12">
+                                                                    <div class="col-md-12 col-sm-12">
                                                                         <strong>Reset Password:</strong>
-                                                                         <asp:TextBox ID="resetPass" runat="server" ToolTip="enter new employee password here" placeholder="reset employee password" class="form-control"></asp:TextBox>
-                                                                       <asp:RegularExpressionValidator ID="RegularExpressionValidator3" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
-                                                                                    ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="resetPass"></asp:RegularExpressionValidator>
-                                                                      <script>
-                                                                          const toggle_Password = document.querySelector('#toggle_Password');
-                                                                          const resetpassword = document.querySelector('#resetPass');
+                                                                        <asp:TextBox ID="resetPass" runat="server" ToolTip="enter new employee password here" placeholder="reset employee password" class="form-control"></asp:TextBox>
+                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
+                                                                            ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="resetPass"></asp:RegularExpressionValidator>
+                                                                        <script>
+                                                                            const toggle_Password = document.querySelector('#toggle_Password');
+                                                                            const resetpassword = document.querySelector('#resetPass');
 
-                                                                          toggle_Password.addEventListener('click', function (e) {
-                                                                              // toggle the type attribute
-                                                                              const type = resetpassword.getAttribute('type') === 'resetpassword' ? 'text' : 'resetpassword';
-                                                                              resetpassword.setAttribute('type', type);
-                                                                              // toggle the eye slash icon
-                                                                              this.classList.toggle('fa-eye-slash');
-                                                                          });
-                                                                      </script>
-                                                                     </div>
+                                                                            toggle_Password.addEventListener('click', function (e) {
+                                                                                // toggle the type attribute
+                                                                                const type = resetpassword.getAttribute('type') === 'resetpassword' ? 'text' : 'resetpassword';
+                                                                                resetpassword.setAttribute('type', type);
+                                                                                // toggle the eye slash icon
+                                                                                this.classList.toggle('fa-eye-slash');
+                                                                            });
+                                                                        </script>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -153,13 +154,13 @@
                                                                                 <%-- input lastname--%>
                                                                                 <strong>Lastname:</strong>
                                                                                 <asp:TextBox ID="txtlastname" runat="server" class="form-control" placeholder="Employees' Lastname"></asp:TextBox>
-                                                                                <asp:RequiredFieldValidator ID="reqlname" runat="server" ValidationGroup="a" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname"></asp:RequiredFieldValidator>
+                                                                                <asp:RequiredFieldValidator ID="reqlname" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtlastname"></asp:RequiredFieldValidator>
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <%--firstname--%>
                                                                                 <strong>Firstname:</strong>
                                                                                 <asp:TextBox ID="txtfirstname" runat="server" class="form-control" placeholder="Employees' Firstname"></asp:TextBox>
-                                                                                <asp:RequiredFieldValidator ID="reqfname" runat="server" ValidationGroup="a" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname"></asp:RequiredFieldValidator>
+                                                                                <asp:RequiredFieldValidator ID="reqfname" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtfirstname"></asp:RequiredFieldValidator>
                                                                             </div>
 
                                                                             <div class="col-md-12 col-sm-12">
@@ -170,11 +171,11 @@
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <%--date of birth--%>
                                                                                 <strong>Date of Birth:</strong>
-                                                                                <asp:TextBox ID="BirthDate" runat="server" class="form-control" TextMode="Date" onchange="validateBirthDate()"> </asp:TextBox>
-                                                                                <%--<asp:RangeValidator ID="RangeValidator1" runat="server"  ErrorMessage="Age must be 18 years and above!" ControlToValidate="txtbirthdate" MaximumValue="01/01/2004"  Display="Dynamic" ForeColor="Red" ValidationGroup="a"></asp:RangeValidator>--%>
+                                                                               <%-- <asp:TextBox ID="BirthDate" runat="server" class="form-control" TextMode="Date" onchange="validateBirthDate()"></asp:TextBox>--%>
+                                                                                <asp:TextBox ID="BirthDate" runat="server" class="form-control" TextMode="Date" ValidationGroup="a"></asp:TextBox>
                                                                                 <asp:RequiredFieldValidator ID="reqdob" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="BirthDate"></asp:RequiredFieldValidator>
+                                                                                </div>
 
-                                                                            </div>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <%--gender--%>
                                                                                 <strong>Gender:</strong>
@@ -203,15 +204,17 @@
 
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <%-- email--%>
-                                                                                <strong>Email Address:</strong>
+                                                                                 <strong>Email Address:</strong>
                                                                                 <asp:TextBox ID="txtemail" runat="server" class="form-control" placeholder="Employees' email@example.com"></asp:TextBox>
                                                                                 <asp:RequiredFieldValidator ID="reqemail" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemail"></asp:RequiredFieldValidator>
+                                                                                <asp:RegularExpressionValidator ID="regexemail" runat="server" ValidationGroup="a" ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" ControlToValidate="txtemail" ErrorMessage="Invalid email format. Only 'example@gmail.com' is accepted." ForeColor="Red"></asp:RegularExpressionValidator>
+
                                                                                 <%-- </div>--%>
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Password:</strong>
                                                                                 <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password (must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character)"></asp:TextBox>
-                                                                             <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>--%>
+                                                                                <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>--%>
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="a" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
                                                                                     ErrorMessage="Password must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character" ForeColor="Red" ControlToValidate="txtpass"></asp:RegularExpressionValidator>
                                                                                 <%-- @*Show Password checkbox*@--%>
@@ -258,8 +261,8 @@
                                                                                 <%--emergency contact--%>
                                                                                 <strong>In case of emergency, Contact:</strong>
                                                                                 <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact  (must be 11 digit)" TextMode="Phone" Value=""></asp:TextBox>
-                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator4" ValidationGroup="a" runat="server" ControlToValidate="txtemergencycontact" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
-                                                                            <%--    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>--%>
+                                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator4" ValidationGroup="a" runat="server" ControlToValidate="txtemergencycontact" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
+                                                                                <%--    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>--%>
                                                                             </div>
 
                                                                             <div class="col-md-12 col-sm-12">
@@ -272,18 +275,16 @@
                                                                                     <asp:ListItem Text="Water Refiller" Value="Water Refiller"></asp:ListItem>
                                                                                     <asp:ListItem Text="WRS Helper" Value="WRS Helper"></asp:ListItem>
                                                                                 </asp:DropDownList>
-                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole"></asp:RequiredFieldValidator>
+                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="drdrole"></asp:RequiredFieldValidator>
                                                                             </div>
-                                                                            <br />
-                                                                            <div class="col-md-12 col-sm-12">
+                                                                            <%--<br />--%>
+                                                                           <%-- <div class="col-md-12 col-sm-12">
                                                                                 <strong>Status:</strong>
                                                                                 <asp:DropDownList ID="Drd_status" runat="server" Height="40px" Width="450px">
-                                                                                    <%--<asp:ListItem Selected="True" > ------ Select Employee Status ------ </asp:ListItem>--%>
-                                                                                    <asp:ListItem Text="Active" Value="Active" Selected="True"></asp:ListItem>
-                                                                                    <%--<asp:ListItem Text="Inactive" Value="Inactive" ></asp:ListItem>--%>
+                                                                                     <asp:ListItem Text="Active" Value="Active" Selected="True" disabled="true"></asp:ListItem>
                                                                                 </asp:DropDownList>
                                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="Drd_status"></asp:RequiredFieldValidator>
-                                                                            </div>
+                                                                            </div>--%>
                                                                             <br />
                                                                         </div>
                                                                     </div>
@@ -297,7 +298,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                               </div>
                                                 <br />
                                                 <%-- MODAL TO VIEW CERTAIN RECORDS --%>
                                                 <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-hidden="true">
