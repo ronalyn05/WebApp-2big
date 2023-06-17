@@ -15,6 +15,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Mail;
 
 namespace WRS2big_Web.LandingPage
 {
@@ -103,6 +105,9 @@ namespace WRS2big_Web.LandingPage
                     return;
                 }
 
+                //EMAIL VALIDATION
+                checkRegisteredEmail();
+
                 // Encrypt the password using SHA-256
                 string hashedPassword = GetSHA256Hash(password);
 
@@ -118,7 +123,7 @@ namespace WRS2big_Web.LandingPage
                     pass = hashedPassword,
                     businessProof = selectedProof,
                     validID = validID,
-                    status = "Pending",
+                    status = "notVerified",
                     //businessProofLnk = null,
                     //validIDLnk = null,
                     subStatus = "notSubscribed",
@@ -241,7 +246,7 @@ namespace WRS2big_Web.LandingPage
                 //response = twoBigDB.Set("ADMIN/" + data.idno + "/ValidID/", links.ValidIDs);//Storing data to the database
                 //Links validIDresult = response.ResultAs<Links>();//Database Result
 
-                Response.Write("<script>alert ('Account " +  res.idno + " created! Use this id number to log in.'); window.location.href = '/LandingPage/Account.aspx'; </script>");
+                Response.Write("<script>alert ('Account created! Please Check your email for the verification code'); window.location.href = '/LandingPage/EmailVerification.aspx'; </script>");
                 //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
 
                 //NOTIFICATION SENT TO SUPERADMIN FOR ACCOUNT APPROVAL
@@ -294,6 +299,75 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
             }
         }
+        private void checkRegisteredEmail()
+        {
+            string fullname = txtfname.Text + " " + txtlname.Text;
+            string email = txtEmail.Text;
+
+            Debug.WriteLine($"FULLNAME: {fullname}");
+            Debug.WriteLine($"EMAIL: {email}");
+
+            try
+            {
+                FirebaseResponse empResponse = twoBigDB.Get("ADMIN/");
+                var admins = empResponse.ResultAs<Dictionary<string, AdminAccount>>();
+
+                if (admins != null)
+                {
+                    foreach (KeyValuePair<string, AdminAccount> entry in admins)
+                    {
+                        if (entry.Value.email == email)
+                        {
+                            Response.Write("<script>alert('This email is already registered to the application. Log-in now.');</script>");
+                        }
+                        else
+                        {
+                            Random rnd = new Random();
+                            int verificationCode = rnd.Next(1, 10000);
+
+                            string fromMail = "technique.services2022@gmail.com";
+                            string fromPassword = "qenrtopcfoifbvbo";
+
+                            MailMessage message = new MailMessage();
+                            message.From = new MailAddress(fromMail);
+                            message.Subject = "2BiG Account Verification";
+                            message.To.Add(new MailAddress(email));
+                            message.Body = "<html><title>Verify your Identity</title> <body> Hey " + fullname + "! You just created an account in the 2BiG Platform. To complete your account registration, enter the code on the Verification Page. Verification Code: <strong>" + verificationCode + "</strong></body></html>";
+                            message.IsBodyHtml = true;
+
+                            var smtpClient = new SmtpClient("smtp.gmail.com")
+                            {
+                                Port = 587,
+                                Credentials = new NetworkCredential(fromMail, fromPassword),
+                                EnableSsl = true,
+                            };
+
+                            try
+                            {
+                                smtpClient.Send(message);
+
+                                Session["verificationCode"] = verificationCode.ToString();
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log the exception
+                                Debug.WriteLine("Error sending email: " + ex.ToString());
+                                Response.Write("<script>alert('Error sending email. Please try again later.');</script>");
+                            }
+
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Debug.WriteLine("Error retrieving data from Firebase: " + ex.ToString());
+                Response.Write("<script>alert('Error retrieving data from Firebase. Please try again later.');</script>");
+            }
+        }
+
 
         //ENCRYPTING THE PASSWORD
         private string GetSHA256Hash(string input)
@@ -371,20 +445,140 @@ namespace WRS2big_Web.LandingPage
             
         }
 
-        private void isCashier()
+        //USING ID NUMBER TO LOGIN
+        //private void isCashier()
+        //{
+        //    //Get the id number and password entered by the user
+        //    string idno = txt_idno.Text.Trim();
+        //    string password = txt_password.Text.Trim();
+
+        //    string hashedPassword = GetSHA256Hash(password);
+
+        //    bool isLoggedIn = false; // Flag to track if login is successful
+
+        //    FirebaseResponse empResponse = twoBigDB.Get("EMPLOYEES/");
+        //    Employee employee = empResponse.ResultAs<Employee>(); //Database result
+        //    var employees = empResponse.Body;
+        //    Dictionary<string, Employee> cashiers = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(employees);
+
+        //    // Create a list to store all the cashier employees 
+        //    List<Model.Employee> cashierEmployees = new List<Model.Employee>();
+
+        //    if (cashiers != null)
+        //    {
+        //        foreach (KeyValuePair<string, Employee> entry in cashiers)
+        //        {
+        //            string empID = entry.Value.emp_id.ToString();
+                    
+        //            if (entry.Value.emp_role == "Cashier")
+        //            {
+        //                cashierEmployees.Add(entry.Value);
+        //            }
+        //        }
+
+        //        foreach (var cashier in cashierEmployees)
+        //        {
+        //            //check all the cashier employee of that admin if ni match sa gi enter sa user
+        //            if (cashier.emp_pass == hashedPassword && cashier.emp_id == int.Parse(idno))
+        //            {
+        //                //store sa session storage
+        //                Session["idno"] = cashier.emp_id;
+        //                Session["pass"] = cashier.emp_pass;
+
+        //                isLoggedIn = true; // Set the flag to indicate successful login
+        //                break; // Exit the loop since login is successful
+        //            }
+                   
+        //        }
+
+        //        if (isLoggedIn)
+        //        {
+        //            //use the session storage to access the idno and pass nga ni match sa gi input sa user
+
+        //            int currentID = (int)Session["idno"];
+        //            string currentPass = Session["pass"].ToString();
+
+        //            //compare the hashedpassword (from the input) if it matches the hash password stored in the database
+        //            if (currentID == int.Parse(idno) && currentPass == hashedPassword)
+        //            {
+        //                Debug.WriteLine($"originalPass:{currentPass}");
+        //                Debug.WriteLine($"inputHashed:{hashedPassword}");
+
+        //                empResponse = twoBigDB.Get("EMPLOYEES/" + currentID);
+        //                Employee cashier = empResponse.ResultAs<Employee>();
+
+        //                string ownerID = cashier.adminId.ToString();
+
+        //                //SAVE THE EMPLOYEE DETAILS INTO SESSION
+        //                Session["role"] = cashier.emp_role;
+        //                Session["cashierID"] = idno;
+        //                Session["idno"] = ownerID;
+        //                Session["password"] = password;
+        //                Session["fname"] = cashier.emp_firstname;
+        //                Session["mname"] = cashier.emp_midname;
+        //                Session["lname"] = cashier.emp_lastname;
+        //                Session["fullName"] = cashier.emp_firstname + " " + cashier.emp_midname + " " + cashier.emp_lastname;
+        //                Session["dob"] = cashier.emp_birthdate;
+        //                Session["contactNumber"] = cashier.emp_contactnum;
+        //                Session["email"] = cashier.emp_email;
+
+        //                int adminID = cashier.adminId;
+
+        //                // Retrieve all RefillingStation objects for the current admin
+        //                empResponse = twoBigDB.Get("ADMIN/" + adminID + "/RefillingStation/");
+        //                RefillingStation stations = empResponse.ResultAs<RefillingStation>();
+        //                //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+        //                Session["stationName"] = stations.stationName;
+        //                Session["address"] = stations.stationAddress;
+        //                Session["operatingHrsTo"] = stations.operatingHrsTo;
+        //                Session["operatingHrsFrom"] = stations.operatingHrsFrom;
+        //                Session["status"] = stations.status;
+        //                Session["businessdaysTo"] = stations.businessDaysTo;
+        //                Session["businessdaysFrom"] = stations.businessDaysFrom;
+
+        //                //generate a random number for users logged
+        //                Random rnd = new Random();
+        //                int idnum = rnd.Next(1, 10000);
+        //                //Get the current date and time
+        //                DateTime loginTime = DateTime.Now;
+
+        //                //Store the login information in the USERLOG table
+        //                var data = new UsersLogs
+        //                {
+        //                    logsId = idnum,
+        //                    userIdnum = int.Parse(idno),
+        //                    userFullname = (string)Session["fullName"],
+        //                    userActivity = "LOGGED IN",
+        //                    activityTime = loginTime,
+        //                    role = "Cashier"
+        //                };
+
+        //                //Storing the  info
+        //                var response = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
+        //                UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
+        //                Response.Write("<script>alert ('Login Successfull!');  window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+        //            }
+        //            else
+        //            {
+        //                Response.Write("<script>alert ('Cashier Account not found! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+        //            }
+        //        }
+        //    }
+        //}
+        private void isCashier() //LOGIN USING EMAIL FOR CASHIER
         {
             //Get the id number and password entered by the user
-            string idno = txt_idno.Text.Trim();
+            string email = txt_idno.Text.Trim();
             string password = txt_password.Text.Trim();
 
             string hashedPassword = GetSHA256Hash(password);
 
             bool isLoggedIn = false; // Flag to track if login is successful
+            bool emailFound = false; // Flag to track if the email is found
 
             FirebaseResponse empResponse = twoBigDB.Get("EMPLOYEES/");
-            Employee employee = empResponse.ResultAs<Employee>(); //Database result
-            var employees = empResponse.Body;
-            Dictionary<string, Employee> cashiers = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(employees);
+            var cashiers = empResponse.ResultAs<Dictionary<string, Employee>>();
 
             // Create a list to store all the cashier employees 
             List<Model.Employee> cashierEmployees = new List<Model.Employee>();
@@ -393,50 +587,73 @@ namespace WRS2big_Web.LandingPage
             {
                 foreach (KeyValuePair<string, Employee> entry in cashiers)
                 {
-                    string empID = entry.Value.emp_id.ToString();
-
+                    
                     if (entry.Value.emp_role == "Cashier")
                     {
                         cashierEmployees.Add(entry.Value);
                     }
+                    
+                }
+                if (cashierEmployees.Count == 0)
+                {
+                    Response.Write("<script>alert ('No existing CASHIER Account.');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+
                 }
 
                 foreach (var cashier in cashierEmployees)
                 {
-                    //check all the cashier employee of that admin if ni match sa gi enter sa user
-                    if (cashier.emp_pass == hashedPassword && cashier.emp_id == int.Parse(idno))
+                    if (cashier.emp_email == email)
                     {
-                        //store sa session storage
-                        Session["idno"] = cashier.emp_id;
-                        Session["pass"] = cashier.emp_pass;
+                        emailFound = true; // Set the flag to indicate email found
 
-                        isLoggedIn = true; // Set the flag to indicate successful login
-                        break; // Exit the loop since login is successful
+                        Debug.WriteLine($"EMAIL:{cashier.emp_email}");
+
+                        if (cashier.emp_pass == hashedPassword)
+                        {
+                            Debug.WriteLine($"password:{cashier.emp_pass}");
+
+                            Session["idno"] = cashier.emp_id.ToString();
+                            Session["email"] = cashier.emp_email;
+                            Session["pass"] = cashier.emp_pass;
+                            isLoggedIn = true; // Set the flag to indicate successful login
+                            break; // Exit the loop since login is successful
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert ('Incorrect Password! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+
+                        }
                     }
-                   
+
+                }
+
+                if (!emailFound)
+                {
+                    Response.Write("<script>alert ('Email not found! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
                 }
 
                 if (isLoggedIn)
                 {
                     //use the session storage to access the idno and pass nga ni match sa gi input sa user
 
-                    int currentID = (int)Session["idno"];
+                    string currentEmail = Session["email"].ToString();
                     string currentPass = Session["pass"].ToString();
+                    string idno = Session["idno"].ToString();
 
                     //compare the hashedpassword (from the input) if it matches the hash password stored in the database
-                    if (currentID == int.Parse(idno) && currentPass == hashedPassword)
+                    if (currentEmail == email && currentPass == hashedPassword)
                     {
                         Debug.WriteLine($"originalPass:{currentPass}");
                         Debug.WriteLine($"inputHashed:{hashedPassword}");
 
-                        empResponse = twoBigDB.Get("EMPLOYEES/" + currentID);
+                        empResponse = twoBigDB.Get("EMPLOYEES/" + idno);
                         Employee cashier = empResponse.ResultAs<Employee>();
 
                         string ownerID = cashier.adminId.ToString();
 
                         //SAVE THE EMPLOYEE DETAILS INTO SESSION
                         Session["role"] = cashier.emp_role;
-                        Session["cashierID"] = idno;
+                        Session["cashierID"] = cashier.emp_id;
                         Session["idno"] = ownerID;
                         Session["password"] = password;
                         Session["fname"] = cashier.emp_firstname;
@@ -471,7 +688,7 @@ namespace WRS2big_Web.LandingPage
                         var data = new UsersLogs
                         {
                             logsId = idnum,
-                            userIdnum = int.Parse(idno),
+                            userIdnum = cashier.emp_id,
                             userFullname = (string)Session["fullName"],
                             userActivity = "LOGGED IN",
                             activityTime = loginTime,
@@ -490,149 +707,326 @@ namespace WRS2big_Web.LandingPage
                     }
                 }
             }
-        }
-        private void isAdmin()
+        } 
+       
+        //private void isAdmin() //LOGIN USING ID NUMBER FOR ADMIN
+        //{
+
+        //    //Get the id number and password entered by the user
+        //    string idno = txt_idno.Text.Trim();
+        //    string password = txt_password.Text.Trim();
+
+        //    string hashedPassword = GetSHA256Hash(password);
+
+        //    Debug.WriteLine($"inputHashed:{hashedPassword}");
+
+        //    FirebaseResponse response;
+        //    response = twoBigDB.Get("ADMIN/" + idno);
+        //    AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
+
+
+        //    if (user != null)
+        //    {
+        //        //check all admins if ni match sa gi enter sa user
+        //        if (user.pass == hashedPassword && user.idno == int.Parse(idno))
+        //        {
+        //            //Generate a unique key for the USERLOG table using the Push method
+        //            //var userLogResponse = twoBigDB.Push("USERLOG/", userLog);
+
+        //            ////Get the unique key generated by the Push method
+        //            //string userLogKey = userLogResponse.Result.name;
+        //            Session["role"] = user.userRole;
+        //            Session["idno"] = idno;
+        //            Session["password"] = password;
+        //            Session["fname"] = user.fname;
+        //            Session["mname"] = user.mname;
+        //            Session["lname"] = user.lname;
+        //            Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
+        //            Session["dob"] = user.bdate;
+        //            Session["contactNumber"] = user.phone;
+        //            Session["email"] = user.email;
+        //            Session["profile_image"] = user.profile_image;
+
+
+        //            //Retrieve all RefillingStation objects for the current admin
+
+        //           response = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
+        //            RefillingStation stations = response.ResultAs<RefillingStation>();
+                    
+        //            Session["stationName"] = stations.stationName;
+        //            Session["address"] = stations.stationAddress;
+        //            Session["operatingHrsTo"] = stations.operatingHrsTo;
+        //            Session["operatingHrsFrom"] = stations.operatingHrsFrom;
+        //            Session["status"] = stations.status;
+        //            Session["businessdaysTo"] = stations.businessDaysTo;
+        //            Session["businessdaysFrom"] = stations.businessDaysFrom;
+
+
+
+        //            // Retrieve all TankSupply objects for the current admin
+        //            response = twoBigDB.Get("TANKSUPPLY/");
+        //            TankSupply obj = response.ResultAs<TankSupply>();
+
+        //            if (obj != null)
+        //            {
+        //                Session["tankId"] = obj.tankId;
+        //                Session["tankVolume"] = obj.tankVolume;
+        //                Session["tankUnit"] = obj.tankUnit;
+        //                Session["dateAdded"] = obj.dateAdded;
+        //            }
+
+        //            // Retrieve Employee records for the current admin
+        //            response = twoBigDB.Get("EMPLOYEE/");
+        //            Employee emp = response.ResultAs<Employee>();
+
+        //            if (emp != null)
+        //            {
+        //                Session["emp_id"] = emp.emp_id;
+        //                Session["empName"] = emp.emp_lastname + ' ' + emp.emp_firstname;
+
+        //            }
+
+
+        //            //generate a random number for users logged
+        //            Random rnd = new Random();
+        //            int idnum = rnd.Next(1, 10000);
+        //            //Get the current date and time
+        //            DateTime loginTime = DateTime.Now;
+
+        //            //Store the login information in the USERLOG table
+        //            var data = new UsersLogs
+        //            {
+        //                logsId = idnum,
+        //                userIdnum = int.Parse(idno),
+        //                userFullname = (string)Session["fullName"],
+        //                userActivity = "LOGGED IN",
+        //                activityTime = loginTime,
+        //                role = "Admin"
+        //            };
+
+        //            //Storing the  info
+        //            response = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
+        //            UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+
+
+        //            // Login successful, redirect to admin homepage
+        //            Response.Write("<script>alert ('Login Successfull!');</script>");
+        //            //Response.Redirect("/Admin/AdminIndex.aspx");
+
+
+
+        //            //TO CHECK THE STATUS OF THE ADMIN
+        //            var admin = (string)Session["idno"];
+        //            int adminId = int.Parse(admin);
+
+        //            // Retrieve the existing admin data from the database
+        //            FirebaseResponse getStatus = twoBigDB.Get("ADMIN/" + adminId);
+        //            Model.AdminAccount pendingClients = getStatus.ResultAs<Model.AdminAccount>();
+
+        //            string clientStat = pendingClients.status;
+        //            string subStatus = pendingClients.subStatus;
+
+        //            // Retrieve the existing subscribed admin from the database
+
+        //            if (clientStat == "Pending") //NOT APPROVED YET, BY THE SUPERADMIN
+        //            {
+        //                Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+
+        //            }
+        //            else if (subStatus == "notSubscribed")
+        //            {
+        //                Response.Write("<script> window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+        //            }
+
+        //            else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
+        //            {
+        //                Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            Response.Write("<script>alert ('Admin Account not found! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+        //        }
+        //    }
+        //}
+        private void isAdmin() //LOGIN USING EMAIL NUMBER FOR ADMIN
         {
 
-            //Get the id number and password entered by the user
-            string idno = txt_idno.Text.Trim();
-            string password = txt_password.Text.Trim();
-
-            string hashedPassword = GetSHA256Hash(password);
-
-            Debug.WriteLine($"inputHashed:{hashedPassword}");
-
-            FirebaseResponse response;
-            response = twoBigDB.Get("ADMIN/" + idno);
-            AdminAccount user = response.ResultAs<AdminAccount>(); //Database result
-
-
-            if (user != null)
+            try
             {
-                //check all admins if ni match sa gi enter sa user
-                if (user.pass == hashedPassword && user.idno == int.Parse(idno))
+                //Get the id number and password entered by the user
+                string email = txt_idno.Text.Trim();
+                string password = txt_password.Text.Trim();
+
+                string hashedPassword = GetSHA256Hash(password);
+
+                Debug.WriteLine($"inputHashed:{hashedPassword}");
+
+                bool isLoggedIn = false; // Flag to track if login is successful
+                bool emailFound = false; // Flag to track if the email is found
+
+                FirebaseResponse empResponse = twoBigDB.Get("ADMIN/");
+                var admins = empResponse.ResultAs<Dictionary<string, AdminAccount>>();
+
+                // Create a list to store all the cashier employees 
+                List<Model.AdminAccount> regAdmins = new List<Model.AdminAccount>();
+
+               
+                if (admins != null)
                 {
-                    //Generate a unique key for the USERLOG table using the Push method
-                    //var userLogResponse = twoBigDB.Push("USERLOG/", userLog);
-
-                    ////Get the unique key generated by the Push method
-                    //string userLogKey = userLogResponse.Result.name;
-                    Session["role"] = user.userRole;
-                    Session["idno"] = idno;
-                    Session["password"] = password;
-                    Session["fname"] = user.fname;
-                    Session["mname"] = user.mname;
-                    Session["lname"] = user.lname;
-                    Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
-                    Session["dob"] = user.bdate;
-                    Session["contactNumber"] = user.phone;
-                    Session["email"] = user.email;
-                    Session["profile_image"] = user.profile_image;
-                    //Session["subType"] = user.subType;
-                    //Session["subsDate"] = user.subsDate;
-                    //Session["subEnd"] = user.subEnd;
-
-
-                    // Retrieve all RefillingStation objects for the current admin
-                    response = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
-                    RefillingStation stations = response.ResultAs<RefillingStation>();
-                    //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
-                    Session["stationName"] = stations.stationName;
-                    Session["address"] = stations.stationAddress;
-                    Session["operatingHrsTo"] = stations.operatingHrsTo;
-                    Session["operatingHrsFrom"] = stations.operatingHrsFrom;
-                    Session["status"] = stations.status;
-                    Session["businessdaysTo"] = stations.businessDaysTo;
-                    Session["businessdaysFrom"] = stations.businessDaysFrom;
-
-
-
-                    // Retrieve all TankSupply objects for the current admin
-                    response = twoBigDB.Get("TANKSUPPLY/");
-                    TankSupply obj = response.ResultAs<TankSupply>();
-
-                    if (obj != null)
+                    foreach (KeyValuePair<string, AdminAccount> entry in admins)
                     {
-                        Session["tankId"] = obj.tankId;
-                        Session["tankVolume"] = obj.tankVolume;
-                        Session["tankUnit"] = obj.tankUnit;
-                        Session["dateAdded"] = obj.dateAdded;
+                        if (entry.Value.email == email)
+                        {
+                            emailFound = true; // Set the flag to indicate email found
+
+                            Debug.WriteLine($"EMAIL:{entry.Value.email}");
+
+                            if (entry.Value.pass == hashedPassword)
+                            {
+                                Debug.WriteLine($"inputHashed:{entry.Value.pass}");
+
+
+                                Session["idno"] = entry.Value.idno.ToString();
+                                isLoggedIn = true; // Set the flag to indicate successful login
+                                break; // Exit the loop since login is successful
+                            }
+                            else
+                            {
+                                Response.Write("<script>alert ('Incorrect Password! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
+                               
+                            }
+                        }
                     }
 
-                    // Retrieve Employee records for the current admin
-                    response = twoBigDB.Get("EMPLOYEE/");
-                    Employee emp = response.ResultAs<Employee>();
-
-                    if (emp != null)
+                    if (!emailFound)
                     {
-                        Session["emp_id"] = emp.emp_id;
-                        Session["empName"] = emp.emp_lastname + ' ' + emp.emp_firstname;
-
+                        Response.Write("<script>alert ('Email not found! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
                     }
 
-
-                    //generate a random number for users logged
-                    Random rnd = new Random();
-                    int idnum = rnd.Next(1, 10000);
-                    //Get the current date and time
-                    DateTime loginTime = DateTime.Now;
-
-                    //Store the login information in the USERLOG table
-                    var data = new UsersLogs
+                    if (isLoggedIn)
                     {
-                        logsId = idnum,
-                        userIdnum = int.Parse(idno),
-                        userFullname = (string)Session["fullName"],
-                        userActivity = "LOGGED IN",
-                        activityTime = loginTime,
-                        role = "Admin"
-                    };
+                        
+                        string idno = (string)Session["idno"];
+                        empResponse = twoBigDB.Get("ADMIN/" + idno);
+                        AdminAccount user = empResponse.ResultAs<AdminAccount>(); //Database result
 
-                    //Storing the  info
-                    response = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
-                    UsersLogs res = response.ResultAs<UsersLogs>();//Database Result
+                        if (user.status == "notVerified")
+                        {
+                            Response.Write("<script>alert ('It seems like your account is not VERIFIED yet. Please check your email for the Verification Code and verify your account.');  window.location.href = '/LandingPage/EmailVerification.aspx'; </script>");
+                        }
+
+                        Session["role"] = user.userRole;
+                        Session["idno"] = idno;
+                        Session["password"] = password;
+                        Session["fname"] = user.fname;
+                        Session["mname"] = user.mname;
+                        Session["lname"] = user.lname;
+                        Session["fullName"] = user.fname + " " + user.mname + " " + user.lname;
+                        Session["dob"] = user.bdate;
+                        Session["contactNumber"] = user.phone;
+                        Session["email"] = user.email;
+                        Session["profile_image"] = user.profile_image;
+
+                        // Retrieve all RefillingStation objects for the current admin
+                        empResponse = twoBigDB.Get("ADMIN/" + user.idno + "/RefillingStation/");
+                        RefillingStation stations = empResponse.ResultAs<RefillingStation>();
+                        //IDictionary<string, RefillingStation> stations = response.ResultAs<IDictionary<string, RefillingStation>>();
+                        Session["stationName"] = stations.stationName;
+                        Session["address"] = stations.stationAddress;
+                        Session["operatingHrsTo"] = stations.operatingHrsTo;
+                        Session["operatingHrsFrom"] = stations.operatingHrsFrom;
+                        Session["status"] = stations.status;
+                        Session["businessdaysTo"] = stations.businessDaysTo;
+                        Session["businessdaysFrom"] = stations.businessDaysFrom;
+
+                        // Retrieve all TankSupply objects for the current admin
+                        empResponse = twoBigDB.Get("TANKSUPPLY/");
+                        TankSupply obj = empResponse.ResultAs<TankSupply>();
+
+                        if (obj != null)
+                        {
+                            Session["tankId"] = obj.tankId;
+                            Session["tankVolume"] = obj.tankVolume;
+                            Session["tankUnit"] = obj.tankUnit;
+                            Session["dateAdded"] = obj.dateAdded;
+                        }
+
+                        //// Retrieve Employee records for the current admin
+                        //empResponse = twoBigDB.Get("EMPLOYEE/");
+                        //Employee emp = empResponse.ResultAs<Employee>();
+
+                        //if (emp != null)
+                        //{
+                        //    Session["emp_id"] = emp.emp_id;
+                        //    Session["empName"] = emp.emp_lastname + ' ' + emp.emp_firstname;
+
+                        //}
 
 
-                    // Login successful, redirect to admin homepage
-                    Response.Write("<script>alert ('Login Successfull!');</script>");
-                    //Response.Redirect("/Admin/AdminIndex.aspx");
+                        //USERS LOG
+                        Random rnd = new Random(); //generate a random number 
+                        int idnum = rnd.Next(1, 10000);
+                        //Get the current date and time
+                        DateTime loginTime = DateTime.Now;
+
+                        //Store the login information in the USERLOG table
+                        var data = new UsersLogs
+                        {
+                            logsId = idnum,
+                            userIdnum = int.Parse(idno),
+                            userFullname = (string)Session["fullName"],
+                            userActivity = "LOGGED IN",
+                            activityTime = loginTime,
+                            role = "Admin"
+                        };
+
+                        //Storing the  info
+                        empResponse = twoBigDB.Set("ADMINLOGS/" + data.logsId, data);//Storing data to the database
+                        UsersLogs res = empResponse.ResultAs<UsersLogs>();//Database Result
 
 
+                        // Login successful, redirect to admin homepage
+                        Response.Write("<script>alert ('Login Successfull!');</script>");
+                        //Response.Redirect("/Admin/AdminIndex.aspx");
 
-                    //TO CHECK THE STATUS OF THE ADMIN
-                    var admin = (string)Session["idno"];
-                    int adminId = int.Parse(admin);
 
-                    // Retrieve the existing admin data from the database
-                    FirebaseResponse getStatus = twoBigDB.Get("ADMIN/" + adminId);
-                    Model.AdminAccount pendingClients = getStatus.ResultAs<Model.AdminAccount>();
+                        //TO CHECK THE STATUS OF THE ADMIN
+                        string clientStat = user.status;
+                        string subStatus = user.subStatus;
 
-                    string clientStat = pendingClients.status;
-                    string subStatus = pendingClients.subStatus;
+                        // Retrieve the existing subscribed admin from the database
 
-                    // Retrieve the existing subscribed admin from the database
+                        if (clientStat == "Pending") //NOT APPROVED YET, BY THE SUPERADMIN
+                        {
+                            Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
 
-                    if (clientStat == "Pending") //NOT APPROVED YET, BY THE SUPERADMIN
-                    {
-                        Response.Write("<script>window.location.href = '/Admin/WaitingPage.aspx'; </script>");
+                        }
+                        else if (subStatus == "notSubscribed")
+                        {
+                            Response.Write("<script> window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                        }
 
+                        else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
+                        {
+                            Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");
+
+                        }
                     }
-                    else if (subStatus == "notSubscribed")
+                    else
                     {
-                        Response.Write("<script> window.location.href = '/Admin/AdminProfile.aspx'; </script>");
+                        Response.Write("<script>alert ('Account not found. Please try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
                     }
 
-                    else if (clientStat == "Approved" && subStatus == "Subscribed") //APPROVED AND SUBSCRIBED
-                    {
-                        Response.Write("<script>window.location.href = '/Admin/AdminIndex.aspx'; </script>");
-
-                    }
 
                 }
-                else
-                {
-                    Response.Write("<script>alert ('Admin Account not found! Try again');  window.location.href = '/LandingPage/Account.aspx'; </script>");
-                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception and log the error message
+                string errorMessage = "An error occurred while trying to login: " + ex.Message;
             }
         }
     }

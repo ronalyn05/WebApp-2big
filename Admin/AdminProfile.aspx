@@ -1,6 +1,21 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AdminProfile.aspx.cs" Inherits="WRS2big_Web.Admin.AdminProfile" Async="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+            .image-container img {
+                width: 350px;
+                height: 350px;
+                border-color: black;
+            }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -235,39 +250,32 @@
                                                                 <div class="modal-body">
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
-                                                                            
-                        
+                                                                            <div class="image-container">
                                                                                 <asp:Label runat="server" Style="font-size: 16px; color: red; margin-left: 700px" ID="noUploaded"> </asp:Label>
-                                                                                <asp:Repeater ID="uploadedImages" runat="server">
+                                                                                <div class="image-container">
+                                                                                    <asp:Repeater ID="uploadedImages" runat="server">
+                                                                                        <ItemTemplate>
+                                                                                            <a href='<%# Container.DataItem %>' target="_blank">
+                                                                                                <img id="ImageItem" runat="server" src='<%# Container.DataItem %>' />
+                                                                                            </a>
+                                                                                        </ItemTemplate>
+                                                                                    </asp:Repeater>
+                                                                                </div>
+                                                                            </div>
 
-                                                                                    <ItemTemplate>
-                                                                                        <a href='<%# Container.DataItem %>'>
-                                                                                            
 
-                                                                                                <img id="ImageItem" runat="server" src='<%# Container.DataItem %>' width="350" height="350" style="border-color: black" />
-                                                                                          
 
-                                                                                        </a>
-
-                                                                                    </ItemTemplate>
-
-                                                                                </asp:Repeater>
-                                                                                <hr />
-                                                                                
-                                                                          
-                                                                             <button type="button" id="newUploadBtn" runat="server" class="active btn waves-effect text-center"  data-dismiss="modal" data-toggle="modal" data-target=".uploadNew" style="background-color: transparent; font-size: 20px;"><i class="ti-clip"></i>Upload new documents</button>
+                                                                            <button type="button" id="newUploadBtn" runat="server" class="active btn waves-effect text-center" data-dismiss="modal" data-toggle="modal" data-target=".uploadNew" style="background-color: transparent; font-size: 20px;"><i class="ti-clip"></i>Upload new documents</button>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <%--  BUTTON ADD PAYMENT METHOD--%>
-                                                                        <%--                                                                        <asp:Button ID="paymentButton" runat="server" Text="Confirm" class="btn btn-primary btn-sm" />--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <!--MODAL FOR UPLOADED DOCUMENTS-->
+                                                <!--MODAL FOR UPLOADED DOCUMENTS-->
                                                 <%--SUBSCRIPTION DETAILS--%>
                                                 <div class="modal fade uploadNew" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-md">
@@ -280,25 +288,27 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="col-md-12 col-sm-12 ">
-                                                                        <div class="x_content"> 
-                                                                    <center>
-                                                                    <%--file upload--%>
-                                                                         <asp:Label ID="label" runat="server" ForeColor="Black">Upload Business Proofs:</asp:Label>
-                                                                    <asp:FileUpload ID="uploadBussProofs" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
-                                                                    <br /> <br />
-                                                                  <asp:Label ID="label2" runat="server" ForeColor="Black">Upload Valid ID:</asp:Label> <br />
-                                                                    <asp:FileUpload ID="uploadnewValid" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
-                                                                    <br />
-                                                                </center>
+                                                                        <div class="x_content">
+                                                                            <center>
+                                                                                <%--file upload--%>
+                                                                                <asp:Label ID="label" runat="server" ForeColor="Black">Upload Business Proofs:</asp:Label>
+                                                                                <asp:FileUpload ID="uploadBussProofs" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
+                                                                                <br />
+                                                                                <br />
+                                                                                <asp:Label ID="label2" runat="server" ForeColor="Black">Upload Valid ID:</asp:Label>
+                                                                                <br />
+                                                                                <asp:FileUpload ID="uploadnewValid" runat="server" Font-Size="Medium" Height="38px" Width="301px" AllowMultiple="true" Accept="image/*" />
+                                                                                <br />
+                                                                            </center>
                                                                         </div>
 
                                                                     </div>
                                                                     <br />
                                                                     <div class="modal-footer">
-                                                                      <asp:Button ID="uploadbtnNewproofs" runat="server" Text="Upload Now" class="btn btn-primary btn-sm" OnClick="uploadbtnNewproofs_Click"/>
+                                                                        <asp:Button ID="uploadbtnNewproofs" runat="server" Text="Upload Now" class="btn btn-primary btn-sm" OnClick="uploadbtnNewproofs_Click" />
                                                                     </div>
 
-                                                                   
+
                                                                 </div>
                                                             </div>
                                                         </div>

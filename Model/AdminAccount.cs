@@ -27,6 +27,7 @@ namespace WRS2big_Web.Model
         public DateTime dateApproved { get; set; }
         public DateTime dateRegistered { get; set; }
         public DateTime dateDeclined { get; set; }
+        public DateTime dateVerified { get; set; }
         public string userRole { get; set; }
 
 

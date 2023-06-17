@@ -486,6 +486,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="images\BasicPlan.png" />
+    <Content Include="images\emailverify.png" />
     <Content Include="images\gallon.png" />
     <Content Include="images\PremiumPlan.png" />
     <Content Include="images\sales.png" />
@@ -493,6 +494,7 @@
     <Content Include="LandingPage\Account.aspx" />
     <Content Include="Admin\SubscriptionSuccess.aspx" />
     <Content Include="LandingPage\ConfirmResetPass.aspx" />
+    <Content Include="LandingPage\EmailVerification.aspx" />
     <Content Include="LandingPage\Index.aspx" />
     <Content Include="Admin\PremiumPlanSub.aspx" />
     <Content Include="LandingPage\ResetPassword.aspx" />
@@ -775,6 +777,13 @@
     </Compile>
     <Compile Include="LandingPage\ConfirmResetPass.aspx.designer.cs">
       <DependentUpon>ConfirmResetPass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LandingPage\EmailVerification.aspx.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LandingPage\EmailVerification.aspx.designer.cs">
+      <DependentUpon>EmailVerification.aspx</DependentUpon>
     </Compile>
     <Compile Include="LandingPage\FirebaseStorageClient.cs" />
     <Compile Include="LandingPage\Index.aspx.cs">

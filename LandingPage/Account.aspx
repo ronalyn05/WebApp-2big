@@ -244,7 +244,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     <label>ID Number:</label>
                                                     <div class="input-group">
                                                         <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
-                                                        <asp:TextBox runat="server" type="idno" TextMode="Number" class="form-control" ID="txt_idno" ValidationGroup="a"> </asp:TextBox>
+                                                        <asp:TextBox runat="server" type="idno" class="form-control" ID="txt_idno" ValidationGroup="a"> </asp:TextBox>
                                                         <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
                                                     </div>
                                                     <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"  ForeColor="Red" ControlToValidate="txt_idno" ValidationGroup="a"></asp:RegularExpressionValidator>--%>
