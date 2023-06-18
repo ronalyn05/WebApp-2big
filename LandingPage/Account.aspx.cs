@@ -38,255 +38,268 @@ namespace WRS2big_Web.LandingPage
             twoBigDB = new FireSharp.FirebaseClient(config);
         }
 
-        //Function to store user data 
-        protected async void btnSignup_Click(object sender, EventArgs e)
+      
+        protected async void btnSignup_Click(object sender, EventArgs e) //SIGNUP FOR EMAIL VALIDATION
         {
 
             try
             {
-                if (!businessProof.HasFile)
+
+                //CHECK IF THE ENETRED DETAILS MATCHED FROM THE REGISTERED CLIENTS IN THE DATABASE
+
+                bool isDuplicate = checkDuplication();
+
+                if (!isDuplicate)
                 {
-                    Response.Write("<script>alert('You must upload a proof of your business');</script>");
-                    return;
-                }
+                    if (!businessProof.HasFile)
+                    {
+                        Response.Write("<script>alert('You must upload a proof of your business');</script>");
+                        return;
+                    }
 
-                if (!validIDUpload.HasFile)
-                {
-                    Response.Write("<script>alert('You must upload a VALID ID!'); </script>");
-                    return;
-                }
-
-
-                Random rnd = new Random();
-                int idnum = rnd.Next(1, 10000);
-
-                string address = Request.Form["address"];
-                double latitude = double.Parse(Request.Form["lat"]);
-                double longitude = double.Parse(Request.Form["long"]);
+                    if (!validIDUpload.HasFile)
+                    {
+                        Response.Write("<script>alert('You must upload a VALID ID!'); </script>");
+                        return;
+                    }
 
 
-                string selectedProof = documentDropDown.SelectedValue;
-                string validID = validIDList.SelectedValue;
+                    Random rnd = new Random();
+                    int idnum = rnd.Next(1, 10000);
 
-                // Password validation
-                string password = Server.HtmlEncode(id_passwordreg.Text);
-                if (password.Length < 8 || password.Length > 20 ||
-                    !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
-                    !password.Any(c => !char.IsLetterOrDigit(c)))
+                    string address = Request.Form["address"];
+                    double latitude = double.Parse(Request.Form["lat"]);
+                    double longitude = double.Parse(Request.Form["long"]);
+
+
+                    string selectedProof = documentDropDown.SelectedValue;
+                    string validID = validIDList.SelectedValue;
+
+                    // Password validation
+                    string password = Server.HtmlEncode(id_passwordreg.Text);
+                    if (password.Length < 8 || password.Length > 20 ||
+                        !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
+                        !password.Any(c => !char.IsLetterOrDigit(c)))
                     {
                         Response.Write("<script>alert('Password must be in between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
                         return;
                     }
 
-                // Contact number validation
-                string contactNum = txtphoneNum.Text;
-                if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
-                {
-                    Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
-                    return;
-                }
-
-                // Birthdate validation
-                DateTime birthdate;
-                if (!DateTime.TryParse(txtbirthdate.Text, out birthdate))
-                {
-                    Response.Write("<script>alert('Invalid birthdate. Please enter a valid date in the format YYYY/MM/D.');</script>");
-                    return;
-                }
-
-                int age = DateTime.Now.Year - birthdate.Year;
-                if (birthdate > DateTime.Now.AddYears(-age))
-                {
-                    age--;
-                }
-                if (age < 18 || age > 100)
-                {
-                    Response.Write("<script>alert('You must be at least 18 years old to sign up and at most 100 years old.');</script>");
-                    return;
-                }
-
-                //EMAIL VALIDATION
-                checkRegisteredEmail();
-
-                // Encrypt the password using SHA-256
-                string hashedPassword = GetSHA256Hash(password);
-
-                var data = new AdminAccount
-                {
-                    idno = idnum,
-                    lname = Server.HtmlEncode(txtlname.Text),
-                    fname = Server.HtmlEncode(txtfname.Text),
-                    mname = Server.HtmlEncode(txtmname.Text),
-                    bdate = txtbirthdate.Text,
-                    phone = contactNum,
-                    email = Server.HtmlEncode(txtEmail.Text),
-                    pass = hashedPassword,
-                    businessProof = selectedProof,
-                    validID = validID,
-                    status = "notVerified",
-                    //businessProofLnk = null,
-                    //validIDLnk = null,
-                    subStatus = "notSubscribed",
-                    dateRegistered = DateTime.Now,
-                    userRole = "Admin",
-                    address = address
-                };
-                var list = new RefillingStation
-                {
-                    addLongitude = longitude,
-                    addLattitude = latitude,
-                    stationName = Server.HtmlEncode(txtStationName.Text),
-                    stationAddress = address,
-                    proof = null,
-                    dateAdded = DateTime.UtcNow
-                };
-
-
-                //CREATE LIST TO STORE THE LINKS
-                List<string> businessProofs = new List<string>();
-                List<string> validIDs = new List<string>();
-
-                //BUSINESS PROOF UPLOAD
-                if (businessProof.HasFile)
-                {
-                    foreach (HttpPostedFile file in businessProof.PostedFiles)
+                    // Contact number validation
+                    string contactNum = txtphoneNum.Text;
+                    if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
                     {
-                        string fileName = Path.GetFileName(file.FileName);
-                        string fileExtension = Path.GetExtension(fileName);
-
-                        // Generate a unique file name
-                        string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
-
-                        try
-                        {
-                            // Upload the file to Firebase Storage
-                            var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                            var task = storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
-
-                            // Wait for the upload task to complete
-                            await task;
-
-                            // Get the download URL of the uploaded file
-                            string proofUrl = await storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
-
-                            // Save the link to the list
-                            businessProofs.Add(proofUrl);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Handle any exceptions that occur during the upload process
-                            // You can log the exception details or handle the error in a way that suits your application
-                            Console.WriteLine("Error uploading file: " + ex.Message);
-                        }
+                        Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
+                        return;
                     }
 
-                }
-
-               
-                Debug.WriteLine($"PROOFS : {string.Join(", ", businessProofs)}");
-
-                //VALID ID UPLOAD
-                if (validIDUpload.HasFile)
-                {
-                    foreach (HttpPostedFile file in validIDUpload.PostedFiles)
+                    // Birthdate validation
+                    DateTime birthdate;
+                    if (!DateTime.TryParse(txtbirthdate.Text, out birthdate))
                     {
-                        string fileName = Path.GetFileName(file.FileName);
-                        string fileExtension = Path.GetExtension(fileName);
-
-                        // Generate a unique file name
-                        string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
-
-                        try
-                        {
-                            // Upload the file to Firebase Storage
-                            var storage = new FirebaseStorage("big-system-64b55.appspot.com");
-                            var task = storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
-
-                            // Wait for the upload task to complete
-                            await task;
-
-                            // Get the download URL of the uploaded file
-                            string proofUrl = await storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
-
-                            // Save the link to the list
-                            validIDs.Add(proofUrl);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Handle any exceptions that occur during the upload process
-                            // You can log the exception details or handle the error in a way that suits your application
-                            Console.WriteLine("Error uploading file: " + ex.Message);
-                        }
+                        Response.Write("<script>alert('Invalid birthdate. Please enter a valid date in the format YYYY/MM/D.');</script>");
+                        return;
                     }
 
+                    int age = DateTime.Now.Year - birthdate.Year;
+                    if (birthdate > DateTime.Now.AddYears(-age))
+                    {
+                        age--;
+                    }
+                    if (age < 18 || age > 100)
+                    {
+                        Response.Write("<script>alert('You must be at least 18 years old to sign up and at most 100 years old.');</script>");
+                        return;
+                    }
+
+                    Session["receiverIdno"] = idnum.ToString();
+
+                    //EMAIL VALIDATION - EMAIL IS USED TO LOGIN
+                    checkRegisteredEmail();
+
+
+
+                    // Encrypt the password using SHA-256
+                    string hashedPassword = GetSHA256Hash(password);
+
+                    var data = new AdminAccount
+                    {
+                        idno = idnum,
+                        lname = Server.HtmlEncode(txtlname.Text),
+                        fname = Server.HtmlEncode(txtfname.Text),
+                        mname = Server.HtmlEncode(txtmname.Text),
+                        bdate = txtbirthdate.Text,
+                        phone = contactNum,
+                        email = Server.HtmlEncode(txtEmail.Text),
+                        pass = hashedPassword,
+                        businessProof = selectedProof,
+                        validID = validID,
+                        status = "notVerified",
+                        //businessProofLnk = null,
+                        //validIDLnk = null,
+                        subStatus = "notSubscribed",
+                        dateRegistered = DateTime.Now,
+                        userRole = "Admin",
+                        address = address
+                    };
+                    var list = new RefillingStation
+                    {
+                        addLongitude = longitude,
+                        addLattitude = latitude,
+                        stationName = Server.HtmlEncode(txtStationName.Text),
+                        stationAddress = address,
+                        proof = null,
+                        dateAdded = DateTime.UtcNow
+                    };
+
+
+                    //CREATE LIST TO STORE THE LINKS
+                    List<string> businessProofs = new List<string>();
+                    List<string> validIDs = new List<string>();
+
+                    //BUSINESS PROOF UPLOAD
+                    if (businessProof.HasFile)
+                    {
+                        foreach (HttpPostedFile file in businessProof.PostedFiles)
+                        {
+                            string fileName = Path.GetFileName(file.FileName);
+                            string fileExtension = Path.GetExtension(fileName);
+
+                            // Generate a unique file name
+                            string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+                            try
+                            {
+                                // Upload the file to Firebase Storage
+                                var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                                var task = storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+                                // Wait for the upload task to complete
+                                await task;
+
+                                // Get the download URL of the uploaded file
+                                string proofUrl = await storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+                                // Save the link to the list
+                                businessProofs.Add(proofUrl);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Handle any exceptions that occur during the upload process
+                                // You can log the exception details or handle the error in a way that suits your application
+                                Console.WriteLine("Error uploading file: " + ex.Message);
+                            }
+                        }
+
+                    }
+
+
+                    Debug.WriteLine($"PROOFS : {string.Join(", ", businessProofs)}");
+
+                    //VALID ID UPLOAD
+                    if (validIDUpload.HasFile)
+                    {
+                        foreach (HttpPostedFile file in validIDUpload.PostedFiles)
+                        {
+                            string fileName = Path.GetFileName(file.FileName);
+                            string fileExtension = Path.GetExtension(fileName);
+
+                            // Generate a unique file name
+                            string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+                            try
+                            {
+                                // Upload the file to Firebase Storage
+                                var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+                                var task = storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+                                // Wait for the upload task to complete
+                                await task;
+
+                                // Get the download URL of the uploaded file
+                                string proofUrl = await storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+                                // Save the link to the list
+                                validIDs.Add(proofUrl);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Handle any exceptions that occur during the upload process
+                                // You can log the exception details or handle the error in a way that suits your application
+                                Console.WriteLine("Error uploading file: " + ex.Message);
+                            }
+                        }
+
+                    }
+                    Debug.WriteLine($"VALIDID: {string.Join(", ", validIDs)}");
+
+                    var links = new Links
+                    {
+                        Businessproofs = businessProofs,
+                        ValidIDs = validIDs,
+
+                    };
+
+                    SetResponse response;
+                    //Storing the admin info
+                    response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
+                    AdminAccount res = response.ResultAs<AdminAccount>();//Database Result
+
+                    //Storing the refilling station info
+                    response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
+                    RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
+
+                    //SAVE BUSINESS PROOF LINKS 
+                    response = twoBigDB.Set("ADMIN/" + data.idno + "/Links/", links);//Storing data to the database
+                    Links Linkresult = response.ResultAs<Links>();//Database Result
+
+                    ////SAVE VALID ID LINKS
+                    //response = twoBigDB.Set("ADMIN/" + data.idno + "/ValidID/", links.ValidIDs);//Storing data to the database
+                    //Links validIDresult = response.ResultAs<Links>();//Database Result
+
+                    Response.Write("<script>alert ('Account created! Please Check your email for the verification code'); window.location.href = '/LandingPage/EmailVerification.aspx'; </script>");
+                    //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+
+                    //NOTIFICATION SENT TO SUPERADMIN FOR ACCOUNT APPROVAL
+                    int ID = rnd.Next(1, 20000);
+                    var Notification = new Notification
+                    {
+                        admin_ID = data.idno,
+                        sender = "Admin",
+                        receiver = "Super Admin",
+                        title = "New Client",
+                        body = "You have a new client! Check the details for approval ",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = ID
+
+                    };
+
+                    SetResponse notifResponse;
+                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+
+                    //NOTIFICATION SENT TO ADMIN FOR ACCOUNT BEING PENDING
+                    int notifID = rnd.Next(1, 30000);
+                    var adminNotification = new Notification
+                    {
+                        admin_ID = data.idno,
+                        sender = "Super Admin",
+                        receiver = "Admin",
+                        title = "Welcome to 2BiG!",
+                        body = " Thankyou for signing up! Currently, your account is under review. You will receive a new notification once your account is approved",
+                        notificationDate = DateTime.Now,
+                        status = "unread",
+                        notificationID = notifID
+
+                    };
+
+                    SetResponse adminResponse;
+                    adminResponse = twoBigDB.Set("NOTIFICATION/" + notifID, adminNotification);//Storing data to the database
+                    Notification adminNotif = adminResponse.ResultAs<Notification>();//Database Result
                 }
-                Debug.WriteLine($"VALIDID: {string.Join(", ", validIDs)}");
 
-                var links = new Links
-                {
-                    Businessproofs = businessProofs,
-                    ValidIDs = validIDs,
-
-                };
-
-                SetResponse response;
-                //Storing the admin info
-                response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
-                AdminAccount res = response.ResultAs<AdminAccount>();//Database Result
-
-                //Storing the refilling station info
-                response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
-                RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
-
-                //SAVE BUSINESS PROOF LINKS 
-                response = twoBigDB.Set("ADMIN/" + data.idno + "/Links/", links);//Storing data to the database
-                Links Linkresult = response.ResultAs<Links>();//Database Result
-
-                ////SAVE VALID ID LINKS
-                //response = twoBigDB.Set("ADMIN/" + data.idno + "/ValidID/", links.ValidIDs);//Storing data to the database
-                //Links validIDresult = response.ResultAs<Links>();//Database Result
-
-                Response.Write("<script>alert ('Account created! Please Check your email for the verification code'); window.location.href = '/LandingPage/EmailVerification.aspx'; </script>");
-                //Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
-
-                //NOTIFICATION SENT TO SUPERADMIN FOR ACCOUNT APPROVAL
-                int ID = rnd.Next(1, 20000);
-                var Notification = new Notification
-                {
-                    admin_ID = data.idno,
-                    sender = "Admin",
-                    receiver = "Super Admin",
-                    title = "New Client",
-                    body = "You have a new client! Check the details for approval ",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = ID
-
-                };
-
-                SetResponse notifResponse;
-                notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                Notification notif = notifResponse.ResultAs<Notification>();//Database Result
-
-
-                //NOTIFICATION SENT TO ADMIN FOR ACCOUNT BEING PENDING
-                int notifID = rnd.Next(1, 30000);
-                var adminNotification = new Notification
-                {
-                    admin_ID = data.idno,
-                    sender = "Super Admin",
-                    receiver = "Admin",
-                    title = "Welcome to 2BiG!",
-                    body = " Thankyou for signing up! Currently, your account is under review. You will receive a new notification once your account is approved",
-                    notificationDate = DateTime.Now,
-                    status = "unread",
-                    notificationID = notifID
-
-                };
-
-                SetResponse adminResponse;
-                adminResponse = twoBigDB.Set("NOTIFICATION/" + notifID, adminNotification);//Storing data to the database
-                Notification adminNotif = adminResponse.ResultAs<Notification>();//Database Result
 
 
 
@@ -299,10 +312,409 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
             }
         }
-        private void checkRegisteredEmail()
+
+        //protected async void btnSignup_Click(object sender, EventArgs e) //ID NUMBER IS USED TO LOGIN
+        //{
+
+        //    try
+        //    {
+        //        bool isDuplicate = checkDuplication();
+
+        //        if (!isDuplicate)
+        //        {
+        //            if (!businessProof.HasFile)
+        //            {
+        //                Response.Write("<script>alert('You must upload a proof of your business');</script>");
+        //                return;
+        //            }
+
+        //            if (!validIDUpload.HasFile)
+        //            {
+        //                Response.Write("<script>alert('You must upload a VALID ID!'); </script>");
+        //                return;
+        //            }
+
+
+        //            Random rnd = new Random();
+        //            int idnum = rnd.Next(1, 10000);
+
+        //            string address = Request.Form["address"];
+        //            double latitude = double.Parse(Request.Form["lat"]);
+        //            double longitude = double.Parse(Request.Form["long"]);
+
+
+        //            string selectedProof = documentDropDown.SelectedValue;
+        //            string validID = validIDList.SelectedValue;
+
+        //            //Password validation
+        //            string password = Server.HtmlEncode(id_passwordreg.Text);
+        //            if (password.Length < 8 || password.Length > 20 ||
+        //                !password.Any(char.IsLetter) || !password.Any(char.IsDigit) ||
+        //                !password.Any(c => !char.IsLetterOrDigit(c)))
+        //            {
+        //                Response.Write("<script>alert('Password must be in between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character.'); </script>");
+        //                return;
+        //            }
+
+        //            //Contact number validation
+        //            string contactNum = txtphoneNum.Text;
+        //            if (contactNum.Length != 11 || !contactNum.All(char.IsDigit))
+        //            {
+        //                Response.Write("<script>alert('Contact number must be 11 digits long and contain only numbers.'); </script>");
+        //                return;
+        //            }
+
+        //            // Birthdate validation
+        //            DateTime birthdate;
+        //            if (!DateTime.TryParse(txtbirthdate.Text, out birthdate))
+        //            {
+        //                Response.Write("<script>alert('Invalid birthdate. Please enter a valid date in the format YYYY/MM/D.');</script>");
+        //                return;
+        //            }
+
+        //            int age = DateTime.Now.Year - birthdate.Year;
+        //            if (birthdate > DateTime.Now.AddYears(-age))
+        //            {
+        //                age--;
+        //            }
+        //            if (age < 18 || age > 100)
+        //            {
+        //                Response.Write("<script>alert('You must be at least 18 years old to sign up and at most 100 years old.');</script>");
+        //                return;
+        //            }
+
+        //            Session["receiverIdno"] = idnum.ToString();
+        //            //SEND ID NUMBER TO EMAIL - IDNO IS USED TO LOGIN
+        //            checkEmail();
+
+        //            //Encrypt the password using SHA-256
+        //            string hashedPassword = GetSHA256Hash(password);
+
+        //            var data = new AdminAccount
+        //            {
+        //                idno = idnum,
+        //                lname = Server.HtmlEncode(txtlname.Text),
+        //                fname = Server.HtmlEncode(txtfname.Text),
+        //                mname = Server.HtmlEncode(txtmname.Text),
+        //                bdate = txtbirthdate.Text,
+        //                phone = contactNum,
+        //                email = Server.HtmlEncode(txtEmail.Text),
+        //                pass = hashedPassword,
+        //                businessProof = selectedProof,
+        //                validID = validID,
+        //                status = "Pending",
+        //                subStatus = "notSubscribed",
+        //                dateRegistered = DateTime.Now,
+        //                userRole = "Admin",
+        //                address = address
+        //            };
+        //            var list = new RefillingStation
+        //            {
+        //                addLongitude = longitude,
+        //                addLattitude = latitude,
+        //                stationName = Server.HtmlEncode(txtStationName.Text),
+        //                stationAddress = address,
+        //                proof = null,
+        //                dateAdded = DateTime.UtcNow
+        //            };
+
+
+        //            //CREATE LIST TO STORE THE LINKS
+        //            List<string> businessProofs = new List<string>();
+        //            List<string> validIDs = new List<string>();
+
+        //            //BUSINESS PROOF UPLOAD
+        //            if (businessProof.HasFile)
+        //            {
+        //                foreach (HttpPostedFile file in businessProof.PostedFiles)
+        //                {
+        //                    string fileName = Path.GetFileName(file.FileName);
+        //                    string fileExtension = Path.GetExtension(fileName);
+
+        //                    // Generate a unique file name
+        //                    string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+        //                    try
+        //                    {
+        //                        // Upload the file to Firebase Storage
+        //                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+        //                        var task = storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+        //                        //Wait for the upload task to complete
+
+        //                        await task;
+
+        //                        //Get the download URL of the uploaded file
+        //                        string proofUrl = await storage.Child("clientBusinessProof").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+        //                        //Save the link to the list
+        //                        businessProofs.Add(proofUrl);
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        //Handle any exceptions that occur during the upload process
+        //                        //You can log the exception details or handle the error in a way that suits your application
+        //                        Console.WriteLine("Error uploading file: " + ex.Message);
+        //                    }
+        //                }
+
+        //            }
+
+
+        //            Debug.WriteLine($"PROOFS : {string.Join(", ", businessProofs)}");
+
+        //            //VALID ID UPLOAD
+        //            if (validIDUpload.HasFile)
+        //            {
+        //                foreach (HttpPostedFile file in validIDUpload.PostedFiles)
+        //                {
+        //                    string fileName = Path.GetFileName(file.FileName);
+        //                    string fileExtension = Path.GetExtension(fileName);
+
+        //                    //Generate a unique file name
+        //                    string uniqueFileName = data.fname + data.lname + "_" + Guid.NewGuid().ToString() + fileExtension;
+
+        //                    try
+        //                    {
+        //                        //Upload the file to Firebase Storage
+        //                        var storage = new FirebaseStorage("big-system-64b55.appspot.com");
+        //                        var task = storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).PutAsync(file.InputStream);
+
+        //                        //Wait for the upload task to complete
+
+        //                        await task;
+
+        //                        //Get the download URL of the uploaded file
+        //                        string proofUrl = await storage.Child("clientValidID").Child(data.fname + data.lname).Child(uniqueFileName).GetDownloadUrlAsync();
+
+        //                        //Save the link to the list
+        //                        validIDs.Add(proofUrl);
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        //Handle any exceptions that occur during the upload process
+        //                        //You can log the exception details or handle the error in a way that suits your application
+        //                        Console.WriteLine("Error uploading file: " + ex.Message);
+        //                    }
+        //                }
+
+        //            }
+        //            Debug.WriteLine($"VALIDID: {string.Join(", ", validIDs)}");
+
+        //            var links = new Links
+        //            {
+        //                Businessproofs = businessProofs,
+        //                ValidIDs = validIDs,
+
+        //            };
+
+        //            SetResponse response;
+        //            //Storing the admin info
+        //            response = twoBigDB.Set("ADMIN/" + data.idno, data);//Storing data to the database
+        //            AdminAccount res = response.ResultAs<AdminAccount>();//Database Result
+
+        //            //Storing the refilling station info
+        //            response = twoBigDB.Set("ADMIN/" + data.idno + "/RefillingStation/", list);//Storing data to the database
+        //            RefillingStation result = response.ResultAs<RefillingStation>();//Database Result
+
+        //            //SAVE BUSINESS PROOF LINKS
+        //            response = twoBigDB.Set("ADMIN/" + data.idno + "/Links/", links);//Storing data to the database
+        //            Links Linkresult = response.ResultAs<Links>();//Database Result
+
+        //            //SAVE VALID ID LINKS
+        //            response = twoBigDB.Set("ADMIN/" + data.idno + "/ValidID/", links.ValidIDs);//Storing data to the database
+        //            Links validIDresult = response.ResultAs<Links>();//Database Result
+
+        //            Response.Write("<script>alert ('Account created! Please use your ID Number to Login. A copy of your ID number is sent to your email'); window.location.href = 'Account.aspx'; </script>");
+        //            Response.Write("<script>alert ('Your account has sucessfully created, please wait for approval before you login! Use this id number to log in.'); location.reload(); window.location.href = '/LandingPage/Account.aspx'; </script>");
+
+        //            //NOTIFICATION SENT TO SUPERADMIN FOR ACCOUNT APPROVAL
+        //            int ID = rnd.Next(1, 20000);
+        //            var Notification = new Notification
+        //            {
+        //                admin_ID = data.idno,
+        //                sender = "Admin",
+        //                receiver = "Super Admin",
+        //                title = "New Client",
+        //                body = "You have a new client! Check the details for approval ",
+        //                notificationDate = DateTime.Now,
+        //                status = "unread",
+        //                notificationID = ID
+
+        //            };
+
+        //            SetResponse notifResponse;
+        //            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+        //            Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+
+        //            //NOTIFICATION SENT TO ADMIN FOR ACCOUNT BEING PENDING
+        //            int notifID = rnd.Next(1, 30000);
+        //            var adminNotification = new Notification
+        //            {
+        //                admin_ID = data.idno,
+        //                sender = "Super Admin",
+        //                receiver = "Admin",
+        //                title = "Welcome to 2BiG!",
+        //                body = " Thankyou for signing up! Currently, your account is under review. You will receive a new notification once your account is approved",
+        //                notificationDate = DateTime.Now,
+        //                status = "unread",
+        //                notificationID = notifID
+
+        //            };
+
+        //            SetResponse adminResponse;
+        //            adminResponse = twoBigDB.Set("NOTIFICATION/" + notifID, adminNotification);//Storing data to the database
+        //            Notification adminNotif = adminResponse.ResultAs<Notification>();//Database Result
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Output the exception message to the console or log it
+        //        Debug.WriteLine("Error creating account: " + ex.Message);
+
+        //        Response.Write("<script>alert('Data already exist'); window.location.href = 'Account.aspx'; </script>");
+        //    }
+        //}
+
+        private bool checkDuplication()
+        {
+            string firstname = txtfname.Text;
+            string lastname = txtlname.Text;
+            string middlename = txtmname.Text;
+            string email = txtEmail.Text;
+            string phoneNumber = txtphoneNum.Text;
+            string address = Request.Form["address"];
+            string stationName = txtStationName.Text;
+
+            bool isDuplicate = false;
+           
+
+            FirebaseResponse empResponse = twoBigDB.Get("ADMIN/");
+            var admins = empResponse.ResultAs<Dictionary<string, AdminAccount>>();
+
+            if (admins != null)
+            {
+                foreach (KeyValuePair<string, AdminAccount> client in admins)
+                {
+                    empResponse = twoBigDB.Get("ADMIN/" + client.Value.idno + "/RefillingStation");
+                    RefillingStation station = empResponse.ResultAs<RefillingStation>();
+
+                    // CHECK IF THESE FIELDS ARE ALREADY IN THE DATABASE
+                    if (email == client.Value.email &&
+                        phoneNumber == client.Value.phone &&
+                        address == client.Value.address &&
+                        stationName == station.stationName)
+                    {
+                        isDuplicate = true;
+                        Debug.WriteLine($"DUPLICATE:{isDuplicate}");
+                        break;
+                    }
+                }
+
+                if (isDuplicate)
+                {
+                    Debug.WriteLine($"INSIDE IF DUPLICATE:{isDuplicate}");
+                    Response.Write("<script>alert('WARNING: Duplicate account detected! It appears that all the information you entered is already saved in the database. Account duplication is strictly prohibited. Creating multiple accounts for one Refilling Station may result in severe consequences, including a higher chance of being banned or blocked from accessing the system. To avoid any issues, please refrain from creating duplicate accounts.'); window.location.href = 'Account.aspx'; </script>");
+                   
+                }
+                else
+                {
+                    Response.Write("<scipt>alert('NO DUPLICATION'); </script>");
+                }
+            }
+            return isDuplicate;
+        }
+
+        private void checkRegisteredEmail() //FOR EMAIL USED TO LOGIN
         {
             string fullname = txtfname.Text + " " + txtlname.Text;
             string email = txtEmail.Text;
+
+            bool emailFound = false;
+
+            Debug.WriteLine($"FULLNAME: {fullname}");
+            Debug.WriteLine($"EMAIL: {email}");
+
+            try
+            {
+                FirebaseResponse empResponse = twoBigDB.Get("ADMIN/");
+                var admins = empResponse.ResultAs<Dictionary<string, AdminAccount>>();
+
+                if (admins != null)
+                {
+                    foreach (KeyValuePair<string, AdminAccount> entry in admins)
+                    {
+                        if (entry.Value.email == email)
+                        {
+                            Response.Write("<script> window.location.href = 'Account.aspx';</script>");
+                        }
+                        else
+                        {
+                            emailFound = true;
+                        }
+                    }
+
+                    if (emailFound)
+                    {
+                        Random rnd = new Random();
+                        int verificationCode = rnd.Next(1, 30000);
+                        string idno = Session["receiverIdno"].ToString();
+
+                        string fromMail = "technique.services2022@gmail.com";
+                        string fromPassword = "qenrtopcfoifbvbo";
+
+                        MailMessage message = new MailMessage();
+                        message.From = new MailAddress(fromMail);
+                        message.Subject = "2BiG Account Verification";
+                        message.To.Add(new MailAddress(email));
+                        message.Body = "<html><title>Verify your Identity</title> <body> Hey " + fullname + "! You just created an account in the 2BiG Platform. To complete your account registration, enter the code on the Verification Page. <br> Verification Code: <strong>" + verificationCode + "</strong></body></html>";
+                        message.IsBodyHtml = true;
+
+                        //SAVE TO SESSIONS TO USE IN THE REQUEST ANOTHER CODE
+                        Session["receiverEmail"] = email;
+                        Session["receiverName"] = fullname;
+
+
+                        var smtpClient = new SmtpClient("smtp.gmail.com")
+                        {
+                            Port = 587,
+                            Credentials = new NetworkCredential(fromMail, fromPassword),
+                            EnableSsl = true,
+                        };
+
+                        try
+                        {
+                            smtpClient.Send(message);
+
+                            Session["verificationCode"] = verificationCode.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log the exception
+                            Debug.WriteLine("Error sending email: " + ex.ToString());
+                            Response.Write("<script>alert('Error sending email. Please try again later.');</script>");
+                        }
+
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Debug.WriteLine("Error retrieving data from Firebase: " + ex.ToString());
+                Response.Write("<script>alert('Error retrieving data from Firebase. Please try again later.');</script>");
+            }
+        }
+
+        private void checkEmail() //FOR IDNO AS LOG-IN
+        {
+            string fullname = txtfname.Text + " " + txtlname.Text;
+            string email = txtEmail.Text;
+
+            bool emailFound = false;
 
             Debug.WriteLine($"FULLNAME: {fullname}");
             Debug.WriteLine($"EMAIL: {email}");
@@ -322,41 +734,53 @@ namespace WRS2big_Web.LandingPage
                         }
                         else
                         {
-                            Random rnd = new Random();
-                            int verificationCode = rnd.Next(1, 10000);
 
-                            string fromMail = "technique.services2022@gmail.com";
-                            string fromPassword = "qenrtopcfoifbvbo";
-
-                            MailMessage message = new MailMessage();
-                            message.From = new MailAddress(fromMail);
-                            message.Subject = "2BiG Account Verification";
-                            message.To.Add(new MailAddress(email));
-                            message.Body = "<html><title>Verify your Identity</title> <body> Hey " + fullname + "! You just created an account in the 2BiG Platform. To complete your account registration, enter the code on the Verification Page. Verification Code: <strong>" + verificationCode + "</strong></body></html>";
-                            message.IsBodyHtml = true;
-
-                            var smtpClient = new SmtpClient("smtp.gmail.com")
-                            {
-                                Port = 587,
-                                Credentials = new NetworkCredential(fromMail, fromPassword),
-                                EnableSsl = true,
-                            };
-
-                            try
-                            {
-                                smtpClient.Send(message);
-
-                                Session["verificationCode"] = verificationCode.ToString();
-                            }
-                            catch (Exception ex)
-                            {
-                                // Log the exception
-                                Debug.WriteLine("Error sending email: " + ex.ToString());
-                                Response.Write("<script>alert('Error sending email. Please try again later.');</script>");
-                            }
-
-                            return;
+                            emailFound = true;
                         }
+                    }
+
+                    if (emailFound)
+                    {
+                        Random rnd = new Random();
+                        int verificationCode = rnd.Next(1, 30000);
+                        string idno = Session["receiverIdno"].ToString();
+
+                        string fromMail = "technique.services2022@gmail.com";
+                        string fromPassword = "qenrtopcfoifbvbo";
+
+                        MailMessage message = new MailMessage();
+                        message.From = new MailAddress(fromMail);
+                        message.Subject = "2BiG Account Verification";
+                        message.To.Add(new MailAddress(email));
+                        message.Body = "<html><title>Verify your Identity</title> <body> Hey " + fullname + "! <br> Thankyou for signing-up in the 2BiG Platform! Use your ID number to log-in. <br> ID Number: <strong>" + idno + "</strong></body></html>";
+                        message.IsBodyHtml = true;
+
+                        //SAVE TO SESSIONS TO USE IN THE REQUEST ANOTHER CODE
+                        Session["receiverEmail"] = email;
+                        Session["receiverName"] = fullname;
+
+
+                        var smtpClient = new SmtpClient("smtp.gmail.com")
+                        {
+                            Port = 587,
+                            Credentials = new NetworkCredential(fromMail, fromPassword),
+                            EnableSsl = true,
+                        };
+
+                        try
+                        {
+                            smtpClient.Send(message);
+
+                            Session["verificationCode"] = verificationCode.ToString();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log the exception
+                            Debug.WriteLine("Error sending email: " + ex.ToString());
+                            Response.Write("<script>alert('Error sending email. Please try again later.');</script>");
+                        }
+
+                        return;
                     }
                 }
             }
@@ -367,8 +791,6 @@ namespace WRS2big_Web.LandingPage
                 Response.Write("<script>alert('Error retrieving data from Firebase. Please try again later.');</script>");
             }
         }
-
-
         //ENCRYPTING THE PASSWORD
         private string GetSHA256Hash(string input)
         {

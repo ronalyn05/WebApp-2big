@@ -139,7 +139,7 @@
                                         <center>
                                             <div class="col text-center">
                                                 <asp:LinkButton ID="submitCode" OnClick="submitCode_Click" class="btn-mktg d-block btn-muted-mktg" runat="server" Text="Submit" /> <br />
-                                               
+                                                <asp:LinkButton ID="anotherCode" OnClick="anotherCode_Click" class="btn-mktg d-block btn-muted-mktg" runat="server" Text="Request Another Code" /> <br />
                                             </div>
                                         </center>
                                     </div>
