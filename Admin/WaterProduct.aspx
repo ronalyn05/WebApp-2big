@@ -70,7 +70,7 @@
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <div class="col-md-12 col-sm-12 ">
+                                                                    <div class="col-md-12 col-sm-12 "> 
                                                                         <div class="x_content">
                                                                             <%-- <div class="item form-group">--%>
                                                                             <h4 style="color: black; font-family: Bahnschrift">Set the daily amount of the water in your tank supply.:</h4>
