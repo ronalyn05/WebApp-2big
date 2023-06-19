@@ -142,10 +142,11 @@
                                                                                 <div class="col-md-12 col-sm-12">
                                                                                     <strong>Add the vehicle types you have if you offer DELIVERY:</strong>
 
-                                                                                    <br />                                                                                    <br />
+                                                                                    <br />
+                                                                                    <br />
                                                                                     <strong>Note: The vehicle fee on every vehicle will be added to the total payable amount of the customer. If you dont want to add a vehicle fee, please enter zero(0) </strong>
                                                                                     <br />
-                                                                                                                                                                        <br />
+                                                                                    <br />
                                                                                     <br />
                                                                                     <strong>VEHICLE NAME: </strong>
                                                                                     <strong style="margin-left: 65px">VEHICLE FEE:</strong>
@@ -154,11 +155,11 @@
                                                                                     <br />
 
                                                                                     <asp:TextBox ID="vehicle1Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
-                                                                                    <asp:TextBox ID="vehicle1Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox> 
+                                                                                    <asp:TextBox ID="vehicle1Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator5" runat="server" ControlToValidate="vehicle1Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
-                                                                                    <asp:TextBox ID="vehicle1MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox> 
-                                                                                     <asp:RangeValidator ID="rangeValidator16" runat="server" ControlToValidate="vehicle1MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:TextBox ID="vehicle1MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator16" runat="server" ControlToValidate="vehicle1MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
                                                                                     <asp:TextBox ID="vehicle1MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator17" runat="server" ControlToValidate="vehicle1MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
@@ -166,32 +167,32 @@
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle2Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle2Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                   <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="vehicle2Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="vehicle2Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
                                                                                     <asp:TextBox ID="vehicle2MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator18" runat="server" ControlToValidate="vehicle2MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator18" runat="server" ControlToValidate="vehicle2MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle2MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator19" runat="server" ControlToValidate="vehicle2MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator19" runat="server" ControlToValidate="vehicle2MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle3Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle3Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                   <asp:RangeValidator ID="rangeValidator2" runat="server" ControlToValidate="vehicle3Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator2" runat="server" ControlToValidate="vehicle3Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
                                                                                     <asp:TextBox ID="vehicle3MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator20" runat="server" ControlToValidate="vehicle3MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator20" runat="server" ControlToValidate="vehicle3MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle3MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator21" runat="server" ControlToValidate="vehicle3MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator21" runat="server" ControlToValidate="vehicle3MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="vehicle4Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="vehicle4Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                   <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="vehicle4Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator3" runat="server" ControlToValidate="vehicle4Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
                                                                                     <asp:TextBox ID="vehicle4MinQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator22" runat="server" ControlToValidate="vehicle4MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator22" runat="server" ControlToValidate="vehicle4MinQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="vehicle4MaxQty" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator23" runat="server" ControlToValidate="vehicle4MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator23" runat="server" ControlToValidate="vehicle4MaxQty" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                 </div>
@@ -265,8 +266,8 @@
                                                                                     <strong>Distance in km for FREE Delivery:</strong>
                                                                                     <br />
                                                                                     <%--                                                                                    <asp:Label ID="Label8" runat="server" Text="Note: If you don't want to offer FREE DELIVERY, set "></asp:Label><br />--%>
-                                                                                    <asp:TextBox ID="FreeDelivery" Width="364px" TextMode="Number"  Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
-                                                                                     <asp:RangeValidator ID="rangeValidator32" runat="server" ControlToValidate="FreeDelivery" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:TextBox ID="FreeDelivery" Width="364px" TextMode="Number" Placeholder="Set the maximum distance for your FREE delivery" runat="server"></asp:TextBox>
+                                                                                    <asp:RangeValidator ID="rangeValidator32" runat="server" ControlToValidate="FreeDelivery" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                 </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
@@ -274,7 +275,7 @@
                                                                                     <br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="DeliveryFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                                                     <asp:RangeValidator ID="rangeValidator33" runat="server" ControlToValidate="DeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator33" runat="server" ControlToValidate="DeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
 
                                                                                 </div>
                                                                                 <br />
@@ -291,50 +292,55 @@
                                                                                         <asp:ListItem Value="Refill" onclick="refillOptions();" ID="refillSwapOptions">  &nbsp; Refill Products</asp:ListItem>
                                                                                         <asp:ListItem Value="other products"> &nbsp; other Products</asp:ListItem>
                                                                                         <asp:ListItem Value="thirdparty product"> &nbsp; Third-party Products</asp:ListItem>
-                                                                                        
+
                                                                                     </asp:CheckBoxList>
                                                                                 </div>
                                                                                 <br />
                                                                                 <hr />
                                                                                 <div>
-                                                                                <h8>
-                                                                                    <strong style="color: red">LEGEND:</strong> <br />
-                                                                                    <strong style="color: dodgerblue"> 
-                                                                                        STANDARD DELIVERY:
-                                                                                    </strong> <br />
+                                                                                    <h8>
+                                                                                        <strong style="color: red">LEGEND:</strong>
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">STANDARD DELIVERY:
+                                                                                        </strong>
+                                                                                        <br />
                                                                                         If choosen by the customer, the order can be processed within the day and not urgent.
                                                                                     <br />
-                                                                                    <br />
-                                                                                    By filling-up the textboxes, YOU allow the following: <br />
-                                                                                    <br />
-                                                                                    <strong style="color: dodgerblue">Time Schedule for Delivery:</strong>
-                                                                                    <br />
+                                                                                        <br />
+                                                                                        By filling-up the textboxes, YOU allow the following:
+                                                                                        <br />
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">Time Schedule for Delivery:</strong>
+                                                                                        <br />
                                                                                         Set the time schedule you want to deliver the Standard orders. Make sure to set the appropriate time, also considering your business hours.
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
+                                                                                        <br />
                                                                                         Set the distance range for the free delivery in Kilometers. Orders beyond this range will be calculated accordingly. If you wish not to give FREE DELIVERY, just enter zero(0). 
                                                                                     <br />
-                                                                                    <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
-                                                                                    <strong style="color: dodgerblue">Delivery Fee:</strong>
-                                                                                    <br />
+                                                                                        <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
+                                                                                        <strong style="color: dodgerblue">Delivery Fee:</strong>
+                                                                                        <br />
                                                                                         Set the fee that you want the customers to pay. This will be added to that total payable amount of the customer.
-                                                                                    <br /> <br />
-                                                                                        By ticking these checkboxes, it means that: <br />
-                                                                                    <strong style="color: dodgerblue">Refill:</strong>
                                                                                     <br />
+                                                                                        <br />
+                                                                                        By ticking these checkboxes, it means that:
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">Refill:</strong>
+                                                                                        <br />
                                                                                         You offer "REFILL" service in your business. This will enable the customers to order water refill.
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">third-party Products:</strong>
-                                                                                    <br />
-                                                                                        You offer products outside your business. These products are the one that is not directly from your business but you want to sell in your station as well. <br />
-                                                                                    <strong>Example: Nature's Spring Bottled Water </strong>
-                                                                                    <br />
-                                                                                    <strong style="color: dodgerblue">other Products:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">third-party Products:</strong>
+                                                                                        <br />
+                                                                                        You offer products outside your business. These products are the one that is not directly from your business but you want to sell in your station as well.
+                                                                                        <br />
+                                                                                        <strong>Example: Nature's Spring Bottled Water </strong>
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">other Products:</strong>
+                                                                                        <br />
                                                                                         You offer owned other products. Example of these products are your personalized products such as bottled water directly from your refilling station.
                                                                                     <br />
-                                                                                </h8>
+                                                                                    </h8>
                                                                                 </div>
 
                                                                             </div>
@@ -390,45 +396,50 @@
                                                                                         <asp:ListItem Value="Refill" onclick="reserveRefillOptions();" ID="reserveSwapOptions"> &nbsp; Refill Products</asp:ListItem>
                                                                                         <asp:ListItem Value="other products"> &nbsp; other Products</asp:ListItem>
                                                                                         <asp:ListItem Value="thirdparty product"> &nbsp; Third-party Products</asp:ListItem>
-                                                                                        
+
                                                                                     </asp:CheckBoxList>
                                                                                 </div>
-                                                                                <br /> <hr />
+                                                                                <br />
+                                                                                <hr />
                                                                                 <br />
                                                                                 <div>
-                                                                                <h8>
-                                                                                    <strong style="color: red">LEGEND:</strong> <br />
-                                                                                    <strong style="color: dodgerblue"> 
-                                                                                        RESERVATION DELIVERY:
-                                                                                    </strong> <br />
+                                                                                    <h8>
+                                                                                        <strong style="color: red">LEGEND:</strong>
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">RESERVATION DELIVERY:
+                                                                                        </strong>
+                                                                                        <br />
                                                                                         If choosen by the customer, the customer can set a time and date when should the order be delivered.
                                                                                     <br />
-                                                                                    <br />
-                                                                                    By filling-up the textboxes, YOU allow the following: <br />
-                                                                                   
-                                                                                    <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
-                                                                                    <br />
+                                                                                        <br />
+                                                                                        By filling-up the textboxes, YOU allow the following:
+                                                                                        <br />
+
+                                                                                        <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
+                                                                                        <br />
                                                                                         Set the distance range for the free delivery in Kilometers. Orders beyond this range will be calculated accordingly. If you wish not to give FREE DELIVERY, just enter zero(0). 
                                                                                     <br />
-                                                                                    <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
-                                                                                    <strong style="color: dodgerblue">Delivery Fee:</strong>
-                                                                                    <br />
+                                                                                        <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
+                                                                                        <strong style="color: dodgerblue">Delivery Fee:</strong>
+                                                                                        <br />
                                                                                         Set the fee that you want the customers to pay. This will be added to that total payable amount of the customer.
-                                                                                    <br /> <br />
-                                                                                        By ticking these checkboxes, it means that: <br />
-                                                                                    <strong style="color: dodgerblue">Refill:</strong>
                                                                                     <br />
+                                                                                        <br />
+                                                                                        By ticking these checkboxes, it means that:
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">Refill:</strong>
+                                                                                        <br />
                                                                                         You offer "REFILL" service in your business. This will enable the customers to order water refill.
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">third-party Products:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">third-party Products:</strong>
+                                                                                        <br />
                                                                                         You offer products outside your business. These products are the one that is not directly from your business but you want to sell in your station as well. Example: Nature's Spring Bottled Water
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">other Products:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">other Products:</strong>
+                                                                                        <br />
                                                                                         You offer owned other products. Example of these products are your personalized products such as bottled water directly from your refilling station.
                                                                                     <br />
-                                                                                </h8>
+                                                                                    </h8>
                                                                                 </div>
 
                                                                             </div>
@@ -467,8 +478,8 @@
                                                                                     <strong>Express Delivery fee:</strong><br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="expressdeliveryFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                                               <asp:RangeValidator ID="rangeValidator6" runat="server" ControlToValidate="expressdeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
-                                                                                    </div>
+                                                                                    <asp:RangeValidator ID="rangeValidator6" runat="server" ControlToValidate="expressdeliveryFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
                                                                                     <strong>Distance in km for Delivery:</strong>
@@ -482,49 +493,59 @@
                                                                                     <strong>What products do you offer for the EXPRESS delivery?</strong>
                                                                                     <asp:CheckBoxList ID="expressOrderMethod" runat="server">
                                                                                         <asp:ListItem Value="Refill" onclick="expressRefillOptions();" ID="expressSwapOptions">  &nbsp; Refill Products</asp:ListItem>
-                                                                                       <asp:ListItem Value="other products"> &nbsp; other Products</asp:ListItem>
+                                                                                        <asp:ListItem Value="other products"> &nbsp; other Products</asp:ListItem>
                                                                                         <asp:ListItem Value="thirdparty product"> &nbsp; Third-party Products</asp:ListItem>
                                                                                     </asp:CheckBoxList>
                                                                                 </div>
                                                                                 <br />
                                                                                 <hr />
                                                                                 <div>
-                                                                                <h8>
-                                                                                    <strong style="color: red">LEGEND:</strong> <br />
-                                                                                    <strong style="color: dodgerblue"> 
-                                                                                        EXPRESS DELIVERY:
-                                                                                    </strong> <br />
-                                                                                        If choosen by the customer, the order should be PRIORITIZED
-                                                                                    <br /> <br />
 
-                                                                                    By filling-up the textboxes, YOU allow the following: <br />
-                                                                                   
-                                                                                    <strong style="color: dodgerblue">Estimated time(minutes):</strong>
+                                                                                    <h8>
+                                                                                        <strong style="color: red">LEGEND:</strong>
+                                                                                        <br />
+
+                                                                                        <strong style="color: dodgerblue">EXPRESS DELIVERY:
+                                                                                        </strong>
+                                                                                        <br />
+                                                                                        If choosen by the customer, the order should be PRIORITIZED
                                                                                     <br />
+                                                                                        <br />
+
+                                                                                        By filling-up the textboxes, YOU allow the following:
+                                                                                        <br />
+
+                                                                                        <strong style="color: dodgerblue">Estimated time(minutes):</strong>
+                                                                                        <br />
                                                                                         Set the estimated in minutes for the express delivery. 
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">Distance in KM for FREE Delivery:</strong>
+                                                                                        <br />
                                                                                         Set the distance range for the free delivery in Kilometers. Orders beyond this range will be calculated accordingly. If you wish not to give FREE DELIVERY, just enter zero(0). 
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">Delivery Fee:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">Delivery Fee:</strong>
+                                                                                        <br />
                                                                                         Set the fee that you want the customers to pay. This will be added to that total payable amount of the customer.
-                                                                                    <br /> <br />
-                                                                                        By ticking these checkboxes, it means that: <br />
-                                                                                    <strong style="color: dodgerblue">Refill:</strong>
                                                                                     <br />
+                                                                                        <br />
+                                                                                        By ticking these checkboxes, it means that:
+                                                                                        <br />
+                                                                                        <strong style="color: dodgerblue">Refill:</strong>
+                                                                                        <br />
                                                                                         You offer "REFILL" service in your business. This will enable the customers to order water refill.
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">third-party Products:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">third-party Products:</strong>
+                                                                                        <br />
                                                                                         You offer products outside your business. These products are the one that is not directly from your business but you want to sell in your station as well. Example: Nature's Spring Bottled Water
                                                                                     <br />
-                                                                                    <strong style="color: dodgerblue">other Products:</strong>
-                                                                                    <br />
+                                                                                        <strong style="color: dodgerblue">other Products:</strong>
+                                                                                        <br />
                                                                                         You offer owned other products. Example of these products are your personalized products such as bottled water directly from your refilling station.
                                                                                     <br />
-                                                                                </h8>
+
+                                                                                    </h8>
+                                                                                    </script>
+                                                                                        
                                                                                 </div>
                                                                             </div>
 
@@ -607,8 +628,8 @@
                                                                                     <strong>Express Delivery fee:</strong><br />
                                                                                     <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                     <asp:TextBox ID="updateExpressFee" TextMode="Number" Width="364px" Placeholder="Enter the specific amount for the delivery fee" runat="server"></asp:TextBox>
-                                                                               <asp:RangeValidator ID="rangeValidator7" runat="server" ControlToValidate="updateExpressFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
-                                                                                    </div>
+                                                                                    <asp:RangeValidator ID="rangeValidator7" runat="server" ControlToValidate="updateExpressFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                </div>
                                                                                 <br />
                                                                                 <div class="col-md-12 col-sm-12 ">
                                                                                     <strong>Delivery Distance by km:</strong>
@@ -688,8 +709,8 @@
                                                                                         <br />
                                                                                         <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                         <asp:TextBox ID="updateStandardFee" Width="364px" TextMode="Number" Placeholder="Set the Delivery fee:" runat="server"></asp:TextBox>
-                                                                                   <asp:RangeValidator ID="rangeValidator8" runat="server" ControlToValidate="updateStandardFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
-                                                                                        </div>
+                                                                                        <asp:RangeValidator ID="rangeValidator8" runat="server" ControlToValidate="updateStandardFee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    </div>
                                                                                     <br />
 
                                                                                     <br />
@@ -829,42 +850,42 @@
                                                                                 </div>
                                                                                 <br />
                                                                                 <hr />
-                                                                    <div id="standardLegend">
-                                                                    <h8>
-                                                                        <strong style="color: red">LEGEND:</strong>
+                                                                                <div id="standardLegend">
+                                                                                    <h8>
+                                                                                        <strong style="color: red">LEGEND:</strong>
+                                                                                        <br />
+                                                                                        By checking the following checkboxes, YOU allow the following:
                                                                         <br />
-                                                                        By checking the following checkboxes, YOU allow the following:
-                                                                        <br />
-                                                                        <strong style="color: dodgerblue">Pick-up:</strong>
-                                                                        <br />
-                                                                        Your customers can Pick-up their orders in the station.
+                                                                                        <strong style="color: dodgerblue">Pick-up:</strong>
+                                                                                        <br />
+                                                                                        Your customers can Pick-up their orders in the station.
                                                                                     <br />
-                                                                        <strong style="color: dodgerblue">Delivery:</strong>
-                                                                        <br />
-                                                                        The orders of the customer will be delivered to their delivery address.
+                                                                                        <strong style="color: dodgerblue">Delivery:</strong>
+                                                                                        <br />
+                                                                                        The orders of the customer will be delivered to their delivery address.
                                                                                     <br />
-                                                                        <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
-                                                                        <strong style="color: dodgerblue">Swap with Condition:</strong>
-                                                                        <br />
-                                                                        Let the customers give their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill.
+                                                                                        <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
+                                                                                        <strong style="color: dodgerblue">Swap with Condition:</strong>
+                                                                                        <br />
+                                                                                        Let the customers give their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill.
                                                                                     <br />
-                                                                        <strong style="color: dodgerblue">Swap without Condition:</strong>
-                                                                        <br />
-                                                                        Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill.
+                                                                                        <strong style="color: dodgerblue">Swap without Condition:</strong>
+                                                                                        <br />
+                                                                                        Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill.
                                                                                     <br />
-                                                                        <strong style="color: dodgerblue">Gallon drop-by:</strong>
+                                                                                        <strong style="color: dodgerblue">Gallon drop-by:</strong>
+                                                                                        <br />
+                                                                                        You allow the customers to personally drop their gallons in the station for refill
                                                                         <br />
-                                                                        You allow the customers to personally drop their gallons in the station for refill
-                                                                        <br />
-                                                                        <strong style="color: dodgerblue">Request Gallon Pick-up:</strong>
-                                                                        <br />
-                                                                        Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped.
+                                                                                        <strong style="color: dodgerblue">Request Gallon Pick-up:</strong>
+                                                                                        <br />
+                                                                                        Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped.
                                                                                     <br />
-                                                                        <strong style="color: dodgerblue">per Gallon Fee: </strong>
-                                                                        <br />
-                                                                        Additional FEE if the customer requests for a 'Gallon Pick-up'
-                                                                    </h8>
-                                                                    </div>
+                                                                                        <strong style="color: dodgerblue">per Gallon Fee: </strong>
+                                                                                        <br />
+                                                                                        Additional FEE if the customer requests for a 'Gallon Pick-up'
+                                                                                    </h8>
+                                                                                </div>
 
                                                                             </div>
                                                                             <br />
@@ -957,36 +978,36 @@
                                                                                     <asp:TextBox ID="updateV1Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator11" runat="server" ControlToValidate="updateV1Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV1Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator24" runat="server" ControlToValidate="updateV1Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator24" runat="server" ControlToValidate="updateV1Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV1Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator25" runat="server" ControlToValidate="updateV1Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator25" runat="server" ControlToValidate="updateV1Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV2Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV2Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator12" runat="server" ControlToValidate="updateV2Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV2Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator26" runat="server" ControlToValidate="updateV2Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator26" runat="server" ControlToValidate="updateV2Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV2Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator27" runat="server" ControlToValidate="updateV2Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator27" runat="server" ControlToValidate="updateV2Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV3Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV3Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator13" runat="server" ControlToValidate="updateV3Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV3Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator28" runat="server" ControlToValidate="updateV3Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator28" runat="server" ControlToValidate="updateV3Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV3Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator29" runat="server" ControlToValidate="updateV3Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator29" runat="server" ControlToValidate="updateV3Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                     <br />
                                                                                     <asp:TextBox ID="updateV4Name" Width="150px" Height="40px" Placeholder="Vehicle Name:" runat="server"></asp:TextBox>
                                                                                     <asp:TextBox ID="updateV4Fee" Width="100px" Height="40px" TextMode="Number" Placeholder="Vehicle Fee:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
                                                                                     <asp:RangeValidator ID="rangeValidator14" runat="server" ControlToValidate="updateV4Fee" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV4Min" Width="100px" Height="40px" TextMode="Number" Placeholder="Minimum:" runat="server" Style="margin-left: 50px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator30" runat="server" ControlToValidate="updateV4Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator30" runat="server" ControlToValidate="updateV4Min" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <asp:TextBox ID="updateV4Max" Width="100px" Height="40px" TextMode="Number" Placeholder="Maximum:" runat="server" Style="margin-left: 60px;"></asp:TextBox>
-                                                                                      <asp:RangeValidator ID="rangeValidator31" runat="server" ControlToValidate="updateV4Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
+                                                                                    <asp:RangeValidator ID="rangeValidator31" runat="server" ControlToValidate="updateV4Max" Type="Double" MinimumValue="0" ErrorMessage="Invalid Number" ForeColor="Red"></asp:RangeValidator>
                                                                                     <br />
                                                                                 </div>
                                                                             </div>
@@ -1053,40 +1074,63 @@
                                                                     <br />
                                                                     <br />
                                                                     <hr />
-                                                                    <h8>
+                                                                    <div id="legend" style="display: none;">
                                                                         <strong style="color: red">LEGEND:</strong>
                                                                         <br />
                                                                         By checking the following checkboxes, YOU allow the following:
-                                                                        <br />
+  <br />
                                                                         <strong style="color: dodgerblue">Pick-up:</strong>
                                                                         <br />
                                                                         Your customers can Pick-up their orders in the station.
-                                                                                    <br />
+  <br />
                                                                         <strong style="color: dodgerblue">Delivery:</strong>
                                                                         <br />
                                                                         The orders of the customer will be delivered to their delivery address.
-                                                                                    <br />
+  <br />
                                                                         <%--This gives the customer an option to give 'conditions' on the gallons that they want to receive when ordering water refill--%>
                                                                         <strong style="color: dodgerblue">Swap with Condition:</strong>
                                                                         <br />
                                                                         Let the customers give their personal 'conditions' or note about the swapped gallon that they want to receive when ordering water refill.
-                                                                                    <br />
+  <br />
                                                                         <strong style="color: dodgerblue">Swap without Condition:</strong>
                                                                         <br />
-                                                                        Let YOU, the admin to decide on what gallon should be swapped with the customer gallon when ordering water refill.
-                                                                                    <br />
+                                                                        Let YOU, the admin decide on what gallon should be swapped with the customer gallon when ordering water refill.
+  <br />
                                                                         <strong style="color: dodgerblue">Gallon drop-by:</strong>
                                                                         <br />
-                                                                        You allow the customers to personally drop their gallons in the station for refill
-                                                                        <br />
+                                                                        You allow the customers to personally drop their gallons in the station for refill.
+  <br />
                                                                         <strong style="color: dodgerblue">Request Gallon Pick-up:</strong>
                                                                         <br />
-                                                                        Gives the customers an option to request for a 'gallon pick-up' if they dont want their gallons to be swapped.
-                                                                                    <br />
+                                                                        Gives the customers an option to request for a 'gallon pick-up' if they don't want their gallons to be swapped.
+  <br />
                                                                         <strong style="color: dodgerblue">per Gallon Fee: </strong>
                                                                         <br />
-                                                                        Additional FEE if the customer requests for a 'Gallon Pick-up'
-                                                                    </h8>
+                                                                        Additional FEE if the customer requests a 'Gallon Pick-up'.
+                                                                    </div>
+                                                                    <br />
+                                                                      <%--  BUTTON TO SHOW SA LEGEND--%>
+                                                                    <button id="showButton" onclick="showLegend();">SHOW LEGEND</button>
+                                                                       <%--  BUTTON TO HIDE SA LEGEND--%>
+                                                                    <button id="hideButton" style="display: none;" onclick="hideLegend();">HIDE LEGEND</button>
+
+                                                                 <%--   SA PAGHIDE SA LEGEND--%>
+                                                                    <script>
+                                                                        function showLegend() {
+                                                                            document.getElementById('legend').style.display = 'block';
+                                                                            document.getElementById('showButton').style.display = 'none';
+                                                                            document.getElementById('hideButton').style.display = 'inline-block';
+                                                                        }
+
+                                                                        function hideLegend() {
+                                                                            document.getElementById('legend').style.display = 'none';
+                                                                            document.getElementById('showButton').style.display = 'inline-block';
+                                                                            document.getElementById('hideButton').style.display = 'none';
+                                                                        }
+                                                                    </script>
+
+
+
                                                                     <br />
                                                                     <br />
                                                                     <div class="modal-footer">
@@ -1100,6 +1144,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <asp:Label ID="warning" runat="server" Style="color: black; font-size: 18px;"></asp:Label>
                                             <br />
                                             <br />

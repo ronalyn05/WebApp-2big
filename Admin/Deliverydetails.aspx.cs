@@ -31,6 +31,7 @@ namespace WRS2big_Web.Admin
         };
 
         IFirebaseClient twoBigDB;
+    
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -38,6 +39,8 @@ namespace WRS2big_Web.Admin
 
 
             //detailsGridView();
+
+         
 
             // expressDisplay();
             // reservationDisplay();
