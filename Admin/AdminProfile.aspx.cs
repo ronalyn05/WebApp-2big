@@ -162,18 +162,26 @@ namespace WRS2big_Web.Admin
 
                     if (packageDet.renewable == "No")
                     {
+                        renewBTN.Visible = false;
+
                         DateTime currentDate = DateTime.Now;
-                        DateTime subStart = expiration.subStart;
+                        DateTime subStart = expiration.subStart.Date;
                         DateTime finalChangePackage = subStart.AddDays(5); // final expiration date
+                        DateTime subExpiration = expiration.expiration;
+
 
                         Debug.WriteLine($"NOW: {currentDate}");
                         Debug.WriteLine($"SUB START: {subStart}");
                         Debug.WriteLine($"FINAL CHANGE PACKAGE: {finalChangePackage}");
 
-                        if (currentDate <= finalChangePackage)
+
+
+                        //CHANGE PACKAGE BUTTON
+                        if (currentDate.Date <= finalChangePackage)
                         {
                             // currentDate is on or before the finalChangePackage, enable the button
                             changePackage.Visible = true;
+                            renewBTN.Visible = false;
 
                             currentSubscription.InnerText = expiration.packageName;
 
@@ -182,16 +190,50 @@ namespace WRS2big_Web.Admin
                             currentExpiration.InnerText = formattedExp;
 
                         }
+                        else if (currentDate >= subExpiration)
+                        {
+                            subscribeBTN.Text = "Subscribe Again";
+                            subscribeBTN.Visible = true;
+                            changePackage.Visible = false;
+                        }
                         else
                         {
                             // currentDate is after the finalChangePackage, disable the button
+                            changePackage.Visible = false;
+                            renewBTN.Visible = false;
+                        }
+
+
+                       
+                    }
+                    else if (packageDet.renewable == "Yes")
+                    {
+                        DateTime currentDate = DateTime.Now;
+                        DateTime subExpiration = expiration.expiration.Date;
+                        DateTime enableRenewal = subExpiration.AddDays(-2);
+
+                        Debug.WriteLine($"EXPIRATION: {subExpiration}");
+                        Debug.WriteLine($"ENABLE RENEW:{enableRenewal}");
+
+                        //RENEW BUTTON
+                        if (currentDate.Date >= enableRenewal)
+                        {
+                            //enable the renew button only 2 days before the expiration. Same time nga masend ang notification
+                            renewBTN.Visible = true;
+                            changePackage.Visible = false;
+                        }
+                        else
+                        {
+                            renewBTN.Visible = false;
                             changePackage.Visible = false;
                         }
                     }
                     else
                     {
+                        renewBTN.Visible = false;
                         changePackage.Visible = false;
                     }
+
 
                     Debug.WriteLine($"NOW: {DateTime.Now}");
                     Debug.WriteLine($"DATE: {expiration.expiration}");
@@ -342,6 +384,8 @@ namespace WRS2big_Web.Admin
                     //check if naka subscribe na ba ang admin 
                     if (status == "Approved")
                     {
+                        newUploadBtn.Visible = false;
+
                         if (subStatus == "Subscribed")
                         {
                             subscribeBTN.Visible = false;
@@ -366,6 +410,7 @@ namespace WRS2big_Web.Admin
 
                             }
                         }
+
 
                         else if (subStatus == "notSubscribed")
                         {
@@ -414,6 +459,7 @@ namespace WRS2big_Web.Admin
                                     string reason = notifs.body;
                                     warningMsg.Text = "Your application is DECLINED ! If you wish to continue using the system, you must comply with the requirements. Read the reasons provided to further understand the problem with your application.";
                                     declinereason.Text = "REASON:" + " " + reason;
+                                    newUploadBtn.Visible = true;
                                     return;
                                 }
                             }

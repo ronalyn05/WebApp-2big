@@ -928,7 +928,7 @@ namespace WRS2big_Web
 
                 if (role == "Cashier")
                 {
-                    string currentID = (string)Session["cashierID"];
+                    string currentID = (string)Session["idno"];
 
                     //generate a random number for users logged
                     int idnum = rnd.Next(1, 10000);
