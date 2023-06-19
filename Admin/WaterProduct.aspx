@@ -605,6 +605,7 @@
                                                                                 </Columns>
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                 <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
+                                                                              <%--   <HeaderStyle BackColor="Blue" Font-Bold="True" ForeColor="White" />--%>
                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
                                                                                 <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
                                                                                 <SortedAscendingCellStyle BackColor="#F7F7F7" />

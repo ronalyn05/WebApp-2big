@@ -664,12 +664,17 @@ namespace WRS2big_Web.Admin
                     // Get the file extension
                     string fileExtension = Path.GetExtension(imgProduct.FileName);
 
+                    //// Check if the file extension is allowed (JPG)
+                    //if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
+                    //{
                     // Check if the file extension is allowed (JPG)
-                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
+                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg" || fileExtension.ToLower() == ".png" || fileExtension.ToLower() == ".bmp" || fileExtension.ToLower() == ".svg" || fileExtension.ToLower() == ".gif")
                     {
-                        
-                        //Check if the file size is within the allowed limit
-                            int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
+                        // Check if the file extension is allowed
+                        //if (fileExtension.ToLower() != ".pdf" && fileExtension.ToLower() != ".pptx" && fileExtension.ToLower() != ".docx" && fileExtension.ToLower() != ".xlsx")
+                        //{
+                        //        //Check if the file size is within the allowed limit
+                        int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
                         if (imgProduct.FileContent.Length <= maxFileSizeInBytes)
                         {
                             using (var memoryStream = new MemoryStream())
@@ -726,14 +731,28 @@ namespace WRS2big_Web.Admin
                             Response.Write("<script>alert('File size should not exceed 5MB.'); </script>");
                             return;
                         }
-                    }
-                    else
-                    {
-                        //lblErrorMessage.Text = "Only JPG files are allowed.";
-                        Response.Write("<script>alert('Only JPG files are allowed.'); </script>");
-                        return;
-                    }
                 }
+                else
+                {
+                    //lblError.Text = "Only JPG files are allowed.";
+                    Response.Write("<script>alert('Only image files are allowed such as jpg or jpeg, png, gif, bmp, and svg !'); </script>");
+                    return;
+                }
+                //}
+                //else
+                //{
+                //    // File extension is not allowed
+                //    Response.Write("<script>alert('Only files with extensions other than PDF, PPTX, DOCX, and Excel files are allowed.'); </script>");
+                //    return;
+                //}
+                //}
+                //else
+                //{
+                //    //lblErrorMessage.Text = "Only JPG files are allowed.";
+                //    Response.Write("<script>alert('Only JPG files are allowed.'); </script>");
+                //    return;
+                //}
+            }
                 else
                 {
                     // No image uploaded, handle accordingly
@@ -902,10 +921,11 @@ namespace WRS2big_Web.Admin
                     string fileExtension = Path.GetExtension(prodImage.FileName);
 
                     // Check if the file extension is allowed (JPG)
-                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
+                    if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg" || fileExtension.ToLower() == ".png" || fileExtension.ToLower() == ".bmp" || fileExtension.ToLower() == ".svg" || fileExtension.ToLower() == ".gif")
                     {
                         // Check if the file size is within the allowed limit
                         int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
+
                         if (prodImage.FileContent.Length <= maxFileSizeInBytes)
                         {
                             using (var memoryStream = new MemoryStream())
@@ -960,7 +980,7 @@ namespace WRS2big_Web.Admin
                     else
                     {
                         //lblError.Text = "Only JPG files are allowed.";
-                        Response.Write("<script>alert('Only JPG files are allowed.'); </script>");
+                        Response.Write("<script>alert('Only image files are allowed such as jpg or jpeg, png, gif, bmp, and svg !'); </script>");
                         return;
                     }
                 }
