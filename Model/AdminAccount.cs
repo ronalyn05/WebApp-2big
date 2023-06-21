@@ -74,6 +74,7 @@ namespace WRS2big_Web.Model
         public string emp_lastname { get; set; }
         public string emp_firstname { get; set; }
         public string emp_pass { get; set; }
+        public string emp_conpass { get; set; }
         public string emp_midname { get; set; }
         public string emp_birthdate { get; set; }
         public string emp_gender { get; set; }
@@ -132,10 +133,7 @@ namespace WRS2big_Web.Model
         public string swapOptions { get; set; }
         public string paymentMethods { get; set; }
         public string gcashNumber { get; set; }
-        
         public string orderTypes { get; set; }
-
-
         public string vehicle1Name { get; set; }
         public string vehicle1Fee { get; set; }
         public string vehicle2Name { get; set; }
@@ -145,32 +143,26 @@ namespace WRS2big_Web.Model
         public string vehicle4Name { get; set; }
         public string vehicle4Fee { get; set; }
         public string perGallonFee { get; set; }
-
         public string vehicle1MinQty { get; set; }
         public string vehicle2MinQty { get; set; }
         public string vehicle3MinQty { get; set; }
         public string vehicle4MinQty { get; set; }
-
         public string vehicle1MaxQty { get; set; }
         public string vehicle2MaxQty { get; set; }
         public string vehicle3MaxQty { get; set; }
         public string vehicle4MaxQty { get; set; }
-
         public string vehicle1stat { get; set; }
         public string vehicle2stat { get; set; }
         public string vehicle3stat { get; set; }
         public string vehicle4stat { get; set; }
-
         public string vehicle1ID { get; set; }
         public string vehicle2ID { get; set; }
         public string vehicle3ID { get; set; }
         public string vehicle4ID { get; set; }
-
         //STANDARD
         public int standardID { get; set; }
         public string standistance { get; set; }
         public string stanDeliveryFee { get; set; }
-
         public string stanDeliverytype { get; set; }
         public string stanDeliveryTime { get; set; }
         public string standardProducts { get; set; }
@@ -246,6 +238,25 @@ namespace WRS2big_Web.Model
         public DateTime dateAdded { get; set; }
         public string addedBy { get; set; }
 
+    }
+    public class Products
+    {
+        public int adminId { get; set; }
+        public int productId { get; set; }
+        public string offerType { get; set; }
+        public string productType { get; set; }
+        public string product_UnitOfVolume { get; set; }
+        public string productQty { get; set; }
+        public string productPrice { get; set; }
+        public string productStockQty { get; set; }
+        public string productStockUnit { get; set; }
+        public string productStockBalance { get; set; }
+        public string productDiscount { get; set; }
+        public string productImage { get; set; }
+        public string addedBy { get; set; }
+        public DateTime dateAdded { get; set; }
+        public DateTime dateUpdated { get; set; }
+        public string updatedBy { get; set; }
     }
     public class ProductRefill
     {

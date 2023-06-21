@@ -158,14 +158,15 @@
                                                                             ErrorMessage="Please enter a valid quantity" ValidationExpression="^\d+$" ValidationGroup="validationGroup"></asp:RegularExpressionValidator>--%>
                                                                     </div>
                                                                     <br />
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <strong>Product Price:</strong>
-                                                                        <asp:TextBox ID="productPrice" TextMode="Number" Height="40px" Placeholder="Enter the price of product cost" runat="server" Width="464px"></asp:TextBox>
-                                                                         <br />
-                                                                        <asp:RangeValidator ID="pricerangeValidator" runat="server" ControlToValidate="productPrice" Type="Double" MinimumValue="0" ErrorMessage="Please enter a valid price (must input a number)" ForeColor="Red"></asp:RangeValidator>
-                                                                      <%--  <asp:RegularExpressionValidator ID="priceValidator" runat="server" ControlToValidate="productPrice"
-                                                                            ErrorMessage="Please enter a valid price" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup"></asp:RegularExpressionValidator>--%>
-                                                                    </div>
+                                                                  <div class="col-md-12 col-sm-12">
+                                                                    <strong>Product Price:</strong>
+                                                                    <asp:TextBox ID="productPrice" TextMode="Number" Height="40px" Placeholder="Enter the price of the product" runat="server" Width="464px"></asp:TextBox>
+                                                                    <br />
+                                                                    <asp:RangeValidator ID="pricerangeValidator" runat="server" ControlToValidate="productPrice" Type="Double" MinimumValue="0" ErrorMessage="Please enter a valid price (must be a non-negative number)" ForeColor="Red"></asp:RangeValidator>
+                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="productPrice"
+                                                                        ErrorMessage="Please enter a valid price (must be a number or decimal)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
+                                                                </div>
+
                                                                     <br />
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <strong>Product Discount:</strong>
@@ -173,9 +174,9 @@
                                                                         <h7>Please enter the discount percentage (%) you offer for this product</h7>
                                                                         <asp:TextBox ID="productDiscounts" TextMode="Number" Placeholder="Enter discount offered" runat="server" Height="40px" Width="464px"></asp:TextBox>
                                                                          <br />
-                                                                        <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="productDiscounts" Type="Double" MinimumValue="0" ErrorMessage="Please enter a valid discount (must input a number)" ForeColor="Red"></asp:RangeValidator>
-                                                                       <%-- <asp:RegularExpressionValidator ID="discountValidator" runat="server" ControlToValidate="productDiscounts"
-                                                                            ErrorMessage="Please enter a valid discount" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup"></asp:RegularExpressionValidator>--%>
+                                                                        <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="productDiscounts" Type="Double" MinimumValue="0" ErrorMessage="Please enter a valid discount (must input a number or in decimal)" ForeColor="Red"></asp:RangeValidator>
+                                                                        <asp:RegularExpressionValidator ID="discountValidator" runat="server" ControlToValidate="productDiscounts"
+                                                                            ErrorMessage="Please enter a valid discount" ValidationExpression="^\d+(\.\d+)?$" ValidationGroup="validationGroup"></asp:RegularExpressionValidator>
                                                                     </div>
                                                                               <br />
                                                                             <hr />
@@ -568,7 +569,13 @@
                                                                     <asp:ListItem Text="Tank Supply" Value="3"></asp:ListItem>
 
                                                                 </asp:DropDownList>
+                                                                 <div style="float: right;">
 
+                                                                                <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                                                <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchProduct_Click" CssClass="btn-primary" Height="40px" />
+                                                                                <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
+                                                                                <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
+                                                                            </div>
                                                                 <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px" />
                                                                 <div class="table-responsive">
                                                                     <div class="tab-content">
@@ -576,17 +583,11 @@
                                                                             <hr />
                                                                             <%-- PRODUCTS REFILL NI DIRI--%>
                                                                             <%-- <h5> Products Refill</h5>--%>
+                                                                           
                                                                             <div style="float: right;">
 
-                                                                                <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
-                                                                                <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchProduct_Click" CssClass="btn-primary" Height="40px" />
-                                                                                <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
-                                                                                <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
-                                                                            </div>
-                                                                            <div style="float: right;">
-
-                                                                                <asp:TextBox ID="txtSearchThirdParty" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
-                                                                                <asp:Button ID="btnSearchThirdParty" runat="server" Text="Search" OnClick="btnSearchThirdParty_Click" CssClass="btn-primary" Height="40px" />
+                                                                              <%--  <asp:TextBox ID="txtSearchThirdParty" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
+                                                                                <asp:Button ID="btnSearchThirdParty" runat="server" Text="Search" OnClick="btnSearchThirdParty_Click" CssClass="btn-primary" Height="40px" />--%>
                                                                                 <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
                                                                                 <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
                                                                             </div>
@@ -605,7 +606,6 @@
                                                                                 </Columns>
                                                                                 <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                 <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
-                                                                              <%--   <HeaderStyle BackColor="Blue" Font-Bold="True" ForeColor="White" />--%>
                                                                                 <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
                                                                                 <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
                                                                                 <SortedAscendingCellStyle BackColor="#F7F7F7" />
@@ -613,6 +613,7 @@
                                                                                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
+                                                                          
                                                                             <br />
                                                                             <div style="text-align: center;">
                                                                                 <asp:Label ID="lblThirdparty" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>

@@ -105,6 +105,15 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.RangeValidator pricerangeValidator;
 
         /// <summary>
+        /// RegularExpressionValidator7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator7;
+
+        /// <summary>
         /// productDiscounts control.
         /// </summary>
         /// <remarks>
@@ -121,6 +130,15 @@ namespace WRS2big_Web.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator RangeValidator1;
+
+        /// <summary>
+        /// discountValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator discountValidator;
 
         /// <summary>
         /// Label5 control.
@@ -510,15 +528,6 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.DropDownList ddlSearchOptions;
 
         /// <summary>
-        /// btnSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
-
-        /// <summary>
         /// txtSearch control.
         /// </summary>
         /// <remarks>
@@ -537,22 +546,13 @@ namespace WRS2big_Web.Admin
         protected global::System.Web.UI.WebControls.Button btnSearchOrder;
 
         /// <summary>
-        /// txtSearchThirdParty control.
+        /// btnSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchThirdParty;
-
-        /// <summary>
-        /// btnSearchThirdParty control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearchThirdParty;
+        protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
         /// lblProductData control.
