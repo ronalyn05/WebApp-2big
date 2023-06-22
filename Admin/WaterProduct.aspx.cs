@@ -36,21 +36,11 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-            //radDevType.Attributes.Add("onclick", "showHideExpressDiv();");
-
             if (!IsPostBack)
             {
-                //productRefillDisplay();
-                //otherProductsDisplay();
-                //deliveryExpressDisplay();
-                //displayTankSupply();
                 displayTankSupply();
                 
             }
-            //btnSearchOrder.Visible = false;
-            //txtSearch.Visible = false;
-            //btnSearchThirdParty.Visible = false;
-            //txtSearchThirdParty.Visible = false;
            
             string idno = (string)Session["idno"];
 
@@ -129,14 +119,11 @@ namespace WRS2big_Web.Admin
                 }
             }
         }
-       
-        //DISPLAY TANK SUPPLY NI DIRI
+        //DISPLAY TANK SUPPLY HERE
         private void displayTankSupply()
         {
-
             // Get the ID of the currently logged-in owner from session state
             string idno = (string)Session["idno"];
-
             try
             {
                 // Retrieve all orders from the TANKSUPPLY table
@@ -234,14 +221,6 @@ namespace WRS2big_Web.Admin
                                 totalDeclinedGallons += declinedGallons * order.order_overAllQuantities;
                             }
                         }
-                        
-
-                        // Update the tank supply and remaining balance
-                        //double remainingGallons = tankCapacity + totalOrderedGallons - totalDeclinedGallons;
-                        //double remainingBalance = remainingGallons * filteredSupply.pricePerGallon;
-
-                        //lblremainingGallons.Text = remainingGallons.ToString() + " gallons";
-                        //lblRemainingBalance.Text = remainingBalance.ToString("C");
 
                         //Calculate the ordered gallons of walkin
                         if (walkinOrders != null)
@@ -265,11 +244,9 @@ namespace WRS2big_Web.Admin
                                 totalOrderedGallons += orderedGallons * order.productQty;
                             }
                         }
-
                         //Get the total of remaining supply base on each ordered place
                         double remainingSupply = tankCapacity - totalOrderedGallons + totalDeclinedGallons;
-                        //double remainingSupply = tankCapacity - totalOrderedGallons;
-
+                        
                         // display the remaining supply
                         if (remainingSupply < 0)
                         {
@@ -530,7 +507,6 @@ namespace WRS2big_Web.Admin
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -608,18 +584,10 @@ namespace WRS2big_Web.Admin
 
                 tankSize.Text = null;
 
-                //gridTankSupply.DataSource = null;
-                //gridTankSupply.DataBind();
-                //GridotherProduct_Details.DataSource = null;
-                //GridotherProduct_Details.DataBind();
-                //GridPro_Details.DataSource = null;
-                //GridPro_Details.DataBind();
-
                 gridProductRefill.Visible = false;
                 gridotherProduct.Visible = false;
                 lblThirdparty.Visible = false;
                 lbl_tankSupply.Visible = false;
-
 
                 gridTankSupply.Visible = true;
                 tankSupplyDisplay();
@@ -633,12 +601,11 @@ namespace WRS2big_Web.Admin
             }
         }
 
-        //STORING DATA TO third party product
+        //STORING DATA TO PRODUCT TBL (third party product)
         protected async void btnAdd_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -687,16 +654,10 @@ namespace WRS2big_Web.Admin
                     // Get the file extension
                     string fileExtension = Path.GetExtension(imgProduct.FileName);
 
-                    //// Check if the file extension is allowed (JPG)
-                    //if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg")
-                    //{
                     // Check if the file extension is allowed (JPG)
                     if (fileExtension.ToLower() == ".jpg" || fileExtension.ToLower() == ".jpeg" || fileExtension.ToLower() == ".png" || fileExtension.ToLower() == ".bmp" || fileExtension.ToLower() == ".svg" || fileExtension.ToLower() == ".gif")
                     {
-                        // Check if the file extension is allowed
-                        //if (fileExtension.ToLower() != ".pdf" && fileExtension.ToLower() != ".pptx" && fileExtension.ToLower() != ".docx" && fileExtension.ToLower() != ".xlsx")
-                        //{
-                        //        //Check if the file size is within the allowed limit
+                           //Check if the file size is within the allowed limit
                         int maxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
                         if (imgProduct.FileContent.Length <= maxFileSizeInBytes)
                         {
@@ -791,13 +752,6 @@ namespace WRS2big_Web.Admin
 
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
-                //GridotherProduct_Details.DataSource = null;
-                //GridotherProduct_Details.DataBind();
-                //GridPro_Details.DataSource = null;
-                //GridPro_Details.DataBind();
-                //gridTankSupply.DataSource = null;
-                //gridTankSupply.DataBind();
-
                 gridProductRefill.Visible = false;
                 gridTankSupply.Visible = false;
                 lblThirdparty.Visible = false;
@@ -808,8 +762,6 @@ namespace WRS2big_Web.Admin
 
                 lblProductData.Text = "THIRDPARTY PRODUCT";
                 lblProductData.Visible = true;
-                //txtSearchThirdParty.Visible = true;
-                //btnSearchThirdParty.Visible = true;
             }
             catch (Exception ex)
             {
@@ -817,12 +769,11 @@ namespace WRS2big_Web.Admin
             }
         }
        
-        //STORING DATA TO PRODUCT REFILL and other product offered
+        //STORING DATA TO PRODUCT and other product offered (in-store product)
         protected async void btnSet_Click(object sender, EventArgs e)
         {
             string idno = (string)Session["idno"];
             int adminId = int.Parse(idno);
-            //int logsId = (int)Session["logsId"];
             string name = (string)Session["fullname"];
 
             try
@@ -1000,13 +951,6 @@ namespace WRS2big_Web.Admin
 
                 twoBigDB.Set("ADMINLOGS/" + log.logsId, log);
 
-                
-                //GridPro_Details.DataSource = null;
-                //GridPro_Details.DataBind();
-                //GridotherProduct_Details.DataSource = null;
-                //GridotherProduct_Details.DataBind();
-                //gridTankSupply.DataSource = null;
-                //gridTankSupply.DataBind();
                 gridProductRefill.Visible = true;
                 gridTankSupply.Visible = false;
                 gridotherProduct.Visible = false;

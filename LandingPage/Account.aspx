@@ -121,14 +121,16 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="col-md-18 col-sm-18 ">
-                                                    <div class="x_content"  style="font-size:16px;color:black">
+                                                    <div class="x_content" style="font-size: 16px; color: black">
                                                         <center>
-                                                        <asp:Label runat="server" style="font-size:16px">
+                                                            <asp:Label runat="server" Style="font-size: 16px">
                                                             This End-User License Agreement <strong>("Agreement")</strong> is a legal agreement between you (referred to as "Licensee" or "you") and <strong>[Technique Services] </strong> (referred to as "Licensor" or "we" or "us"), governing the use of
                                                             <strong> [2BiG: WRS Management System]</strong> (referred to as the "Software").
-                                                        </asp:Label>
-                                                        </center> <br /><br />
-                                                        <asp:Label runat="server" style="">
+                                                            </asp:Label>
+                                                        </center>
+                                                        <br />
+                                                        <br />
+                                                        <asp:Label runat="server" Style="">
                                                             <strong>
                                                                 ACCEPTANCE OF TERMS <br />
                                                             </strong>
@@ -147,42 +149,53 @@
 
                                                             <strong> TERMINATION </strong> <br />
                                                             This Agreement is effective until terminated. Licensor may terminate this Agreement at any time if you fail to comply with its terms and conditions. Upon termination, you must cease all use of the Software and destroy all copies in your possession. <br /><br />
-                                                            </asp:Label>
+                                                        </asp:Label>
 
-                                                            <strong>
-                                                                SUBSCRIPTION TERMS <br />
-                                                            </strong>
-                                                            a. To fully use the Software, you must subscribe to the package offered. All packages are on a monthly basis and require payment of the corresponding fees. The available package is described on our website or within the Software. <br />
-b. Some subscription package is not renewable. At the end of each monthly period, your subscription will automatically expire, and you will need to resubscribe to continue using the Software. <br />
-c. If you subscribed to the free package and wish to change to a non-free package, you may do so within 5 days after the initial subscription. After this 5-day period, you may not change your package until the next subscription cycle. <br />
-d. To change the package, you must follow the instructions provided within the Software or on our website. Additional fees may apply for the new package, and any unused portion of the previously subscribed package will not be refunded. <br /><br />
-                                                            <strong>
-                                                                UPLOAD OF VALID IDs AND BUSINESS PROOFS
-                                                            </strong> <br />
-a. As part of the subscription process or in connection with the use of certain features or services within the Software, you may be required to upload and provide valid identification documents (Valid IDs) and business proofs, such as a Business Permit or equivalent documentation. <br />
-b. You agree that any Valid IDs and business proofs you upload must be legitimate and accurate. Falsifying or providing fraudulent documents is strictly prohibited and may result in legal consequences. <br />
-c. Licensor reserves the right to verify the authenticity and validity of the uploaded documents. If any document is found to be fraudulent, Licensor may terminate your subscription and take appropriate legal action. <br /><br />
-                                                            <strong>
-                                                                REVENUE OWNERSHIP <br />
-                                                            </strong>
-a. Licensor clarifies that the super admin or the developers of the Software do not earn from the earnings of your business through the online platform. The earnings generated by your business using the Software belong solely to you, the Licensee. <br />
-b. Licensor is not responsible for any financial transactions, revenue sharing, or profit distribution between you and any third parties using the Software. It is your sole responsibility to manage and distribute your business earnings. <br /><br />
-                                                            <strong> 
-                                                                EMPLOYEE MANAGEMENT <br />
-                                                            </strong>
-                                                            a. The Employee Management feature in the Software provides functionality for creating user accounts for cashiers and drivers. It does not include managing or covering the pay or salary of the employees. The Software does not handle or facilitate any salary-related transactions or calculations for your employees. <br />
-b. You, as the Licensee, are solely responsible for managing the payment and salary of your employees. <br /><br />
-                                                            <strong>
-                                                                PRODUCT PRICING LIABILITY <br />
-                                                                  </strong>
-a. The prices of the products you offer through the Software are solely determined by you, the Licensee. Licensor does not control or influence the pricing of your products. <br />
-b. You acknowledge and agree that you are solely responsible for setting up and maintaining the prices of your products. Any complaints or issues related to the prices of your products are your sole liability, and Licensor shall not be held responsible for any such complaints or issues. <br />
-
-                                                          
-
-                                                       
-
-
+                                                        <strong>SUBSCRIPTION TERMS
+                                                            <br />
+                                                        </strong>
+                                                        a. To fully use the Software, you must subscribe to the package offered. All packages are on a monthly basis and require payment of the corresponding fees. The available package is described on our website or within the Software.
+                                                        <br />
+                                                        b. Some subscription package is not renewable. At the end of each monthly period, your subscription will automatically expire, and you will need to resubscribe to continue using the Software.
+                                                        <br />
+                                                        c. If you subscribed to the free package and wish to change to a non-free package, you may do so within 5 days after the initial subscription. After this 5-day period, you may not change your package until the next subscription cycle.
+                                                        <br />
+                                                        d. To change the package, you must follow the instructions provided within the Software or on our website. Additional fees may apply for the new package, and any unused portion of the previously subscribed package will not be refunded.
+                                                        <br />
+                                                        <br />
+                                                        <strong>UPLOAD OF VALID IDs AND BUSINESS PROOFS
+                                                        </strong>
+                                                        <br />
+                                                        a. As part of the subscription process or in connection with the use of certain features or services within the Software, you may be required to upload and provide valid identification documents (Valid IDs) and business proofs, such as a Business Permit or equivalent documentation.
+                                                        <br />
+                                                        b. You agree that any Valid IDs and business proofs you upload must be legitimate and accurate. Falsifying or providing fraudulent documents is strictly prohibited and may result in legal consequences.
+                                                        <br />
+                                                        c. Licensor reserves the right to verify the authenticity and validity of the uploaded documents. If any document is found to be fraudulent, Licensor may terminate your subscription and take appropriate legal action.
+                                                        <br />
+                                                        <br />
+                                                        <strong>REVENUE OWNERSHIP
+                                                            <br />
+                                                        </strong>
+                                                        a. Licensor clarifies that the super admin or the developers of the Software do not earn from the earnings of your business through the online platform. The earnings generated by your business using the Software belong solely to you, the Licensee.
+                                                        <br />
+                                                        b. Licensor is not responsible for any financial transactions, revenue sharing, or profit distribution between you and any third parties using the Software. It is your sole responsibility to manage and distribute your business earnings.
+                                                        <br />
+                                                        <br />
+                                                        <strong>EMPLOYEE MANAGEMENT
+                                                            <br />
+                                                        </strong>
+                                                        a. The Employee Management feature in the Software provides functionality for creating user accounts for cashiers and drivers. It does not include managing or covering the pay or salary of the employees. The Software does not handle or facilitate any salary-related transactions or calculations for your employees.
+                                                        <br />
+                                                        b. You, as the Licensee, are solely responsible for managing the payment and salary of your employees.
+                                                        <br />
+                                                        <br />
+                                                        <strong>PRODUCT PRICING LIABILITY
+                                                            <br />
+                                                        </strong>
+                                                        a. The prices of the products you offer through the Software are solely determined by you, the Licensee. Licensor does not control or influence the pricing of your products.
+                                                        <br />
+                                                        b. You acknowledge and agree that you are solely responsible for setting up and maintaining the prices of your products. Any complaints or issues related to the prices of your products are your sole liability, and Licensor shall not be held responsible for any such complaints or issues.
+                                                        <br />
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -203,7 +216,6 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 <br />
                                                 <br />
                                             </div>
-
                                             <script>
                                                 function showLogin() {
                                                     document.getElementById('login').style.display = 'block';
@@ -215,10 +227,8 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     document.getElementById('register').style.display = 'block';
                                                 }
                                             </script>
-
                                             <button type="button" id="btnlogin" class="togglebtn btn btn-primary waves-effect text-center active" onclick="showLogin()">Login</button>
                                             <button type="button" id="btnregister" class="togglebtn btn btn-primary waves-effect text-center active" onclick="showRegister()">Sign Up</button>
-
                                         </center>
                                     </div>
                                     <br />
@@ -226,12 +236,9 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                     <br>
                                     <%--LOG IN FIELD--%>
                                     <div id="login">
-                                        <%--<div id="login" style="display:none;">--%>
                                         <div class="row">
-                                            <%--                                            @*username*@--%>
                                             <div class="col">
                                                 <div class="">
-
                                                     <label>Plese choose your Role:</label><br />
                                                     <asp:DropDownList runat="server" ID="roleType" Style="font-size: 18px" Width="150px" OnSelectedIndexChanged="roleType_SelectedIndexChanged" AutoPostBack="true">
                                                         <asp:ListItem Enabled="false"></asp:ListItem>
@@ -240,19 +247,15 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     </asp:DropDownList>
                                                     <br />
                                                     <br />
-                                                    <%--<label>Email:</label>--%>
-                                                    <label>ID Number:</label>
+                                                    <label>Email:</label>
                                                     <div class="input-group">
-                                                        <%-- <asp:TextBox runat="server"  type="usrname" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> --%>
-                                                        <asp:TextBox runat="server" type="idno" class="form-control" ID="txt_idno" ValidationGroup="a"> </asp:TextBox>
-                                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txt_username"  ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>--%>
-                                                    </div>
-                                                    <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"  ForeColor="Red" ControlToValidate="txt_idno" ValidationGroup="a"></asp:RegularExpressionValidator>--%>
-                                                </div>
+                                                         <asp:TextBox runat="server" TextMode="Email" class="form-control" id="txt_email" ValidationGroup="a"></asp:TextBox> 
+                                                     </div>
+                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%--                                            @*password*@--%>
+                                            <%-- @*password*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Password:</label>
@@ -263,7 +266,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 </div>
                                             </div>
                                         </div>
-                                        <%--                                        @*Show Password checkbox*@--%>
+                                        <%-- @*Show Password checkbox*@--%>
                                         <div class="row m-t-25 text-left">
                                             <div class="col-md-12">
                                                 <div class="checkbox-fade fade-in-primary">
@@ -278,7 +281,6 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                         <div class="row m-t-25 text-left">
                                             <div class="col-md-12">
                                                 <asp:LinkButton runat="server" Text="Forgot Password? Reset your password." href="ResetPassword.aspx"></asp:LinkButton>
-
                                             </div>
                                         </div>
                                         <%-- @*Show Password script*@--%>
@@ -300,16 +302,14 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                         </div>
                                     </div>
                                     <%--end of login here--%>
-                                    <%--                                @*      SIGN UP     *@--%>
+                                    <%--  @* SIGN UP     *@--%>
                                     <div id="register" style="display: none;">
-                                        <%-- <div class="active" id="register" style="display:none;">--%>
-                                        <%--  <div id="register">--%>
                                         <div style="background-color: #018cff; color: white" class="card card-block">
                                             <h5>PERSONAL INFORMATION</h5>
                                         </div>
                                         <div class="row ">
 
-                                            <%--                                    @*last name*@--%>
+                                            <%-- @*last name*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Last Name</label>
@@ -319,7 +319,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <%--                                    @*first name*@--%>
+                                            <%--@*first name*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>First Name</label>
@@ -329,7 +329,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <%--                                    @*middle name*@--%>
+                                            <%--@*middle name*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Middle Name</label>
@@ -340,7 +340,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%--                                    @*birthdate*@--%>
+                                            <%--@*birthdate*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Birthdate</label>
@@ -361,30 +361,18 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%--                                    @*Phone Number*@--%>
+                                            <%-- @*Phone Number*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Phone Number</label>
                                                     <div class="input-group-sm">
                                                         <asp:TextBox runat="server" TextMode="Number" class="form-control" Placeholder="(Format: 09XXXXXXXXX) (must be 11 digit)" ID="txtphoneNum"></asp:TextBox>
                                                         <asp:RegularExpressionValidator ID="RegexValidator" ValidationGroup="a" runat="server" ControlToValidate="txtphoneNum" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
-
-                                                        <%--                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid phone number." ControlToValidate="txtphoneNum"  ForeColor="Red" ValidationExpression="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$" ></asp:RegularExpressionValidator>--%>
-                                                    </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%-- @*username*@--%>
-                                            <%--<div class="col">
-                                                        <div class="form-group">
-                                                            <label>Username</label> 
-                                                            <div class="input-group-sm">
-                                                            <asp:TextBox runat="server" placeholder="enter username" class="form-control" ID="txtusername">
-                                                            </asp:TextBox> <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ValidationExpression="^[\w.\-]{2,18}$" ControlToValidate="txtusername" ErrorMessage="Invalid Username"></asp:RegularExpressionValidator>
-                                                            </div>
-                                                        </div>
-                                                    </div>--%>
                                             <%-- @*email*@--%>
                                             <div class="col">
                                                 <div class="form-group">
@@ -397,7 +385,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%--                                    @*password*@--%>
+                                            <%--@*password*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Password</label>
@@ -413,7 +401,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <%--                                    @*Confirm password*@--%>
+                                            <%-- @*Confirm password*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Confirm Password</label>
@@ -422,12 +410,11 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                     </asp:CompareValidator>
                                                     <div class="input-group-sm">
                                                         <asp:TextBox runat="server" placeholder="confirm your password" class="form-control" TextMode="Password" ID="conpass"></asp:TextBox>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <%--                                @*Show Password checkbox*@--%>
+                                        <%-- @*Show Password checkbox*@--%>
                                         <div class="row m-t-25 text-left">
                                             <div class="col-md-12">
                                                 <div class="checkbox-fade fade-in-primary">
@@ -439,14 +426,13 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 </div>
                                             </div>
                                         </div>
-
                                         <br />
                                         <!--REFILLING STATION-->
                                         <div style="background-color: #018cff; color: white" class="card card-block">
                                             <h5>REFILLING STATION INFORMATION</h5>
                                         </div>
                                         <div class="row">
-                                            <%--                                    @*WRS NAME*@--%>
+                                            <%-- @*WRS NAME*@--%>
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Water Station Name</label>
@@ -457,7 +443,6 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <%-- WRS Location--%>
                                             <div class="col">
@@ -487,14 +472,9 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 </asp:TextBox>
                                             </div>
                                         </div>
-
                                         <br />
-
-
                                         <!-- SCRIPT FOR GEOLOCATION-->
-
                                         <script>
-
                                             // Reverse geocoding function using Nominatim API
                                             function reverseGeocode(lat, long) {
                                                 const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`;
@@ -644,10 +624,7 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-                                        <%--                                @*Show Password script*@--%>
+                                        <%-- @*Show Password script*@--%>
                                         <script>
                                             const toggleregPassword = document.querySelector('#togglePasswordreg');
                                             const regpassword = document.querySelector('#id_passwordreg');
@@ -669,20 +646,6 @@ b. You acknowledge and agree that you are solely responsible for setting up and 
                                                 this.classList.toggle('fa-eye-slash');
                                             });
                                         </script>
-                                        <!-- Show Password END-->
-                                        <%--<div class="row m-t-25 text-left">
-                                            <div class="col-md-12">
-                                                <div>
-
-                                                    <hr />
-                                                    <label>
-                                                        <span class="text-inverse">By signing up, you agree to 2BiG's <a href="#" data-toggle="modal" data-target=".termsCondition">Terms and Conditions </a>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
                                         <asp:LinkButton runat="server" ID="terms" data-toggle="modal" data-target=".termsCondition"> By Signing-up, you agree to our <strong> Terms and Conditions </strong></asp:LinkButton>
                                         <!-- SignUp  -->
                                         <div class="row m-t-30">
