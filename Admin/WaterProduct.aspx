@@ -54,9 +54,7 @@
                                                 <%-- add product button--%>
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".add"><i class="fa fa-plus"></i>Add Third Party Product Offers</button>
                                                 <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".set"><i class="fa fa-plus"></i>Add Product Refill Offers</button>
-                                                <%--  <button type="button" style="font-size:14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".manage"><i class="fa fa-plus"></i> Manage Delivery Details</button>--%>
-                                                <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i>Add Water Tank Supply</button>
-                                                <%-- <button type="button" style="font-size: 14px; float: right" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".edit"><i class="fa fa-edit"></i>Edit Product Details</button>--%>
+                                               <button type="button" style="font-size: 14px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addtank"><i class="fa fa-plus"></i>Add Water Tank Supply</button>
                                                 <%--VIEW BUTTON --%>
                                           &nbsp;
                                        <%-- MODAL FOR TANK SUPPLY --%>
@@ -92,7 +90,6 @@
                                                                                 <asp:TextBox ID="tankSize" Placeholder="Enter the number of units of tank water supply" runat="server" Width="300px"></asp:TextBox>
                                                                             </div>
                                                                             <br />
-
                                                                             <%-- <asp:Button ID="AddTanksupply" runat="server" class="btn btn-primary btn-sm" Text="Add Supply" OnClick="btnAddSupply_Click" Width="131px"/>--%>
                                                                         </div>
                                                                     </div>
@@ -105,7 +102,6 @@
                                                         <%--  </form>--%>
                                                     </div>
                                                 </div>
-
                                                 <%-- MODAL FOR ADD third party PRODUCT--%>
                                                 <div class="modal fade add" tabindex="-1" role="dialog" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -119,7 +115,6 @@
                                                                 <div class="modal-body">
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
-                                                                            <%-- <div class="item form-group">--%>
                                                                             <h4 style="color: black; font-family: Bahnschrift">Set third party offered products here:</h4>
                                                                             <hr />
                                                                             <strong>Note: This is intended for third party product offered.</strong>
@@ -135,15 +130,12 @@
                                                                                 <strong>Product Image:</strong>
                                                                                 <%--file upload--%>
                                                                                 <asp:FileUpload ID="imgProduct" runat="server" Font-Size="Medium" Height="38px" Width="464px" />
-                                                                                <%-- <input type="hidden" id="imageUploaded" runat="server" onserverchange="imageUploaded_Changed" />--%>
-                                                                                <%-- <asp:Label ID="lblErrorMessage" runat="server" ForeColor="Red"></asp:Label><br />--%>
-                                                                            </div>
+                                                                                 </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Product Unit of Volume:</strong>
                                                                                 <asp:DropDownList ID="drdprodUnitVolume" runat="server" Height="40px" Width="464px">
-                                                                                    <%--<asp:ListItem Selected="True">-----Choose One-----</asp:ListItem>--%>
-                                                                                    <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
+                                                                                   <asp:ListItem Text="Gallon" Value="gallon"></asp:ListItem>
                                                                                     <asp:ListItem Text="Liters" Value="liters"></asp:ListItem>
                                                                                     <asp:ListItem Text="Milliliters" Value="ml"></asp:ListItem>
                                                                                 </asp:DropDownList>
@@ -154,8 +146,6 @@
                                                                         <asp:TextBox ID="productQty" TextMode="Number" Height="40px" Placeholder="Enter the number of quantity/size the unit of volume have" runat="server" Width="464px"></asp:TextBox>
                                                                                <br />
                                                                          <asp:RangeValidator ID="RangeValidator2" runat="server" ControlToValidate="productQty" Type="Double" MinimumValue="0" ErrorMessage="Please enter a valid number of unit of the product  (must input a number)" ForeColor="Red"></asp:RangeValidator>
-                                                                      <%--  <asp:RegularExpressionValidator ID="quantityValidator" runat="server" ControlToValidate="productQty"
-                                                                            ErrorMessage="Please enter a valid quantity" ValidationExpression="^\d+$" ValidationGroup="validationGroup"></asp:RegularExpressionValidator>--%>
                                                                     </div>
                                                                     <br />
                                                                   <div class="col-md-12 col-sm-12">
@@ -166,7 +156,6 @@
                                                                     <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="productPrice"
                                                                         ErrorMessage="Please enter a valid price (must be a number or decimal)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                 </div>
-
                                                                     <br />
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <strong>Product Discount:</strong>
@@ -194,7 +183,6 @@
                                                                             <%--PRODUCT Available--%>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Quantity(Stock)/Number of unit:</strong>
-                                                                                <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
                                                                                 <asp:TextBox ID="stockQuantity" Height="40px" TextMode="Number" step="any" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                              <br />
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="stockQuantity"
@@ -207,12 +195,9 @@
                                                                 <div class="modal-footer">
                                                                     <%-- add data button--%>
                                                                     <asp:Button ID="btnAdd" runat="server" Text="Add Product" class="btn btn-primary btn-sm" OnClick="btnAdd_Click" AutoPostBack="false" />
-                                                                    <%--<asp:Button ID="btnupdate" class="btn btn-primary" runat="server" Text="Update Data" ValidationGroup="a" OnClick="btnupdate_Click" />
-                                                                    --%>
-                                                                </div>
+                                                              </div>
                                                         </div>
                                                     </div>
-                                                    <%--  </form>--%>
                                                 </div>
                                                 <%-- MODAL FOR Set Product Refill Supply--%>
                                                 <div class="modal fade set" tabindex="-1" role="dialog" aria-hidden="true">
@@ -237,11 +222,9 @@
                                                                                     <asp:ListItem Text="Product Refill" Value="Product Refill" />
                                                                                     <asp:ListItem Text="other Product" Value="other Product" />
                                                                                 </asp:RadioButtonList>
-
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Product Name:</strong>
-                                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                 <asp:TextBox ID="refillwaterType" Width="464px" Height="40px" Placeholder="Enter product name offered to customer. Ex: Purified or Alkaline" runat="server"></asp:TextBox>
                                                                             </div>
                                                                             <br />
@@ -250,8 +233,7 @@
                                                                                 <strong>Product Image:</strong>
                                                                                 <%--file upload--%>
                                                                                 <asp:FileUpload ID="prodImage" Height="40px" runat="server" Font-Size="Medium" Width="301px" />
-                                                                                <%-- <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label><br />--%>
-                                                                            </div>
+                                                                                </div>
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Unit of Volume:</strong>
@@ -263,7 +245,6 @@
                                                                                 </asp:DropDownList>
                                                                             </div>
                                                                             <br />
-
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Quantity/Number of unit:</strong>
                                                                                 <asp:TextBox ID="refillQty" Height="40px" Width="464px" Placeholder="Enter how many quantity does the unit of volume have" TextMode="Number" step="any" runat="server"></asp:TextBox>
@@ -274,8 +255,7 @@
                                                                             <br />
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Price:</strong>
-                                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                                <asp:TextBox ID="refillPrice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost" TextMode="Number" step="any" runat="server"></asp:TextBox>
+                                                                               <asp:TextBox ID="refillPrice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost" TextMode="Number" step="any" runat="server"></asp:TextBox>
                                                                                  <br />  
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="refillPrice"
                                                                             ErrorMessage="Please enter a valid price (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
@@ -307,8 +287,7 @@
                                                                             <%--PRODUCT Available--%>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Quantity(Stock)/Number:</strong>
-                                                                                <%-- <asp:Label ID="Label6" runat="server" Text="Product Available:"></asp:Label>--%>
-                                                                                <asp:TextBox ID="txtStockQty" Height="40px" TextMode="Number" CssClass="stock-qty-textbox" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
+                                                                               <asp:TextBox ID="txtStockQty" Height="40px" TextMode="Number" CssClass="stock-qty-textbox" Placeholder="Enter how many stock available base on the unit being selected" Product="Enter the available stock of the product above" runat="server" Width="464px"></asp:TextBox>
                                                                                  <br />
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtStockQty"
                                                                             ErrorMessage="Please enter a valid number of unit of the product stock (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
@@ -322,7 +301,6 @@
                                                                     </div>
                                                                 </div>
                                                         </div>
-                                                        <%-- </form>--%>
                                                     </div>
                                                 </div>
                                                 <%-- end set product refill --%>
@@ -359,8 +337,7 @@
 
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Price:</strong>
-                                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
-                                                                                <asp:TextBox ID="txtproductprice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
+                                                                               <asp:TextBox ID="txtproductprice" Height="40px" Width="464px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="txtproductprice"
                                                                             ErrorMessage="Please enter a valid price (must input a number)" ValidationExpression="^\d+(\.\d+)?$" ForeColor="Red"></asp:RegularExpressionValidator>
                                                                             </div>
@@ -381,8 +358,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <asp:Button ID="btnEditDetails" runat="server" Text="Update" class="btn btn-primary btn-sm" OnClick="btnEditProductDetails_Click" />
-                                                                <%-- <button type="button" class="btn btn-primary" runat="server" id="btnSubmitDecline" OnClick="btnSubmitDecline_Click">Submit</button>--%>
-                                                            </div>
+                                                             </div>
                                                         </div>
                                                     </div>
                                                     <asp:HiddenField runat="server" ID="hfeditProductDetails" />
@@ -400,15 +376,8 @@
                                                                 <div class="modal-body">
                                                                     <div class="col-md-12 col-sm-12 ">
                                                                         <div class="x_content">
-                                                                            <%--  <div class="col-md-12 col-sm-12 ">
-                                                                                <strong>Product Id:</strong>
-                                                                                <br />
-                                                                                <asp:TextBox ID="txt_productId" Height="40px" Width="464px" TextMode="Number" Placeholder="Enter product id you want to update" runat="server"></asp:TextBox>
-                                                                            </div>
-                                                                            <br />--%>
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <strong>Price:</strong>
-                                                                                <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
                                                                                 <asp:TextBox ID="txt_price" Height="40px" Width="464px" Placeholder="Enter the price of refill cost you want to update" runat="server"></asp:TextBox>
                                                                             </div>
                                                                             <br />
@@ -431,7 +400,6 @@
                                                                 </div>
                                                                 <asp:HiddenField runat="server" ID="hfThirdpartyProduct" />
                                                         </div>
-                                                        <%--  </form>--%>
                                                     </div>
                                                 </div>
                                                 <%-- END FOR MODAL UPDATE--%>
@@ -441,15 +409,12 @@
                                                         <div class="modal-content">
                                                             <form id="demo-form5" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title" id="myModalLabel5">PRODUCT DETAILS
-                                
-                                                                    </h4>
+                                                                    <h4 class="modal-title" id="myModalLabel5"> PRODUCT DETAILS </h4>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span> </button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="col-xl-12 col-xl-12 ">
                                                                         <div class="x_content">
-                                                                            <%-- PRODUCT DETAILS REPORTS--%>
                                                                             <div class="card-block">
                                                                                 <div class="table-responsive">
                                                                                     <div class="tab-content">
@@ -461,7 +426,7 @@
                                                                                                 <br />
                                                                                                 <asp:GridView runat="server" ID="GridPro_Details" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                                     SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
-
+                                                                                                
                                                                                                     <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                                     <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                                     <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
@@ -473,7 +438,7 @@
                                                                                                 </asp:GridView>
                                                                                                 <asp:GridView runat="server" ID="GridotherProduct_Details" CellPadding="3" Width="975px" CssClass="auto-style1" Style="text-align: center; overflow-y: auto; max-height: 500px; margin-left: 14px;"
                                                                                                     SelectionMode="FullRow" HorizontalAlign="Center" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px">
-
+                                                                                                
                                                                                                     <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
                                                                                                     <HeaderStyle BackColor="#f7f7f7" Font-Bold="True" ForeColor="Black" />
                                                                                                     <PagerStyle ForeColor="Black" HorizontalAlign="Right" BackColor="White" />
@@ -519,8 +484,7 @@
                                                                 </div>
                                                                 <%--<h5> Tank Supply:</h5>--%>
                                                                 <asp:Label ID="Label1" runat="server" Text="Tank Supply" Font-Bold="true" Font-Size="Large" Width="364px"></asp:Label>
-                                                                <%--<button type="button" style="font-size:14px; width: 154px;" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".addSupply"><i class="fa fa-plus"></i> Add Tank Supply</button>--%>
-                                                            </div>
+                                                                </div>
                                                             <%-- TANK SUPPLY STARTS HERE --%>
                                                             <div class="col-xl-3 col-md-6">
                                                                 <div class="card">
@@ -535,7 +499,6 @@
                                                                                 <br />
                                                                                 <asp:Label ID="label3" Font-Bold="true" runat="server" Text="Remaining Supply:" Font-Size="Large" Width="349px"></asp:Label>
                                                                                 <asp:Label ID="lblremainingSupply" Font-Bold="true" runat="server" CssClass="text-c-blue" Font-Size="18px" Width="349px"></asp:Label>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -547,9 +510,7 @@
                                                     <div class="col-xl-9 col-md-12">
                                                         <div class="card">
                                                             <div class="card-header">
-
                                                                 <asp:Label ID="Label7" runat="server" Font-Bold="true" Font-Size="Large" Text="PRODUCTS DATA"></asp:Label>
-
                                                                 <div class="card-header-right">
                                                                     <ul class="list-unstyled card-option">
                                                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -562,35 +523,20 @@
                                                             </div>
                                                             <div class="card-block">
                                                                 <asp:DropDownList ID="ddlSearchOptions" runat="server" CssClass="text-center" Height="40px" Width="364px">
-                                                                    <%--<asp:ListItem Text="---Select---"></asp:ListItem>--%>
                                                                     <asp:ListItem Text="View All" Value="0"></asp:ListItem>
                                                                     <asp:ListItem Text="Product Refill" Value="1"></asp:ListItem>
                                                                     <asp:ListItem Text="Third Party Product" Value="2"></asp:ListItem>
                                                                     <asp:ListItem Text="Tank Supply" Value="3"></asp:ListItem>
-
                                                                 </asp:DropDownList>
                                                                  <div style="float: right;">
-
                                                                                 <asp:TextBox ID="txtSearch" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
                                                                                 <asp:Button ID="btnSearchOrder" runat="server" Text="Search" OnClick="btnSearchProduct_Click" CssClass="btn-primary" Height="40px" />
-                                                                                <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
-                                                                                <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
-                                                                            </div>
+                                                                                 </div>
                                                                 <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn-primary" Height="40px" />
                                                                 <div class="table-responsive">
                                                                     <div class="tab-content">
                                                                         <div class="tab-pane active">
                                                                             <hr />
-                                                                            <%-- PRODUCTS REFILL NI DIRI--%>
-                                                                            <%-- <h5> Products Refill</h5>--%>
-                                                                           
-                                                                            <div style="float: right;">
-
-                                                                              <%--  <asp:TextBox ID="txtSearchThirdParty" Width="364px" Placeholder="search by product id  or product name ...." ToolTip="enter product id number or product name to search and view record" Height="40px" runat="server"></asp:TextBox>
-                                                                                <asp:Button ID="btnSearchThirdParty" runat="server" Text="Search" OnClick="btnSearchThirdParty_Click" CssClass="btn-primary" Height="40px" />--%>
-                                                                                <%-- <asp:TextBox ID="txtSearch" Placeholder="enter id number...." ToolTip="enter product id number to search and view record" runat="server" style="background-color:transparent; border-color:blue; border-style:solid"></asp:TextBox> --%>
-                                                                                <%-- <asp:Button ID="btnSearchOrder" runat="server" Text="Search" style="background-color:transparent; font-size:18px; border-color:green; border-style:solid" OnClick="btnSearchOrder_Click"/>--%>
-                                                                            </div>
                                                                             <div style="text-align: center;">
                                                                                 <asp:Label ID="lblProductData" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
                                                                             </div>
@@ -613,7 +559,6 @@
                                                                                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
-                                                                          
                                                                             <br />
                                                                             <div style="text-align: center;">
                                                                                 <asp:Label ID="lblThirdparty" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>
@@ -655,25 +600,11 @@
                                                                                 <SortedDescendingCellStyle BackColor="#E5E5E5" />
                                                                                 <SortedDescendingHeaderStyle BackColor="#242121" />
                                                                             </asp:GridView>
-                                                                            <%-- </div>
-                                                                <hr />--%>
-                                                                            <%-- DELIVERY DETAILS NI DIRI--%>
-                                                                            <%-- <h5> Delivery Details</h5>
-                                                                <br />--%>
-                                                                            <%-- <asp:Label ID="lbldeliveryDetails" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                                            <%--the gridview starts here--%>
-                                                                            <%--<asp:Label ID="lblExpress" Font-Bold="true" Font-Size="20px" runat="server" Width="364px"></asp:Label>--%>
-                                                                            <%-- <div style="overflow: auto; height: 832px; text-align:center;" class="texts" >--%>
-                                                                        </div>
+                                                                         </div>
                                                                         <!--/tab-pane-->
                                                                     </div>
                                                                     <!--/tab-content-->
-
                                                                 </div>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                <%-- <asp:Button ID="EditBtn" style="font-size:14px;" class="btn btn-primary btn-sm"  runat="server" Text="Edit details" OnClick="btnEdit_Click"/>
-                                                                       <asp:Button ID="DeleteBtn" style="font-size:14px;" class="btn btn-danger btn-sm" runat="server"  Text="Delete Product" OnClick="DeleteBtn_Click" /> --%>
                                                             </div>
                                                             <div class="card-block">
                                                                 <div class="table-responsive">
@@ -684,23 +615,17 @@
                                                                             <asp:Label ID="nullLabel" Font-Size="16px" runat="server" Width="364px"></asp:Label>
                                                                             <br  />
                                                                             <br />
-
-
-                                                                            <%-- </div>--%> <%--Gridview ends here--%>
                                                                         </div>
                                                                         <!--/tab-pane-->
                                                                     </div>
                                                                     <!--/tab-content-->
-
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!--PAGE CONTENTS END-->
-
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

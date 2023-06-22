@@ -61,12 +61,8 @@ namespace WRS2big_Web.Admin
                     {
                         otherproductUnitSizesSet.Add(unitSizes);
                     }
-
-
-
                 }
             }
-
             foreach (string unitSizes in refillUnitSizesSet)
             {
                 chUnitSizes_proRefill.Items.Add(new ListItem(unitSizes));
@@ -75,8 +71,6 @@ namespace WRS2big_Web.Admin
             {
                 chUnitSizes_otherProduct.Items.Add(new ListItem(unitSizes));
             }
-
-
             // Add the unit and sizes data of other products to the CheckBoxList
             HashSet<string> otherUnitSizesSet = new HashSet<string>(); // Use HashSet to store unique unit sizes
             foreach (var product in filteredOtherList)
@@ -89,7 +83,6 @@ namespace WRS2big_Web.Admin
                     otherUnitSizesSet.Add(unitSizes);
                 }
             }
-
             foreach (string unitSizes in otherUnitSizesSet)
             {
                 chUnitSizes_thirdparty.Items.Add(new ListItem(unitSizes));
@@ -220,12 +213,7 @@ namespace WRS2big_Web.Admin
             gridPromoReports.DataBind();
 
         }
-        //html tags regex
-        //private bool ContainsHtmlTags(string input)
-        //{
-        //    string pattern = @"<.*?>";
-        //    return Regex.IsMatch(input, pattern);
-        //}
+       
         // STORE PROMO OFFERED
         protected void btnAddPromoOffered_Click(object sender, EventArgs e)
         {
@@ -238,20 +226,12 @@ namespace WRS2big_Web.Admin
                 Random rnd = new Random();
                 int idnum = rnd.Next(1, 10000);
 
-                //// Check if any input contains HTML tags
-                //if (ContainsHtmlTags(txtpromoname.Text) || ContainsHtmlTags(txtpromodescription.Text))
-                //{
-                //    Response.Write("<script> alert('Inputting HTML tags is not allowed.'); </script>");
-                //    return;
-                //}
-
                 // Validate user input
                 if (string.IsNullOrEmpty(txtpromoname.Text) || string.IsNullOrEmpty(txtpromodescription.Text) || string.IsNullOrEmpty(txtpromo_pointsToClaimReward.Text))
                 {
                     Response.Write("<script> alert('Please fill all the required fields.'); </script>");
                     return;
                 }
-
                 // Convert discount value to an integer
                 int discountValue = 0;
                 if (!int.TryParse(txtpromoDiscountValue.Text, out discountValue))
@@ -259,7 +239,6 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script> alert('Invalid discount required value. Please enter a valid number.'); </script>");
                     return;
                 }
-
                 // Convert points required to an integer
                 int pointsRequired = 0;
                 if (!int.TryParse(txtpromo_pointsToClaimReward.Text, out pointsRequired))
@@ -267,7 +246,6 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
                     return;
                 }
-
                 // Get the current UTC date and time as a DateTimeOffset object
                 DateTime currentDateTime = DateTime.Now;
 
@@ -291,7 +269,6 @@ namespace WRS2big_Web.Admin
                 {
                     selectedPromo_productOffered = selectedPromo_productOffered.TrimEnd(',');
                 }
-
                 // Get the selected values from the CheckBoxList
                 string selectedUnitSizesproRefill = "";
                 foreach (ListItem item in chUnitSizes_proRefill.Items)
@@ -307,7 +284,6 @@ namespace WRS2big_Web.Admin
                 {
                     selectedUnitSizesproRefill = selectedUnitSizesproRefill.TrimEnd(',');
                 }
-
                 // Get the selected values from the CheckBoxList
                 string selectedUnitSizesOtherProduct = "";
                 foreach (ListItem item in chUnitSizes_otherProduct.Items)
@@ -323,7 +299,6 @@ namespace WRS2big_Web.Admin
                 {
                     selectedUnitSizesOtherProduct = selectedUnitSizesOtherProduct.TrimEnd(',');
                 }
-
                 // Convert points required to an integer
                 int percentageVAlue = 0;
                 if (!int.TryParse(txtpromoDiscountValue.Text, out percentageVAlue))
@@ -331,14 +306,12 @@ namespace WRS2big_Web.Admin
                     Response.Write("<script> alert('Invalid percentage required value. Please enter a valid percentage number.'); </script>");
                     return;
                 }
-
                 // Add the reward promo to the database
                 var data = new DiscountCoupon
                 {
                     couponId = idnum,
                     adminId = int.Parse(idno),
                     couponName = txtpromoname.Text,
-                    //couponName = Server.HtmlEncode(txtpromoname.Text),
                     couponDiscountValue = percentageVAlue,
                     couponDescription = txtpromodescription.Text,
                     couponPointsRequiredToClaim = pointsRequired,
@@ -351,11 +324,8 @@ namespace WRS2big_Web.Admin
                     addedBy = name
 
                 };
-
                 SetResponse response;
                 response = twoBigDB.Set("DISCOUNTCOUPON/" + data.couponId, data);
-
-
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
 
@@ -369,8 +339,6 @@ namespace WRS2big_Web.Admin
                     activityTime = addedTime,
                     userActivity = "ADDED DISCOUNT COUPON OFFERED",
                 };
-
-                //Storing the  info
                 response = twoBigDB.Set("ADMINLOGS/" + promoLog.logsId, promoLog);//Storing data to the database
 
                 txtpromoname.Text = null;
@@ -386,7 +354,6 @@ namespace WRS2big_Web.Admin
                 Response.Write("<script> alert('Promo offered added successfully!') </script>");
 
                 promoOfferedReportsDisplay();
-
             }
             catch (Exception ex)
             {
@@ -432,13 +399,7 @@ namespace WRS2big_Web.Admin
                 {
                     waysToEarnPoints_selectedValues = waysToEarnPoints_selectedValues.TrimEnd(',');
                 }
-                //  // Convert rewards points to earn to an integer
-                //string rewardspoints = " ";
-                //if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text) && !decimal.TryParse(txtrewardspointsPerTxnOrAmount.Text, out rewardspoints))
-                //{
-                //    Response.Write("<script> alert('Invalid points required value. Please enter a valid number.'); </script>");
-                //    return;
-                //}
+              
                 string rewardspoints = " ";
                 if (!string.IsNullOrEmpty(txtrewardspointsPerTxnOrAmount.Text))
                 {
@@ -450,21 +411,6 @@ namespace WRS2big_Web.Admin
                     rewardspoints = points.ToString();
                 }
 
-                //// If minimum range per amount is null or empty, minRange_perAmount will be null.
-                //string minRange_perAmount = " ";
-                //if (!string.IsNullOrEmpty(txtminRange_perAmount.Text) && !string(txtminRange_perAmount.Text, out minRange_perAmount))
-                //{
-                //    Response.Write("<script> alert('Invalid minimum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-                //    return;
-                //}
-
-                //// If maximum range per amount is null or empty, maxRange_perAmount will be null.
-                //string maxRange_perAmount = " ";
-                //if (!string.IsNullOrEmpty(txtmaxRange_perAmount.Text) && !string(txtmaxRange_perAmount.Text, out maxRange_perAmount))
-                //{
-                //    Response.Write("<script> alert('Invalid maximum range amount required value. Please enter a valid range amount in number or decimal.'); </script>");
-                //    return;
-                //}
                 // If minimum range per amount is null or empty, minRange_perAmount will be null.
                 string minRange_perAmount = " ";
                 if (!string.IsNullOrEmpty(txtminRange_perAmount.Text))
@@ -489,7 +435,6 @@ namespace WRS2big_Web.Admin
                     maxRange_perAmount = maxRange.ToString();
                 }
 
-
                 // Add the reward promo to the database
                 var data = new RewardSystem
                 {
@@ -502,12 +447,8 @@ namespace WRS2big_Web.Admin
                     rewardsDateAdded = rewardsDateAdded,
                     addedBy = name
                 };
-
-
-
                 SetResponse response;
                 response = twoBigDB.Set("REWARDSYSTEM/" + data.rewardId, data);
-
 
                 // Get the current date and time
                 DateTime addedTime = DateTime.Now;
@@ -535,8 +476,6 @@ namespace WRS2big_Web.Admin
                 radioWaysToEarnPoints.SelectedValue = null;
 
                 rewardReportsDisplay();
-
-
             }
             catch (Exception ex)
             {
