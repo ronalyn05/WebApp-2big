@@ -37,10 +37,10 @@ namespace WRS2big_Web.Admin
             //connection to database 
             twoBigDB = new FireSharp.FirebaseClient(config);
 
-
+            Session["ModalOpen"] = null;
             //detailsGridView();
 
-         
+
 
             // expressDisplay();
             // reservationDisplay();
@@ -632,7 +632,7 @@ namespace WRS2big_Web.Admin
                                     delivery.expressdateAdded = DateTime.Now;
                                     delivery.expressID = expressID;
                                     delivery.exDeliveryFee = expressdeliveryFee.Text;
-                                    delivery.exEstimatedDelivery = estimatedTime.Text;
+                                   // delivery.exEstimatedDelivery = estimatedTime.Text;
                                     delivery.expressProducts = GetSelectedValues(expressOrderMethod);
 
                                     if (Session["role"] != null || Session["idno"] != null)
@@ -692,6 +692,7 @@ namespace WRS2big_Web.Admin
                 if (item.Value != selectedValue)
                 {
                     item.Enabled = false;
+                    Session["ModalOpen"] = true;
 
                 }
             }
@@ -775,7 +776,7 @@ namespace WRS2big_Web.Admin
                     //sa pag create sa table
                     DataTable expressTable = new DataTable();
                     expressTable.Columns.Add("EXPRESS ID");
-                    expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
+                    //expressTable.Columns.Add("ESTIMATED DELIVERY TIME");
                     expressTable.Columns.Add("DELIVERY FEE");
                     expressTable.Columns.Add("EXPRESS PRODUCTS");
                     expressTable.Columns.Add("DATE ADDED");
@@ -789,11 +790,11 @@ namespace WRS2big_Web.Admin
                             {
                                 response = twoBigDB.Get("ADMIN/" + idno);
                                 AdminAccount adminDetail = response.ResultAs<AdminAccount>();
-                                expressTable.Rows.Add(entry.expressID, entry.exEstimatedDelivery, entry.exDeliveryFee, entry.expressProducts, entry.expressdateAdded, adminDetail.fname + " " + adminDetail.lname);
+                                expressTable.Rows.Add(entry.expressID, entry.exDeliveryFee, entry.expressProducts, entry.expressdateAdded, adminDetail.fname + " " + adminDetail.lname);
 
 
                                 //POPULATE THE UPDATE MODAL WITH THE RESPECTIVE DETAILS
-                                updateExpressTime.Attributes["placeholder"] = entry.exEstimatedDelivery;
+                                //updateExpressTime.Attributes["placeholder"] = entry.exEstimatedDelivery;
                                 updateExpressDistance.Attributes["placeholder"] = entry.expressDistance.ToString();
                                 updateExpressFee.Attributes["placeholder"] = entry.exDeliveryFee;
 
@@ -1205,7 +1206,7 @@ namespace WRS2big_Web.Admin
 
 
                         //NOT EDITABLE 
-                        exEstimatedDelivery = delivery.exEstimatedDelivery,
+                        //exEstimatedDelivery = delivery.exEstimatedDelivery,
                         expressDistance = delivery.expressDistance,
                         expressID = delivery.expressID,
                         expressProducts = delivery.expressProducts,
@@ -1224,10 +1225,10 @@ namespace WRS2big_Web.Admin
                     };
 
 
-                    if (!string.IsNullOrEmpty(updateExpressTime.Text))
-                    {
-                        delivery.exEstimatedDelivery = updateExpressTime.Text;
-                    }
+                    //if (!string.IsNullOrEmpty(updateExpressTime.Text))
+                    //{
+                    //    delivery.exEstimatedDelivery = updateExpressTime.Text;
+                    //}
                     if (!string.IsNullOrEmpty(updateExpressFee.Text))
                     {
                         delivery.exDeliveryFee = updateExpressFee.Text;
