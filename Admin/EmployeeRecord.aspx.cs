@@ -343,6 +343,7 @@ namespace WRS2big_Web.Admin
                     emp_email = txtemail.Text,
                     //emp_pass = txtpass.Text,
                     emp_pass = hashedPassword,
+                    emp_conpass = conpass.Text,
                     emp_dateHired = txtdateHired.Text,
                     emp_emergencycontact =txtemergencycontact.Text,
                     emp_role = drdrole.SelectedValue,
@@ -618,44 +619,6 @@ namespace WRS2big_Web.Admin
                     updatedEmp.dateUpdated = DateTime.Now;
                     updatedEmp.updatedBy = name;
                 }
-
-
-                //// Update the fields that have changed
-                //if (!string.IsNullOrEmpty(newPosition) && newPosition != existingEmp.emp_role)
-                //{
-                //    updatedEmp.emp_role = newPosition;
-                //    updatedEmp.dateUpdated = DateTime.Now;
-                //    updatedEmp.updatedBy = name;
-                //}
-                //else if (!string.IsNullOrEmpty(address) && address != existingEmp.emp_address)
-                //{
-                //    updatedEmp.emp_address = address;
-                //    updatedEmp.dateUpdated = DateTime.Now;
-                //    updatedEmp.updatedBy = name;
-                //}
-                //else if (!string.IsNullOrEmpty(contactnumber) && contactnumber != existingEmp.emp_contactnum)
-                //{
-                //    updatedEmp.emp_contactnum = contactnumber;
-                //    updatedEmp.dateUpdated = DateTime.Now;
-                //    updatedEmp.updatedBy = name;
-                //}
-                //else if (!string.IsNullOrEmpty(email) && email != existingEmp.emp_email)
-                //{
-                //    updatedEmp.emp_email = email;
-                //    updatedEmp.dateUpdated = DateTime.Now;
-                //    updatedEmp.updatedBy = name;
-                //}
-                //// Check if the reset password is provided
-                //if (!string.IsNullOrEmpty(resetPassword))
-                //{
-                //    // Encrypt the reset password
-                //    string encryptedPassword = GetResetSHA1Hash(resetPassword);
-
-                //    // Update the employee's password in the database
-                //    updatedEmp.emp_pass = encryptedPassword;
-                //    updatedEmp.dateUpdated = DateTime.Now;
-                //    updatedEmp.updatedBy = name;
-                //}
 
                 //if emp status is already inactive
                 if (existingEmp.emp_status == "Inactive")

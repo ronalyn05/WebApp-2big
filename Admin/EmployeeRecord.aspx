@@ -213,6 +213,9 @@
                                                                             </div>
                                                                             <div class="col-md-12 col-sm-12">
                                                                                 <strong>Password:</strong>
+                                                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtpass"
+                                                        ErrorMessage="*****Password is required.****" ForeColor="Red" Display="Dynamic">
+                                                    </asp:RequiredFieldValidator>
                                                                                 <asp:TextBox ID="txtpass" runat="server" class="form-control" TextMode="Password" placeholder="set employee password (must be between 8-20 characters long and contain at least 1 letter, 1 number, and 1 special character)"></asp:TextBox>
                                                                                 <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtpass"></asp:RequiredFieldValidator>--%>
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="a" ValidationExpression="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$" runat="server"
@@ -226,7 +229,16 @@
                                                                                 </label>
                                                                             </div>--%>
                                                                             </div>
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>Confirm Password:</strong>
+                                                                             <asp:CompareValidator runat="server" ControlToCompare="txtpass" ControlToValidate="conpass"
+                                                                                ErrorMessage="Passwords do not match." ForeColor="Red" Display="Dynamic">
+                                                                            </asp:CompareValidator>
+                                                                            <div class="input-group-sm">
+                                                                                <asp:TextBox runat="server" placeholder="confirm your password" class="form-control" TextMode="Password" ID="conpass"></asp:TextBox>
 
+                                                                            </div>
+                                                                                                         </div>
 
                                                                             <%--  <div class="col-md-12 col-sm-12">
                                                                                     <div class="checkbox-fade fade-in-primary">
@@ -238,10 +250,39 @@
                                                                                     </div>
                                                                                 </div>--%>
                                                                             <%-- @*Show Password script*@--%>
+                                                                           <%--  <script>
+                                                                                 const toggleregPassword = document.querySelector('#togglePasswordreg');
+                                                                                 const regpassword = document.querySelector('#id_passwordreg');
+                                                                                 const con_pass = document.querySelector('#conpass');
+                                                                                 // SHOW PASSWORD
+                                                                                 toggleregPassword.addEventListener('click', function (e) {
+                                                                                     // toggle the type attribute
+                                                                                     const type = regpassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                     regpassword.setAttribute('type', type);
+                                                                                     // toggle the eye slash icon
+                                                                                     this.classList.toggle('fa-eye-slash');
+                                                                                 });
+                                                                                 // SHOW CONFIRM PASSWORD
+                                                                                 toggleregPassword.addEventListener('click', function (e) {
+                                                                                     // toggle the type attribute
+                                                                                     const type = con_pass.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                     con_pass.setAttribute('type', type);
+                                                                                     // toggle the eye slash icon
+                                                                                     this.classList.toggle('fa-eye-slash');
+                                                                                 });
+                                                                             </script>--%>
                                                                             <script>
                                                                                 const togglePassword = document.querySelector('#togglePassword');
+                                                                                const regpassword = document.querySelector('#txtpass');
                                                                                 const password = document.querySelector('#txtpass');
-
+                                                                                // SHOW PASSWORD
+                                                                                toggleregPassword.addEventListener('click', function (e) {
+                                                                                    // toggle the type attribute
+                                                                                    const type = regpassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                                                                                    regpassword.setAttribute('type', type);
+                                                                                    // toggle the eye slash icon
+                                                                                    this.classList.toggle('fa-eye-slash');
+                                                                                });
                                                                                 togglePassword.addEventListener('click', function (e) {
                                                                                     // toggle the type attribute
                                                                                     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -262,7 +303,7 @@
                                                                                 <strong>In case of emergency, Contact:</strong>
                                                                                 <asp:TextBox ID="txtemergencycontact" runat="server" class="form-control" placeholder="Employees' emergencey contact  (must be 11 digit)" TextMode="Phone" Value=""></asp:TextBox>
                                                                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator4" ValidationGroup="a" runat="server" ControlToValidate="txtemergencycontact" ForeColor="Red" ErrorMessage="Invalid phone number format (must be 11 digit)" ValidationExpression="^09\d{9}$"></asp:RegularExpressionValidator>
-                                                                                <%--    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>--%>
+                                                                                    <asp:RequiredFieldValidator ID="reqemercontact" ValidationGroup="a" runat="server" ErrorMessage="***" ForeColor="Red" Font-Bold="true" ControlToValidate="txtemergencycontact"></asp:RequiredFieldValidator>
                                                                             </div>
 
                                                                             <div class="col-md-12 col-sm-12">

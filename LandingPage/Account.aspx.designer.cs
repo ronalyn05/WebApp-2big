@@ -42,13 +42,13 @@ namespace WRS2big_Web.LandingPage
         protected global::System.Web.UI.WebControls.DropDownList roleType;
 
         /// <summary>
-        /// txt_idno control.
+        /// txt_email control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_idno;
+        protected global::System.Web.UI.WebControls.TextBox txt_email;
 
         /// <summary>
         /// txt_password control.
