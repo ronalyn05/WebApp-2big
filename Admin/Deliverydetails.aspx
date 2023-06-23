@@ -214,7 +214,7 @@
 
                                                 </div>
                                                 <%-- MODAL FOR Delivery TYPES--%>
-                                                <div class="modal fade manage col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal fade manage col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true" id="detailsModal">
                                                     <div class="modal-dialog modal-dialog-centered modal-md col-xl-10 col-md-15">
                                                         <div class="modal-content col-xl-10 col-md-10" style="margin-left: 370px">
                                                             <div id="demo-form" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
@@ -236,14 +236,15 @@
                                                                             <div class="col-md-12 col-sm-12 ">
                                                                                 <%--Delivery Type--%>
                                                                                 <strong>Choose the Delivery Type you provide in your business:</strong>
-                                                                                <asp:RadioButtonList ID="radDevType" runat="server" OnSelectedIndexChanged="radDevType_SelectedIndexChanged" AutoPostBack="false">
-                                                                                    <asp:ListItem Value="Standard" ID="standardRadio" onclick="displayStandardOptions(); disableOtherRadios()"> &nbsp; Standard </asp:ListItem>
+                                                                                <asp:RadioButtonList ID="radDevType" runat="server"  OnSelectedIndexChanged="radDevType_SelectedIndexChanged">
+                                                                                    <asp:ListItem Value="Standard" ID="standardRadio" onclick="displayStandardOptions(); disableOtherRadios()" > &nbsp; Standard </asp:ListItem>
                                                                                     <asp:ListItem Value="Reservation" ID="reserveRadio" onclick="displayReserveOptions(); disableOtherRadios()">  &nbsp; Reservation</asp:ListItem>
                                                                                     <asp:ListItem Value="Express" ID="expressRadio" onclick="displayExpressOptions(); disableOtherRadios()">  &nbsp; Express</asp:ListItem>
                                                                                 </asp:RadioButtonList>
 
 
                                                                             </div>
+
                                                                             <!--OPTIONS FOR STANDARD WHEN CLICKED-->
                                                                             <div id="standardCheckedDIV" style="display: none">
                                                                                 <hr />
@@ -298,7 +299,7 @@
                                                                                 <br />
                                                                                 <hr />
                                                                                 <div>
-                                                                                    <h8>
+                                                                                    <h8 id="Standardlegend" style="display: none;">
                                                                                         <strong style="color: red">LEGEND:</strong>
                                                                                         <br />
                                                                                         <strong style="color: dodgerblue">STANDARD DELIVERY:
@@ -341,6 +342,25 @@
                                                                                         You offer owned other products. Example of these products are your personalized products such as bottled water directly from your refilling station.
                                                                                     <br />
                                                                                     </h8>
+                                                                   <%--  BUTTON TO SHOW SA LEGEND--%>
+                                                                    <button id="showStandardButton" onclick="showStandardLegend();" style="background-color:transparent" AutoPostBack="false">SHOW LEGEND</button>
+                                                                       <%--  BUTTON TO HIDE SA LEGEND--%>
+                                                                    <button id="hideStandardButton" style="display: none;background-color:transparent" onclick="hideStandardLegend();" AutoPostBack="false" >HIDE LEGEND</button>
+
+                                                                 <%--   SA PAGHIDE SA LEGEND--%>
+                                                                    <script>
+                                                                        function showStandardLegend() {
+                                                                            document.getElementById('Standardlegend').style.display = 'block';
+                                                                            document.getElementById('showStandardButton').style.display = 'none';
+                                                                            document.getElementById('hideStandardButton').style.display = 'inline-block';
+                                                                        }
+
+                                                                        function hideStandardLegend() {
+                                                                            document.getElementById('Standardlegend').style.display = 'none';
+                                                                            document.getElementById('showStandardButton').style.display = 'inline-block';
+                                                                            document.getElementById('hideStandardButton').style.display = 'none';
+                                                                        }
+                                                                    </script>
                                                                                 </div>
 
                                                                             </div>
@@ -354,17 +374,12 @@
 
                                                                                     if (standard.checked) {
                                                                                         stanfields.style.display = "none";
-                                                                                        // Disable other options
-                                                                                        //document.getElementById("reserveChcked").disabled = true;
-                                                                                        //document.getElementById("expressChcked").disabled = true;
+                                                                                       
 
                                                                                     } else {
 
                                                                                         stanfields.style.display = "block";
 
-                                                                                        // Enable other options
-                                                                                        //document.getElementById("reserveChcked").disabled = false;
-                                                                                        //document.getElementById("expressChcked").disabled = false;
                                                                                     }
                                                                                 }
                                                                             </script>
@@ -372,7 +387,7 @@
 
 
                                                                             <!--OPTIONS FOR RESERVATION WHEN CLICKED-->
-                                                                            <div id="reserveCheckedDIV" style="display: none">
+                                                                            <div id="reserveCheckedDIV" style="display: none"> 
                                                                                 <hr />
                                                                                 <strong style="font-size: 18px">Reservation Options</strong>
                                                                                 <div class="col-md-12 col-sm-12 ">
@@ -403,7 +418,7 @@
                                                                                 <hr />
                                                                                 <br />
                                                                                 <div>
-                                                                                    <h8>
+                                                                                    <h8 id="Reservationlegend" style="display: none;">
                                                                                         <strong style="color: red">LEGEND:</strong>
                                                                                         <br />
                                                                                         <strong style="color: dodgerblue">RESERVATION DELIVERY:
@@ -440,6 +455,25 @@
                                                                                         You offer owned other products. Example of these products are your personalized products such as bottled water directly from your refilling station.
                                                                                     <br />
                                                                                     </h8>
+                                                                   <%--  BUTTON TO SHOW SA LEGEND--%>
+                                                                    <button id="showReservationButton" onclick="showReservationLegend();" style="background-color:transparent">SHOW LEGEND</button>
+                                                                       <%--  BUTTON TO HIDE SA LEGEND--%>
+                                                                    <button id="hideReservationButton" style="display: none; background-color:transparent" onclick="hideReservationLegend();" >HIDE LEGEND</button>
+
+                                                                 <%--   SA PAGHIDE SA LEGEND--%>
+                                                                    <script>
+                                                                        function showReservationLegend() {
+                                                                            document.getElementById('Reservationlegend').style.display = 'block';
+                                                                            document.getElementById('showReservationButton').style.display = 'none';
+                                                                            document.getElementById('hideReservationButton').style.display = 'inline-block';
+                                                                        }
+
+                                                                        function hideReservationLegend() {
+                                                                            document.getElementById('Reservationlegend').style.display = 'none';
+                                                                            document.getElementById('showReservationButton').style.display = 'inline-block';
+                                                                            document.getElementById('hideReservationButton').style.display = 'none';
+                                                                        }
+                                                                    </script>
                                                                                 </div>
 
                                                                             </div>
@@ -465,13 +499,13 @@
                                                                             <div id="expressCheckedDIV" style="display: none">
                                                                                 <hr />
                                                                                 <strong style="font-size: 18px">Express Options</strong>
-                                                                                <div class="col-md-12 col-sm-12 ">
+<%--                                                                                <div class="col-md-12 col-sm-12 ">
                                                                                     <strong>Estimated time in minutes for Express Delivery:</strong>
                                                                                     <br />
-                                                                                    <%--<asp:Label ID="Label8" runat="server" Text="Set daily amount of water refill"></asp:Label><br />--%>
+                                                                                  
                                                                                     <asp:TextBox ID="estimatedTime" Width="364px" Placeholder="Enter Express Delivery Estimated time" runat="server"></asp:TextBox>
 
-                                                                                </div>
+                                                                                </div>--%>
 
                                                                                 <%--  delivery fee--%>
                                                                                 <div class="col-md-12 col-sm-12 ">
@@ -501,7 +535,8 @@
                                                                                 <hr />
                                                                                 <div>
 
-                                                                                    <h8>
+
+                                                                                    <h8 id="Expresslegend" style="display: none;">
                                                                                         <strong style="color: red">LEGEND:</strong>
                                                                                         <br />
 
@@ -544,7 +579,25 @@
                                                                                     <br />
 
                                                                                     </h8>
-                                                                                    </script>
+                                                                     <%--  BUTTON TO SHOW SA LEGEND--%>
+                                                                    <button id="showExpressButton" onclick="showexpressLegend();" style="background-color:transparent"> SHOW LEGEND</button>
+                                                                       <%--  BUTTON TO HIDE SA LEGEND--%>
+                                                                    <button id="hideExpressButton" style="display: none;background-color:transparent" onclick="hideExpressLegend();" > HIDE LEGEND</button>
+
+                                                                 <%--   SA PAGHIDE SA LEGEND--%>
+                                                                    <script>
+                                                                        function showexpressLegend() {
+                                                                            document.getElementById('Expresslegend').style.display = 'block';
+                                                                            document.getElementById('showExpressButton').style.display = 'none';
+                                                                            document.getElementById('hideExpressButton').style.display = 'inline-block';
+                                                                        }
+
+                                                                        function hideExpressLegend() {
+                                                                            document.getElementById('Expresslegend').style.display = 'none';
+                                                                            document.getElementById('showExpressButton').style.display = 'inline-block';
+                                                                            document.getElementById('hideExpressButton').style.display = 'none';
+                                                                        }
+                                                                    </script>
                                                                                         
                                                                                 </div>
                                                                             </div>
@@ -600,6 +653,18 @@
                                                     </div>
                                                 </div>
 
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        // Check the value of the session variable
+                                                        var modalOpen = '<%= Session["ModalOpen"] %>';
+
+                                                        if (modalOpen === 'True') {
+                                                            //Trigger the opening of the modal
+                                                            $('#detailsModal').modal('show'); 
+                                                        }
+                                                    });   
+
+                                                </script>
                                                 <%--MODAL FOR UPDATE EXPRESS DELIVERY TYPES--%>
 
                                                 <div class="modal fade updateExpressType col-xl-10 col-md-12" tabindex="-1" role="dialog" aria-hidden="true">

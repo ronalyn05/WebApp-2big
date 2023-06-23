@@ -6,7 +6,6 @@
             font-size: 16px;
             color: black;
         }
-
         .text {
             font-size: 20px;
             color: black;
@@ -114,7 +113,7 @@
                                                                                 </center>
 
                                                                                 <hr />
-                                                                                <asp:TextBox runat="server" class="form-control" TextMode="MultiLine" Style="font-size: 18px" Width="400px" ID="reasonDecline" Placeholder="Reason for declining"></asp:TextBox>
+                                                                                <asp:TextBox runat="server" class="form-control"  ValidateRequest="false" TextMode="MultiLine" Style="font-size: 18px" Width="400px" ID="reasonDecline" Placeholder="Reason for declining"></asp:TextBox>
 
                                                                             </div>
                                                                         </div>
@@ -124,6 +123,16 @@
                                                                         <asp:Button ID="confirmDecline" runat="server" Text="Confirm" class="btn btn-primary btn-sm" OnClick="declineButton_Click" />
                                                                     </div>
                                                                 </div>
+<%--                                                                <script>
+                                                                    // Check for the error query string parameter
+                                                                    var errorParam = '<%= Request.QueryString["error"] %>';
+
+                                                                    // Display an alert if the error parameter is present
+                                                                    if (errorParam === '1') {
+                                                                        alert('Invalid Input!');
+                                                                    }
+                                                                </script>--%>
+
                                                             </div>
                                                         </div>
                                                     </div>

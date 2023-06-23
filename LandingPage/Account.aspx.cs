@@ -313,8 +313,11 @@ namespace WRS2big_Web.LandingPage
                     // CHECK IF THESE FIELDS ARE ALREADY IN THE DATABASE
                     if (email == client.Value.email &&
                         phoneNumber == client.Value.phone &&
-                        address == client.Value.address &&
-                        stationName == station.stationName)
+                        firstname == client.Value.fname &&
+                        lastname == client.Value.lname
+                        )
+                        //address == client.Value.address &&
+                        //stationName == station.stationName)
                     {
                         isDuplicate = true;
                         Debug.WriteLine($"DUPLICATE:{isDuplicate}");

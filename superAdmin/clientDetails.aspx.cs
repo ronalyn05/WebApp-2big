@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -25,6 +26,16 @@ namespace WRS2big_Web.superAdmin
 
         };
         IFirebaseClient twoBigDB;
+        protected void Page_Error(object sender, EventArgs e)
+        {
+            Exception lastError = Server.GetLastError();
+            if (lastError is HttpRequestValidationException)
+            {
+                Response.Clear();
+                Response.Write("<script>alert('Invalid Input!');</script>");
+                Server.ClearError();
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             //connection to database 
@@ -282,91 +293,120 @@ namespace WRS2big_Web.superAdmin
             }
 
         }
+        private bool ContainsPotentiallyDangerousInput(string input)
+        {
+            // Check for specific HTML tags or characters that are potentially dangeroucs
+            string pattern = @"<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>|<h1\b[^<]*(?:(?!<\/h1>)<[^<]*)*<\/h1>";
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            return regex.IsMatch(input);
+        }
+
 
         protected void declineButton_Click(object sender, EventArgs e)
         {
-
-            if (Session["currentClient"] != null || Session["SuperIDno"] != null)
+            try
             {
-                int clientID = (int)Session["currentClient"];
+                string userInput = reasonDecline.Text;
 
-                if (Session["SuperIDno"] != null)
+                if (ContainsPotentiallyDangerousInput(userInput))
                 {
-                    var idno = (string)Session["SuperIDno"];
-
-                    string reason = reasonDecline.Text;
-
-                    FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
-                    Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
-
-                    //to check if the status is already approved or declined
-                    if (admin.status == "Approved" || admin.status == "Declined")
-                    {
-                        if (admin.status == "Approved")
-                        {
-                            Response.Write("<script>alert ('This client is already Approved');  window.location.href = '/superAdmin/clientDetails'; </script>");
-                        }
-                        if (admin.status == "Declined")
-                        {
-                            Response.Write("<script>alert ('This client is already Declined');  window.location.href = '/superAdmin/clientDetails'; </script>");
-                        }
-                        return;
-                    }
-
-                    admin.status = "Declined";
-                    admin.dateDeclined = DateTime.Now;
-                    adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
-
-                    //SEND NOTIFICATION TO ADMIN 
-                    Random rnd = new Random();
-                    int ID = rnd.Next(1, 20000);
-                    var Notification = new Notification
-                    {
-                        superAdmin_ID = int.Parse(idno),
-                        admin_ID = clientID,
-                        sender = "Super Admin",
-                        title = "Application Declined",
-                        receiver = "Admin",
-                        body = reason,
-                        notificationDate = DateTime.Now,
-                        status = "unread",
-                        notificationID = ID
-
-                    };
-
-                    SetResponse notifResponse;
-                    notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
-                    Notification notif = notifResponse.ResultAs<Notification>();//Database Result
-
-                    //Get the current date and time
-                    DateTime logTime = DateTime.Now;
-
-                    //generate a random number for users logged
-                    //Random rnd = new Random();
-                    int idnum = rnd.Next(1, 10000);
-
-                    string superName = (string)Session["superAdminName"];
-
-                    //Store the login information in the USERLOG table
-                    var data = new superLogs
-                    {
-                        logsId = idnum,
-                        superID = int.Parse(idno),
-                        superFullname = superName,
-                        superActivity = "DECLINED CLIENT:" + " " + admin.fname + " " + admin.lname,
-                        activityTime = logTime
-                    };
-
-                    //Storing the  info
-                    FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
-                    superLogs res = response.ResultAs<superLogs>();//Database Result
-
-                    Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+                    Response.Write("<script>alert ('Invalid Input! Potentially dangerous input detected');  window.location.href = '/superAdmin/clientDetails.aspx'; </script>");
 
                 }
+                else
+                {
+                    if (Session["currentClient"] != null || Session["SuperIDno"] != null)
+                    {
+                        int clientID = (int)Session["currentClient"];
+
+                        if (Session["SuperIDno"] != null)
+                        {
+                            var idno = (string)Session["SuperIDno"];
+
+                            string reason = reasonDecline.Text;
+
+                            FirebaseResponse adminDet = twoBigDB.Get("ADMIN/" + clientID);
+                            Model.AdminAccount admin = adminDet.ResultAs<Model.AdminAccount>();
+
+                            //to check if the status is already approved or declined
+                            if (admin.status == "Approved" || admin.status == "Declined")
+                            {
+                                if (admin.status == "Approved")
+                                {
+                                    Response.Write("<script>alert ('This client is already Approved');  window.location.href = '/superAdmin/clientDetails'; </script>");
+                                }
+                                if (admin.status == "Declined")
+                                {
+                                    Response.Write("<script>alert ('This client is already Declined');  window.location.href = '/superAdmin/clientDetails'; </script>");
+                                }
+                                return;
+                            }
+
+                            admin.status = "Declined";
+                            admin.dateDeclined = DateTime.Now;
+                            adminDet = twoBigDB.Update("ADMIN/" + clientID, admin);
+
+                            //SEND NOTIFICATION TO ADMIN 
+                            Random rnd = new Random();
+                            int ID = rnd.Next(1, 20000);
+                            var Notification = new Notification
+                            {
+                                superAdmin_ID = int.Parse(idno),
+                                admin_ID = clientID,
+                                sender = "Super Admin",
+                                title = "Application Declined",
+                                receiver = "Admin",
+                                body = reason,
+                                notificationDate = DateTime.Now,
+                                status = "unread",
+                                notificationID = ID
+
+                            };
+
+                            SetResponse notifResponse;
+                            notifResponse = twoBigDB.Set("NOTIFICATION/" + ID, Notification);//Storing data to the database
+                            Notification notif = notifResponse.ResultAs<Notification>();//Database Result
+
+                            //Get the current date and time
+                            DateTime logTime = DateTime.Now;
+
+                            //generate a random number for users logged
+                            //Random rnd = new Random();
+                            int idnum = rnd.Next(1, 10000);
+
+                            string superName = (string)Session["superAdminName"];
+
+                            //Store the login information in the USERLOG table
+                            var data = new superLogs
+                            {
+                                logsId = idnum,
+                                superID = int.Parse(idno),
+                                superFullname = superName,
+                                superActivity = "DECLINED CLIENT:" + " " + admin.fname + " " + admin.lname,
+                                activityTime = logTime
+                            };
+
+                            //Storing the  info
+                            FirebaseResponse response = twoBigDB.Set("SUPERADMIN_LOGS/" + data.logsId, data);//Storing data to the database
+                            superLogs res = response.ResultAs<superLogs>();//Database Result
+
+                            Response.Write("<script>alert ('You declined the application!');  window.location.href = '/superAdmin/ManageWRSClients.aspx'; </script>");
+
+                        }
 
 
+                    }
+                }
+
+              
             }
+            catch 
+            {
+              
+              
+            }
+
 
 
         }
